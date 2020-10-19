@@ -12,58 +12,58 @@
     }
 }
 
-.MD2React .octicon {
+.MD2React :global(.octicon) {
     display: inline-block;
     fill: currentColor;
     vertical-align: text-bottom;
 }
 
-.MD2React .anchor {
+.MD2React :global(.anchor) {
     float: left;
     line-height: 1;
     margin-left: -20px;
     padding-right: 4px;
 }
 
-.MD2React .anchor:focus {
+.MD2React :global(.anchor:focus) {
     outline: none;
 }
 
-.MD2React h1 .octicon-link,
-.MD2React h2 .octicon-link,
-.MD2React h3 .octicon-link,
-.MD2React h4 .octicon-link,
-.MD2React h5 .octicon-link,
-.MD2React h6 .octicon-link {
+.MD2React h1 :global(.octicon-link),
+.MD2React h2 :global(.octicon-link),
+.MD2React h3 :global(.octicon-link),
+.MD2React h4 :global(.octicon-link),
+.MD2React h5 :global(.octicon-link),
+.MD2React h6 :global(.octicon-link) {
     color: #1b1f23;
     vertical-align: middle;
     visibility: hidden;
 }
 
-.MD2React h1:hover .anchor,
-.MD2React h2:hover .anchor,
-.MD2React h3:hover .anchor,
-.MD2React h4:hover .anchor,
-.MD2React h5:hover .anchor,
-.MD2React h6:hover .anchor {
+.MD2React h1:hover :global(.anchor),
+.MD2React h2:hover :global(.anchor),
+.MD2React h3:hover :global(.anchor),
+.MD2React h4:hover :global(.anchor),
+.MD2React h5:hover :global(.anchor),
+.MD2React h6:hover :global(.anchor) {
     text-decoration: none;
 }
 
-.MD2React h1:hover .anchor .octicon-link,
-.MD2React h2:hover .anchor .octicon-link,
-.MD2React h3:hover .anchor .octicon-link,
-.MD2React h4:hover .anchor .octicon-link,
-.MD2React h5:hover .anchor .octicon-link,
-.MD2React h6:hover .anchor .octicon-link {
+.MD2React h1:hover :global(.anchor) :global(.octicon-link),
+.MD2React h2:hover :global(.anchor) :global(.octicon-link),
+.MD2React h3:hover :global(.anchor) :global(.octicon-link),
+.MD2React h4:hover :global(.anchor) :global(.octicon-link),
+.MD2React h5:hover :global(.anchor) :global(.octicon-link),
+.MD2React h6:hover :global(.anchor) :global(.octicon-link) {
     visibility: visible;
 }
 
-.MD2React h1:hover .anchor .octicon-link:before,
-.MD2React h2:hover .anchor .octicon-link:before,
-.MD2React h3:hover .anchor .octicon-link:before,
-.MD2React h4:hover .anchor .octicon-link:before,
-.MD2React h5:hover .anchor .octicon-link:before,
-.MD2React h6:hover .anchor .octicon-link:before {
+.MD2React h1:hover :global(.anchor) :global(.octicon-link:before),
+.MD2React h2:hover :global(.anchor) :global(.octicon-link:before),
+.MD2React h3:hover :global(.anchor) :global(.octicon-link:before),
+.MD2React h4:hover :global(.anchor) :global(.octicon-link:before),
+.MD2React h5:hover :global(.anchor) :global(.octicon-link:before),
+.MD2React h6:hover :global(.anchor) :global(.octicon-link:before) {
     width: 16px;
     height: 16px;
     content: ' ';
@@ -308,299 +308,299 @@
     appearance: none;
 }
 
-.MD2React :checked+.radio-label {
+.MD2React :checked+:global(.radio-label) {
     position: relative;
     z-index: 1;
     border-color: #0366d6;
 }
 
-.MD2React .border {
+.MD2React :global(.border) {
     border: 1px solid #e1e4e8!important;
 }
 
-.MD2React .border-0 {
+.MD2React :global(.border-0) {
     border: 0!important;
 }
 
-.MD2React .border-bottom {
+.MD2React :global(.border-bottom) {
     border-bottom: 1px solid #e1e4e8!important;
 }
 
-.MD2React .rounded-1 {
+.MD2React :global(.rounded-1) {
     border-radius: 3px!important;
 }
 
-.MD2React .bg-white {
+.MD2React :global(.bg-white) {
     background-color: #fff!important;
 }
 
-.MD2React .bg-gray-light {
+.MD2React :global(.bg-gray-light) {
     background-color: #fafbfc!important;
 }
 
-.MD2React .text-gray-light {
+.MD2React :global(.text-gray-light) {
     color: #6a737d!important;
 }
 
-.MD2React .mb-0 {
+.MD2React :global(.mb-0) {
     margin-bottom: 0!important;
 }
 
-.MD2React .my-2 {
+.MD2React :global(.my-2) {
     margin-top: 8px!important;
     margin-bottom: 8px!important;
 }
 
-.MD2React .pl-0 {
+.MD2React :global(.pl-0) {
     padding-left: 0!important;
 }
 
-.MD2React .py-0 {
+.MD2React :global(.py-0) {
     padding-top: 0!important;
     padding-bottom: 0!important;
 }
 
-.MD2React .pl-1 {
+.MD2React :global(.pl-1) {
     padding-left: 4px!important;
 }
 
-.MD2React .pl-2 {
+.MD2React :global(.pl-2) {
     padding-left: 8px!important;
 }
 
-.MD2React .py-2 {
+.MD2React :global(.py-2) {
     padding-top: 8px!important;
     padding-bottom: 8px!important;
 }
 
-.MD2React .pl-3,
-.MD2React .px-3 {
+.MD2React :global(.pl-3),
+.MD2React :global(.px-3) {
     padding-left: 16px!important;
 }
 
-.MD2React .px-3 {
+.MD2React :global(.px-3) {
     padding-right: 16px!important;
 }
 
-.MD2React .pl-4 {
+.MD2React :global(.pl-4) {
     padding-left: 24px!important;
 }
 
-.MD2React .pl-5 {
+.MD2React :global(.pl-5) {
     padding-left: 32px!important;
 }
 
-.MD2React .pl-6 {
+.MD2React :global(.pl-6) {
     padding-left: 40px!important;
 }
 
-.MD2React .f6 {
+.MD2React :global(.f6) {
     font-size: 12px!important;
 }
 
-.MD2React .lh-condensed {
+.MD2React :global(.lh-condensed) {
     line-height: 1.25!important;
 }
 
-.MD2React .text-bold {
+.MD2React :global(.text-bold) {
     font-weight: 600!important;
 }
 
-.MD2React .pl-c {
+.MD2React :global(.pl-c) {
     color: #6a737d;
 }
 
-.MD2React .pl-c1,
-.MD2React .pl-s .pl-v {
+.MD2React :global(.pl-c1),
+.MD2React :global(.pl-s .pl-v) {
     color: #005cc5;
 }
 
-.MD2React .pl-e,
-.MD2React .pl-en {
+.MD2React :global(.pl-e),
+.MD2React :global(.pl-en) {
     color: #6f42c1;
 }
 
-.MD2React .pl-s .pl-s1,
-.MD2React .pl-smi {
+.MD2React :global(.pl-s) :global(.pl-s1),
+.MD2React :global(.pl-smi) {
     color: #24292e;
 }
 
-.MD2React .pl-ent {
+.MD2React :global(.pl-ent) {
     color: #22863a;
 }
 
-.MD2React .pl-k {
+.MD2React :global(.pl-k) {
     color: #d73a49;
 }
 
-.MD2React .pl-pds,
-.MD2React .pl-s,
-.MD2React .pl-s .pl-pse .pl-s1,
-.MD2React .pl-sr,
-.MD2React .pl-sr .pl-cce,
-.MD2React .pl-sr .pl-sra,
-.MD2React .pl-sr .pl-sre {
+.MD2React :global(.pl-pds),
+.MD2React :global(.pl-s),
+.MD2React :global(.pl-s) :global(.pl-pse) :global(.pl-s1),
+.MD2React :global(.pl-sr),
+.MD2React :global(.pl-sr) :global(.pl-cce),
+.MD2React :global(.pl-sr) :global(.pl-sra),
+.MD2React :global(.pl-sr) :global(.pl-sre) {
     color: #032f62;
 }
 
-.MD2React .pl-smw,
-.MD2React .pl-v {
+.MD2React :global(.pl-smw),
+.MD2React :global(.pl-v) {
     color: #e36209;
 }
 
-.MD2React .pl-bu {
+.MD2React :global(.pl-bu) {
     color: #b31d28;
 }
 
-.MD2React .pl-ii {
+.MD2React :global(.pl-ii) {
     color: #fafbfc;
     background-color: #b31d28;
 }
 
-.MD2React .pl-c2 {
+.MD2React :global(.pl-c2) {
     color: #fafbfc;
     background-color: #d73a49;
 }
 
-.MD2React .pl-c2:before {
+.MD2React :global(.pl-c2:before) {
     content: "^M";
 }
 
-.MD2React .pl-sr .pl-cce {
+.MD2React :global(.pl-sr) :global(.pl-cce) {
     font-weight: 700;
     color: #22863a;
 }
 
-.MD2React .pl-ml {
+.MD2React :global(.pl-ml) {
     color: #735c0f;
 }
 
-.MD2React .pl-mh,
-.MD2React .pl-mh .pl-en,
-.MD2React .pl-ms {
+.MD2React :global(.pl-mh),
+.MD2React :global(.pl-mh) :global(.pl-en),
+.MD2React :global(.pl-ms) {
     font-weight: 700;
     color: #005cc5;
 }
 
-.MD2React .pl-mi {
+.MD2React :global(.pl-mi) {
     font-style: italic;
     color: #24292e;
 }
 
-.MD2React .pl-mb {
+.MD2React :global(.pl-mb) {
     font-weight: 700;
     color: #24292e;
 }
 
-.MD2React .pl-md {
+.MD2React :global(.pl-md) {
     color: #b31d28;
     background-color: #ffeef0;
 }
 
-.MD2React .pl-mi1 {
+.MD2React :global(.pl-mi1) {
     color: #22863a;
     background-color: #f0fff4;
 }
 
-.MD2React .pl-mc {
+.MD2React :global(.pl-mc) {
     color: #e36209;
     background-color: #ffebda;
 }
 
-.MD2React .pl-mi2 {
+.MD2React :global(.pl-mi2) {
     color: #f6f8fa;
     background-color: #005cc5;
 }
 
-.MD2React .pl-mdr {
+.MD2React :global(.pl-mdr) {
     font-weight: 700;
     color: #6f42c1;
 }
 
-.MD2React .pl-ba {
+.MD2React :global(.pl-ba) {
     color: #586069;
 }
 
-.MD2React .pl-sg {
+.MD2React :global(.pl-sg) {
     color: #959da5;
 }
 
-.MD2React .pl-corl {
+.MD2React :global(.pl-corl) {
     text-decoration: underline;
     color: #032f62;
 }
 
-.MD2React .mb-0 {
+.MD2React :global(.mb-0) {
     margin-bottom: 0!important;
 }
 
-.MD2React .my-2 {
+.MD2React :global(.my-2) {
     margin-bottom: 8px!important;
 }
 
-.MD2React .my-2 {
+.MD2React :global(.my-2) {
     margin-top: 8px!important;
 }
 
-.MD2React .pl-0 {
+.MD2React :global(.pl-0) {
     padding-left: 0!important;
 }
 
-.MD2React .py-0 {
+.MD2React :global(.py-0) {
     padding-top: 0!important;
     padding-bottom: 0!important;
 }
 
-.MD2React .pl-1 {
+.MD2React :global(.pl-1) {
     padding-left: 4px!important;
 }
 
-.MD2React .pl-2 {
+.MD2React :global(.pl-2) {
     padding-left: 8px!important;
 }
 
-.MD2React .py-2 {
+.MD2React :global(.py-2) {
     padding-top: 8px!important;
     padding-bottom: 8px!important;
 }
 
-.MD2React .pl-3 {
+.MD2React :global(.pl-3) {
     padding-left: 16px!important;
 }
 
-.MD2React .pl-4 {
+.MD2React :global(.pl-4) {
     padding-left: 24px!important;
 }
 
-.MD2React .pl-5 {
+.MD2React :global(.pl-5) {
     padding-left: 32px!important;
 }
 
-.MD2React .pl-6 {
+.MD2React :global(.pl-6) {
     padding-left: 40px!important;
 }
 
-.MD2React .pl-7 {
+.MD2React :global(.pl-7) {
     padding-left: 48px!important;
 }
 
-.MD2React .pl-8 {
+.MD2React :global(.pl-8) {
     padding-left: 64px!important;
 }
 
-.MD2React .pl-9 {
+.MD2React :global(.pl-9) {
     padding-left: 80px!important;
 }
 
-.MD2React .pl-10 {
+.MD2React :global(.pl-10) {
     padding-left: 96px!important;
 }
 
-.MD2React .pl-11 {
+.MD2React :global(.pl-11) {
     padding-left: 112px!important;
 }
 
-.MD2React .pl-12 {
+.MD2React :global(.pl-12) {
     padding-left: 128px!important;
 }
 
@@ -824,16 +824,16 @@
     border: 0;
 }
 
-.MD2React .highlight {
+.MD2React :global(.highlight) {
     margin-bottom: 16px;
 }
 
-.MD2React .highlight pre {
+.MD2React :global(.highlight) pre {
     margin-bottom: 0;
     word-break: normal;
 }
 
-.MD2React .highlight pre,
+.MD2React :global(.highlight) pre,
 .MD2React pre {
     padding: 16px;
     overflow: auto;
@@ -855,29 +855,29 @@
     border: 0;
 }
 
-.MD2React .commit-tease-sha {
+.MD2React :global(.commit-tease-sha) {
     display: inline-block;
     font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
     font-size: 90%;
     color: #444d56;
 }
 
-.MD2React .full-commit .btn-outline:not(:disabled):hover {
+.MD2React :global(.full-commit) :global(.btn-outline:not(:disabled):hover) {
     color: #005cc5;
     border-color: #005cc5;
 }
 
-.MD2React .blob-wrapper {
+.MD2React :global(.blob-wrapper) {
     overflow-x: auto;
     overflow-y: hidden;
 }
 
-.MD2React .blob-wrapper-embedded {
+.MD2React :global(.blob-wrapper-embedded) {
     max-height: 240px;
     overflow-y: auto;
 }
 
-.MD2React .blob-num {
+.MD2React :global(.blob-num) {
     width: 1%;
     min-width: 50px;
     padding-right: 10px;
@@ -896,15 +896,15 @@
     user-select: none;
 }
 
-.MD2React .blob-num:hover {
+.MD2React :global(.blob-num:hover) {
     color: rgba(27, 31, 35, .6);
 }
 
-.MD2React .blob-num:before {
+.MD2React :global(.blob-num:before) {
     content: attr(data-line-number);
 }
 
-.MD2React .blob-code {
+.MD2React :global(.blob-code) {
     position: relative;
     padding-right: 10px;
     padding-left: 10px;
@@ -912,7 +912,7 @@
     vertical-align: top;
 }
 
-.MD2React .blob-code-inner {
+.MD2React :global(.blob-code-inner) {
     overflow: visible;
     font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
     font-size: 12px;
@@ -921,81 +921,81 @@
     white-space: pre;
 }
 
-.MD2React .pl-token.active,
-.MD2React .pl-token:hover {
+.MD2React :global(.pl-token.active),
+.MD2React :global(.pl-token:hover) {
     cursor: pointer;
     background: #ffea7f;
 }
 
-.MD2React .tab-size[data-tab-size="1"] {
+.MD2React :global(.tab-size[data-tab-size="1"]) {
     -moz-tab-size: 1;
     tab-size: 1;
 }
 
-.MD2React .tab-size[data-tab-size="2"] {
+.MD2React :global(.tab-size[data-tab-size="2"]) {
     -moz-tab-size: 2;
     tab-size: 2;
 }
 
-.MD2React .tab-size[data-tab-size="3"] {
+.MD2React :global(.tab-size[data-tab-size="3"]) {
     -moz-tab-size: 3;
     tab-size: 3;
 }
 
-.MD2React .tab-size[data-tab-size="4"] {
+.MD2React :global(.tab-size[data-tab-size="4"]) {
     -moz-tab-size: 4;
     tab-size: 4;
 }
 
-.MD2React .tab-size[data-tab-size="5"] {
+.MD2React :global(.tab-size[data-tab-size="5"]) {
     -moz-tab-size: 5;
     tab-size: 5;
 }
 
-.MD2React .tab-size[data-tab-size="6"] {
+.MD2React :global(.tab-size[data-tab-size="6"]) {
     -moz-tab-size: 6;
     tab-size: 6;
 }
 
-.MD2React .tab-size[data-tab-size="7"] {
+.MD2React :global(.tab-size[data-tab-size="7"]) {
     -moz-tab-size: 7;
     tab-size: 7;
 }
 
-.MD2React .tab-size[data-tab-size="8"] {
+.MD2React :global(.tab-size[data-tab-size="8"]) {
     -moz-tab-size: 8;
     tab-size: 8;
 }
 
-.MD2React .tab-size[data-tab-size="9"] {
+.MD2React :global(.tab-size[data-tab-size="9"]) {
     -moz-tab-size: 9;
     tab-size: 9;
 }
 
-.MD2React .tab-size[data-tab-size="10"] {
+.MD2React :global(.tab-size[data-tab-size="10"]) {
     -moz-tab-size: 10;
     tab-size: 10;
 }
 
-.MD2React .tab-size[data-tab-size="11"] {
+.MD2React :global(.tab-size[data-tab-size="11"]) {
     -moz-tab-size: 11;
     tab-size: 11;
 }
 
-.MD2React .tab-size[data-tab-size="12"] {
+.MD2React :global(.tab-size[data-tab-size="12"]) {
     -moz-tab-size: 12;
     tab-size: 12;
 }
 
-.MD2React .task-list-item {
+.MD2React :global(.task-list-item) {
     list-style-type: none;
 }
 
-.MD2React .task-list-item+.task-list-item {
+.MD2React :global(.task-list-item)+:global(.task-list-item) {
     margin-top: 3px;
 }
 
-.MD2React .task-list-item input {
+.MD2React :global(.task-list-item) input {
     margin: 0 .2em .25em -1.6em;
     vertical-align: middle;
 }

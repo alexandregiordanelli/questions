@@ -15,6 +15,6 @@ export type Question = {
     absolutUrl?: string;
 };
 export type Nav = {
-    menu: Menu
+    menu: Menu[]
     questions: Question[]
 }

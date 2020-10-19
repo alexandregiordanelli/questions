@@ -1,24 +1,59 @@
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import React from 'react'
 import "katex/dist/contrib/mhchem.js"
 import { MD2React } from '../MD2React'
 import { Nav } from './types'
-import { getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
+import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
+import styles from "../styles/[...slug].module.css"
 
-/**
- * Returns a React component which renders markdown with latex
- * @param question markdown string
- */
-const QuestionPage: React.FC<{nav: Nav, questionIndex: number}> = props => {
+type QuestionPageProps = {
+    nav: Nav
+    questionIndex: number
+}
+export default function QuestionPage(props: QuestionPageProps) {
     const router = useRouter()
     if(router.isFallback) return <div>Loading...</div>
     const { nav, questionIndex } = props;
     if(!nav) return null
     const question = nav.questions[questionIndex]
-    return <MD2React md={question.content} url={question.absolutUrl}/>
+    return (
+        <div className={styles.container}>
+            <div style={{backgroundColor: 'red'}}>
+                <ul className={styles.menu}>
+                {nav.menu.map((x, i) => (
+                    <li key={`${i}.0`} className={styles.block}>
+                        <Link href={x.title}><a>{x.title}</a></Link>
+                        <ul className={styles.submenu}>
+                            {x.topics.map((y, j) => (
+                                <li key={`${i}.${j}`}><Link href={absolute(router.asPath, nav.questions.find(z => z.topic == y.topic)?.url ?? "")} ><a>{y.title}</a></Link></li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}                             
+                </ul>
+            </div>
+            <div style={{flexGrow: 1}}>
+                <h1>{question.title}</h1>
+                <MD2React md={question.content} url={question.absolutUrl}/>
+            </div>
+            <div style={{backgroundColor: 'yellow'}}>
+            <ul>
+                {nav.menu.map((x, i) => (
+                    <li key={`${i}.0`}>
+                        <a href={x.title}>{x.title}</a>
+                        <ul>
+                            {x.topics.map((y, j) => (
+                                <li key={`${i}.${j}`}><a href={y.topic}>{y.title}</a></li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}
+                </ul> 
+            </div>
+        </div>
+    )
 }
-
-export default QuestionPage
 
 export async function getStaticPaths() {
     const urls = ["alexandregiordanelli/questoes_de_mat", "nataliaanjos/questoes_de_mat2"]

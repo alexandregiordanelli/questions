@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+}
+
+.block {
+    padding: 24px;
+    border-width: 1px 0px 0px;
+    border-radius: 0px;
+    border-style: solid;
+    border-color: rgb(225, 228, 232);
+}
+
+.menu {
+    top: 0;
+    height: 100vh;
+    overflow: auto;
+    margin: 0;
+    color: rgb(47, 54, 61);
+    background-color: rgb(250, 251, 252);
+    min-width: 260px;
+    position: sticky;
+    border-width: 0px 1px 0px 0px;
+    border-radius: 0px;
+    border-style: solid;
+    border-color: rgb(225, 228, 232);
+    padding: 0;
+    list-style: none;
+}
+
+.submenu {
+    font-size: 14px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.submenu a {
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 8px;
+    color: rgb(3, 102, 214);
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
