@@ -5,13 +5,15 @@ import katex from 'rehype-katex';
 import rehype2react from 'rehype-react';
 import remark from 'remark';
 import inspectUrls from '@jsdevtools/rehype-url-inspector'
-import { absolute } from './lib/absolute';
-
+import { absolute } from './lib/utils';
+import styles from './styles/MD2React.module.css'
 /**
  * Returns a React component which renders markdown with latex
  * @param md markdown string
  */
-export const MD2React: React.FC<{md: string, url: string}> = props => remark()
+export const MD2React: React.FC<{md: string, url: string}> = props => 
+    <div className={styles.MD2React}>{
+    remark()
     //.use(oembed)
     .use(math)
     .use(remark2rehype)
@@ -20,6 +22,7 @@ export const MD2React: React.FC<{md: string, url: string}> = props => remark()
         inspectEach({ url, node }) {
             if(new RegExp("^(?!www\.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*").test(url)){
                 node.properties.src = absolute(props.url, url)
+                console.log(props.url, url)
             }
         },  
         selectors: [
@@ -32,4 +35,5 @@ export const MD2React: React.FC<{md: string, url: string}> = props => remark()
     //     if (err) throw err
     //     console.log(String(file))
     //   })
-    .processSync(props.md).result as ReactElement;
+    .processSync(props.md).result}
+    </div>

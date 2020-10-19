@@ -1,71 +1,30 @@
 import { useRouter } from 'next/router'
-import React, {useState} from 'react'
+import React from 'react'
 import "katex/dist/contrib/mhchem.js"
 import { MD2React } from '../MD2React'
-import styles from '../styles/MD2React.module.css'
-import firebase from '../lib/firebase'
-
+import { Nav } from './types'
+import { getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 
 /**
  * Returns a React component which renders markdown with latex
  * @param question markdown string
  */
-const Question: React.FC<{question: string, url: string}> = props => {
-    const { question, url } = props;
-
+const QuestionPage: React.FC<{nav: Nav, questionIndex: number}> = props => {
     const router = useRouter()
-
-    if (router.isFallback) {
-        return <div>Loading...</div>
-    }
-    if(question == null){
-        return null
-    }
-
-    return <>
-            {/* <style jsx>{`
-            .markdown-body {
-                box-sizing: border-box;
-                min-width: 200px;
-                max-width: 980px;
-                margin: 0 auto;
-                padding: 45px;
-            }
-
-            @media (max-width: 767px) {
-                .markdown-body {
-                    padding: 15px;
-                }
-            }
-            `}</style> */}
-
-        <div className={styles.MD2React}>
-            <MD2React md={question} url={url}/>
-        </div>
-        </>
+    if(router.isFallback) return <div>Loading...</div>
+    const { nav, questionIndex } = props;
+    if(!nav) return null
+    const question = nav.questions[questionIndex]
+    return <MD2React md={question.content} url={question.absolutUrl}/>
 }
 
-export default Question
-
-type GithubContent = {
-        name: string,
-        path: string,
-        sha: string,
-        size: number,
-        url: string,
-        html_url: string,
-        git_url: string,
-        download_url: string,
-        type: string
-}
+export default QuestionPage
 
 export async function getStaticPaths() {
-    const res = await firebase.collection("owner").listDocuments()
-    const owner = res.map(x => x.id)
-    const res2 = await firebase.collection("owner").doc(owner[0]).collection("repo").get()
-    const repos = res2.docs.map(x => x.id)
+    const urls = ["alexandregiordanelli/questoes_de_mat", "nataliaanjos/questoes_de_mat2"]
+    const paths = (await Promise.all(urls.map(x => getPathsFromGHRepo(x)))).reduce((x, y) => x.concat(y))
 
-    const paths = [{ params: { slug: owner.concat(repos) }}]
+    console.log(paths)
 
     return {
         paths,
@@ -73,19 +32,35 @@ export async function getStaticPaths() {
     }
 }
 
+
+
 export async function getStaticProps({ params }) {
 
-    if(params.slug.join("/") == "alexandregiordanelli/questoes_de_mat"){
+    const ghRepo = params.slug[0] + "/" + params.slug[1]
+    try{
+        const nav = await getNavFromGHRepo(ghRepo)
+    
+        const questionIndex = nav.questions.findIndex(x => x.url == params.slug[2])
 
-        const res2 = await firebase.collection("owner").doc(params.slug[0]).collection("repo").doc(params.slug[1]).get()
-        const map = res2.data().data.map(x => x.download_url)
-        const response = await fetch(map[1]);
-        const body = await response.text();
-        return {
-            props: { question: body, url: map[1] },
-            revalidate: 1,
+        if(questionIndex > -1){
+            const question = nav.questions[questionIndex]
+
+            question.absolutUrl = "https://raw.githubusercontent.com/" + ghRepo + "/master/" + question.file
+            const response = await fetch(question.absolutUrl );
+            question.content = await response.text();
+
+            return {
+                props: { nav, questionIndex },
+                revalidate: 1,
+            }
+        } else {
+            return {
+                props: {}
+            }
         }
-    } else {
+    } catch(e){
+        console.log(e)
+
         return {
             props: {}
         }
