@@ -2,13 +2,14 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import React from 'react'
 import { MD2React } from '../components/MD2React'
-import { Nav } from '../types'
+import { Menu, Nav, Question } from '../types'
 import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 
 type QuestionPageProps = {
-    nav: Nav
+    questions: Question[]
+    menu: Menu[]
     questionIndex: number
 }
 export default function QuestionPage(props: QuestionPageProps) {
@@ -17,13 +18,11 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     if(router.isFallback) return <div>Loading...</div>
 
-    const { nav, questionIndex } = props;
+    const { menu, questions, questionIndex } = props;
 
-    if(!nav) return null
+    if(!menu) return null
 
-    const question = nav.questions[questionIndex]
-
-    console.log(router)
+    const question = questions[questionIndex]
 
     return (
         <>
@@ -137,16 +136,15 @@ export default function QuestionPage(props: QuestionPageProps) {
                 <div className={"container"}>
                     <div>
                         <ul className={"menu"}>
-                        {nav.menu.map((x, i) => (
+                        {menu.map((x, i) => (
                             <li key={`${i}.0`} className={"block"}>
                                 {x.title}
                                 <ul className={"submenu"}>
                                     {x.topics.map((y, j) => {
-                                        const url = nav.questions.find(z => z.topic == y.topic)?.url
-                                        if(url){
+                                        if(y.url){
                                             return (
                                                 <li key={`${i}.${j}`}>
-                                                    <ActiveLink href={absolute(router.asPath, url)}>
+                                                    <ActiveLink href={absolute(router.asPath, y.url)}>
                                                         <a>{y.title}</a>
                                                     </ActiveLink>
                                                 </li>
@@ -161,15 +159,15 @@ export default function QuestionPage(props: QuestionPageProps) {
                     <div style={{display: 'grid', gridTemplateColumns: 'minmax(0px, 960px) 220px', margin: '0 auto', columnGap: 48, padding: 48}}>
                         <div>
                         {/* <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p> */}
-                        <h2>Question {nav.questions.filter(x => x.topic == question.topic).findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {nav.questions.filter(x => x.topic == question.topic).length}</h2>
+                        <h2>Question {questions.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questions.length}</h2>
                         <MD2React 
                             md={question.content} 
                             url={question.absolutUrl}
                         />
                         </div>
                         <NavPointer 
-                            title={nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} 
-                            questions={nav.questions.filter(x => x.topic == question.topic)}
+                            title={menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} 
+                            questions={questions}
                         />
                     </div>
                 </div>
@@ -205,8 +203,29 @@ export async function getStaticProps({ params }) {
             const response = await fetch(question.absolutUrl );
             question.content = await response.text();
 
+            const menu: Menu[] = nav.menu.map(x => ({
+                title: x.title,
+                topics: x.topics.map(y => {
+                    const url = nav.questions.find(z => z.topic == y.topic)?.url
+                    if(url){
+                        return {
+                            ...y,
+                            url
+                        }
+                    }
+                 }).filter(y => !!y)
+            }))    
+            
+            const questions = nav.questions.filter(x => x.topic == question.topic)
+            const newQuestionIndex = questions.findIndex(x => x.url == params.slug[2])
+
+
             return {
-                props: { nav, questionIndex },
+                props: { 
+                    menu, 
+                    questions,
+                    questionIndex: newQuestionIndex 
+                },
                 revalidate: 1,
             }
         } else {

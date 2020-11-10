@@ -5,6 +5,7 @@ export type Menu = {
 export type Topic = {
     title: string;
     topic: string;
+    url: string;
 };
 export type Question = {
     file: string;
