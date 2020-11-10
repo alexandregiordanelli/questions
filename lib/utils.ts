@@ -1,4 +1,4 @@
-import { Nav } from "../pages/types";
+import { Nav } from "../types";
 import yaml from 'js-yaml';
 
 export const absolute = (base, relative) => {
@@ -19,7 +19,7 @@ export const absolute = (base, relative) => {
 };
 
 export async function getNavFromGHRepo(ghRepo: string) {
-    const response = await fetch("https://raw.githubusercontent.com/" + ghRepo + "/master/nav.yml")
+    const response = await fetch("https://raw.githubusercontent.com/" + ghRepo + "/master/nav.yaml")
     const body = await response.text()
     if(response.status != 200){
         throw new Error(body)
@@ -27,8 +27,14 @@ export async function getNavFromGHRepo(ghRepo: string) {
     return yaml.safeLoad(body) as Nav
 }
 
-export async function getPathsFromGHRepo(url: string) {
-    const nav = await getNavFromGHRepo(url)
-    const path_internal = nav.questions.map(y => url.split('/').concat(y.url)).map(x => ({ params: { slug: x } }))
+export async function getPathsFromGHRepo(ghRepo: string) {
+    const nav = await getNavFromGHRepo(ghRepo)
+    const path_internal = nav.questions
+        .map(x => ({ 
+            params: { 
+                slug: ghRepo.split('/').concat(x.url) // [alexandre.giordanelli,questoes_de_mat,questao1]
+            } 
+        }))
+
     return path_internal
 }
