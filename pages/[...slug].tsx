@@ -6,6 +6,7 @@ import { Menu, Nav, Question } from '../types'
 import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
+import Head from 'next/head'
 
 type QuestionPageProps = {
     questions: Question[]
@@ -26,6 +27,10 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     return (
         <>
+            <Head>
+                <title>{question.title}</title>
+                <meta name="description" content={question.title}></meta>
+            </Head>
             <style jsx global>{`
             html,
             body {

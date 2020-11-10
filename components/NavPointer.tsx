@@ -12,6 +12,11 @@ const NavPointer: React.FC<{
     return (
         <>
             <style jsx>{`
+            div {
+                max-height: calc(100vh - 110px - 48px);
+                position: sticky;
+                top: 90px;
+            }
             span {
                 font-weight: 600;
                 line-height: 1.5;
