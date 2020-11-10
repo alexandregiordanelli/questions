@@ -160,7 +160,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                     </div>
                     <div style={{display: 'grid', gridTemplateColumns: 'minmax(0px, 960px) 220px', margin: '0 auto', columnGap: 48, padding: 48}}>
                         <div>
-                        <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p>
+                        {/* <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p> */}
                         <h2>Question {nav.questions.filter(x => x.topic == question.topic).findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {nav.questions.filter(x => x.topic == question.topic).length}</h2>
                         <MD2React 
                             md={question.content} 
