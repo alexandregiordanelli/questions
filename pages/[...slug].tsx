@@ -7,7 +7,6 @@ import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
-import { useAmp } from 'next/amp'
 
 type QuestionPageProps = {
     questions: Question[]
@@ -28,21 +27,11 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     const [toggleMenu, setToggleMenu] = useState(false)
 
-    const isAmp = useAmp()
-
     return (
         <>
             <Head>
                 <title>{question.title}</title>
                 <meta name="description" content={question.title}></meta>
-                {!isAmp ? <link 
-                rel="amphtml" 
-                href={`${router.asPath}?amp=1`}
-                />:
-                <link
-                rel="canonical"
-                href={`${router.asPath.split('?')[0]}`}
-                />}
             </Head>
             <style jsx global>{`
             html,
