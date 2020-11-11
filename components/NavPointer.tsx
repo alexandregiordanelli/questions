@@ -16,6 +16,13 @@ const NavPointer: React.FC<{
                 max-height: calc(100vh - 110px - 48px);
                 position: sticky;
                 top: 90px;
+                grid-area: table-of-contents / table-of-contents / table-of-contents / table-of-contents;
+            }
+            @media screen and (max-width: 768px){
+                div {
+                    position: inherit;
+                    padding: 24px;
+                }
             }
             span {
                 font-weight: 600;

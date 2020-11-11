@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { MD2React } from '../components/MD2React'
 import { Menu, Nav, Question } from '../types'
 import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
@@ -24,6 +24,8 @@ export default function QuestionPage(props: QuestionPageProps) {
     if(!menu) return null
 
     const question = questions[questionIndex]
+
+    const [toggleMenu, setToggleMenu] = useState(false)
 
     return (
         <>
@@ -92,21 +94,53 @@ export default function QuestionPage(props: QuestionPageProps) {
                 border-color: rgb(225, 228, 232);
             }
             
-            .menu {
+            .menu > ul {
                 top: 66px;
                 height: calc(100vh - 66px);
                 overflow: auto;
-                margin: 0;
                 color: rgb(47, 54, 61);
                 background-color: rgb(250, 251, 252);
                 width: 260px;
                 position: sticky;
                 border-width: 0px 1px 0px 0px;
-                border-radius: 0px;
                 border-style: solid;
                 border-color: rgb(225, 228, 232);
+                display: block;
+                z-index: 1;
                 padding: 0;
+                margin: 0;
                 list-style: none;
+            }
+
+            #menu-check {
+                display: none;
+            }
+
+            @media (max-width: 767px) {
+                .grid > div {
+                    padding: 0 24px;
+                }
+            }
+
+            @media screen and (max-width: 1012px){
+                #menu-check {
+                    display: block;
+                    position: fixed;
+                    z-index: 1;
+                    top: 0;
+                    right: 0;
+                }
+
+                .menu > ul{
+                    right: -260px;
+                    position: fixed;
+                    border-width: 0px 0px 0px 1px;
+                    transition: 0.5s;
+                }
+
+                #menu-check:checked ~ ul {
+                    right: 0;
+                }
             }
             
             .submenu {
@@ -135,12 +169,28 @@ export default function QuestionPage(props: QuestionPageProps) {
             .menu a:hover {
                 text-decoration: underline;
             }
+
+            @media screen and (min-width: 768px){
+                .grid{
+                    display: grid;
+                    grid-template-columns: minmax(0px, 960px) 220px;
+                    margin: 0 auto;
+                    column-gap: 48px;
+                    padding: 48px;
+                    grid-template-areas: "content table-of-contents";
+                }
+            }
+            .grid div {
+                grid-area: content / content / content / content;
+            }
+
             `}</style>
             <div className="main">
-                <div className="head"><h1>QuestionsOf</h1></div>
+                <div className="head"><h1>QuestionsOf</h1>  </div>
                 <div className={"container"}>
-                    <div>
-                        <ul className={"menu"}>
+                    <div className={"menu"}>
+                        <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
+                        <ul>
                         {menu.map((x, i) => (
                             <li key={`${i}.0`} className={"block"}>
                                 {x.title}
@@ -161,19 +211,20 @@ export default function QuestionPage(props: QuestionPageProps) {
                         ))}                             
                         </ul>
                     </div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'minmax(0px, 960px) 220px', margin: '0 auto', columnGap: 48, padding: 48}}>
-                        <div>
-                        {/* <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p> */}
-                        <h2>Question {questions.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questions.length}</h2>
-                        <MD2React 
-                            md={question.content} 
-                            url={question.absolutUrl}
-                        />
-                        </div>
+                    <div className="grid">
                         <NavPointer 
                             title={menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} 
                             questions={questions}
                         />
+                        <div>
+                            {/* <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p> */}
+                            <h2>Question {questions.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questions.length}</h2>
+                            <MD2React 
+                                md={question.content} 
+                                url={question.absolutUrl}
+                            />
+                        </div>
+
                     </div>
                 </div>
             </div>
