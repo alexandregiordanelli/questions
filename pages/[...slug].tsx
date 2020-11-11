@@ -21,7 +21,7 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     const { menu, questions, questionIndex } = props;
 
-    if(!menu) return null
+    if(!(menu || questions)) return null
 
     const question = questions[questionIndex]
 
@@ -306,4 +306,4 @@ export async function getStaticProps({ params }) {
     }
 }
 
-// export const config = { amp: true }
+export const config = { amp: 'hybrid' }
