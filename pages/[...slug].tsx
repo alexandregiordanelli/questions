@@ -7,6 +7,7 @@ import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
+import { useAmp } from 'next/amp'
 
 type QuestionPageProps = {
     questions: Question[]
@@ -16,6 +17,7 @@ type QuestionPageProps = {
 export default function QuestionPage(props: QuestionPageProps) {
 
     const router = useRouter()
+    const isAmp = useAmp()
 
     if(router.isFallback) return <div>Loading...</div>
 
@@ -23,7 +25,21 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     if(!(menu || questions)) return null
 
-    const question = questions[questionIndex]
+    const questionsWithAmp = questions.map(x => ({
+        ...x,
+        url: isAmp? `${x.url}.amp`: x.url
+    }))
+
+    const menuWithAmp = menu.map(x => ({
+        ...x,
+        topics: x.topics.map(y => ({
+            ...y,
+            url: isAmp? `${y.url}.amp`: y.url
+        }))
+    }))
+
+    const question = questionsWithAmp[questionIndex]
+    
 
     const [toggleMenu, setToggleMenu] = useState(false)
 
@@ -200,7 +216,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                     <div className={"menu"}>
                         <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                         <ul>
-                        {menu.map((x, i) => (
+                        {menuWithAmp.map((x, i) => (
                             <li key={`${i}.0`} className={"block"}>
                                 {x.title}
                                 <ul className={"submenu"}>
@@ -222,11 +238,11 @@ export default function QuestionPage(props: QuestionPageProps) {
                     </div>
                     <div className="grid">
                         <NavPointer 
-                            title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
-                            questions={questions}
+                            title={`${menuWithAmp.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
+                            questions={questionsWithAmp}
                         />
                         <div>
-                            <h2>Question {questions.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questions.length}</h2>
+                            <h2>Question {questionsWithAmp.findIndex(x => x.url == router.asPath.split('/')[3].split('.amp')[0]) + 1} of {questionsWithAmp.length}</h2>
                             <MD2React 
                                 md={question.content} 
                                 url={question.absolutUrl}
