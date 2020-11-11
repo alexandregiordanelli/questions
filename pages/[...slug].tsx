@@ -37,7 +37,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                 <meta name="description" content={question.title}></meta>
                 {!isAmp ? <link 
                 rel="amphtml" 
-                href={`${router.asPath}`}
+                href={`${router.asPath}?amp=1`}
                 />:
                 <link
                 rel="canonical"
