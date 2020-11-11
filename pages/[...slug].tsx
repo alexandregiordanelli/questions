@@ -184,6 +184,15 @@ export default function QuestionPage(props: QuestionPageProps) {
                 grid-area: content / content / content / content;
             }
 
+            div > h2 {
+                padding-bottom: .3em;
+                border-bottom: 1px solid #eaecef;
+                margin: 0;
+                margin-bottom: 16px;
+                font-weight: 600;
+                line-height: 1.25;
+            }
+
             `}</style>
             <div className="main">
                 <div className="head"><h1>QuestionsOf</h1>  </div>
@@ -213,11 +222,10 @@ export default function QuestionPage(props: QuestionPageProps) {
                     </div>
                     <div className="grid">
                         <NavPointer 
-                            title={menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} 
+                            title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
                             questions={questions}
                         />
                         <div>
-                            {/* <p>{nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / {nav.menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title} </p> */}
                             <h2>Question {questions.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questions.length}</h2>
                             <MD2React 
                                 md={question.content} 

@@ -22,6 +22,10 @@ const NavPointer: React.FC<{
                 div {
                     position: inherit;
                     padding: 24px;
+                    background: rgb(250,251,252);
+                    margin-bottom: 15px;
+                    border-bottom: solid 1px;
+                    border-color: rgb(225,228,232);
                 }
             }
             span {

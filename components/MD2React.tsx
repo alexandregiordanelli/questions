@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import math from 'remark-math';
 import remark2rehype from 'remark-rehype';
 import katex from 'rehype-katex';
@@ -7,7 +7,6 @@ import rehype2react from 'rehype-react';
 import inspectUrls from '@jsdevtools/rehype-url-inspector'
 import { absolute } from '../lib/utils';
 import "katex/dist/contrib/mhchem.js"
-import styles from './MD2React.module.css'
 import markdown from 'remark-parse'
 import gfm from 'remark-gfm'
 import rehype2qmd from 'rehype-qmd'
@@ -19,13 +18,17 @@ const Input: React.FC<{
     id: string,
     value?: string,
     name?: string,
-    initialState?: boolean
+    checked?: boolean
+    setChecked?: React.Dispatch<React.SetStateAction<boolean>>
+    radioChecked?: string
+    setRadioChecked?: React.Dispatch<React.SetStateAction<string>>
 }> = (props) => {
     if(props.type == "checkbox"){
-        const [checked, setChecked] = useState(props.initialState)
-        return <input type={props.type} id={props.id} checked={checked} onChange={e => setChecked(e.target.checked)}/>
+        
+        return <input type={props.type} id={props.id} checked={props.checked} onChange={e => props.setChecked(e.target.checked)}/>
     } else {
-        return <input type={props.type} id={props.id} name={props.name} value={props.value}/>
+        
+        return 
     }
 }
 
@@ -38,10 +41,18 @@ export const MD2React: React.FC<{
     url: string
 }> = props => {
     let rightAnswer = 'a'
-    const [initialState, setInitialState] = useState(false)
+    const [radioChecked, setRadioChecked] = useState('')
+    const [toggleSolution, setToggleSolution] = useState(false)
+    const [toggleRightAnswer, setToggleRightAnswer] = useState(false)
+
+    useEffect(()=>{
+        setRadioChecked('')
+        setToggleSolution(false)
+        setToggleRightAnswer(false)
+    }, [props.url])
     return (
         <>
-            <div className={styles.MD2React}>{
+            <div>{
             unified()
             .use(markdown)
             .use(math)
@@ -68,7 +79,14 @@ export const MD2React: React.FC<{
             .use(rehype2react, { 
                 createElement: React.createElement, 
                 components: {
-                    input: (props: any) => <Input {...props} initialState={initialState}/>
+                    input: (props: any) => {
+                        if(props.id == "right-answer")
+                            return <input type={props.type} id={props.id} name={props.name} checked={toggleRightAnswer} onChange={e => setToggleRightAnswer(e.target.checked)}/>
+                        else if(props.id == "solution")
+                            return <input type={props.type} id={props.id} name={props.name} checked={toggleSolution} onChange={e => setToggleSolution(e.target.checked)}/>
+                        else 
+                            return <input type={props.type} id={props.id} name={props.name} checked={radioChecked == props.value} onChange={e => setRadioChecked(e.target.value)} value={props.value}/>
+                    }
                 } 
             })
             .processSync(props.md).result}
