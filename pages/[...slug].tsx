@@ -2,22 +2,43 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { MD2React } from '../components/MD2React'
 import { Menu, Question } from '../types'
-import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
+import { absolute, getFileContentFromGHRepo, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import remark2rehype from 'remark-rehype'
+import unified from 'unified'
+import markdown from 'remark-parse'
+import gfm from 'remark-gfm'
+import rehype2react from 'rehype-react';
+import Link from 'next/link'
 
 type QuestionPageProps = {
     questions: Question[]
     menu: Menu[]
     questionIndex: number
+    questionBook: string
 }
 export default function QuestionPage(props: QuestionPageProps) {
 
     const router = useRouter()
 
     if(router.isFallback) return <div>Loading...</div>
+
+    if(router.query['slug'].length == 1){
+        return <>
+            <div>{unified()
+            .use(markdown)
+            .use(gfm)
+            .use(remark2rehype)
+            .use(rehype2react, { 
+                createElement: React.createElement
+            })
+            .processSync(props.questionBook).result}</div>
+            <h2><Link href={router.asPath + "/" +  props.questions[0].url}><a>Iniciar</a></Link></h2>
+        </>
+    }
 
     const { menu, questions, questionIndex } = props;
 
@@ -240,7 +261,7 @@ export default function QuestionPage(props: QuestionPageProps) {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStaticPaths: GetStaticPaths = async context => {
     const urls = ["alexandregiordanelli/enem"]
     const paths = (await Promise.all(urls.map(x => getPathsFromGHRepo(x)))).reduce((x, y) => x.concat(y))
 
@@ -252,49 +273,61 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
 
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async context => {
 
-    const ghRepo = context.params.slug[0] + "/" + context.params.slug[1]
+    const ghRepo = "alexandregiordanelli/" + context.params.slug[0]
     try{
         const nav = await getNavFromGHRepo(ghRepo)
     
-        const questionIndex = nav.questions.findIndex(x => x.url == context.params.slug[2])
+        if(context.params.slug.length > 1){
+            const questionIndex = nav.questions.findIndex(x => x.url == context.params.slug[1])
 
-        if(questionIndex > -1){
-            const question = nav.questions[questionIndex]
+            if(questionIndex > -1){
+                const question = nav.questions[questionIndex]
 
-            question.absolutUrl = "https://raw.githubusercontent.com/" + ghRepo + "/master/" + question.file
-            const response = await fetch(question.absolutUrl );
-            question.content = await response.text();
+                question.content = await getFileContentFromGHRepo(ghRepo, question.file)
 
-            const menu: Menu[] = nav.menu.map(x => ({
-                title: x.title,
-                topics: x.topics.map(y => {
-                    const url = nav.questions.find(z => z.topic == y.topic)?.url
-                    if(url){
-                        return {
-                            ...y,
-                            url
+                question.absolutUrl = "https://raw.githubusercontent.com/" + ghRepo + "/master/" + question.file
+
+                const menu: Menu[] = nav.menu.map(x => ({
+                    title: x.title,
+                    topics: x.topics.map(y => {
+                        const url = nav.questions.find(z => z.topic == y.topic)?.url
+                        if(url){
+                            return {
+                                ...y,
+                                url
+                            }
                         }
-                    }
-                 }).filter(y => !!y)
-            }))    
+                    }).filter(y => !!y)
+                }))    
+                
+                const questions = nav.questions.filter(x => x.topic == question.topic)
+                const newQuestionIndex = questions.findIndex(x => x.url == context.params.slug[1])
+
+
+                return {
+                    props: { 
+                        menu, 
+                        questions,
+                        questionIndex: newQuestionIndex 
+                    },
+                    revalidate: 1,
+                }
             
-            const questions = nav.questions.filter(x => x.topic == question.topic)
-            const newQuestionIndex = questions.findIndex(x => x.url == context.params.slug[2])
-
-
+            } else {
+                return {
+                    props: {}
+                }
+            }
+        } else if(context.params.slug.length == 1) {
+            
             return {
                 props: { 
-                    menu, 
-                    questions,
-                    questionIndex: newQuestionIndex 
+                    questionBook: await getFileContentFromGHRepo(ghRepo, "index.md"),
+                    questions: [nav.questions[0]]
                 },
                 revalidate: 1,
-            }
-        } else {
-            return {
-                props: {}
             }
         }
     } catch(e){
