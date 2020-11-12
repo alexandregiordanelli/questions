@@ -27,14 +27,14 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     const questionsWithAmp = questions.map(x => ({
         ...x,
-        url: isAmp? `${x.url}.amp`: x.url
+        url: isAmp? `${x.url}?amp=1`: x.url
     }))
 
     const menuWithAmp = menu.map(x => ({
         ...x,
         topics: x.topics.map(y => ({
             ...y,
-            url: isAmp? `${y.url}.amp`: y.url
+            url: isAmp? `${y.url}?amp=1`: y.url
         }))
     }))
 
@@ -242,7 +242,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                             questions={questionsWithAmp}
                         />
                         <div>
-                            <h2>Question {questionsWithAmp.findIndex(x => x.url == router.asPath.split('/')[3].split('.amp')[0]) + 1} of {questionsWithAmp.length}</h2>
+                            <h2>Question {questionsWithAmp.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questionsWithAmp.length}</h2>
                             <MD2React 
                                 md={question.content} 
                                 url={question.absolutUrl}
