@@ -6,6 +6,7 @@ import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
 type QuestionPageProps = {
     questions: Question[]
@@ -239,7 +240,7 @@ export default function QuestionPage(props: QuestionPageProps) {
     )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async (context) => {
     const urls = ["alexandregiordanelli/enem"]
     const paths = (await Promise.all(urls.map(x => getPathsFromGHRepo(x)))).reduce((x, y) => x.concat(y))
 
@@ -251,13 +252,13 @@ export async function getStaticPaths() {
 
 
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async (context) => {
 
-    const ghRepo = params.slug[0] + "/" + params.slug[1]
+    const ghRepo = context.params.slug[0] + "/" + context.params.slug[1]
     try{
         const nav = await getNavFromGHRepo(ghRepo)
     
-        const questionIndex = nav.questions.findIndex(x => x.url == params.slug[2])
+        const questionIndex = nav.questions.findIndex(x => x.url == context.params.slug[2])
 
         if(questionIndex > -1){
             const question = nav.questions[questionIndex]
@@ -280,7 +281,7 @@ export async function getStaticProps({ params }) {
             }))    
             
             const questions = nav.questions.filter(x => x.topic == question.topic)
-            const newQuestionIndex = questions.findIndex(x => x.url == params.slug[2])
+            const newQuestionIndex = questions.findIndex(x => x.url == context.params.slug[2])
 
 
             return {
