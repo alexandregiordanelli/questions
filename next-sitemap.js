@@ -1,4 +1,4 @@
 module.exports = {
-    siteUrl: 'https://questoes.vercel.app',
+    siteUrl: 'https://questionsof.com',
     generateRobotsTxt: true,
   }
