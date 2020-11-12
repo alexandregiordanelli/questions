@@ -8,12 +8,12 @@ const ActiveLink: React.FC<{
     activeClassName?: string
     href: string
 }> = props => {
-  const { asPath } = useRouter()
+  const router = useRouter()
   const isAmp = useAmp()
   const child = Children.only(props.children) as React.ReactElement
   const childClassName: string = child.props.className ?? ""
-  
-  const className = props.href === asPath ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
+  const slugJoined = `/${(router.query.slug as string[]).join('/')}`
+  const className = props.href === slugJoined ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
 
   return (
     <Link href={ampUrl(isAmp, props.href)}>

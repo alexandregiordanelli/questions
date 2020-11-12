@@ -9,6 +9,7 @@ const NavPointer: React.FC<{
     questions: Question[]
 }> = props => {
     const router = useRouter()
+    const slugJoined = `/${(router.query.slug as string[]).join('/')}`
     return (
         <>
             <style jsx>{`
@@ -82,7 +83,7 @@ const NavPointer: React.FC<{
                 <ul>
                 {props.questions.map((x, i) => (
                     <li key={i}>
-                        <ActiveLink activeClassName="ativo" href={absolute(router.asPath, x.url)}><a>{i+1}</a></ActiveLink>
+                        <ActiveLink activeClassName="ativo" href={absolute(slugJoined, x.url)}><a>{i+1}</a></ActiveLink>
                     </li>
                 ))}
                 </ul> 

@@ -13,6 +13,9 @@ import markdown from 'remark-parse'
 import gfm from 'remark-gfm'
 import rehype2react from 'rehype-react';
 import Link from 'next/link'
+import { useAmp } from 'next/amp'
+
+export const config = { amp: 'hybrid' }
 
 type QuestionPageProps = {
     questions: Question[]
@@ -23,8 +26,11 @@ type QuestionPageProps = {
 export default function QuestionPage(props: QuestionPageProps) {
 
     const router = useRouter()
+    const isAmp = useAmp()
 
     if(router.isFallback) return <div>Loading...</div>
+
+    if(!router.query['slug']) return null
 
     if(router.query['slug'].length == 1){
         return <>
@@ -36,7 +42,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                 createElement: React.createElement
             })
             .processSync(props.questionBook).result}</div>
-            <h2><Link href={router.asPath + "/" +  props.questions[0].url}><a>Iniciar</a></Link></h2>
+            <h2><Link href={router.query['slug'][0] + "/" +  props.questions[0].url}><a>Iniciar</a></Link></h2>
         </>
     }
 
@@ -48,9 +54,15 @@ export default function QuestionPage(props: QuestionPageProps) {
     
     const [toggleMenu, setToggleMenu] = useState(false)
 
+    const slugJoined = `/${(router.query.slug as string[]).join('/')}`
+
     return (
         <>
             <Head>
+                <link rel="canonical" href={`https://questionsof.com${slugJoined}`} />
+                {!isAmp && (
+                <link rel="amphtml" href={`https://questionsof.com${slugJoined}.amp`} />
+                )}
                 <title>{question.title}</title>
                 <meta name="description" content={question.title}></meta>
             </Head>
@@ -229,7 +241,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                                         if(y.url){
                                             return (
                                                 <li key={`${i}.${j}`}>
-                                                    <ActiveLink href={absolute(router.asPath, y.url)}>
+                                                    <ActiveLink href={absolute(slugJoined, y.url)}>
                                                         <a>{y.title}</a>
                                                     </ActiveLink>
                                                 </li>
@@ -263,7 +275,7 @@ export default function QuestionPage(props: QuestionPageProps) {
 
 export const getStaticPaths: GetStaticPaths = async context => {
     const urls = ["alexandregiordanelli/enem"]
-    const paths = (await Promise.all(urls.map(x => getPathsFromGHRepo(x)))).reduce((x, y) => x.concat(y))
+    const paths = (await Promise.all(urls.map(x => getPathsFromGHRepo(x)))).reduce((x, y) => x.concat(y))//.slice(0, 3)
 
     return {
         paths,
@@ -274,6 +286,9 @@ export const getStaticPaths: GetStaticPaths = async context => {
 
 
 export const getStaticProps: GetStaticProps = async context => {
+
+    if(!context.params.slug)
+        return {props: {}}
 
     const ghRepo = "alexandregiordanelli/" + context.params.slug[0]
     try{
@@ -339,4 +354,3 @@ export const getStaticProps: GetStaticProps = async context => {
     }
 }
 
-export const config = { amp: 'hybrid' }
