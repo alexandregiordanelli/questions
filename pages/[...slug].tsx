@@ -27,14 +27,14 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     const questionsWithAmp = questions.map(x => ({
         ...x,
-        url: isAmp? `${x.url}?amp=1`: x.url
+        url: isAmp? `${x.url}.amp`: x.url
     }))
 
     const menuWithAmp = menu.map(x => ({
         ...x,
         topics: x.topics.map(y => ({
             ...y,
-            url: isAmp? `${y.url}?amp=1`: y.url
+            url: isAmp? `${y.url}.amp`: y.url
         }))
     }))
 
