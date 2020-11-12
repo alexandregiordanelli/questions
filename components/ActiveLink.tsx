@@ -6,7 +6,6 @@ import { ampUrl } from '../lib/utils'
 
 const ActiveLink: React.FC<{
     activeClassName?: string
-    as?: string
     href: string
 }> = props => {
   const { asPath } = useRouter()
@@ -14,13 +13,10 @@ const ActiveLink: React.FC<{
   const child = Children.only(props.children) as React.ReactElement
   const childClassName: string = child.props.className ?? ""
   
-  const className =
-    ampUrl(isAmp, asPath) === props.href || ampUrl(isAmp, asPath) === props.as
-      ? `${childClassName} ${props.activeClassName ?? "active"}`.trim()
-      : childClassName
+  const className = ampUrl(isAmp, props.href) === asPath ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
 
   return (
-    <Link {...props}>
+    <Link href={ampUrl(isAmp, props.href)}>
       {React.cloneElement(child, {
         className: className || null,
       })}

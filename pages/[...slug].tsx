@@ -2,11 +2,10 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { MD2React } from '../components/MD2React'
 import { Menu, Question } from '../types'
-import { absolute, ampUrl, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
+import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
-import { useAmp } from 'next/amp'
 
 type QuestionPageProps = {
     questions: Question[]
@@ -16,7 +15,6 @@ type QuestionPageProps = {
 export default function QuestionPage(props: QuestionPageProps) {
 
     const router = useRouter()
-    const isAmp = useAmp()
 
     if(router.isFallback) return <div>Loading...</div>
 
@@ -24,25 +22,8 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     if(!(menu || questions)) return null
 
-    const questionsWithAmp: Question[] = questions.map(x => ({
-        ...x,
-        url: ampUrl(isAmp, x.url)
-    }))
-
-    const menuWithAmp: Menu[] = menu.map(x => ({
-        ...x,
-        topics: x.topics.map(y => ({
-            ...y,
-            url: ampUrl(isAmp, y.url)
-        }))
-    }))
-
-    const question = questionsWithAmp[questionIndex]
+    const question = questions[questionIndex]
     
-    console.log(router)
-
-    console.log(JSON.stringify(router, null, 4))
-
     const [toggleMenu, setToggleMenu] = useState(false)
 
     return (
@@ -218,7 +199,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                     <div className={"menu"}>
                         <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                         <ul>
-                        {menuWithAmp.map((x, i) => (
+                        {menu.map((x, i) => (
                             <li key={`${i}.0`} className={"block"}>
                                 {x.title}
                                 <ul className={"submenu"}>
@@ -240,11 +221,11 @@ export default function QuestionPage(props: QuestionPageProps) {
                     </div>
                     <div className="grid">
                         <NavPointer 
-                            title={`${menuWithAmp.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
-                            questions={questionsWithAmp}
+                            title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
+                            questions={questions}
                         />
                         <div>
-                            <h2>Question {questionsWithAmp.findIndex(x => x.url == ampUrl(isAmp, router.asPath.split('/')[3])) + 1} of {questionsWithAmp.length}</h2>
+                            <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2>
                             <MD2React 
                                 md={question.content} 
                                 url={question.absolutUrl}
