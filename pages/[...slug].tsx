@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import React, { useState } from 'react'
 import { MD2React } from '../components/MD2React'
-import { Menu, Nav, Question } from '../types'
-import { absolute, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
+import { Menu, Question } from '../types'
+import { absolute, ampUrl, getNavFromGHRepo, getPathsFromGHRepo } from '../lib/utils'
 import ActiveLink from '../components/ActiveLink'
 import NavPointer from '../components/NavPointer'
 import Head from 'next/head'
@@ -25,21 +24,24 @@ export default function QuestionPage(props: QuestionPageProps) {
 
     if(!(menu || questions)) return null
 
-    const questionsWithAmp = questions.map(x => ({
+    const questionsWithAmp: Question[] = questions.map(x => ({
         ...x,
-        url: isAmp? `${x.url}.amp`: x.url
+        url: ampUrl(isAmp, x.url)
     }))
 
-    const menuWithAmp = menu.map(x => ({
+    const menuWithAmp: Menu[] = menu.map(x => ({
         ...x,
         topics: x.topics.map(y => ({
             ...y,
-            url: isAmp? `${y.url}.amp`: y.url
+            url: ampUrl(isAmp, y.url)
         }))
     }))
 
     const question = questionsWithAmp[questionIndex]
     
+    console.log(router)
+
+    console.log(JSON.stringify(router, null, 4))
 
     const [toggleMenu, setToggleMenu] = useState(false)
 
@@ -242,7 +244,7 @@ export default function QuestionPage(props: QuestionPageProps) {
                             questions={questionsWithAmp}
                         />
                         <div>
-                            <h2>Question {questionsWithAmp.findIndex(x => x.url == router.asPath.split('/')[3]) + 1} of {questionsWithAmp.length}</h2>
+                            <h2>Question {questionsWithAmp.findIndex(x => x.url == ampUrl(isAmp, router.asPath.split('/')[3])) + 1} of {questionsWithAmp.length}</h2>
                             <MD2React 
                                 md={question.content} 
                                 url={question.absolutUrl}

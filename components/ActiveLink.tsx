@@ -1,22 +1,21 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import React, { Children } from 'react'
+import { useAmp } from 'next/amp'
+import { ampUrl } from '../lib/utils'
 
 const ActiveLink: React.FC<{
     activeClassName?: string
     as?: string
     href: string
 }> = props => {
-  let { asPath } = useRouter()
+  const { asPath } = useRouter()
+  const isAmp = useAmp()
   const child = Children.only(props.children) as React.ReactElement
   const childClassName: string = child.props.className ?? ""
-
-  // pages/index.js will be matched via props.href
-  // pages/about.js will be matched via props.href
-  // pages/[slug].js will be matched via props.as
-  asPath = asPath.split("?")[0]
+  
   const className =
-    asPath === props.href || asPath === props.as
+    ampUrl(isAmp, asPath) === props.href || ampUrl(isAmp, asPath) === props.as
       ? `${childClassName} ${props.activeClassName ?? "active"}`.trim()
       : childClassName
 

@@ -1,6 +1,8 @@
 import { Nav } from "../types";
 import yaml from 'js-yaml';
 
+export const ampUrl = (isAmp: boolean, url: string) => isAmp? `${url}?amp=1`: url
+
 export const absolute = (base, relative) => {
     let stack = base.split("/");
     let parts = relative.split("/");
