@@ -13,7 +13,7 @@ const ActiveLink: React.FC<{
   const child = Children.only(props.children) as React.ReactElement
   const childClassName: string = child.props.className ?? ""
   
-  const className = ampUrl(isAmp, props.href) === asPath ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
+  const className = props.href === asPath ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
 
   return (
     <Link href={ampUrl(isAmp, props.href)}>
