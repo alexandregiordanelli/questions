@@ -12,7 +12,7 @@ const ActiveLink: React.FC<{
   const isAmp = useAmp()
   const child = Children.only(props.children) as React.ReactElement
   const childClassName: string = child.props.className ?? ""
-  const slugJoined = `/${(router.query.slug as string[]).join('/')}`
+  const slugJoined = `${(router.query.slug as string[]).join('/')}`
   const className = props.href === slugJoined ? `${childClassName} ${props.activeClassName ?? "active"}`.trim() : childClassName
 
   return (

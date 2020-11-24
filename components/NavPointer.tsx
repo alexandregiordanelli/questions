@@ -9,12 +9,13 @@ const NavPointer: React.FC<{
     questions: Question[]
 }> = props => {
     const router = useRouter()
-    const slugJoined = `/${(router.query.slug as string[]).join('/')}`
+    const slugJoined = `${(router.query.slug as string[]).join('/')}`
     return (
         <>
             <style jsx>{`
             div {
-                max-height: calc(100vh - 110px - 48px);
+                max-height: calc(100vh - 110px - 24px);
+                overflow: auto;
                 position: sticky;
                 top: 90px;
                 grid-area: table-of-contents / table-of-contents / table-of-contents / table-of-contents;

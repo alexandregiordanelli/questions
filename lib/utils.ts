@@ -1,14 +1,15 @@
-import { Nav } from "../types";
+import { GitHub, Nav, Path } from "../types";
 import yaml from 'js-yaml';
 
-export const ampUrl = (isAmp: boolean, url: string) => isAmp? `${url}.amp`: url
+export const ampUrl = (isAmp: boolean, url: string) => !isAmp? `/${url}?amp=1`: `/${url}`
 
-export async function getFileContentFromGHRepo(ghRepo: string, file: string){
-    const response = await fetch("https://raw.githubusercontent.com/" + ghRepo + "/master/" + file);
+export async function getFileContentFromGHRepo(ghRepo: GitHub, filePathFromRoot: string){
+    const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`);
     const body =  await response.text();
-    if(response.status != 200){
-        throw new Error(body)
-    }
+
+    if(response.status != 200)
+        throw new Error(body + " " + `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`)
+
     return body
 }
 
@@ -31,23 +32,70 @@ export const absolute = (base, relative) => {
 
 export const yml2Nav = (text: string) => yaml.safeLoad(text) as Nav
 
-export const getNavFromGHRepo = async (ghRepo: string) => yml2Nav(await getFileContentFromGHRepo(ghRepo, "nav.yaml"))
+export const yml2NotebookList = (text: string) => yaml.safeLoad(text) as string[]
 
-export async function getPathsFromGHRepo(ghRepo: string) {
-    const nav = await getNavFromGHRepo(ghRepo)
-    const repoName = ghRepo.split('/').slice(1) //without username; [enem]; not [alexandregiordanelli, enem]
-    const path_internal = nav.questions
+export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
+    try {
+        const nav = yml2Nav(await getFileContentFromGHRepo(ghRepo, `${notebook}/nav.yaml`))
+        
+        nav.menu = nav.menu.map(x => ({
+            ...x,
+            title: x.title,
+            topics: x.topics.map(y => {
+                const url = nav.questions.find(z => z.topic == y.topic)?.url
+                if(url){
+                    return {
+                        ...y,
+                        url: `${notebook}/${url}`
+                    }
+                }
+            }).filter(y => !!y)
+        }))
+
+        nav.questions = nav.questions.map(x => ({
+            ...x,
+            file: `${notebook}/${x.file}`,
+            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${notebook}/${x.file}`
+        }))
+
+        return nav
+    }
+    catch (e) {
+        throw new Error("Notebook Nav.yaml not found. "+ e)
+    }
+}
+
+export const getNavFromGHRepo = async (ghRepo: GitHub) => yml2NotebookList(await getFileContentFromGHRepo(ghRepo, `nav.yaml`))
+
+export async function getPathsFromNotebook(ghRepo: GitHub, notebook: string) {
+
+    const nav = await getNavFromNotebook(ghRepo, notebook)
+
+    const pathList: Path[] = nav.questions
         .map(x => ({ 
             params: { 
-                slug: repoName.concat(x.url) // [enem,questao1]
+                slug: [notebook].concat(x.url) // [enem,questao1]
             } 
         }))
 
-    path_internal.unshift({
+    pathList.unshift({
         params: {
-            slug: repoName
+            slug: [notebook]
         }
     })
 
-    return path_internal
+    return pathList
+}
+
+export async function getPathsFromGHRepo(ghRepo: GitHub) {
+
+    const notebookList = await getNavFromGHRepo(ghRepo)
+
+    let navListFromGhRepo: Path[] = []
+
+    for(let notebook of notebookList){
+        navListFromGhRepo = navListFromGhRepo.concat(await getPathsFromNotebook(ghRepo, notebook))
+    }
+
+    return navListFromGhRepo
 }
