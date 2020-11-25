@@ -47,7 +47,7 @@ const parseUnified = (data: string, filePath: string) => {
 }
 
 
-export const parseQuestionMD = (md: string, filePath) => {
+export const parseQuestion = (md: string) => {
     const firstData = md.split(/-\s\[[\sx]\]\s.*/gi)
 
     const question = firstData[0].trim()
@@ -69,10 +69,19 @@ export const parseQuestionMD = (md: string, filePath) => {
     } while (m)
 
     return {
-        question: parseUnified(question, filePath),
-        solution: parseUnified(solution, filePath),
-        options: options.map(option => parseUnified(option, filePath)),
+        question,
+        solution,
+        options,
         answer
+    } as QuestionParsed
+}
+
+export const questionParsed2MD = (questionParsed: QuestionParsed, filePath) => {
+    return {
+        question: parseUnified(questionParsed.question, filePath),
+        solution: parseUnified(questionParsed.solution, filePath),
+        options: questionParsed.options.map(option => parseUnified(option, filePath)),
+        answer: questionParsed.answer
     } as QuestionParsed
 }
 

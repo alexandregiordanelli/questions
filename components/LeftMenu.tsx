@@ -4,7 +4,6 @@ import ActiveLink from './ActiveLink';
 
 export const LeftMenu = (props: {
     menu: Menu[];
-    slugJoined: string;
 }) => {
     return (
         <>
