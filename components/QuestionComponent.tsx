@@ -1,5 +1,5 @@
 import React from 'react';
-import { MD2React } from './MD2React';
+import { QuestionForm } from './QuestionForm';
 import { Menu, Question } from '../lib/types';
 import { letters, parseQuestion, questionParsed2MD } from '../lib/utils';
 import RightMenu from './RightMenu';
@@ -50,12 +50,14 @@ export const QuestionComponent = (props: {
                 title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / 
                     ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}
                 `}
-                questions={questions} />
+                questions={questions} 
+            />
             <div>
                 <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2>
-                <MD2React
+                <QuestionForm
                     data={questionMD}
-                    filePath={question.absolutUrl} />
+                    filePath={question.absolutUrl} 
+                />
             </div>
         </>
     );

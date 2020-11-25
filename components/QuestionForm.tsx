@@ -3,7 +3,7 @@ import "katex/dist/contrib/mhchem.js"
 import { QuestionParsed } from '../lib/types';
 import { letters } from '../lib/utils';
 
-export const MD2React: React.FC<{
+export const QuestionForm: React.FC<{
     data: QuestionParsed, 
     filePath: string
 }> = props => {
@@ -29,7 +29,6 @@ export const MD2React: React.FC<{
         <label key={6} htmlFor="solution">Solution</label>,
         <div key={7} className="s">{props.data.solution}</div>
     ])
-
 
     return (
         <form className="qmd" action="/api/hello" target="_blank">

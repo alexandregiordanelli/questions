@@ -7,34 +7,27 @@ import { QuestionComponent } from '../QuestionComponent';
 import { MainTemplate } from '../MainTemplate';
 import { QuestionBook } from '../QuestionBook';
 
-
 export const QuestionPage = (props: {
     questions: Question[];
     menu: Menu[];
     questionIndex: number;
     questionBook: string;
 }) => {
-
     const router = useRouter();
 
-    if (router.isFallback)
-        return <div>Loading...</div>;
-
-    if (!router.query['slug'])
-        return null;
-
+    if (router.isFallback) return <div>Loading...</div>;
+        
+    if (!router.query['slug']) return null;
+        
     const deepth = router.query['slug'].length;
 
     const { menu, questions, questionIndex, questionBook } = props;
 
-    if (!(menu || questions))
-        return null;
-
+    if (!(menu || questions)) return null;
+        
     const renderMainBox = () => {
-        if (deepth > 1)
-            return <QuestionComponent menu={menu} questions={questions} questionIndex={questionIndex} />;
-        else if (deepth == 1)
-            return <QuestionBook questionBook={questionBook} startUrl={""} />;
+        if (deepth > 1) return <QuestionComponent menu={menu} questions={questions} questionIndex={questionIndex} />;
+        else if (deepth == 1) return <QuestionBook questionBook={questionBook} startUrl={""} />;
     };
 
     return (
