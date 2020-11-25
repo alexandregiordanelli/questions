@@ -34,3 +34,10 @@ export type Path = {
         slug: string[]
     }
 }
+
+export type QuestionParsed = {
+    question: string
+    solution: string
+    options: string[]
+    answer: number
+}

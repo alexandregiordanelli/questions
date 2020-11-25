@@ -1,10 +1,10 @@
 import { useRouter } from "next/router"
 import React from "react"
 import { absolute } from "../lib/utils"
-import { Question } from "../types"
+import { Question } from "../lib/types"
 import ActiveLink from "./ActiveLink"
 
-const NavPointer: React.FC<{
+const RightMenu: React.FC<{
     title: string,
     questions: Question[]
 }> = props => {
@@ -93,4 +93,4 @@ const NavPointer: React.FC<{
     )
 }
 
-export default NavPointer
+export default RightMenu

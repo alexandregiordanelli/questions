@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
     "@types/react": "^16.9.49",
+    "@types/styled-jsx": "^2.2.8",
     "@vercel/node": "^1.8.5",
     "next-sitemap": "^1.2.26"
   }

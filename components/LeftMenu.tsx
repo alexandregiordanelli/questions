@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from '../types';
+import { Menu } from '../lib/types';
 import ActiveLink from './ActiveLink';
 
 export const LeftMenu = (props: {

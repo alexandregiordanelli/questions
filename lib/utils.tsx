@@ -1,7 +1,80 @@
-import { GitHub, Nav, Path } from "../types";
+import { GitHub, Nav, Path, QuestionParsed } from "./types";
 import yaml from 'js-yaml';
+import React, {  } from 'react';
+import math from 'remark-math';
+import remark2rehype from 'remark-rehype';
+import katex from 'rehype-katex';
+import unified from 'unified'
+import rehype2react from 'rehype-react';
+import inspectUrls from '@jsdevtools/rehype-url-inspector'
+
+import "katex/dist/contrib/mhchem.js"
+import markdown from 'remark-parse'
+import gfm from 'remark-gfm'
+
+export const letters = 'abcdefgh'.split('')
 
 export const ampUrl = (isAmp: boolean, url: string) => !isAmp? `/${url}?amp=1`: `/${url}`
+
+const parseUnified = (data: string, filePath: string) => {
+    const isAmp = true
+    return unified()
+    .use(markdown)
+    .use(math)
+    .use(gfm)
+    .use(remark2rehype)
+    .use(katex, {
+        output: isAmp? 'html': 'htmlAndMathml'
+    })
+    .use(inspectUrls, {
+        inspectEach({ url, node }) {
+            if(new RegExp("^(?!www\.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*").test(url)){
+                node.properties.src = absolute(filePath, url)
+            }
+        },  
+        selectors: [
+            "img[src]"
+        ]
+    })
+    .use(rehype2react, { 
+        createElement: React.createElement,
+        Fragment: React.Fragment,
+        components: {
+           img: (props: any) => isAmp? <div className="fixed-height-container "><amp-img className="contain" layout="fill" {...props}/></div>: <img {...props}/>
+        } 
+    })
+    .processSync(data).result
+}
+
+
+export const parseQuestionMD = (md: string, filePath) => {
+    const firstData = md.split(/-\s\[[\sx]\]\s.*/gi)
+
+    const question = firstData[0].trim()
+    const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
+
+    let answer = -1
+    const options: string[] = []
+    const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
+
+    var m
+    do {
+        m = regexOptions.exec(md);
+        if(m && m[0]){
+            options.push(m[1].trim())
+            const regexInternal = /-\s\[x\]\s/gi
+            if(regexInternal.test(m[0]))
+                answer = options.length - 1
+        }
+    } while (m)
+
+    return {
+        question: parseUnified(question, filePath),
+        solution: parseUnified(solution, filePath),
+        options: options.map(option => parseUnified(option, filePath)),
+        answer
+    } as QuestionParsed
+}
 
 export async function getFileContentFromGHRepo(ghRepo: GitHub, filePathFromRoot: string){
     const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`);

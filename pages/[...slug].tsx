@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { MD2React } from '../components/MD2React'
-import { GitHub, Menu, Question } from '../types'
-import { ampUrl, getFileContentFromGHRepo, getNavFromNotebook, getPathsFromGHRepo } from '../lib/utils'
-import NavPointer from '../components/NavPointer'
+import { GitHub, Menu, Question } from '../lib/types'
+import { ampUrl, getFileContentFromGHRepo, getNavFromNotebook, getPathsFromGHRepo, letters, parseQuestionMD } from '../lib/utils'
+import RightMenu from '../components/RightMenu'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import remark2rehype from 'remark-rehype'
 import unified from 'unified'
@@ -14,6 +14,8 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { LeftMenu } from '../components/LeftMenu'
 import { useAmp } from 'next/amp'
+import { globalCSS } from '../styles/globalCSS'
+import { katexCSS } from "../styles/katexCSS"
 
 export const config = { amp: true}
 
@@ -40,17 +42,19 @@ export default function QuestionPage(props: QuestionPageProps) {
     
     const slugJoined = `/${(router.query.slug as string[]).join('/')}`
 
+    const questionParsed = parseQuestionMD(question.content, question.absolutUrl)
+
     const renderMainBox = () => {
         if(router.query['slug'].length > 1){
             return <>
-                <NavPointer 
+                <RightMenu 
                     title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}`} 
                     questions={questions}
                 />
                 <div>
                     <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2>
                     <MD2React 
-                        md={question.content} 
+                        data={questionParsed} 
                         filePath={question.absolutUrl}
                     />
                 </div>
@@ -70,16 +74,38 @@ export default function QuestionPage(props: QuestionPageProps) {
         }
     }
 
-
     return (
-        <>
+        <>                
+            <style jsx global>
+                {katexCSS}
+            </style>
+            <style jsx global>
+                {globalCSS}
+            </style>
+            <style jsx global>{`
+            #right-answer:checked ~ #${letters[questionParsed.answer]} + label {
+                background-color: rgb(220, 255, 228);
+                border-color: rgba(23, 111, 44, 0.2);
+            }
+            `}</style>
             <Head>
-                {/* <link rel="canonical" href={`https://questionsof.com${slugJoined}`} />
-                {!isAmp && (
-                <link rel="amphtml" href={`https://questionsof.com${slugJoined}.amp`} />
-                )} */}
                 <title>{question?.title ?? "Enem"}</title>
-                {/* <meta name="description" content={question.title}></meta> */}
+                <meta name="description" content={question.title}></meta>
+                {questionParsed.answer > -1 && <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify( {
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        "mainEntity": [{
+                            "@type": "Question",
+                            "name": questionParsed.question,
+                            "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": questionParsed.options[questionParsed.answer]
+                            }
+                        }]
+                    }) }}
+                />}
             </Head>
             <style jsx global>{`
             html,
