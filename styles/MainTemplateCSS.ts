@@ -34,11 +34,7 @@ h1 {
     display: none;
 }
 
-@media (max-width: 767px) {
-    .grid > div {
-        padding: 0 24px;
-    }
-}
+
 
 @media screen and (max-width: 1012px){
     #menu-check {
@@ -54,27 +50,4 @@ h1 {
     }
 }
 
-
-@media screen and (min-width: 768px){
-    .grid{
-        display: grid;
-        grid-template-columns: minmax(0px, 960px) 220px;
-        margin: 0 auto;
-        column-gap: 48px;
-        padding: 48px;
-        grid-template-areas: "content table-of-contents";
-    }
-}
-.grid div {
-    grid-area: content / content / content / content;
-}
-
-div > h2 {
-    padding-bottom: .3em;
-    border-bottom: 1px solid #eaecef;
-    margin: 0;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-}
 `

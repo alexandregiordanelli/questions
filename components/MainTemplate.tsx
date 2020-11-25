@@ -20,9 +20,7 @@ export const MainTemplate: React.FC<{
                         <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                         <LeftMenu menu={props.menu} />
                     </div>
-                    <div className="grid">
-                        {props.children}
-                    </div>
+                    {props.children}
                 </div>
             </div>
         </>

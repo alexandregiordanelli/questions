@@ -46,18 +46,50 @@ export const QuestionComponent = (props: {
                 border-color: rgba(23, 111, 44, 0.2);
             }
             `}</style>
-            <RightMenu
-                title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / 
-                    ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}
-                `}
-                questions={questions} 
-            />
-            <div>
-                <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2>
-                <QuestionForm
-                    data={questionMD}
-                    filePath={question.absolutUrl} 
+            <style jsx>{`
+            @media (max-width: 767px) {
+                .grid > div {
+                    padding: 0 24px;
+                }
+            }
+
+            @media screen and (min-width: 768px){
+                .grid{
+                    display: grid;
+                    grid-template-columns: minmax(0px, 960px) 220px;
+                    margin: 0 auto;
+                    column-gap: 48px;
+                    padding: 48px;
+                    grid-template-areas: "content table-of-contents";
+                }
+            }
+            .grid div {
+                grid-area: content / content / content / content;
+            }
+
+            div > h2 {
+                padding-bottom: .3em;
+                border-bottom: 1px solid #eaecef;
+                margin: 0;
+                margin-bottom: 16px;
+                font-weight: 600;
+                line-height: 1.25;
+            }
+            `}</style>
+            <div className="grid">
+                <RightMenu
+                    title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / 
+                        ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}
+                    `}
+                    questions={questions} 
                 />
+                <div>
+                    <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2>
+                    <QuestionForm
+                        data={questionMD}
+                        filePath={question.absolutUrl} 
+                    />
+                </div>
             </div>
         </>
     );
