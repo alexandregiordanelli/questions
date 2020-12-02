@@ -11,7 +11,7 @@
   "dependencies": {
     "@jsdevtools/rehype-url-inspector": "^2.0.2",
     "js-yaml": "^3.14.0",
-    "next": "^10.0.2",
+    "next": "^10.0.3",
     "node-fetch": "^2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
