@@ -44,39 +44,27 @@ const RightMenu: React.FC<{
                 padding: 0;
             }
 
-            li {
-                display: inline;
+            a {
+                text-decoration: none;
+                font-size: 14px;
+                display: inline-block;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                color: rgb(88, 96, 105);
             }
 
-            a {
-                display: inline-block;
-                width: 48px;
-                padding: 5px 0px;
-                font-style: normal;
-                line-height: 36px;
-                text-align: center;
-                white-space: nowrap;
-                vertical-align: middle;
-                cursor: pointer;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-                border: 1px solid transparent;
-                border-radius: 6px;
-                transition: border-color .2s cubic-bezier(.3,0,.5,1);
+            a:hover {
+                
             }
 
             a:hover:not(.ativo){
-                text-decoration: none;
-                border-color: #e1e4e8;
+                text-decoration: underline;
                 outline: 0;
-                transition-duration: .1s;
             }
 
-            :global(.ativo) {
-                background-color: #0366d6;
-                color: white;
+            a.ativo {
+                font-weight: 600;
+                color: #24292e;
             }
             `}</style>
             <div>
@@ -84,7 +72,7 @@ const RightMenu: React.FC<{
                 <ul>
                 {props.questions.map((x, i) => (
                     <li key={i}>
-                        <ActiveLink activeClassName="ativo" href={absolute(slugJoined, x.url)}><a>{i+1}</a></ActiveLink>
+                        <ActiveLink activeClassName="ativo" href={absolute(slugJoined, x.url)}><a>{i+1}) {x.title}</a></ActiveLink>
                     </li>
                 ))}
                 </ul> 
