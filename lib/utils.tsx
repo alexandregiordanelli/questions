@@ -137,7 +137,7 @@ export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
         nav.questions = nav.questions.map(x => ({
             ...x,
             file: `${notebook}/${x.file}`,
-            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${notebook}/${x.file}`
+            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${process.env.VERCEL_GIT_COMMIT_REF ?? "master"}/${notebook}/${x.file}`
         }))
 
         return nav
