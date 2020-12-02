@@ -50,10 +50,10 @@ const RightMenu: React.FC<{
 
             a {
                 display: inline-block;
-                width: 40px;
-                padding: 5px 10px;
+                width: 48px;
+                padding: 5px 0px;
                 font-style: normal;
-                line-height: 20px;
+                line-height: 36px;
                 text-align: center;
                 white-space: nowrap;
                 vertical-align: middle;

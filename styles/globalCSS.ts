@@ -35,10 +35,7 @@ amp-img.contain img {
     overflow: auto;
     max-width: calc(100vw - 60px);
 } */
-input[type=radio]{
-    width: 50px;
-    outline: none;
-}
+
 input[type=checkbox]{
     outline: none;
 }
@@ -89,7 +86,7 @@ input[type="radio"]:checked+label {
     border-color: rgba(4, 66, 137, 0.2);
 }
 label {
-    flex: 0 calc(100% - 50px);
+    flex: 0 calc(100% - 30px);
     padding: 16px;
     border-radius: 6px;
     border: solid 1px #fff;
@@ -272,13 +269,16 @@ label {
     overflow: visible;
 }
 
-.qmd input {
+.qmd input[type=radio] {
     font: inherit;
-    margin: 0;
-}
-
-.qmd input {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
     overflow: visible;
+    margin: 0;
+    width: 15px;
+    outline: none;
+    margin-right: 15px;
 }
 
 .qmd [type=checkbox] {
@@ -288,12 +288,6 @@ label {
 
 .qmd * {
     box-sizing: border-box;
-}
-
-.qmd input {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
 }
 
 .qmd a {

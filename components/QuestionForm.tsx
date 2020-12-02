@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import "katex/dist/contrib/mhchem.js"
 import { QuestionParsed } from '../lib/types';
 import { letters } from '../lib/utils';
@@ -17,10 +17,10 @@ export const QuestionForm: React.FC<{
     props.data.options.forEach((x, i) => {
         const letter = letters[i]
         html.push(
-            <>
-                <input key={3} type="radio" id={letter} name="qmd" value={letter}/>
-                <label key={4} htmlFor={letter}>{x}</label>
-            </>
+            <Fragment key={3}>
+                <input type="radio" id={letter} name="qmd" value={letter}/>
+                <label htmlFor={letter}>{x}</label>
+            </Fragment>
         )
     })
 

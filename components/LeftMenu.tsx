@@ -69,24 +69,29 @@ export const LeftMenu = (props: {
             }
             `}</style>
             <ul className={"menu"}>
-                {props.menu.map((x, i) => (
-                    <li key={`${i}.0`} className={"menu-block"}>
-                        {x.title}
-                        <ul className={"submenu"}>
-                            {x.topics.map((y, j) => {
-                                if (y.url) {
-                                    return (
-                                        <li key={`${i}.${j}`}>
-                                            <ActiveLink href={y.url}>
-                                                <a>{y.title}</a>
-                                            </ActiveLink>
-                                        </li>
-                                    );
-                                }
-                            })}
-                        </ul>
-                    </li>
-                ))}
+                {props.menu.sort((a,b) => a.title > b.title? 1: -1).map((x, i) => {
+                    const topicsSorted = x.topics.sort((a,b) => a.title > b.title? 1: -1)
+                    return (
+                        <li key={`${i}.0`} className={"menu-block"}>
+                            <ActiveLink href={topicsSorted[0].url}>
+                                <a>{x.title}</a>
+                            </ActiveLink>
+                            {topicsSorted.length > 1 && <ul className={"submenu"}>
+                                {topicsSorted.map((y, j) => {
+                                    if (y.url) {
+                                        return (
+                                            <li key={`${i}.${j}`}>
+                                                <ActiveLink href={y.url}>
+                                                    <a>{y.title}</a>
+                                                </ActiveLink>
+                                            </li>
+                                        );
+                                    }
+                                })}
+                            </ul>}
+                        </li>
+                    )}
+                )}
             </ul>
         </>
     );
