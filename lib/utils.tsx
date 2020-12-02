@@ -12,6 +12,10 @@ import "katex/dist/contrib/mhchem.js"
 import markdown from 'remark-parse'
 import gfm from 'remark-gfm'
 
+const branch = process.env.VERCEL_GIT_COMMIT_REF
+    ? process.env.VERCEL_GIT_COMMIT_REF : process.env.NODE_ENV == "development" 
+    ? "dev": "master"
+
 export const letters = 'abcdefgh'.split('')
 
 export const ampUrl = (isAmp: boolean, url: string) => !isAmp? `/${url}?amp=1`: `/${url}`
@@ -86,11 +90,11 @@ export const questionParsed2MD = (questionParsed: QuestionParsed, filePath) => {
 }
 
 export async function getFileContentFromGHRepo(ghRepo: GitHub, filePathFromRoot: string){
-    const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`);
+    const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${filePathFromRoot}`);
     const body =  await response.text();
 
     if(response.status != 200)
-        throw new Error(body + " " + `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`)
+        throw new Error(body + " " + `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${filePathFromRoot}`)
 
     return body
 }
@@ -137,7 +141,7 @@ export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
         nav.questions = nav.questions.map(x => ({
             ...x,
             file: `${notebook}/${x.file}`,
-            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${process.env.VERCEL_GIT_COMMIT_REF ?? "master"}/${notebook}/${x.file}`
+            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${notebook}/${x.file}`
         }))
 
         return nav
