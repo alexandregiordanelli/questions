@@ -29,20 +29,38 @@ h1 {
     display: flex;
 }
 
-
 #menu-check {
     display: none;
 }
 
 
 
+label {
+    z-index: 1;
+    right: 16px;
+    top: 16px;
+    position: absolute;
+    padding: 6px 16px;
+    cursor: pointer;
+    line-height: 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: rgb(200,225,255);
+    border: 1px solid rgb(68,77,86);
+}
+
+label:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(3, 102, 214);
+    border-color: rgba(27, 31, 35, 0.15);
+    box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.03) 0px 2px 0px inset;
+}
+
+
 @media screen and (max-width: 1012px){
-    #menu-check {
+   
+    label {
         display: block;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        right: 0;
     }
 
     :global(#menu-check:checked ~ ul) {

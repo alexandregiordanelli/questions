@@ -20,7 +20,7 @@ export const MainTemplate: React.FC<{
                 <div className="head"><h1><Link href="/"><a>QuestionsOf</a></Link> <ChevronRightIcon/> <Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1></div>
                 <div className={"container"}>
                     <div className={"menu"}>
-                        
+                        <label htmlFor="menu-check"><ThreeBarsIcon /></label>
                         <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                         <LeftMenu menu={props.menu} />
                     </div>
