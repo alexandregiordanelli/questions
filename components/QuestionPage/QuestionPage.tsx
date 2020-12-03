@@ -6,6 +6,8 @@ import { katexCSS } from "../../styles/katexCSS";
 import { QuestionComponent } from '../QuestionComponent';
 import { MainTemplate } from '../MainTemplate';
 import { QuestionBook } from '../QuestionBook';
+import { useAmp } from 'next/amp';
+import { ampUrl } from '../../lib/utils';
 
 export const QuestionPage = (props: {
     questions: Question[];
@@ -13,13 +15,17 @@ export const QuestionPage = (props: {
     questionIndex: number;
     questionBook: string;
 }) => {
+    const isAmp = useAmp()
+    
     const router = useRouter();
 
     if (router.isFallback) return <div>Loading...</div>;
         
-    if (!router.query['slug']) return null;
+    const slug = router.query['slug'] as string[]
+
+    if (!slug) return null;
         
-    const deepth = router.query['slug'].length;
+    const deepth = slug.length;
 
     const { menu, questions, questionIndex, questionBook } = props;
 
@@ -32,6 +38,7 @@ export const QuestionPage = (props: {
 
     return (
         <>
+            <link rel={isAmp? "canonical": "amphtml"} href={ampUrl(isAmp, slug.join('/'))}/>
             <style jsx global>
                 {katexCSS}
             </style>

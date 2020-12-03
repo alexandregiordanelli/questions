@@ -1,7 +1,7 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
 import { Menu, Question } from '../lib/types';
-import { letters, parseQuestion, questionParsed2MD } from '../lib/utils';
+import { ampUrl, letters, parseQuestion, questionParsed2MD } from '../lib/utils';
 import RightMenu from './RightMenu';
 import Head from 'next/head';
 import { ChevronRightIcon } from '@primer/octicons-react';
