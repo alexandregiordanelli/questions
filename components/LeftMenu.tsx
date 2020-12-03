@@ -46,7 +46,7 @@ export const LeftMenu = (props: {
                 color: rgb(3, 102, 214);
             }
 
-            .submenu a.active {
+            .menu a.active, .submenu a.active {
                 font-weight: 600;
                 color: rgb(47, 54, 61);
             }

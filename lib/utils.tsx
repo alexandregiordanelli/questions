@@ -124,6 +124,8 @@ export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
     try {
         const nav = yml2Nav(await getFileContentFromGHRepo(ghRepo, `${notebook}/nav.yaml`))
         
+        nav.questions = nav.questions.sort((a, b) => a.title > b.title ? 1: -1)
+
         nav.menu = nav.menu.map(x => ({
             ...x,
             title: x.title,
@@ -140,6 +142,7 @@ export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
 
         nav.questions = nav.questions.map(x => ({
             ...x,
+            title: x.title.substring(0, 50),
             file: `${notebook}/${x.file}`,
             absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${notebook}/${x.file}`
         }))

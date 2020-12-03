@@ -4,6 +4,7 @@ import { Menu, Question } from '../lib/types';
 import { letters, parseQuestion, questionParsed2MD } from '../lib/utils';
 import RightMenu from './RightMenu';
 import Head from 'next/head';
+import { ChevronDownIcon, ChevronRightIcon } from '@primer/octicons-react';
 
 export const QuestionComponent = (props: {
     questions: Question[];
@@ -17,6 +18,10 @@ export const QuestionComponent = (props: {
     const questionParsed = parseQuestion(question.content);
 
     const questionMD = questionParsed2MD(questionParsed, question.absolutUrl);
+
+    const menuFiltered = menu.find(x => x.topics.some(y => y.topic == question.topic))
+
+    const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == question.topic).title}</>: <>menuFiltered.title</>
 
     return (
         <>
@@ -44,6 +49,10 @@ export const QuestionComponent = (props: {
             #right-answer:checked ~ #${letters[questionParsed.answer]} + label {
                 background-color: rgb(220, 255, 228);
                 border-color: rgba(23, 111, 44, 0.2);
+            }
+            .icon-menu-right {
+                color: rgb(88, 96, 105);
+                margin: 0 6px;
             }
             `}</style>
             <style jsx>{`
@@ -78,9 +87,7 @@ export const QuestionComponent = (props: {
             `}</style>
             <div className="grid">
                 <RightMenu
-                    title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / 
-                        ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}
-                    `}
+                    title={title}
                     questions={questions} 
                 />
                 <div>
