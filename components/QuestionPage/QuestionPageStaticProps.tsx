@@ -3,7 +3,7 @@ import { getFileContentFromGHRepo, getNavFromNotebook } from '../../lib/utils';
 import { GetStaticProps } from 'next';
 
 export const QuestionPageStaticProps: GetStaticProps = async (context) => {
-
+    
     if (!context.params.slug)
         return { props: {} };
 

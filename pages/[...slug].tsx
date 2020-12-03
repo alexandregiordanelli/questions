@@ -7,5 +7,3 @@ export default QuestionPage
 export const getStaticPaths = QuestionPageStaticPaths
 
 export const getStaticProps = QuestionPageStaticProps
-
-export const config = { amp: 'hybrid'}

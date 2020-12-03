@@ -18,7 +18,7 @@ const branch = process.env.VERCEL_GIT_COMMIT_REF
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/${url}.amp`: `/${url}`
+export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url}`: `/${url}`
 
 const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
     return unified()
