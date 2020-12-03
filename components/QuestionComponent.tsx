@@ -4,24 +4,27 @@ import { Menu, Question } from '../lib/types';
 import { letters, parseQuestion, questionParsed2MD } from '../lib/utils';
 import RightMenu from './RightMenu';
 import Head from 'next/head';
-import { ChevronDownIcon, ChevronRightIcon } from '@primer/octicons-react';
+import { ChevronRightIcon } from '@primer/octicons-react';
+import { useAmp } from 'next/amp';
 
 export const QuestionComponent = (props: {
     questions: Question[];
     menu: Menu[];
     questionIndex: number;
 }) => {
+    const isAmp = useAmp()
+    
     const { questions, menu, questionIndex } = props;
 
     const question = questions[questionIndex];
 
     const questionParsed = parseQuestion(question.content);
 
-    const questionMD = questionParsed2MD(questionParsed, question.absolutUrl);
+    const questionMD = questionParsed2MD(isAmp, questionParsed, question.absolutUrl);
 
     const menuFiltered = menu.find(x => x.topics.some(y => y.topic == question.topic))
 
-    const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == question.topic).title}</>: <>menuFiltered.title</>
+    const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == question.topic).title}</>: <>{menuFiltered.title}</>
 
     return (
         <>

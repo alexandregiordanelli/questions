@@ -8,4 +8,4 @@ export const getStaticPaths = QuestionPageStaticPaths
 
 export const getStaticProps = QuestionPageStaticProps
 
-export const config = { amp: true}
+export const config = { amp: 'hybrid'}

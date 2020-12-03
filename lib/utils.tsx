@@ -18,10 +18,9 @@ const branch = process.env.VERCEL_GIT_COMMIT_REF
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url: string) => !isAmp? `/${url}?amp=1`: `/${url}`
+export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/${url}?amp=1`: `/${url}`
 
-const parseUnified = (data: string, filePath: string) => {
-    const isAmp = true
+const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
     return unified()
     .use(markdown)
     .use(math)
@@ -80,11 +79,11 @@ export const parseQuestion = (md: string) => {
     } as QuestionParsed
 }
 
-export const questionParsed2MD = (questionParsed: QuestionParsed, filePath) => {
+export const questionParsed2MD = (isAmp: boolean, questionParsed: QuestionParsed, filePath) => {
     return {
-        question: parseUnified(questionParsed.question, filePath),
-        solution: parseUnified(questionParsed.solution, filePath),
-        options: questionParsed.options.map(option => parseUnified(option, filePath)),
+        question: parseUnified(isAmp, questionParsed.question, filePath),
+        solution: parseUnified(isAmp, questionParsed.solution, filePath),
+        options: questionParsed.options.map(option => parseUnified(isAmp, option, filePath)),
         answer: questionParsed.answer
     } as QuestionParsed
 }

@@ -17,7 +17,7 @@ export const QuestionForm: React.FC<{
     props.data.options.forEach((x, i) => {
         const letter = letters[i]
         html.push(
-            <Fragment key={3}>
+            <Fragment key={3 + i.toString()}>
                 <input type="radio" id={letter} name="qmd" value={letter}/>
                 <label htmlFor={letter}>{x}</label>
             </Fragment>
