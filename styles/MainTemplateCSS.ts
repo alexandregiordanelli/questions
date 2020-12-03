@@ -41,6 +41,7 @@ label {
     top: 16px;
     position: absolute;
     padding: 6px 16px;
+    display: none;
     cursor: pointer;
     line-height: 20px;
     border-radius: 6px;
