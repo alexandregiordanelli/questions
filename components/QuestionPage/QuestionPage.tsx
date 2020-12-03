@@ -8,6 +8,7 @@ import { MainTemplate } from '../MainTemplate';
 import { QuestionBook } from '../QuestionBook';
 import { useAmp } from 'next/amp';
 import { ampUrl } from '../../lib/utils';
+import Head from 'next/head';
 
 export const QuestionPage = (props: {
     questions: Question[];
@@ -38,7 +39,9 @@ export const QuestionPage = (props: {
 
     return (
         <>
-            <link rel={isAmp? "canonical": "amphtml"} href={ampUrl(isAmp, slug.join('/'))}/>
+            <Head>
+                <link rel={isAmp? "canonical": "amphtml"} href={ampUrl(isAmp, slug.join('/'))}/>
+            </Head>
             <style jsx global>
                 {katexCSS}
             </style>
