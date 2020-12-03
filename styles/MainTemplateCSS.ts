@@ -39,7 +39,7 @@ label {
     z-index: 1;
     right: 16px;
     top: 16px;
-    position: absolute;
+    position: fixed;
     padding: 6px 16px;
     display: none;
     cursor: pointer;
