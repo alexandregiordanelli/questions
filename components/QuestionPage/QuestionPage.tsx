@@ -40,7 +40,7 @@ export const QuestionPage = (props: {
     return (
         <>
             <Head>
-                <link rel={isAmp? "canonical": "amphtml"} href={ampUrl(isAmp, slug.join('/'))}/>
+                <link rel={isAmp? "canonical": "amphtml"} href={ampUrl(!isAmp, slug.join('/'))}/>
             </Head>
             <style jsx global>
                 {katexCSS}
