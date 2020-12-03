@@ -98,7 +98,6 @@ export const QuestionComponent = (props: {
                     {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
                     <QuestionForm
                         data={questionMD}
-                        filePath={question.absolutUrl} 
                     />
                 </div>
             </div>
