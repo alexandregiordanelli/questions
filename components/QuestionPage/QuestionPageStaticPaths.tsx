@@ -8,7 +8,7 @@ export const QuestionPageStaticPaths: GetStaticPaths = async () => {
     });
 
     return ({
-        paths: paths,
-        fallback: true
+        paths: paths.slice(0, 10),
+        fallback: 'blocking' //true
     });
 };
