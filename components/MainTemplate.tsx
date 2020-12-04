@@ -16,7 +16,7 @@ export const MainTemplate: React.FC = props => {
             <style jsx>{MainTemplateCSS}</style>
             <div className="main">
                 <div className="head">
-                    <Logo size={32} color="rgb(33,136,255)"/>
+                    <Logo size={32} color="rgb(200,225,255)"/>
                     <h1><Link href="/"><a>QuestionsOf</a></Link> <ChevronRightIcon/> <Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1>
                 </div>
                 {props.children}
