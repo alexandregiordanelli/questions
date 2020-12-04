@@ -18,7 +18,7 @@ h1 {
     z-index: 1;
     position: sticky;
     height: 62px;
-    background-color: rgb(27,31,35);
+    background-color: #1b1f23;
     align-items: center;
     display: flex;
     padding-left: 24px; 

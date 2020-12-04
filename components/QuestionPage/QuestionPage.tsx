@@ -56,7 +56,7 @@ export const QuestionPage = (props: {
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png"/>
                 <meta name="msapplication-TileColor" content="#ffffff"/>
                 <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png"/>
-                <meta name="theme-color" content="#ffffff"/>
+                <meta name="theme-color" content="#1b1f23"/>
                 <link rel="manifest" href="/manifest.json" />
             </Head>
             <style jsx global>
