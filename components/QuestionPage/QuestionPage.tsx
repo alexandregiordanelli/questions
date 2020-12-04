@@ -178,7 +178,7 @@ export const IndexPage: React.FC = () => {
                 <div className="container">
                     <div className="flex">
                         <div className="img">
-                            <Logo size={'100%'} color="rgb(200,225,255)"/>
+                            <Logo size={'100%'} color="#fff"/>
                         </div>
                         <div className="texts">
                             <h1>QuestionsOf</h1>
