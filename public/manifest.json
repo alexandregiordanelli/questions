@@ -4,8 +4,8 @@
     "lang": "pt",
     "description": "QuestionsOf",
     "start_url": "/enem",
-    "background_color": "#00aae7",
-    "theme_color": "#00aae7",
+    "background_color": "#ffffff",
+    "theme_color": "#2188FF",
     "dir": "ltr",
     "display": "standalone",
     "orientation": "any",
@@ -83,7 +83,7 @@
         {
             "src": "/favicons/maskable_icon.png",
             "type": "image/png",
-            "sizes": "196x196",
+            "sizes": "1024x1024",
             "purpose": "any maskable"
         }
     ],
