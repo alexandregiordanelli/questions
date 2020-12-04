@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Logo: React.FC<{
     color: string,
-    size: number
+    size: number | string
 }> = props => (
     <svg viewBox="0 0 320 320" width={props.size} height={props.size}>
         <g fill={props.color}>
