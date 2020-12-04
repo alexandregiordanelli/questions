@@ -85,7 +85,7 @@ input[type="radio"]:checked+label {
     background-color: rgb(219, 237, 255);
     border-color: rgba(4, 66, 137, 0.2);
 }
-label {
+.qmd label {
     flex: 0 calc(100% - 30px);
     padding: 16px;
     border-radius: 6px;

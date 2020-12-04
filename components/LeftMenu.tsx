@@ -1,16 +1,20 @@
-import React from 'react';
+import { ThreeBarsIcon } from '@primer/octicons-react';
+import React, { useState } from 'react';
 import { Menu } from '../lib/types';
 import ActiveLink from './ActiveLink';
 
 export const LeftMenu = (props: {
     menu: Menu[];
 }) => {
+    const [toggleMenu, setToggleMenu] = useState(false);
+    
     return (
         <>
             <style jsx>{`
+                
             .menu {
-                top: 66px;
-                height: calc(100vh - 66px);
+                top: 62px;
+                height: calc(100vh - 62px);
                 overflow: auto;
                 color: rgb(47, 54, 61);
                 background-color: rgb(250, 251, 252);
@@ -46,7 +50,7 @@ export const LeftMenu = (props: {
                 color: rgb(3, 102, 214);
             }
 
-            .submenu a.active {
+            .menu a.active, .submenu a.active {
                 font-weight: 600;
                 color: rgb(47, 54, 61);
             }
@@ -67,32 +71,75 @@ export const LeftMenu = (props: {
                     transition: 0.5s;
                 }
             }
+
+            #menu-check {
+    display: none;
+}
+
+label {
+    z-index: 1;
+    right: 16px;
+    top: 16px;
+    position: fixed;
+    padding: 6px 16px;
+    display: none;
+    cursor: pointer;
+    line-height: 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: rgb(200,225,255);
+    border: 1px solid rgb(68,77,86);
+}
+
+label:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(3, 102, 214);
+    border-color: rgba(27, 31, 35, 0.15);
+    box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.03) 0px 2px 0px inset;
+}
+
+
+@media screen and (max-width: 1012px){
+   
+    label {
+        display: block;
+    }
+
+    :global(#menu-check:checked ~ ul) {
+        right: 0;
+    }
+}
+
             `}</style>
-            <ul className={"menu"}>
-                {props.menu.sort((a,b) => a.title > b.title? 1: -1).map((x, i) => {
-                    const topicsSorted = x.topics.sort((a,b) => a.title > b.title? 1: -1)
-                    return (
-                        <li key={`${i}.0`} className={"menu-block"}>
-                            <ActiveLink href={topicsSorted[0].url}>
-                                <a>{x.title}</a>
-                            </ActiveLink>
-                            {topicsSorted.length > 1 && <ul className={"submenu"}>
-                                {topicsSorted.map((y, j) => {
-                                    if (y.url) {
-                                        return (
-                                            <li key={`${i}.${j}`}>
-                                                <ActiveLink href={y.url}>
-                                                    <a>{y.title}</a>
-                                                </ActiveLink>
-                                            </li>
-                                        );
-                                    }
-                                })}
-                            </ul>}
-                        </li>
+            <div>
+                <label htmlFor="menu-check"><ThreeBarsIcon /></label>
+                <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
+                <ul className={"menu"}>
+                    {props.menu.sort((a,b) => a.title > b.title? 1: -1).map((x, i) => {
+                        const topicsSorted = x.topics.sort((a,b) => a.title > b.title? 1: -1)
+                        return (
+                            <li key={`${i}.0`} className={"menu-block"}>
+                                <ActiveLink href={topicsSorted[0].url}>
+                                    <a>{x.title}</a>
+                                </ActiveLink>
+                                {topicsSorted.length > 1 && <ul className={"submenu"}>
+                                    {topicsSorted.map((y, j) => {
+                                        if (y.url) {
+                                            return (
+                                                <li key={`${i}.${j}`}>
+                                                    <ActiveLink href={y.url}>
+                                                        <a>{y.title}</a>
+                                                    </ActiveLink>
+                                                </li>
+                                            );
+                                        }
+                                    })}
+                                </ul>}
+                            </li>
+                        )}
                     )}
-                )}
-            </ul>
+                </ul>
+            </div>
         </>
     );
 };

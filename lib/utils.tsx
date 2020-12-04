@@ -12,12 +12,15 @@ import "katex/dist/contrib/mhchem.js"
 import markdown from 'remark-parse'
 import gfm from 'remark-gfm'
 
+const branch = process.env.VERCEL_GIT_COMMIT_REF
+    ? process.env.VERCEL_GIT_COMMIT_REF : process.env.NODE_ENV == "development" 
+    ? "dev": "master"
+
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url: string) => !isAmp? `/${url}?amp=1`: `/${url}`
+export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url}`: `/${url}`
 
-const parseUnified = (data: string, filePath: string) => {
-    const isAmp = true
+const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
     return unified()
     .use(markdown)
     .use(math)
@@ -76,21 +79,21 @@ export const parseQuestion = (md: string) => {
     } as QuestionParsed
 }
 
-export const questionParsed2MD = (questionParsed: QuestionParsed, filePath) => {
+export const questionParsed2MD = (isAmp: boolean, questionParsed: QuestionParsed, filePath) => {
     return {
-        question: parseUnified(questionParsed.question, filePath),
-        solution: parseUnified(questionParsed.solution, filePath),
-        options: questionParsed.options.map(option => parseUnified(option, filePath)),
+        question: parseUnified(isAmp, questionParsed.question, filePath),
+        solution: parseUnified(isAmp, questionParsed.solution, filePath),
+        options: questionParsed.options.map(option => parseUnified(isAmp, option, filePath)),
         answer: questionParsed.answer
     } as QuestionParsed
 }
 
 export async function getFileContentFromGHRepo(ghRepo: GitHub, filePathFromRoot: string){
-    const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`);
+    const response = await fetch(`https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${filePathFromRoot}`);
     const body =  await response.text();
 
     if(response.status != 200)
-        throw new Error(body + " " + `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${filePathFromRoot}`)
+        throw new Error(body + " " + `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${filePathFromRoot}`)
 
     return body
 }
@@ -117,9 +120,12 @@ export const yml2Nav = (text: string) => yaml.safeLoad(text) as Nav
 export const yml2NotebookList = (text: string) => yaml.safeLoad(text) as string[]
 
 export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
+    console.log(notebook)
     try {
         const nav = yml2Nav(await getFileContentFromGHRepo(ghRepo, `${notebook}/nav.yaml`))
         
+        nav.questions = nav.questions.sort((a, b) => a.title > b.title ? 1: -1)
+
         nav.menu = nav.menu.map(x => ({
             ...x,
             title: x.title,
@@ -136,8 +142,9 @@ export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
 
         nav.questions = nav.questions.map(x => ({
             ...x,
+            title: x.title.substring(0, 50),
             file: `${notebook}/${x.file}`,
-            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/master/${notebook}/${x.file}`
+            absolutUrl: `https://raw.githubusercontent.com/${ghRepo.username}/${ghRepo.repo}/${branch}/${notebook}/${x.file}`
         }))
 
         return nav

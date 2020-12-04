@@ -3,9 +3,12 @@ import { getFileContentFromGHRepo, getNavFromNotebook } from '../../lib/utils';
 import { GetStaticProps } from 'next';
 
 export const QuestionPageStaticProps: GetStaticProps = async (context) => {
-
+    console.log(1, context.params.slug)
     if (!context.params.slug)
-        return { props: {} };
+        return { 
+            props: {},
+            revalidate: 1
+        };
 
     try {
         const notebook = context.params.slug[0];

@@ -1,22 +1,30 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
 import { Menu, Question } from '../lib/types';
-import { letters, parseQuestion, questionParsed2MD } from '../lib/utils';
+import { ampUrl, letters, parseQuestion, questionParsed2MD } from '../lib/utils';
 import RightMenu from './RightMenu';
 import Head from 'next/head';
+import { ChevronRightIcon } from '@primer/octicons-react';
+import { useAmp } from 'next/amp';
 
 export const QuestionComponent = (props: {
     questions: Question[];
     menu: Menu[];
     questionIndex: number;
 }) => {
+    const isAmp = useAmp()
+    
     const { questions, menu, questionIndex } = props;
 
     const question = questions[questionIndex];
 
     const questionParsed = parseQuestion(question.content);
 
-    const questionMD = questionParsed2MD(questionParsed, question.absolutUrl);
+    const questionMD = questionParsed2MD(isAmp, questionParsed, question.absolutUrl);
+
+    const menuFiltered = menu.find(x => x.topics.some(y => y.topic == question.topic))
+
+    const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == question.topic).title}</>: <>{menuFiltered.title}</>
 
     return (
         <>
@@ -44,6 +52,10 @@ export const QuestionComponent = (props: {
             #right-answer:checked ~ #${letters[questionParsed.answer]} + label {
                 background-color: rgb(220, 255, 228);
                 border-color: rgba(23, 111, 44, 0.2);
+            }
+            .icon-menu-right {
+                color: rgb(88, 96, 105);
+                margin: 0 6px;
             }
             `}</style>
             <style jsx>{`
@@ -78,9 +90,7 @@ export const QuestionComponent = (props: {
             `}</style>
             <div className="grid">
                 <RightMenu
-                    title={`${menu.find(x => x.topics.some(y => y.topic == question.topic)).title} / 
-                        ${menu.find(x => x.topics.some(y => y.topic == question.topic)).topics.find(x => x.topic == question.topic).title}
-                    `}
+                    title={title}
                     questions={questions} 
                 />
                 <div>
@@ -88,7 +98,6 @@ export const QuestionComponent = (props: {
                     {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
                     <QuestionForm
                         data={questionMD}
-                        filePath={question.absolutUrl} 
                     />
                 </div>
             </div>

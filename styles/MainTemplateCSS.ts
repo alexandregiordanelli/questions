@@ -6,7 +6,7 @@ h1 {
     font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
     font-size: 16px;
     font-weight: 400;
-    padding-left: 24px;
+    padding-left: 12px;
 }
 .main {
     flex-direction: column;
@@ -17,37 +17,10 @@ h1 {
     top: 0px;
     z-index: 1;
     position: sticky;
-    height: 66px;
-    background-color: rgb(27, 31, 35);
-    -webkit-box-align: center;
+    height: 62px;
+    background-color: #1b1f23;
     align-items: center;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
     display: flex;
+    padding-left: 24px; 
 }
-.container {
-    display: flex;
-}
-
-
-#menu-check {
-    display: none;
-}
-
-
-
-@media screen and (max-width: 1012px){
-    #menu-check {
-        display: block;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        right: 0;
-    }
-
-    :global(#menu-check:checked ~ ul) {
-        right: 0;
-    }
-}
-
 `
