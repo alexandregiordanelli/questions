@@ -6,7 +6,7 @@ h1 {
     font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
     font-size: 16px;
     font-weight: 400;
-    padding-left: 24px;
+    padding-left: 12px;
 }
 .main {
     flex-direction: column;
@@ -17,13 +17,11 @@ h1 {
     top: 0px;
     z-index: 1;
     position: sticky;
-    height: 66px;
-    background-color: rgb(27, 31, 35);
-    -webkit-box-align: center;
+    height: 62px;
+    background-color: rgb(27,31,35);
     align-items: center;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
     display: flex;
+    padding-left: 24px; 
 }
 .container {
     display: flex;
@@ -32,8 +30,6 @@ h1 {
 #menu-check {
     display: none;
 }
-
-
 
 label {
     z-index: 1;

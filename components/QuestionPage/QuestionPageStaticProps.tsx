@@ -5,7 +5,10 @@ import { GetStaticProps } from 'next';
 export const QuestionPageStaticProps: GetStaticProps = async (context) => {
     
     if (!context.params.slug)
-        return { props: {} };
+        return { 
+            props: {},
+            revalidate: 1
+        };
 
     try {
         const notebook = context.params.slug[0];

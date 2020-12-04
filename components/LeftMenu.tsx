@@ -9,8 +9,8 @@ export const LeftMenu = (props: {
         <>
             <style jsx>{`
             .menu {
-                top: 66px;
-                height: calc(100vh - 66px);
+                top: 62px;
+                height: calc(100vh - 62px);
                 overflow: auto;
                 color: rgb(47, 54, 61);
                 background-color: rgb(250, 251, 252);
