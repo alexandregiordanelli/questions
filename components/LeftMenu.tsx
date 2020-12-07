@@ -1,4 +1,4 @@
-import { ThreeBarsIcon } from '@primer/octicons-react';
+import { ChevronDownIcon, ThreeBarsIcon } from '@primer/octicons-react';
 import React, { useState } from 'react';
 import { Menu } from '../lib/types';
 import ActiveLink from './ActiveLink';
@@ -7,7 +7,6 @@ export const LeftMenu = (props: {
     menu: Menu[];
 }) => {
     const [toggleMenu, setToggleMenu] = useState(false);
-    
     return (
         <>
             <style jsx>{`
@@ -38,6 +37,7 @@ export const LeftMenu = (props: {
                 padding: 0;
                 margin: 0;
                 margin-top: 16px;
+                display: none;
             }
             
             .submenu a {
@@ -63,6 +63,8 @@ export const LeftMenu = (props: {
                 border-color: rgb(225, 228, 232);
             }
 
+
+
             @media screen and (max-width: 1012px){
                 .menu {
                     right: -260px;
@@ -73,56 +75,62 @@ export const LeftMenu = (props: {
             }
 
             #menu-check {
-    display: none;
-}
+                display: none;
+            }
 
-label {
-    z-index: 1;
-    right: 16px;
-    top: 16px;
-    position: fixed;
-    padding: 6px 16px;
-    display: none;
-    cursor: pointer;
-    line-height: 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    color: rgb(200,225,255);
-    border: 1px solid rgb(68,77,86);
-}
+            .menu-check-label {
+                z-index: 1;
+                right: 16px;
+                top: 16px;
+                position: fixed;
+                padding: 6px 16px;
+                display: none;
+                cursor: pointer;
+                line-height: 20px;
+                border-radius: 6px;
+                font-size: 14px;
+                color: rgb(200,225,255);
+                border: 1px solid rgb(68,77,86);
+            }
 
-label:hover {
-    color: rgb(255, 255, 255);
-    background-color: rgb(3, 102, 214);
-    border-color: rgba(27, 31, 35, 0.15);
-    box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.03) 0px 2px 0px inset;
-}
+            .menu-check-label:hover {
+                color: rgb(255, 255, 255);
+                background-color: rgb(3, 102, 214);
+                border-color: rgba(27, 31, 35, 0.15);
+                box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.03) 0px 2px 0px inset;
+            }
 
 
-@media screen and (max-width: 1012px){
-   
-    label {
-        display: block;
-    }
+            :global(.menuItemLabel) {
+                display: none;
+            }
+            :global(.menuItemLabel:checked ~ ul) {
+                display: block;
+            }
 
-    :global(#menu-check:checked ~ ul) {
-        right: 0;
-    }
-}
+
+            @media screen and (max-width: 1012px){
+            
+                .menu-check-label {
+                    display: block;
+                }
+
+                :global(#menu-check:checked ~ ul) {
+                    right: 0;
+                }
+            }
 
             `}</style>
             <div>
-                <label htmlFor="menu-check"><ThreeBarsIcon /></label>
+                <label htmlFor="menu-check" className="menu-check-label"><ThreeBarsIcon /></label>
                 <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                 <ul className={"menu"}>
-                    {props.menu.sort((a,b) => a.title > b.title? 1: -1).map((x, i) => {
-                        const topicsSorted = x.topics.sort((a,b) => a.title > b.title? 1: -1)
+                    {props.menu.sort((a, b) => a.title > b.title ? 1 : -1).map((x, i) => {
+                        const topicsSorted = x.topics.sort((a, b) => a.title > b.title ? 1 : -1)
                         return (
                             <li key={`${i}.0`} className={"menu-block"}>
-                                <ActiveLink href={topicsSorted[0].url}>
-                                    <a>{x.title}</a>
-                                </ActiveLink>
-                                {topicsSorted.length > 1 && <ul className={"submenu"}>
+                                <MenuItem id={`${i}.0`} url={topicsSorted[0].url} title={x.title} hasExpanded={topicsSorted.length > 1}/>
+                                <ul className={"submenu"}>
                                     {topicsSorted.map((y, j) => {
                                         if (y.url) {
                                             return (
@@ -134,12 +142,50 @@ label:hover {
                                             );
                                         }
                                     })}
-                                </ul>}
+                                </ul>
                             </li>
-                        )}
+                        )
+                    }
                     )}
                 </ul>
             </div>
         </>
     );
 };
+
+const MenuItem: React.FC<{
+    id: string
+    hasExpanded: boolean
+    url: string
+    title: string
+}> = props => {
+    const [opened, toggleOpened] = useState(false)
+    let component = <ActiveLink href={props.url}>
+        <a>{props.title}</a>
+        </ActiveLink>
+    if(props.hasExpanded){
+        component = <>
+            <label htmlFor={props.id}>
+                <ActiveLink href={props.url}>
+                    <a>{props.title}</a>
+                </ActiveLink>
+                <ChevronDownIcon/>
+            </label>
+            <input id={props.id} 
+                className="menuItemLabel"
+                type="checkbox" 
+                onChange={x => toggleOpened(x.target.checked)} 
+                checked={opened} 
+            />
+            <style jsx>{`
+            label {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                justify-content: space-between;
+            }
+        `}</style>
+        </>
+    }
+    return component
+}

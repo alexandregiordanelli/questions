@@ -10,7 +10,7 @@ import { useAmp } from 'next/amp'
 import { ampUrl } from '../../lib/utils'
 import Head from 'next/head'
 import { LeftMenu } from '../LeftMenu'
-import { Logo } from '../Logo'
+import { Logo, LogoTextual } from '../Logo'
 
 export const QuestionPage: React.FC<{
     questions: Question[]
@@ -97,6 +97,7 @@ export const IndexPage: React.FC = () => {
                 margin: 0px 0px 8px;
                 font-weight: 600;
                 color: rgb(33, 136, 255);
+                line-height: 100px;
             }
             .second {
                 background-color: rgb(200, 225, 255);
@@ -177,15 +178,16 @@ export const IndexPage: React.FC = () => {
             <div className="first">
                 <div className="container">
                     <div className="flex">
-                        <div className="img">
+                    <div className="img">
                             <Logo size={'100%'} color="#fff"/>
+                            {/* <LogoTextual color="#fff" size={100}/> */}
                         </div>
                         <div className="texts">
-                            <h1>QuestionsOf</h1>
-                            <span>Design, build, and create with GitHub’s design system</span>
-                            <p>Primer was created for GitHub by GitHub. We love it so much, we chose to open-source it to allow the community to design and build their own projects with Primer.</p>
+                            <h1>Questões selecionadas para você passar</h1>
+                            <span>Escolha o exame, prova, certificação e se prepare resolvendo questões</span>
+                            <p>Nós já organizamos, filtramos e escolhemos as principais questões para você ter exito!</p>
                         </div>
-    
+  
                     </div>
                     
                 </div>
