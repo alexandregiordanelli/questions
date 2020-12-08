@@ -93,7 +93,6 @@ const FormEmail = props => {
             border-radius: 6px;
             align-items: center;
             margin-top: 46px;
-            min-width: 360px;
             flex: 1;
             max-width: 400px;
         }
