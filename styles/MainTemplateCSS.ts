@@ -12,11 +12,7 @@ h1 {
     font-weight: 400;
     padding-left: 12px;*/
 } 
-.main {
-    flex-direction: column;
-    min-height: 100vh;
-    display: flex;
-}
+
 .head {
     top: 0px;
     z-index: 1;
@@ -29,10 +25,16 @@ h1 {
 }
 .head a {
     display: flex;
+    align-items: center;
 }
 @media (max-width: 767px) {
     .textual{
         display: none;
+    }
+}
+@media screen and (max-width: 1012px){
+    .head {
+        padding-left: 76px;
     }
 }
 `

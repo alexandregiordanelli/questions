@@ -120,7 +120,7 @@ export const yml2Nav = (text: string) => yaml.safeLoad(text) as Nav
 export const yml2NotebookList = (text: string) => yaml.safeLoad(text) as string[]
 
 export const getNavFromNotebook = async (ghRepo: GitHub, notebook: string) => {
-    console.log(notebook)
+
     try {
         const nav = yml2Nav(await getFileContentFromGHRepo(ghRepo, `${notebook}/nav.yaml`))
         

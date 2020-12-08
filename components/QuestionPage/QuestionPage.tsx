@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu, Question } from '../../lib/types'
 import { globalCSS } from '../../styles/globalCSS'
 import { katexCSS } from "../../styles/katexCSS"
@@ -11,6 +11,11 @@ import { ampUrl } from '../../lib/utils'
 import Head from 'next/head'
 import { LeftMenu } from '../LeftMenu'
 import { Logo, LogoTextual } from '../Logo'
+import FormEmail from '../FormEmail'
+import dynamic from 'next/dynamic'
+import firebase from '../../lib/firebase-client'
+import Link from 'next/link'
+import { MainTemplateCSS } from '../../styles/MainTemplateCSS'
 
 export const QuestionPage: React.FC<{
     questions: Question[]
@@ -62,20 +67,40 @@ export const QuestionPage: React.FC<{
                     .container {
                         display: flex;
                     }
+                    .main {
+                        flex-direction: column;
+                        min-height: 100vh;
+                        display: flex;
+                    }
                     `}</style>
-            <MainTemplate>
+                    <div className="main">
                 {!deepth && <IndexPage/>}
-                <div className={"container"}>
-                    {deepth >= 1 && <LeftMenu menu={menu} />}
-                    {deepth > 1 && <QuestionComponent menu={menu} questions={questions} questionIndex={questionIndex} />}
-                    {deepth == 1 && <QuestionBook questionBook={questionBook} startUrl={""} />}
+                {deepth && (<>
+                    <MainTemplate/>                
+                
+                    <div className={"container"}>
+                        {deepth >= 1 && <LeftMenu menu={menu} />}
+                        {deepth > 1 && <QuestionComponent menu={menu} questions={questions} questionIndex={questionIndex} />}
+                        {deepth == 1 && <QuestionBook questionBook={questionBook} startUrl={""} />}
+                    </div>
+                
+                </>)}
                 </div>
-            </MainTemplate>
         </>
     )
 }
 
+
+
+const DynamicComponentWithNoSSR = dynamic(
+    () => new Promise(resolve => resolve(FormEmail)),
+    { ssr: false }
+)
+
+
 export const IndexPage: React.FC = () => {
+    const [user, setUser] = useState(firebase.auth().currentUser) //it always born null
+    const [verifyAtLeastOnce, setVerifyAtleastOnce] = useState(false)
     const imgs = [
         "https://lh3.googleusercontent.com/proxy/XZmP8KWDZev7phUM97puc-s7LHtyG3WKcQ_J2RGPX4BMlFIPnxkO58wxFbUsHgKFJK2C61ncUs36kCyS-dTtJ2dPuE4ubM2Y7FJLMe5TdO9MvSvvcXloNFOgOnR-ngWudGwoHDQYpKRT5q3GWkQ",
         "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
@@ -86,8 +111,55 @@ export const IndexPage: React.FC = () => {
         "ITA",
         "IME"
     ]
+
+    const urls = [
+        "enem",
+        "",
+        ""
+    ]
+
+    useEffect(()=>{
+        firebase.auth().onAuthStateChanged(user => {
+            setUser(user)
+            setVerifyAtleastOnce(true)
+        })
+    }, [])
+
+
+
     return (
         <>
+            <div className="first">
+                <div className="container">
+                    <div className="flex">
+
+                        <div className="texts">
+                            <h1>Questões selecionadas para você passar</h1>
+                            <span>Escolha o exame, prova, certificação e se prepare resolvendo questões</span>
+                            <p>Nós já organizamos, filtramos e escolhemos as principais questões para você ter exito!</p>
+                            
+                        </div>
+ 
+                            {verifyAtLeastOnce && !user && <DynamicComponentWithNoSSR/>}
+                            {verifyAtLeastOnce && user && <button onClick={()=>firebase.auth().signOut()}>Sair</button>}
+
+                    </div>
+                    
+                </div>
+            </div>
+            <div className="second">
+                <div className="container">
+                        <div className="flex2">
+                        {[0,1,2].map((x, i) => 
+                        <div className="box">
+                            <div><img src={imgs[i]}/></div>
+                            <h1>{!!urls[i] ? <Link href={urls[i]}><a>{names[i]}</a></Link> : names[i]}</h1>
+                            <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>
+                        </div>)}
+                    </div>
+                    <div className="third">© QuestionsOf 2020</div>
+                </div>
+            </div>
             <style jsx>{`
             .first {
                 background: rgb(27,31,35);
@@ -126,11 +198,16 @@ export const IndexPage: React.FC = () => {
             }
             .flex {
                 display: flex;
+                align-items: flex-end;
+            }
+            .flex2 {
+                display: flex;
+                flex-wrap: wrap;
             }
             .texts {
-                width: 60%;
                 padding-left: 32px;
                 padding-right: 32px;
+                flex: 2;
             }
             .texts span {
                 font-size: 40px;
@@ -141,12 +218,10 @@ export const IndexPage: React.FC = () => {
             .texts p {
                 color: rgb(200, 225, 255);
             }
-            .img {
-                padding-left: 32px;
-                padding-right: 32px;
-            }
             .box {
-                width: 33.33%;
+                max-width: 400px;
+                min-width: 300px;
+                flex: 1;
                 padding-right: 32px;
                 margin-bottom: 64px;
             }
@@ -174,38 +249,16 @@ export const IndexPage: React.FC = () => {
             .second .container{
                 margin-bottom: 32px;
             }
+           
+            @media screen and (max-width: 1012px){
+                .flex{
+                    flex-direction: column;
+                    align-items: inherit;
+                }
+            }
             `}</style>
-            <div className="first">
-                <div className="container">
-                    <div className="flex">
-                    <div className="img">
-                            <Logo size={'100%'} color="#fff"/>
-                            {/* <LogoTextual color="#fff" size={100}/> */}
-                        </div>
-                        <div className="texts">
-                            <h1>Questões selecionadas para você passar</h1>
-                            <span>Escolha o exame, prova, certificação e se prepare resolvendo questões</span>
-                            <p>Nós já organizamos, filtramos e escolhemos as principais questões para você ter exito!</p>
-                        </div>
-  
-                    </div>
-                    
-                </div>
-            </div>
-            <div className="second">
-                <div className="container">
-                        <div className="flex">
-                        {[0,1,2].map((x, i) => 
-                        <div className="box">
-                            <div><img src={imgs[i]}/></div>
-                            <h1>{names[i]}</h1>
-                            <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>
-                        </div>)}
-                    </div>
-                    <div className="third">© QuestionsOf 2020</div>
-                </div>
-            </div>
-
         </>
     )
 }
+
+

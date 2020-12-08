@@ -67,9 +67,9 @@ export const LeftMenu = (props: {
 
             @media screen and (max-width: 1012px){
                 .menu {
-                    right: -260px;
+                    left: -260px;
                     position: fixed;
-                    border-width: 0px 0px 0px 1px;
+                    border-width: 0px 1px 0px 0px;
                     transition: 0.5s;
                 }
             }
@@ -80,8 +80,8 @@ export const LeftMenu = (props: {
 
             .menu-check-label {
                 z-index: 1;
-                right: 16px;
-                top: 16px;
+                left: 14px;
+                top: 14px;
                 position: fixed;
                 padding: 6px 16px;
                 display: none;
@@ -116,7 +116,7 @@ export const LeftMenu = (props: {
                 }
 
                 :global(#menu-check:checked ~ ul) {
-                    right: 0;
+                    left: 0;
                 }
             }
 
