@@ -38,3 +38,8 @@ export type QuestionParsed = {
     options: string[]
     answer: number
 }
+export enum Env {
+    development = 'development',
+    preview = 'preview',
+    production = 'production'
+}

@@ -7,7 +7,7 @@ import { QuestionComponent } from '../QuestionComponent'
 import { MainTemplate } from '../MainTemplate'
 import { QuestionBook } from '../QuestionBook'
 import { useAmp } from 'next/amp'
-import { ampUrl } from '../../lib/utils'
+import { ampUrl, urlEnv } from '../../lib/utils'
 import Head from 'next/head'
 import { LeftMenu } from '../LeftMenu'
 import FormEmail from '../FormEmail'
@@ -36,7 +36,7 @@ export const QuestionPage: React.FC<{
     return (
         <>
             <Head>
-                <link rel={isAmp? "canonical": "amphtml"} href={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}${ampUrl(!isAmp, slug?.join('/'))}`}/>
+                <link rel={isAmp? "canonical": "amphtml"} href={`${urlEnv}${ampUrl(!isAmp, slug?.join('/'))}`}/>
                 <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png"/>
                 <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png"/>
                 <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png"/>

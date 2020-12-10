@@ -2,11 +2,11 @@ import { NextRouter, useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Logo } from './Logo';
 import firebase from '../lib/firebase-client'
-import { urlWithProtocol } from '../lib/utils';
+import { urlEnv } from '../lib/utils';
 
 export const sendEmailLogin = (e: React.FormEvent<HTMLFormElement>, email: string, router: NextRouter) => {
     e.preventDefault()
-    let url = `${urlWithProtocol}${router.asPath}`
+    let url = `${urlEnv}${router.asPath}`
     url = url.split('').some(x => x == '?') ? url.concat(`&email=${email}`): url.concat(`?email=${email}`)
     console.log(url)
     firebase.auth().sendSignInLinkToEmail(email, {
@@ -31,7 +31,7 @@ export const sendEmailLogin = (e: React.FormEvent<HTMLFormElement>, email: strin
 }
 
 export const parseLinkEmailLogin = (router: NextRouter) => {
-    const url = `${urlWithProtocol}${router.asPath}`
+    const url = `${urlEnv}${router.asPath}`
     if (firebase.auth().isSignInWithEmailLink(url)) {
         firebase.auth().signInWithEmailLink(router.query.email as string, url)
           .then(result => {

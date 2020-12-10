@@ -1,4 +1,4 @@
-import { GitHub, Nav, Path, QuestionParsed } from "./types";
+import { Env, GitHub, Nav, Path, QuestionParsed } from "./types";
 import yaml from 'js-yaml';
 import React, {  } from 'react';
 import math from 'remark-math';
@@ -16,7 +16,15 @@ const branch = process.env.VERCEL_GIT_COMMIT_REF
     ? process.env.VERCEL_GIT_COMMIT_REF : process.env.NODE_ENV == "development" 
     ? "dev": "master"
 
-export const urlWithProtocol = `http${process.env.NODE_ENV != "development"? 's': ''}://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+export const urlEnvDic = {
+    [Env.development]: 'http://localhost:3000',
+    [Env.preview]: 'https://questions.giordanelli.vercel.app',
+    [Env.production]: 'https://questionsof.com'
+}
+
+const env = process.env.NEXT_PUBLIC_VERCEL_ENV as Env
+
+export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')
 
