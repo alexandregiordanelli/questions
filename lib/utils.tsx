@@ -28,7 +28,7 @@ export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url}`: `/${url}`
+export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url ?? ""}`: `/${url ?? ""}`
 
 const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
     return unified()
