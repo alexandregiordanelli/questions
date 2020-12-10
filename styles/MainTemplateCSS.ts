@@ -20,8 +20,16 @@ h1 {
     height: 62px;
     background-color: #1b1f23;
     align-items: center;
+    justify-content: space-between;
     display: flex;
-    padding-left: 24px; 
+    padding: 0 24px;
+}
+.left {
+    align-items: center;
+    display: flex;
+}
+.right {
+    color: rgb(200, 225, 255);
 }
 .head a {
     display: flex;

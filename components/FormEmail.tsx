@@ -1,18 +1,24 @@
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Logo } from './Logo';
 import firebase from '../lib/firebase-client'
-import { LoaderComponent } from 'next/dynamic';
+import { urlWithProtocol } from '../lib/utils';
 
-export const sendEmailLogin = (email: string) => {
+export const sendEmailLogin = (e: React.FormEvent<HTMLFormElement>, email: string, router: NextRouter) => {
+    e.preventDefault()
+    let url = `${urlWithProtocol}${router.asPath}`
+    url = url.split('').some(x => x == '?') ? url.concat(`&email=${email}`): url.concat(`?email=${email}`)
+    console.log(url)
     firebase.auth().sendSignInLinkToEmail(email, {
-        // URL you want to redirect back to. The domain (www.example.com) for this
-        // URL must be in the authorized domains list in the Firebase Console.
-        url: 'http://localhost:3000?email='+email,
+        url,
         handleCodeInApp: true,
       })
     .then(() => {
-        console.log("aqui")
+        router.push({
+            query: {
+                email
+            }
+        })
       // The link was successfully sent. Inform the user.
       // Save the email locally so you don't need to ask the user for it again
       // if they open the link on the same device.
@@ -24,11 +30,13 @@ export const sendEmailLogin = (email: string) => {
     });
 }
 
-export const parseLinkEmailLogin = (url) => {
+export const parseLinkEmailLogin = (router: NextRouter) => {
+    const url = `${urlWithProtocol}${router.asPath}`
     if (firebase.auth().isSignInWithEmailLink(url)) {
-        firebase.auth().signInWithEmailLink("alexandre.giordanelli@gmail.com", url)
+        firebase.auth().signInWithEmailLink(router.query.email as string, url)
           .then(result => {
-              console.log(result)
+
+                router.replace(router.query.return as string ?? "/")
             // Clear email from storage.
             //window.localStorage.removeItem('emailForSignIn');
             // You can access the new user via result.user
@@ -57,13 +65,13 @@ const FormEmail = props => {
 
     useEffect(() => {
         if(router.query["apiKey"] && router.query["oobCode"]){
-            parseLinkEmailLogin("http://localhost:3000" + router.asPath)
+            parseLinkEmailLogin(router)
         }
     }, [router.query]);
 
     return (
         <>
-        <form className="formLogin" onSubmit={() => sendEmailLogin(email)}>
+        <form className="formLogin" onSubmit={e => sendEmailLogin(e, email, router)}>
             <div className="logo">
                 <Logo size={200} color={cursorPosition > -1 ? "rgb(33,136,255)" : "rgb(27,31,35)"} />
                 <div className="eye" style={{ right: 92 - cursorPosition * 0.3, display: cursorPosition > -1 ? 'block' : 'none' }}>
@@ -92,7 +100,6 @@ const FormEmail = props => {
             display: flex;
             border-radius: 6px;
             align-items: center;
-            margin-top: 46px;
             flex: 1;
             max-width: 400px;
         }

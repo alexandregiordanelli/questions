@@ -10,12 +10,10 @@ import { useAmp } from 'next/amp'
 import { ampUrl } from '../../lib/utils'
 import Head from 'next/head'
 import { LeftMenu } from '../LeftMenu'
-import { Logo, LogoTextual } from '../Logo'
 import FormEmail from '../FormEmail'
 import dynamic from 'next/dynamic'
 import firebase from '../../lib/firebase-client'
 import Link from 'next/link'
-import { MainTemplateCSS } from '../../styles/MainTemplateCSS'
 
 export const QuestionPage: React.FC<{
     questions: Question[]
@@ -38,7 +36,7 @@ export const QuestionPage: React.FC<{
     return (
         <>
             <Head>
-                <link rel={isAmp? "canonical": "amphtml"} href={`https://questionsof.com${ampUrl(!isAmp, slug?.join('/'))}`}/>
+                <link rel={isAmp? "canonical": "amphtml"} href={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}${ampUrl(!isAmp, slug?.join('/'))}`}/>
                 <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png"/>
                 <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png"/>
                 <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png"/>
@@ -113,7 +111,7 @@ export const IndexPage: React.FC = () => {
     ]
 
     const urls = [
-        "enem",
+        "/enem",
         "",
         ""
     ]
@@ -157,7 +155,7 @@ export const IndexPage: React.FC = () => {
                             <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>
                         </div>)}
                     </div>
-                    <div className="third">© QuestionsOf 2020</div>
+                    <div className="third">© questionsof 2020</div>
                 </div>
             </div>
             <style jsx>{`

@@ -16,6 +16,8 @@ const branch = process.env.VERCEL_GIT_COMMIT_REF
     ? process.env.VERCEL_GIT_COMMIT_REF : process.env.NODE_ENV == "development" 
     ? "dev": "master"
 
+export const urlWithProtocol = `http${process.env.NODE_ENV != "development"? 's': ''}://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+
 export const letters = 'abcdefgh'.split('')
 
 export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url}`: `/${url}`
