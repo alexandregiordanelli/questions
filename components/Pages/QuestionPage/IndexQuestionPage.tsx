@@ -5,7 +5,7 @@ import markdown from 'remark-parse';
 import gfm from 'remark-gfm';
 import rehype2react from 'rehype-react';
 
-export const QuestionBook: React.FC<{
+export const IndexQuestionPage: React.FC<{
     questionBook: string;
     startUrl: string;
 }> = props => {

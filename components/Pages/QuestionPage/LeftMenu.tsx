@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ThreeBarsIcon } from '@primer/octicons-react';
 import React, { useState } from 'react';
-import { Menu } from '../lib/types';
-import ActiveLink from './ActiveLink';
+import { Menu } from '../../../lib/types';
+import ActiveLink from '../../ActiveLink';
 
 export const LeftMenu = (props: {
     menu: Menu[];

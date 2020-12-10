@@ -1,6 +1,6 @@
 import css from 'styled-jsx/css';
 
-export const MainTemplateCSS = css`
+export const HeaderCSS = css`
 
 h1 {
     color: rgb(33, 136, 255);

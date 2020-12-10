@@ -1,7 +1,7 @@
 import { getPathsFromGHRepo } from '../../lib/utils';
 import { GetStaticPaths } from 'next';
 
-export const QuestionPageStaticPaths: GetStaticPaths = async () => {
+export const PagesStaticPaths: GetStaticPaths = async () => {
     const paths = await getPathsFromGHRepo({
         username: 'alexandregiordanelli',
         repo: 'questions_md'

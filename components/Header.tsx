@@ -1,18 +1,18 @@
 import React from 'react';
 import { ampUrl } from '../lib/utils';
 import Link from 'next/link';
-import { MainTemplateCSS } from '../styles/MainTemplateCSS';
+import { HeaderCSS } from '../styles/HeaderCSS';
 import { useAmp } from 'next/amp'
 import { Logo, LogoTextual } from './Logo';
 import { useRouter } from 'next/router';
 
-export const MainTemplate: React.FC = () => {
+export const Header: React.FC = () => {
     const isAmp = useAmp()
     const router = useRouter();
     
     return (
         <>
-            <style jsx>{MainTemplateCSS}</style>
+            <style jsx>{HeaderCSS}</style>
             <div className="head">
                 <div className="left">
                     <Link href="/">
