@@ -12,11 +12,18 @@ const QuestionPage: React.FC<{
     questionBook: string
 }> = props => {
     return (
-        <div className={"container"}>
-            {props.deepth >= 1 && <LeftMenu menu={props.menu} />}
-            {props.deepth > 1 && <QuestionFormWithRightMenu menu={props.menu} questions={props.questions} questionIndex={props.questionIndex} />}
-            {props.deepth == 1 && <IndexQuestionPage questionBook={props.questionBook} startUrl={""} />}
-        </div>
+        <>
+            <style jsx>{`
+            .container {
+                display: flex;
+            }
+            `}</style>
+            <div className={"container"}>
+                {props.deepth >= 1 && <LeftMenu menu={props.menu} />}
+                {props.deepth > 1 && <QuestionFormWithRightMenu menu={props.menu} questions={props.questions} questionIndex={props.questionIndex} />}
+                {props.deepth == 1 && <IndexQuestionPage questionBook={props.questionBook} startUrl={""} />}
+            </div>
+        </>
     )
 }
 
