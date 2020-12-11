@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { absolute } from "../../../lib/utils"
 import { Question } from "../../../lib/types"
 import ActiveLink from "../../ActiveLink"
@@ -13,6 +13,10 @@ const RightMenu: React.FC<{
     const slugJoined = `${(router.query.slug as string[]).join('/')}`
     const [toggleMenu, setToggleMenu] = useState(false);
     
+    useEffect(()=>{
+        setToggleMenu(false)
+    }, [router.asPath])
+
     return (
         <>
             <style jsx>{`
