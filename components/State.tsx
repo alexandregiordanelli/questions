@@ -1,48 +1,21 @@
 import React, {createContext, useContext, useReducer} from 'react';
-//import { MainState, MainAction, ActionType, Screen, initialState } from './Models';
+import { MainReducer, MainAction, MainState, MainContext } from '../lib/types';
+import { userReducer, initialUser } from '../lib/userReducer';
 
-export type MainState = {
-    value: string
-};
-
-export const initialState: MainState = {
-    value: ''
-};
-
-export enum ActionType {
-    ChangeScreen,
-    ChangeLocation
+const initialState: MainState = {
+    user: initialUser
 }
 
-export type MainAction = {
-    type: ActionType;
-    value: string;
-};
-
-
-type MainContext = [MainState, React.Dispatch<MainAction>]
+const combineReducers: MainReducer = (state, action) => ({
+    user: userReducer(state.user, action),
+})
 
 export const StateContext = createContext<MainContext>({} as MainContext);
 
-function reducer(state: MainState, action: MainAction) {
-    switch (action.type) {
-        case ActionType.ChangeScreen:
-            return {
-                value: action.value
-            }
-        case ActionType.ChangeLocation:
-            return {
-                value: action.value
-            }
-        default:
-            return state
-    }
-}
-
 export const StateProvider: React.FC = props =>(
-  <StateContext.Provider value={useReducer(reducer, initialState)}>
-    {props.children}
-  </StateContext.Provider>
+    <StateContext.Provider value={useReducer<MainReducer>(combineReducers, initialState)}>
+        {props.children}
+    </StateContext.Provider>
 );
 
 export const useStateValue = () => useContext(StateContext);

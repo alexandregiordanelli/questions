@@ -5,11 +5,15 @@ import { HeaderCSS } from '../styles/HeaderCSS';
 import { useAmp } from 'next/amp'
 import { Logo, LogoTextual } from './Logo';
 import { useRouter } from 'next/router';
+import { useStateValue } from './State';
 
 export const Header: React.FC = () => {
     const isAmp = useAmp()
     const router = useRouter();
+    const [state, dispatch] = useStateValue();
+
     
+
     return (
         <>
             <style jsx>{HeaderCSS}</style>
@@ -23,9 +27,9 @@ export const Header: React.FC = () => {
                     </Link>
                     <h1><Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1>
                 </div>
-                <Link href={`/login?return=${router.asPath}`}>
+                {!(state.user.currentUser && !state.user.currentUser.isAnonymous) && <Link href={`/login?return=${router.asPath}`}>
                     <a className="right">Sign In</a>
-                </Link>
+                </Link>}
             </div>
         </>
     );

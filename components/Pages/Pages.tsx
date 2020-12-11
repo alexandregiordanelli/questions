@@ -6,6 +6,7 @@ import { useAmp } from 'next/amp'
 import HeadHtml from '../HeadHtml'
 import { IndexPage } from './IndexPage/IndexPage'
 import QuestionPage from './QuestionPage/QuestionPage'
+import { StateProvider } from '../State'
 
 export const Pages: React.FC<{
     questions: Question[]
@@ -26,12 +27,9 @@ export const Pages: React.FC<{
     if (deepth && !(menu || questions)) return null
 
     return (
-        <>
+        <StateProvider>
             <HeadHtml isAmp={isAmp} slug={slug}/>
             <style jsx>{`
-            .container {
-                display: flex;
-            }
             .main {
                 flex-direction: column;
                 min-height: 100vh;
@@ -45,7 +43,7 @@ export const Pages: React.FC<{
                 <QuestionPage deepth={deepth} menu={menu} questionBook={questionBook} questionIndex={questionIndex} questions={questions}/>
             </>)}
             </div>
-        </>
+        </StateProvider>
     )
 }
 

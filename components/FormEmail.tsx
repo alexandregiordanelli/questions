@@ -4,53 +4,42 @@ import { Logo } from './Logo';
 import firebase from '../lib/firebase-client'
 import { urlEnv } from '../lib/utils';
 
-export const sendEmailLogin = (e: React.FormEvent<HTMLFormElement>, email: string, router: NextRouter) => {
-    e.preventDefault()
-    let url = `${urlEnv}${router.asPath}`
-    url = url.split('').some(x => x == '?') ? url.concat(`&email=${email}`): url.concat(`?email=${email}`)
-    console.log(url)
-    firebase.auth().sendSignInLinkToEmail(email, {
-        url,
-        handleCodeInApp: true,
-      })
-    .then(() => {
-        router.push({
-            query: {
-                email
-            }
-        })
-      // The link was successfully sent. Inform the user.
-      // Save the email locally so you don't need to ask the user for it again
-      // if they open the link on the same device.
-      // window.localStorage.setItem('emailForSignIn', email);
-    })
-    .catch(error => {
-        console.log("error")
-      // Some error occurred, you can inspect the code: error.code
-    });
+export const loginAnonymously = async () => {
+    try{
+        if(!firebase.auth().currentUser) 
+            await firebase.auth().signInAnonymously()
+    }
+    catch(e){
+        console.log('loginAnonymously', e)
+    }
 }
 
-export const parseLinkEmailLogin = (router: NextRouter) => {
-    const url = `${urlEnv}${router.asPath}`
-    if (firebase.auth().isSignInWithEmailLink(url)) {
-        firebase.auth().signInWithEmailLink(router.query.email as string, url)
-          .then(result => {
+export const sendEmailLogin = async (url: string, email: string) => {
+    url = url.split('').some(x => x == '?') ? url.concat(`&email=${encodeURIComponent(email)}`): url.concat(`?email=${email}`)
 
-                router.replace(router.query.return as string ?? "/")
-            // Clear email from storage.
-            //window.localStorage.removeItem('emailForSignIn');
-            // You can access the new user via result.user
-            // Additional user info profile not available via:
-            // result.additionalUserInfo.profile == null
-            // You can check if the user is new or existing:
-            // result.additionalUserInfo.isNewUser
-          })
-          .catch(error => {
-              console.log(error)
-            // Some error occurred, you can inspect the code: error.code
-            // Common errors could be invalid email and invalid or expired OTPs.
-          });
-      }
+    await firebase.auth().sendSignInLinkToEmail(email, {
+        url,
+        handleCodeInApp: true,
+    })
+}
+
+export const linkAuth = async (router: NextRouter) => {
+    const url = `${urlEnv}${router.asPath}`
+
+    const credential = firebase.auth.EmailAuthProvider.credentialWithLink(router.query.email as string, url);
+
+    console.log("tentar linkAuth")
+    await firebase.auth().currentUser.linkWithCredential(credential)
+
+}
+
+export const parseLinkEmailLogin = async (router: NextRouter) => {
+    const url = `${urlEnv}${router.asPath}`
+
+    //if (firebase.auth().isSignInWithEmailLink(url)) {
+        console.log("tentar parseLinkEmailLogin")
+        await firebase.auth().signInWithEmailLink(router.query.email as string, url)
+    //}
 }
 
 const FormEmail = props => {
@@ -63,15 +52,14 @@ const FormEmail = props => {
             setCursorPosition(-1);
     }, [cursorPosition]);
 
-    useEffect(() => {
-        if(router.query["apiKey"] && router.query["oobCode"]){
-            parseLinkEmailLogin(router)
-        }
-    }, [router.query]);
+    const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        await sendEmailLogin(`${urlEnv}${router.asPath}`, email)
+    }
 
     return (
         <>
-        <form className="formLogin" onSubmit={e => sendEmailLogin(e, email, router)}>
+        <form className="formLogin" onSubmit={OnSubmit}>
             <div className="logo">
                 <Logo size={200} color={cursorPosition > -1 ? "rgb(33,136,255)" : "rgb(27,31,35)"} />
                 <div className="eye" style={{ right: 92 - cursorPosition * 0.3, display: cursorPosition > -1 ? 'block' : 'none' }}>

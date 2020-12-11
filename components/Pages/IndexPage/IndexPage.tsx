@@ -3,6 +3,7 @@ import FormEmail from '../../FormEmail';
 import dynamic from 'next/dynamic';
 import firebase from '../../../lib/firebase-client';
 import Link from 'next/link';
+import { useStateValue } from '../../State';
 
 const DynamicComponentWithNoSSR = dynamic(
     () => new Promise(resolve => resolve(FormEmail)),
@@ -11,8 +12,8 @@ const DynamicComponentWithNoSSR = dynamic(
 
 
 export const IndexPage: React.FC = () => {
-    const [user, setUser] = useState(firebase.auth().currentUser); //it always born null
-    const [verifyAtLeastOnce, setVerifyAtleastOnce] = useState(false);
+    const [state, dispatch] = useStateValue();
+    
     const imgs = [
         "https://lh3.googleusercontent.com/proxy/XZmP8KWDZev7phUM97puc-s7LHtyG3WKcQ_J2RGPX4BMlFIPnxkO58wxFbUsHgKFJK2C61ncUs36kCyS-dTtJ2dPuE4ubM2Y7FJLMe5TdO9MvSvvcXloNFOgOnR-ngWudGwoHDQYpKRT5q3GWkQ",
         "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
@@ -30,15 +31,6 @@ export const IndexPage: React.FC = () => {
         ""
     ];
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            setUser(user);
-            setVerifyAtleastOnce(true);
-        });
-    }, []);
-
-
-
     return (
         <>
             <div className="first">
@@ -52,8 +44,8 @@ export const IndexPage: React.FC = () => {
 
                         </div>
 
-                        {verifyAtLeastOnce && !user && <DynamicComponentWithNoSSR />}
-                        {verifyAtLeastOnce && user && <button onClick={() => firebase.auth().signOut()}>Sair</button>}
+                        {/* {state.user.currentUser?.isAnonymous && <DynamicComponentWithNoSSR />} */}
+                        {state.user.currentUser && <button onClick={() => firebase.auth().currentUser.delete()}>Sair</button>}
 
                     </div>
 
@@ -62,7 +54,7 @@ export const IndexPage: React.FC = () => {
             <div className="second">
                 <div className="container">
                     <div className="flex2">
-                        {[0, 1, 2].map((x, i) => <div className="box">
+                        {[0, 1, 2].map((x, i) => <div key={i} className="box">
                             <div><img src={imgs[i]} /></div>
                             <h1>{!!urls[i] ? <Link href={urls[i]}><a>{names[i]}</a></Link> : names[i]}</h1>
                             <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>

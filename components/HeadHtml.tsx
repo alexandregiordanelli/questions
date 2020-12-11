@@ -1,13 +1,33 @@
+import firebase from '../lib/firebase-client';
 import Head from "next/head"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { ampUrl, urlEnv } from "../lib/utils"
 import { globalCSS } from "../styles/globalCSS"
 import { katexCSS } from "../styles/katexCSS"
+import { useStateValue } from './State';
+import { UserActionType } from '../lib/types';
+import { useRouter } from 'next/router';
+import { linkAuth, loginAnonymously, parseLinkEmailLogin } from './FormEmail';
 
 const HeadHtml: React.FC<{
     isAmp: boolean,
     slug: string[]
 }> = props => {
+    const [state, dispatch] = useStateValue();
+    const router = useRouter();
+
+    const byEmail = !!router.query && !!router.query["apiKey"] && !!router.query["oobCode"]
+
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(user => {
+            dispatch({
+                type: UserActionType.ChangeUser,
+                value: user
+            })
+        })
+    }, []);
+
     return (
         <>
             <Head>

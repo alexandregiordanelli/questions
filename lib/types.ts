@@ -1,3 +1,6 @@
+import { Reducer } from "react"
+import firebase from '../lib/firebase-client';
+
 export type Menu = {
     title: string
     topics: Topic[]
@@ -43,3 +46,29 @@ export enum Env {
     preview = 'preview',
     production = 'production'
 }
+
+export type MainContext = [MainState, React.Dispatch<MainAction>]
+
+export type UserState = {
+    currentUser: firebase.User
+    allUsers: firebase.User[]
+}
+
+export enum UserActionType {
+    ChangeUser,
+    AddUser,
+    DeleteUsers
+}
+
+export type UserAction = {
+    type: UserActionType
+    value?: firebase.User
+}
+
+export type MainState = {
+    user: UserState
+};
+
+export type MainAction = UserAction
+
+export type MainReducer = Reducer<MainState, MainAction>
