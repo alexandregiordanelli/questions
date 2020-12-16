@@ -1,12 +1,19 @@
 import { ChevronDownIcon, ThreeBarsIcon } from '@primer/octicons-react';
-import React, { useState } from 'react';
-import { Menu } from '../lib/types';
-import ActiveLink from './ActiveLink';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { Menu } from '../../../lib/types';
+import ActiveLink from '../../ActiveLink';
 
 export const LeftMenu = (props: {
     menu: Menu[];
 }) => {
+    const router = useRouter()
     const [toggleMenu, setToggleMenu] = useState(false);
+
+    useEffect(()=>{
+        setToggleMenu(false)
+    }, [router.asPath])
+
     return (
         <>
             <style jsx>{`
@@ -160,6 +167,12 @@ const MenuItem: React.FC<{
     title: string
 }> = props => {
     const [opened, toggleOpened] = useState(false)
+    const router = useRouter()
+
+    useEffect(()=>{
+        toggleOpened(false)
+    }, [router.asPath])
+
     let component = <ActiveLink href={props.url}>
         <a>{props.title}</a>
         </ActiveLink>

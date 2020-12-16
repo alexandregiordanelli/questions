@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import "katex/dist/contrib/mhchem.js"
-import { QuestionParsed } from '../lib/types';
-import { letters } from '../lib/utils';
+import { QuestionParsed } from '../../../lib/types';
+import { letters } from '../../../lib/utils';
 
 export const QuestionForm: React.FC<{
     data: QuestionParsed

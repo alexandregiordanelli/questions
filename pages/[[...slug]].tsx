@@ -1,9 +1,9 @@
-import { QuestionPage } from '../components/QuestionPage/QuestionPage'
-import { QuestionPageStaticPaths } from '../components/QuestionPage/QuestionPageStaticPaths'
-import { QuestionPageStaticProps } from '../components/QuestionPage/QuestionPageStaticProps'
+import { Pages } from '../components/Pages/Pages'
+import { PagesStaticPaths } from '../components/Pages/PagesStaticPaths'
+import { PagesStaticProps } from '../components/Pages/PagesStaticProps'
 
-export default QuestionPage
+export default Pages
 
-export const getStaticPaths = QuestionPageStaticPaths
+export const getStaticPaths = PagesStaticPaths
 
-export const getStaticProps = QuestionPageStaticProps
+export const getStaticProps = PagesStaticProps

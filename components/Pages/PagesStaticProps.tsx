@@ -2,7 +2,7 @@ import { GitHub } from '../../lib/types';
 import { getFileContentFromGHRepo, getNavFromNotebook } from '../../lib/utils';
 import { GetStaticProps } from 'next';
 
-export const QuestionPageStaticProps: GetStaticProps = async (context) => {
+export const PagesStaticProps: GetStaticProps = async (context) => {
     if (!context.params.slug)
         return { 
             props: {},

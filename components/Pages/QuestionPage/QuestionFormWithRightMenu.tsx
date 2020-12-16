@@ -1,13 +1,13 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
-import { Menu, Question } from '../lib/types';
-import { ampUrl, letters, parseQuestion, questionParsed2MD } from '../lib/utils';
+import { Menu, Question } from '../../../lib/types';
+import { ampUrl, letters, parseQuestion, questionParsed2MD } from '../../../lib/utils';
 import RightMenu from './RightMenu';
 import Head from 'next/head';
 import { ChevronRightIcon } from '@primer/octicons-react';
 import { useAmp } from 'next/amp';
 
-export const QuestionComponent = (props: {
+export const QuestionFormWithRightMenu = (props: {
     questions: Question[];
     menu: Menu[];
     questionIndex: number;
