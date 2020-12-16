@@ -1,37 +1,28 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
-import { Menu, Question } from '../../../lib/types';
-import { ampUrl, letters, parseQuestion, questionParsed2MD } from '../../../lib/utils';
-import RightMenu from './RightMenu';
+import { Menu, Question2 } from '../../../lib/types';
+import { letters, questionParsed2MD } from '../../../lib/utils';
 import Head from 'next/head';
-import { ChevronRightIcon } from '@primer/octicons-react';
 import { useAmp } from 'next/amp';
 
 export const QuestionFormWithRightMenu = (props: {
-    questions: Question[];
-    menu: Menu[];
-    questionIndex: number;
+    question: Question2;
+   // menu: Menu[];
 }) => {
     const isAmp = useAmp()
     
-    const { questions, menu, questionIndex } = props;
+    const questionMD = questionParsed2MD(isAmp, props.question);
 
-    const question = questions[questionIndex];
+    //const menuFiltered = props.menu.find(x => x.topics.some(y => y.topic == props.question.topic))
 
-    const questionParsed = parseQuestion(question.content);
-
-    const questionMD = questionParsed2MD(isAmp, questionParsed, question.absolutUrl);
-
-    const menuFiltered = menu.find(x => x.topics.some(y => y.topic == question.topic))
-
-    const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == question.topic).title}</>: <>{menuFiltered.title}</>
+    //const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == props.question.topic).title}</>: <>{menuFiltered.title}</>
 
     return (
         <>
             <Head>
-                <title>{question.title}</title>
-                <meta name="description" content={question.title}></meta>
-                {questionParsed.answer > -1 && <script
+                <title>{props.question.title}</title>
+                <meta name="description" content={props.question.title}></meta>
+                {props.question.answer > -1 && <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
@@ -39,17 +30,17 @@ export const QuestionFormWithRightMenu = (props: {
                             "@type": "FAQPage",
                             "mainEntity": [{
                                 "@type": "Question",
-                                "name": questionParsed.question,
+                                "name": props.question.question,
                                 "acceptedAnswer": {
                                     "@type": "Answer",
-                                    "text": questionParsed.options[questionParsed.answer]
+                                    "text": props.question.options[props.question.answer]
                                 }
                             }]
                         })
                     }} />}
             </Head>
             <style jsx global>{`
-            #right-answer:checked ~ #${letters[questionParsed.answer]} + label {
+            #right-answer:checked ~ #${letters[props.question.answer]} + label {
                 background-color: rgb(220, 255, 228);
                 border-color: rgba(23, 111, 44, 0.2);
             }
@@ -89,12 +80,12 @@ export const QuestionFormWithRightMenu = (props: {
             }
             `}</style>
             <div className="grid">
-                <RightMenu
+                {/* <RightMenu
                     title={title}
                     questions={questions} 
-                />
+                /> */}
                 <div>
-                    <h2>{question.title}</h2>
+                    <h2>{props.question.title}</h2>
                     {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
                     <QuestionForm
                         data={questionMD}

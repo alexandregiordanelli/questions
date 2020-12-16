@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Menu, Question } from '../../lib/types'
+import { Menu, Question, Question2, QuestionsOf } from '../../lib/types'
 import { Header as Header } from '../Header'
 import { useAmp } from 'next/amp'
 import HeadHtml from '../HeadHtml'
@@ -8,12 +8,12 @@ import { IndexPage } from './IndexPage/IndexPage'
 import QuestionPage from './QuestionPage/QuestionPage'
 import { StateProvider } from '../State'
 
-export const Pages: React.FC<{
-    questions: Question[]
-    menu: Menu[]
-    questionIndex: number
-    questionBook: string
-}> = props => {
+
+export type PagesProps = {
+    question: Question2
+    content: QuestionsOf
+}
+export const Pages: React.FC<PagesProps> = props => {
     const isAmp = useAmp()
     
     const router = useRouter()
@@ -22,9 +22,7 @@ export const Pages: React.FC<{
         
     const deepth = slug?.length
 
-    const { menu, questions, questionIndex, questionBook } = props
-
-    if (deepth && !(menu || questions)) return null
+    if (deepth && !props.content) return null
 
     return (
         <StateProvider>
@@ -40,7 +38,7 @@ export const Pages: React.FC<{
             {!deepth && <IndexPage/>}
             {deepth && (<>
                 <Header/>                
-                <QuestionPage deepth={deepth} menu={menu} questionBook={questionBook} questionIndex={questionIndex} questions={questions}/>
+                <QuestionPage deepth={deepth} content={props.content} question={props.question}/>
             </>)}
             </div>
         </StateProvider>

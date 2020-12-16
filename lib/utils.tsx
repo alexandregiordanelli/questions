@@ -1,4 +1,4 @@
-import { Env, GitHub, Nav, Path, QuestionParsed } from "./types";
+import { Env, GitHub, Nav, Path, Question2, QuestionParsed, QuestionsOf } from "./types";
 import yaml from 'js-yaml';
 import React, {  } from 'react';
 import math from 'remark-math';
@@ -30,7 +30,7 @@ export const letters = 'abcdefgh'.split('')
 
 export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url ?? ""}`: `/${url ?? ""}`
 
-const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
+const parseUnified = (isAmp: boolean, data: string) => {//, filePath: string) => {
     return unified()
     .use(markdown)
     .use(math)
@@ -39,16 +39,16 @@ const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
     .use(katex, {
         output: isAmp? 'html': 'htmlAndMathml'
     })
-    .use(inspectUrls, {
-        inspectEach({ url, node }) {
-            if(new RegExp("^(?!www\.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*").test(url)){
-                node.properties.src = absolute(filePath, url)
-            }
-        },  
-        selectors: [
-            "img[src]"
-        ]
-    })
+    // .use(inspectUrls, {
+    //     inspectEach({ url, node }) {
+    //         if(new RegExp("^(?!www\.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*").test(url)){
+    //             node.properties.src = absolute(filePath, url)
+    //         }
+    //     },  
+    //     selectors: [
+    //         "img[src]"
+    //     ]
+    // })
     .use(rehype2react, { 
         createElement: React.createElement,
         Fragment: React.Fragment,
@@ -60,40 +60,11 @@ const parseUnified = (isAmp: boolean, data: string, filePath: string) => {
 }
 
 
-export const parseQuestion = (md: string) => {
-    const firstData = md.split(/-\s\[[\sx]\]\s.*/gi)
-
-    const question = firstData[0].trim()
-    const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
-
-    let answer = -1
-    const options: string[] = []
-    const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
-
-    var m
-    do {
-        m = regexOptions.exec(md);
-        if(m && m[0]){
-            options.push(m[1].trim())
-            const regexInternal = /-\s\[x\]\s/gi
-            if(regexInternal.test(m[0]))
-                answer = options.length - 1
-        }
-    } while (m)
-
+export const questionParsed2MD = (isAmp: boolean, questionParsed: Question2) => { //, filePath) => {
     return {
-        question,
-        solution,
-        options,
-        answer
-    } as QuestionParsed
-}
-
-export const questionParsed2MD = (isAmp: boolean, questionParsed: QuestionParsed, filePath) => {
-    return {
-        question: parseUnified(isAmp, questionParsed.question, filePath),
-        solution: parseUnified(isAmp, questionParsed.solution, filePath),
-        options: questionParsed.options.map(option => parseUnified(isAmp, option, filePath)),
+        question: parseUnified(isAmp, questionParsed.question),
+        solution: parseUnified(isAmp, questionParsed.solution),
+        options: questionParsed.options.map(option => parseUnified(isAmp, option)),
         answer: questionParsed.answer
     } as QuestionParsed
 }
@@ -197,4 +168,24 @@ export async function getPathsFromGHRepo(ghRepo: GitHub) {
     }
 
     return navListFromGhRepo
+}
+
+export const questionsofConverter: FirebaseFirestore.FirestoreDataConverter<QuestionsOf> = {
+    toFirestore(questionsof: QuestionsOf): FirebaseFirestore.DocumentData {
+        return questionsof
+    },
+    fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot) {
+        const data = snapshot.data()!
+        return data as QuestionsOf
+    }
+}
+
+export const questionConverter: FirebaseFirestore.FirestoreDataConverter<Question2> = {
+    toFirestore(question: Question2): FirebaseFirestore.DocumentData {
+        return question
+    },
+    fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot) {
+        const data = snapshot.data()!
+        return data as Question2
+    }
 }

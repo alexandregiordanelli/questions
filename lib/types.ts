@@ -72,3 +72,22 @@ export type MainState = {
 export type MainAction = UserAction
 
 export type MainReducer = Reducer<MainState, MainAction>
+
+export type Question2 = {
+    question: string
+    solution: string
+    options: string[]
+    answer: number
+    title: string
+    topic: string
+    url: string
+}
+
+export type QuestionsOf = {
+    data: string
+    menu: Menu[]
+    price: number
+    title: string
+    url: string
+    subtitle: string
+}

@@ -4,10 +4,10 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 import gfm from 'remark-gfm';
 import rehype2react from 'rehype-react';
+import { QuestionsOf } from '../../../lib/types';
 
 export const IndexQuestionPage: React.FC<{
-    questionBook: string;
-    startUrl: string;
+    content: QuestionsOf;
 }> = props => {
     return (
         <>
@@ -46,8 +46,8 @@ export const IndexQuestionPage: React.FC<{
             <div className="main">
                 <div className='box'>
                     <div className='center'>
-                        <h2 className="main-title">Enem</h2>
-                        <p className="subtitle">Enem Resolvido separado por assunto.</p>
+                        <h2 className="main-title">{props.content.title}</h2>
+                        <p className="subtitle">{props.content.subtitle ?? ""}</p>
                         {/* <img src="/enem.png"/> */}
                     </div>
                 </div>
@@ -60,7 +60,7 @@ export const IndexQuestionPage: React.FC<{
                     createElement: React.createElement,
                     Fragment: React.Fragment
                 })
-                .processSync(props.questionBook).result}
+                .processSync(props.content.data).result}
                 </div>
             </div>
         </>
