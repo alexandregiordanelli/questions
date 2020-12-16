@@ -78,10 +78,8 @@ export type Question2 = {
     solution: string
     options: string[]
     answer: number
-    title: string
     topic: string
-    url: string
-}
+} & Question2Basic
 
 export type QuestionsOf = {
     data: string
@@ -90,4 +88,9 @@ export type QuestionsOf = {
     title: string
     url: string
     subtitle: string
+}
+
+export type Question2Basic = {
+    title: string
+    url: string
 }

@@ -1,12 +1,14 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
-import { Menu, Question2 } from '../../../lib/types';
+import { Menu, Question2, Question2Basic } from '../../../lib/types';
 import { letters, questionParsed2MD } from '../../../lib/utils';
 import Head from 'next/head';
 import { useAmp } from 'next/amp';
+import RightMenu from './RightMenu';
 
 export const QuestionFormWithRightMenu = (props: {
     question: Question2;
+    questionSuggestions: Question2Basic[]
    // menu: Menu[];
 }) => {
     const isAmp = useAmp()
@@ -80,10 +82,10 @@ export const QuestionFormWithRightMenu = (props: {
             }
             `}</style>
             <div className="grid">
-                {/* <RightMenu
-                    title={title}
-                    questions={questions} 
-                /> */}
+                <RightMenu
+                    // title={title}
+                    questionSuggestions={props.questionSuggestions} 
+                />
                 <div>
                     <h2>{props.question.title}</h2>
                     {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}

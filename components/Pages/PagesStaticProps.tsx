@@ -62,10 +62,17 @@ export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context)
             const questionData = questionDoc.data()
 
             
+            const questionQueryFromTopic = await questionsofRef.doc(questionsofId).collection("questions").withConverter(questionConverter).where("topic", "==", questionData.topic).get()
+            const questionSuggestions = questionQueryFromTopic.docs.map(x => ({
+                ...x.data(),
+                url: `${questionsofData.url}/${x.data().url}` 
+            })).sort((a, b) => a.title > b.title ? 1 : -1)
+
             return {
                 props: {
                     content: questionsofData,
-                    question: questionData
+                    question: questionData,
+                    questionSuggestions
                 },
                 revalidate: 1,
             };
