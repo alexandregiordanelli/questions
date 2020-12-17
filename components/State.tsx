@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useReducer} from 'react';
-import { MainReducer, MainAction, MainState, MainContext } from '../lib/types';
+import { MainReducer, MainState, MainContext } from '../lib/types';
 import { userReducer, initialUser } from '../lib/userReducer';
 
 const initialState: MainState = {

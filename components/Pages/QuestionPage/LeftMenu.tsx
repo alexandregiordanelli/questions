@@ -1,8 +1,9 @@
-import { ChevronDownIcon, ThreeBarsIcon } from '@primer/octicons-react';
+import { ThreeBarsIcon } from '@primer/octicons-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Menu } from '../../../lib/types';
 import ActiveLink from '../../ActiveLink';
+import { MenuItem } from './MenuItem';
 
 export const LeftMenu = (props: {
     menu: Menu[];
@@ -10,14 +11,41 @@ export const LeftMenu = (props: {
     const router = useRouter()
     const [toggleMenu, setToggleMenu] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         setToggleMenu(false)
     }, [router.asPath])
 
     return (
         <>
+            <div>
+                <label htmlFor="menu-check" className="menu-check-label"><ThreeBarsIcon /></label>
+                <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
+                <ul className={"menu"}>
+                    {props.menu.map((x, i) => {
+                        return (
+                            <li key={`${i}.0`} className={"menu-block"}>
+                                <MenuItem url={x.topics[0].url} title={x.title} hasExpanded={x.topics.length > 1} />
+                                <ul className={"submenu"}>
+                                    {x.topics.map((y, j) => {
+                                        if (y.url) {
+                                            return (
+                                                <li key={`${i}.${j}`}>
+                                                    <ActiveLink href={y.url}>
+                                                        <a>{y.title}</a>
+                                                    </ActiveLink>
+                                                </li>
+                                            );
+                                        }
+                                    })}
+                                </ul>
+                            </li>
+                        )
+                    }
+                    )}
+                </ul>
+            </div>
+
             <style jsx>{`
-                
             .menu {
                 top: 62px;
                 height: calc(100vh - 62px);
@@ -128,77 +156,6 @@ export const LeftMenu = (props: {
             }
 
             `}</style>
-            <div>
-                <label htmlFor="menu-check" className="menu-check-label"><ThreeBarsIcon /></label>
-                <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
-                <ul className={"menu"}>
-                    {props.menu.sort((a, b) => a.title > b.title ? 1 : -1).map((x, i) => {
-                        const topicsSorted = x.topics.sort((a, b) => a.title > b.title ? 1 : -1)
-                        return (
-                            <li key={`${i}.0`} className={"menu-block"}>
-                                <MenuItem id={`${i}.0`} url={topicsSorted[0].url} title={x.title} hasExpanded={topicsSorted.length > 1}/>
-                                <ul className={"submenu"}>
-                                    {topicsSorted.map((y, j) => {
-                                        if (y.url) {
-                                            return (
-                                                <li key={`${i}.${j}`}>
-                                                    <ActiveLink href={y.url}>
-                                                        <a>{y.title}</a>
-                                                    </ActiveLink>
-                                                </li>
-                                            );
-                                        }
-                                    })}
-                                </ul>
-                            </li>
-                        )
-                    }
-                    )}
-                </ul>
-            </div>
         </>
     );
 };
-
-const MenuItem: React.FC<{
-    id: string
-    hasExpanded: boolean
-    url: string
-    title: string
-}> = props => {
-    const [opened, toggleOpened] = useState(false)
-    const router = useRouter()
-
-    useEffect(()=>{
-        toggleOpened(false)
-    }, [router.asPath])
-
-    let component = <ActiveLink href={props.url}>
-        <a>{props.title}</a>
-        </ActiveLink>
-    if(props.hasExpanded){
-        component = <>
-            <label htmlFor={props.id}>
-                <ActiveLink href={props.url}>
-                    <a>{props.title}</a>
-                </ActiveLink>
-                <ChevronDownIcon/>
-            </label>
-            <input id={props.id} 
-                className="menuItemLabel"
-                type="checkbox" 
-                onChange={x => toggleOpened(x.target.checked)} 
-                checked={opened} 
-            />
-            <style jsx>{`
-            label {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
-            }
-        `}</style>
-        </>
-    }
-    return component
-}

@@ -1,16 +1,14 @@
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { absolute } from "../../../lib/utils"
-import { Question } from "../../../lib/types"
+import { Question2Basic } from "../../../lib/types"
 import ActiveLink from "../../ActiveLink"
-import {BeakerIcon, ChevronDownIcon, ChevronUpIcon, ZapIcon} from '@primer/octicons-react'
+import {ChevronDownIcon} from '@primer/octicons-react'
 
 const RightMenu: React.FC<{
-    title: JSX.Element,
-    questions: Question[]
+    // title: JSX.Element,
+    questionSuggestions: Question2Basic[]
 }> = props => {
     const router = useRouter()
-    const slugJoined = `${(router.query.slug as string[]).join('/')}`
     const [toggleMenu, setToggleMenu] = useState(false);
     
     useEffect(()=>{
@@ -19,6 +17,21 @@ const RightMenu: React.FC<{
 
     return (
         <>
+            <div>
+                <label className="title-menu-right" htmlFor="title-menu-right-check">
+                    <span>+ Questões de Citologia</span>
+                    <span className="icon"><ChevronDownIcon verticalAlign='middle' /></span>
+                </label>
+                <input id="title-menu-right-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
+                <ul>
+                {props.questionSuggestions.map((x, i) => (
+                    <li key={i}>
+                        <ActiveLink activeClassName="ativo" href={x.url}><a>{x.title}</a></ActiveLink>
+                    </li>
+                ))}
+                </ul> 
+            </div>
+
             <style jsx>{`
             div {
                 max-height: calc(100vh - 110px - 24px);
@@ -104,22 +117,6 @@ const RightMenu: React.FC<{
                 }
             }
             `}</style>
-            <div>
-
-                    <label className="title-menu-right" htmlFor="title-menu-right-check">
-                        <span>{props.title}</span>
-                        <span className="icon"><ChevronDownIcon verticalAlign='middle' /></span>
-                    </label>
-
-                <input id="title-menu-right-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
-                <ul>
-                {props.questions.map((x, i) => (
-                    <li key={i}>
-                        <ActiveLink activeClassName="ativo" href={absolute(slugJoined, x.url)}><a>{x.title}</a></ActiveLink>
-                    </li>
-                ))}
-                </ul> 
-            </div>
         </>
     )
 }

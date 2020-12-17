@@ -7,7 +7,6 @@ import { katexCSS } from "../styles/katexCSS"
 import { useStateValue } from './State';
 import { UserActionType } from '../lib/types';
 import { useRouter } from 'next/router';
-import { linkAuth, loginAnonymously, parseLinkEmailLogin } from './FormEmail';
 
 const HeadHtml: React.FC<{
     isAmp: boolean,

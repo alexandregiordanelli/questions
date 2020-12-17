@@ -1,8 +1,11 @@
-import { GitHub } from '../../lib/types';
-import { getFileContentFromGHRepo, getNavFromNotebook } from '../../lib/utils';
 import { GetStaticProps } from 'next';
+import { PagesProps } from './Pages';
+import getMenu from '../../services/getMenu';
+import getQuestionof from '../../services/getQuestionof';
+import getQuestion from '../../services/getQuestion';
+import getSuggestions from '../../services/getSuggestions';
 
-export const PagesStaticProps: GetStaticProps = async (context) => {
+export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context) => {
     if (!context.params.slug)
         return { 
             props: {},
@@ -10,48 +13,33 @@ export const PagesStaticProps: GetStaticProps = async (context) => {
         };
 
     try {
-        const notebook = context.params.slug[0];
+        const questionsof = context.params.slug[0]
+        
+        const questionsOfDic = await getQuestionof(questionsof)
+        const questionsofData = questionsOfDic.data
 
-        const ghRepo: GitHub = {
-            username: 'alexandregiordanelli',
-            repo: 'questions_md'
-        };
-
-        const nav = await getNavFromNotebook(ghRepo, notebook);
+        questionsofData.menu = await getMenu(questionsof)
 
         if (context.params.slug.length > 1) {
-            const questionIndex = nav.questions.findIndex(x => x.url == context.params.slug[1]);
+            const questionUrl = context.params.slug[1]
 
-            if (questionIndex > -1) {
-                const question = nav.questions[questionIndex];
+            const question = await getQuestion(questionsof, questionUrl)
 
-                question.content = await getFileContentFromGHRepo(ghRepo, question.file);
+            const suggestions = await getSuggestions(questionsof, question.topic)
 
-                const questions = nav.questions.filter(x => x.topic == question.topic);
-                const newQuestionIndex = questions.findIndex(x => x.url == context.params.slug[1]);
+            return {
+                props: {
+                    content: questionsofData,
+                    question,
+                    questionSuggestions: suggestions
+                }
+            };
 
-                return {
-                    props: {
-                        menu: nav.menu,
-                        questions,
-                        questionIndex: newQuestionIndex
-                    },
-                    revalidate: 1,
-                };
-
-            } else {
-                return {
-                    props: {}
-                };
-            }
         } else if (context.params.slug.length == 1) {
 
             return {
                 props: {
-                    menu: nav.menu,
-                    questions: [nav.questions[0]],
-                    questionBook: await getFileContentFromGHRepo(ghRepo, `${notebook}/index.md`),
-                    questionIndex: -1
+                    content: questionsofData
                 },
                 revalidate: 1,
             };
@@ -60,7 +48,8 @@ export const PagesStaticProps: GetStaticProps = async (context) => {
         console.log(e);
 
         return {
-            props: {}
+            props: {
+            }
         };
     }
 };
