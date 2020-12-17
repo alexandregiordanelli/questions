@@ -32,8 +32,7 @@ export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context)
                     content: questionsofData,
                     question,
                     questionSuggestions: suggestions
-                },
-                revalidate: 1,
+                }
             };
 
         } else if (context.params.slug.length == 1) {
