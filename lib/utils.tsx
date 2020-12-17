@@ -1,6 +1,5 @@
-import { Env, GitHub, Nav, Path, Question2, QuestionParsed, QuestionsOf } from "./types";
-import yaml from 'js-yaml';
-import React, {  } from 'react';
+import { Env, Question2, QuestionParsed, QuestionsOf } from "./types";
+import React from 'react';
 import math from 'remark-math';
 import remark2rehype from 'remark-rehype';
 import katex from 'rehype-katex';
