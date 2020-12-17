@@ -1,9 +1,8 @@
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { absolute } from "../../../lib/utils"
-import { Question, Question2, Question2Basic } from "../../../lib/types"
+import { Question2Basic } from "../../../lib/types"
 import ActiveLink from "../../ActiveLink"
-import {BeakerIcon, ChevronDownIcon, ChevronUpIcon, ZapIcon} from '@primer/octicons-react'
+import {ChevronDownIcon} from '@primer/octicons-react'
 
 const RightMenu: React.FC<{
     // title: JSX.Element,

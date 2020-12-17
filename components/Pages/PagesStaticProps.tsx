@@ -1,8 +1,9 @@
-import { GitHub, Question2, QuestionsOf, Topic } from '../../lib/types';
-import { getFileContentFromGHRepo, getNavFromNotebook, questionConverter, questionsofConverter } from '../../lib/utils';
 import { GetStaticProps } from 'next';
 import { PagesProps } from './Pages';
-import admin from '../../lib/firebase-server';
+import getMenu from '../../services/getMenu';
+import getQuestionof from '../../services/getQuestionof';
+import getQuestion from '../../services/getQuestion';
+import getSuggestions from '../../services/getSuggestions';
 
 export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context) => {
     if (!context.params.slug)
@@ -12,67 +13,25 @@ export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context)
         };
 
     try {
-
-
         const questionsof = context.params.slug[0]
         
-        const db = admin.firestore()
-        const questionsofRef = db.collection("questionsof").withConverter(questionsofConverter)
-        const questionsofQuery = await questionsofRef.where("url", "==", questionsof).get()
-        if(questionsofQuery.empty){
-            return {
-                props: {}
-            }
-        }
-        const questionsofDoc = questionsofQuery.docs[0]
-        const questionsofData = questionsofDoc.data()
-        const questionsofId = questionsofDoc.id
+        const questionsOfDic = await getQuestionof(questionsof)
+        const questionsofData = questionsOfDic.data
 
-        const questionQueryTopicUrl = async topic => {
-            const doc = await questionsofRef.doc(questionsofId).collection("questions").withConverter(questionConverter).where("topic", "==", topic).orderBy("title").limit(1).get()
-            if(!doc.empty){
-                return `${questionsofData.url}/${doc.docs[0].data().url}`
-            } return null
-        }
-
-        const topics = questionsofData.menu.reduce((x,y) => x.concat(y.topics.map(y => y.topic)), [] as string[])
-
-        const topicsPromise = topics.map(async x => ({
-            title: questionsofData.menu.find(z => z.topics.some(a => a.topic == x)).topics.find(z => z.topic == x).title,
-            url: await questionQueryTopicUrl(x),
-            topic: x
-        }) as Topic)
-        
-        const topicsResolved = await Promise.all(topicsPromise)
-
-        questionsofData.menu = questionsofData.menu.sort((a, b) => a.title > b.title ? 1 : -1).map(x => ({
-            ...x, 
-            topics: x.topics.sort((a, b) => a.title > b.title ? 1 : -1).map(y => topicsResolved.find(z => z.topic == y.topic))
-        }))
+        questionsofData.menu = await getMenu(questionsof)
 
         if (context.params.slug.length > 1) {
-            const questionURL = context.params.slug[1]
-            const questionQueryMain = await questionsofRef.doc(questionsofId).collection("questions").withConverter(questionConverter).where("url", "==", questionURL).get()
-            if(questionQueryMain.empty){
-                return {
-                    props: {}
-                }
-            }
-            const questionDoc = questionQueryMain.docs[0]
-            const questionData = questionDoc.data()
+            const questionUrl = context.params.slug[1]
 
-            
-            const questionQueryFromTopic = await questionsofRef.doc(questionsofId).collection("questions").withConverter(questionConverter).where("topic", "==", questionData.topic).get()
-            const questionSuggestions = questionQueryFromTopic.docs.map(x => ({
-                ...x.data(),
-                url: `${questionsofData.url}/${x.data().url}` 
-            })).sort((a, b) => a.title > b.title ? 1 : -1)
+            const question = await getQuestion(questionsof, questionUrl)
+
+            const suggestions = await getSuggestions(questionsof, question.topic)
 
             return {
                 props: {
                     content: questionsofData,
-                    question: questionData,
-                    questionSuggestions
+                    question,
+                    questionSuggestions: suggestions
                 },
                 revalidate: 1,
             };

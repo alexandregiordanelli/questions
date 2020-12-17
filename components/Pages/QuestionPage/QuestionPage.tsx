@@ -1,5 +1,4 @@
 import React from "react"
-import { Menu, Question, Question2, QuestionsOf } from "../../../lib/types"
 import { LeftMenu } from "./LeftMenu"
 import { IndexQuestionPage } from "./IndexQuestionPage"
 import { QuestionFormWithRightMenu } from "./QuestionFormWithRightMenu"

@@ -6,7 +6,6 @@ import remark2rehype from 'remark-rehype';
 import katex from 'rehype-katex';
 import unified from 'unified'
 import rehype2react from 'rehype-react';
-import inspectUrls from '@jsdevtools/rehype-url-inspector'
 
 import "katex/dist/contrib/mhchem.js"
 import markdown from 'remark-parse'
@@ -28,7 +27,7 @@ export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url: string) => isAmp? `/amp/${url ?? ""}`: `/${url ?? ""}`
+export const ampUrl = (isAmp: boolean, url = "") => isAmp? `/amp/${url}`: `/${url}`
 
 const parseUnified = (isAmp: boolean, data: string) => {//, filePath: string) => {
     return unified()

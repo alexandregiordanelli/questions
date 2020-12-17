@@ -94,3 +94,8 @@ export type Question2Basic = {
     title: string
     url: string
 }
+
+export type QuestionsOfDic = {
+    id: string,
+    data: QuestionsOf
+}

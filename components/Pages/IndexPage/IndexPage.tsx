@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import FormEmail from '../../FormEmail';
-import dynamic from 'next/dynamic';
+import React from 'react';
 import firebase from '../../../lib/firebase-client';
 import Link from 'next/link';
 import { useStateValue } from '../../State';
 
-const DynamicComponentWithNoSSR = dynamic(
-    () => new Promise(resolve => resolve(FormEmail)),
-    { ssr: false }
-);
-
-
 export const IndexPage: React.FC = () => {
-    const [state, dispatch] = useStateValue();
+    const [state] = useStateValue();
     
     const imgs = [
         "https://lh3.googleusercontent.com/proxy/XZmP8KWDZev7phUM97puc-s7LHtyG3WKcQ_J2RGPX4BMlFIPnxkO58wxFbUsHgKFJK2C61ncUs36kCyS-dTtJ2dPuE4ubM2Y7FJLMe5TdO9MvSvvcXloNFOgOnR-ngWudGwoHDQYpKRT5q3GWkQ",

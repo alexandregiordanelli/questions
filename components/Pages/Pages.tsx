@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Menu, Question, Question2, Question2Basic, QuestionsOf } from '../../lib/types'
+import { Question2, Question2Basic, QuestionsOf } from '../../lib/types'
 import { Header as Header } from '../Header'
 import { useAmp } from 'next/amp'
 import HeadHtml from '../HeadHtml'

@@ -1,6 +1,5 @@
 import { ChevronDownIcon } from '@primer/octicons-react';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ActiveLink from '../../ActiveLink';
 
 
