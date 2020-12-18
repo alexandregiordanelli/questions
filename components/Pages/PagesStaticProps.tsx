@@ -1,9 +1,6 @@
 import { GetStaticProps } from 'next';
 import { PagesProps } from './Pages';
-import getMenu from '../../services/getMenu';
-import getQuestionof from '../../services/getQuestionof';
-import getQuestion from '../../services/getQuestion';
-import getSuggestions from '../../services/getSuggestions';
+import { Menu, Question2, Question2Basic, QuestionsOfDic } from '../../lib/types';
 
 export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context) => {
     if (!context.params.slug)
@@ -15,23 +12,30 @@ export const PagesStaticProps: GetStaticProps<{} | PagesProps> = async (context)
     try {
         const questionsof = context.params.slug[0]
         
-        const questionsOfDic = await getQuestionof(questionsof)
+        const questionsOfDicRes = await fetch(`/api/questionsof/${questionsof}`)
+        const questionsOfDic: QuestionsOfDic = await questionsOfDicRes.json()
         const questionsofData = questionsOfDic.data
 
-        questionsofData.menu = await getMenu(questionsof)
+        const menuRes = await fetch(`/api/menu/${questionsof}`)
+        const menu: Menu[] = await menuRes.json()
+
+        questionsofData.menu = menu
 
         if (context.params.slug.length > 1) {
             const questionUrl = context.params.slug[1]
 
-            const question = await getQuestion(questionsof, questionUrl)
+            const questionRes = await fetch(`/api/question/${questionsof}/${questionUrl}`)
+            const question: Question2 = await questionRes.json()
 
-            const suggestions = await getSuggestions(questionsof, question.topic)
+            const suggestionsRes = await fetch(`/api/suggestions/${questionsof}/${question.topic}`)
+            const suggestions: Question2Basic[] = await suggestionsRes.json()
 
             return {
                 props: {
                     content: questionsofData,
                     question,
-                    questionSuggestions: suggestions
+                    questionSuggestions: suggestions,
+                    revalidate: 1,
                 }
             };
 
