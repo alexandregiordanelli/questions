@@ -12,7 +12,7 @@ import gfm from 'remark-gfm'
 
 export const urlEnvDic = {
     [Env.development]: 'http://localhost:3000',
-    [Env.preview]: 'https://questions.giordanelli.vercel.app',
+    [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
     [Env.production]: 'https://questionsof.com'
 }
 
