@@ -11,7 +11,7 @@ export const probotMiddleWare = (appFn: ApplicationFunction) => async (req: Prob
     
     req.probot = new Probot({
         appId: process.env.GITHUB_APP_APP_ID,
-        privateKey: process.env.GITHUB_APP_PRIVATE_KEY,
+        privateKey: process.env.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, '\n'),
         secret: process.env.GITHUB_APP_WEBHOOK_SECRET,
     })
 
