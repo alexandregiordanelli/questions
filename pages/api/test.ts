@@ -4,9 +4,9 @@ import { createNodeMiddleware, createProbot, Probot } from "probot"
 
 const handler = nc<NowRequest, NowResponse>()
 
-console.log(process.env)
 
 handler.use(createNodeMiddleware((app)=>{
+    console.log("opaaa")
     app.log('Yay, the app was loaded!')
     app.webhooks.onAny(()=>{
         console.log("aqui")
