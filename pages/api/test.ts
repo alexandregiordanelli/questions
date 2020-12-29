@@ -22,7 +22,7 @@ handler.use(createNodeMiddleware((app)=>{
     }),
 }));
 
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
     res.send('oi')
 })
 
