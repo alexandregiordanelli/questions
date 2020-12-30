@@ -1,10 +1,14 @@
-import admin from "firebase-admin"
-import serviceAccount from "../questionsofcom.json";
+import admin, { ServiceAccount, credential } from "firebase-admin"
 
 if(!admin.apps.length){
+    const serviceAccount: ServiceAccount = {
+        projectId: "questionsofcom",
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        clientEmail: "firebase-adminsdk-o982d@questionsofcom.iam.gserviceaccount.com",
+    }
+
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-        databaseURL: "https://bpac11.firebaseio.com"
+        credential: credential.cert(serviceAccount)
     })
 }
 export default admin

@@ -5,7 +5,7 @@ import remark2rehype from 'remark-rehype';
 import katex from 'rehype-katex';
 import unified from 'unified'
 import rehype2react from 'rehype-react';
-
+import frontmatter from '@github-docs/frontmatter'
 import "katex/dist/contrib/mhchem.js"
 import markdown from 'remark-parse'
 import gfm from 'remark-gfm'
@@ -97,5 +97,50 @@ export const questionConverter: FirebaseFirestore.FirestoreDataConverter<Questio
     fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot) {
         const data = snapshot.data()!
         return data as Question2
+    }
+}
+
+export const parseQuestionMd = async md => {
+    const mdparsed = frontmatter(md)
+    
+    const meta = mdparsed.data
+    const data = mdparsed.content
+    
+    const firstData = data.split(/-\s\[[\sx]\]\s.*/gi)
+    
+    const question = firstData[0].trim()
+    const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
+    
+    let answer = -1
+    const options = []
+    const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
+    
+    var m
+    do {
+        m = regexOptions.exec(data);
+        if(m && m[0]){
+            options.push(m[1].trim())
+            const regexInternal = /-\s\[x\]\s/gi
+            if(regexInternal.test(m[0]))
+                answer = options.length - 1
+        }
+    } while (m)
+
+    return {
+        question,
+        solution,
+        options,
+        answer, 
+        ...meta
+    }
+}
+
+export const parseReadMd = async md => {
+    const mdparsed = frontmatter(md)
+    const meta = mdparsed.data
+    const data = mdparsed.content
+    return {
+        ...meta,
+        data
     }
 }

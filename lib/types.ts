@@ -1,3 +1,5 @@
+import { NowRequest } from "@vercel/node";
+import { Probot } from "probot";
 import { Reducer } from "react"
 import firebase from '../lib/firebase-client';
 
@@ -98,4 +100,8 @@ export type Question2Basic = {
 export type QuestionsOfDic = {
     id: string,
     data: QuestionsOf
+}
+
+export type ProbotRequest = NowRequest & {
+    probot: Probot
 }
