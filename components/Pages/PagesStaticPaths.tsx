@@ -6,7 +6,7 @@ export const PagesStaticPaths: GetStaticPaths = async () => {
     const paths = await getQuestions('enem')
 
     return ({
-        paths: [],
+        paths: paths.slice(0, 2),
         fallback: 'blocking'
     });
 };
