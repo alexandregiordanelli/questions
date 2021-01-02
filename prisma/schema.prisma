@@ -1,0 +1,66 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Notebook  {
+    id              Int             @id @default(autoincrement())
+    data            String
+    menu            Menu?       
+    price           Float?
+    name            String?
+    url             String          @unique
+}
+
+model Menu {
+    id              Int             @id @default(autoincrement())
+    topics          Topic[]
+    notebookId      Int             @unique
+    notebook        Notebook        @relation(fields: [notebookId], references: [id])
+}
+
+model Topic {
+    id              Int             @id @default(autoincrement())
+    name            String
+    subtopics       SubTopic[]
+    menuId          Int
+    menu            Menu           @relation(fields: [menuId], references: [id])
+}
+
+model SubTopic {
+    id              Int             @id @default(autoincrement())
+    name            String
+    topicId         Int
+    topic           Topic           @relation(fields: [topicId], references: [id])
+    questions       Question[]
+}
+
+model Alternative {
+    id              Int             @id @default(autoincrement())
+    data            String
+    questionId      Int
+    question        Question        @relation(fields: [questionId], references: [id])
+}
+
+model Answer {
+    id              Int         @id @default(autoincrement())
+    questionId      Int         @unique
+    answerOptionId  Int         @unique
+    answer          Alternative @relation(fields: [answerOptionId], references: [id])
+}
+
+model Question {
+    id              Int             @id @default(autoincrement())
+    question        String
+    solution        String?
+    alternatives    Alternative[]
+    answer          Answer?
+    subTopicId      Int
+    subtopic        SubTopic        @relation(fields: [subTopicId], references: [id])    
+    title           String?
+    url             String
+}
