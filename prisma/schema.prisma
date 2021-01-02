@@ -49,6 +49,7 @@ model Alternative {
 model Answer {
     id              Int         @id @default(autoincrement())
     questionId      Int         @unique
+    question        Question    @relation(fields: [questionId], references: [id])    
     answerOptionId  Int         @unique
     answer          Alternative @relation(fields: [answerOptionId], references: [id])
 }
