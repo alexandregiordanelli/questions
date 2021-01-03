@@ -2,7 +2,7 @@ import React from "react"
 import { LeftMenu } from "./LeftMenu"
 import { IndexQuestionPage } from "./IndexQuestionPage"
 import { QuestionFormWithRightMenu } from "./QuestionFormWithRightMenu"
-import { PagesProps } from "../Pages"
+import { PagesProps } from "../../../lib/types"
 
 const QuestionPage: React.FC<{
     deepth: number
@@ -11,9 +11,22 @@ const QuestionPage: React.FC<{
         <>
 
             <div className={"container"}>
-                {props.deepth >= 1 && <LeftMenu menu={props.content.menu} />}
-                {props.deepth > 1 && props.question && <QuestionFormWithRightMenu question={props.question} questionSuggestions={props.questionSuggestions} />}
-                {props.deepth == 1 && <IndexQuestionPage content={props.content} />}
+                {props.deepth >= 1 && 
+                    <LeftMenu 
+                    menu={props.menu} 
+                    />
+                }
+                {props.deepth > 1 && props.question && 
+                    <QuestionFormWithRightMenu 
+                    question={props.question} 
+                    suggestions={props.suggestions} 
+                    />
+                }
+                {props.deepth == 1 && 
+                    <IndexQuestionPage 
+                    notebook={props.notebook} 
+                    />
+                }
             </div>
 
             <style jsx>{`

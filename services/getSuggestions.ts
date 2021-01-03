@@ -1,19 +1,21 @@
-import admin from '../lib/firebase-server';
-import { Question2Basic } from '../lib/types';
-import { questionConverter } from '../lib/utils';
-import getQuestionof from './getQuestionof';
+import { PrismaClient } from '@prisma/client';
 
-const getSuggestions = async (questionsof: string, topic: string) => {
-    const db = admin.firestore();
+const getSuggestions = async (notebookTag: string, subTopicTag: string) => {
+    const prisma = new PrismaClient()
 
-    const questionsOfDic = await getQuestionof(questionsof);
+    const questionsOfSubTopic = await prisma.question.findMany({
+        select: {
+            title: true,
+            tag: true
+        },
+        where: {
+            subTopicTag: subTopicTag,
+            notebook: {
+                tag: notebookTag
+            }
+        }
+    })
 
-    const questionQueryFromTopic = await db.collection("questionsof").doc(questionsOfDic.id).collection("questions").withConverter(questionConverter).where("topic", "==", topic).orderBy("title").get();
-    const questionSuggestions = questionQueryFromTopic.docs.map(x => ({
-        title: x.data().title,
-        url: `${questionsOfDic.data.url}/${x.data().url}`
-    } as Question2Basic));
-
-    return questionSuggestions;
+    return questionsOfSubTopic;
 };
 export default getSuggestions;

@@ -8,60 +8,74 @@ datasource db {
 }
 
 model Notebook  {
-    id              Int             @id @default(autoincrement())
-    data            String
-    menu            Menu?       
-    price           Float?
-    name            String?
-    url             String          @unique
-}
-
-model Menu {
-    id              Int             @id @default(autoincrement())
-    topics          Topic[]
-    notebookId      Int             @unique
-    notebook        Notebook        @relation(fields: [notebookId], references: [id])
+    //PK
+    id                          Int             @id @default(autoincrement())
+    //REQUIRED
+    tag                         String          @unique
+    //OPTIONAL
+    description                 String?
+    topics                      Topic[]       
+    price                       Float?
+    name                        String?
+    questions                   Question[]
 }
 
 model Topic {
-    id              Int             @id @default(autoincrement())
-    name            String
-    subtopics       SubTopic[]
-    menuId          Int
-    menu            Menu           @relation(fields: [menuId], references: [id])
+    //PK
+    id                          Int             @id @default(autoincrement())
+    //REQUIRED
+    notebookId                  Int
+    name                        String
+    //OPTIONAL
+    subtopics                   SubTopic[]
+    //CONSTRAINTS
+    notebook                    Notebook        @relation(fields: [notebookId], references: [id])    
 }
 
 model SubTopic {
-    id              Int             @id @default(autoincrement())
-    name            String
-    topicId         Int
-    topic           Topic           @relation(fields: [topicId], references: [id])
-    questions       Question[]
+    //PK
+    id                          Int             @id @default(autoincrement())
+    //REQUIRED
+    notebookId                  Int
+    tag                         String  
+    topicId                     Int
+    //OPTIONAL
+    name                        String?
+    questions                   Question[]
+    //CONSTRAINTS
+    topic                       Topic           @relation(fields: [topicId], references: [id])
+    notebook                    Notebook        @relation(fields: [notebookId], references: [id])
+    @@unique([notebookId, tag])
 }
 
 model Alternative {
-    id              Int             @id @default(autoincrement())
-    data            String
-    questionId      Int
-    question        Question        @relation(fields: [questionId], references: [id])
-}
-
-model Answer {
-    id              Int         @id @default(autoincrement())
-    questionId      Int         @unique
-    question        Question    @relation(fields: [questionId], references: [id])    
-    answerOptionId  Int         @unique
-    answer          Alternative @relation(fields: [answerOptionId], references: [id])
+    //PK
+    id                          Int             @id @default(autoincrement())
+    //REQUIRED
+    alternative                 String
+    questionId                  Int
+    //CONSTRAINTS
+    question                    Question        @relation(fields: [questionId], references: [id])
 }
 
 model Question {
-    id              Int             @id @default(autoincrement())
-    question        String
-    solution        String?
-    alternatives    Alternative[]
-    answer          Answer?
-    subTopicId      Int
-    subtopic        SubTopic        @relation(fields: [subTopicId], references: [id])    
-    title           String?
-    url             String
+    //PK
+    id                          Int             @id @default(autoincrement())
+    //REQUIRED
+    notebookId                  Int
+    tag                         String
+    subTopicTag                 String
+    question                    String
+    questionFilename            String
+    //OPTIONAL
+    solution                    String?
+    alternatives                Alternative[]
+    alternativeRightId          Int?
+    title                       String?
+    //CONSTRAINTS
+    notebook                    Notebook        @relation(fields: [notebookId], references: [id])
+    alternativeRight            Alternative?    @relation(fields: [alternativeRightId], references: [id], "alternativeRight")
+    subTopic                    SubTopic        @relation(fields: [notebookId, subTopicTag], references: [notebookId, tag]) 
+    @@unique([notebookId, tag])
+    @@unique([notebookId, questionFilename])
 }

@@ -1,19 +1,25 @@
-import admin from '../lib/firebase-server';
-import { questionConverter } from '../lib/utils';
-import getQuestionof from './getQuestionof';
-export const getQuestion = async (questionsof: string, questionUrl: string) => {
-    const db = admin.firestore();
+import { PrismaClient } from '@prisma/client';
+import getNotebook from './getNotebook';
+export const getQuestion = async (notebookTag: string, tag: string) => {
+    const prisma = new PrismaClient()
 
-    const questionsOfDic = await getQuestionof(questionsof);
+    const notebook = await getNotebook(notebookTag)
 
-    const questionQueryMain = await db.collection("questionsof").doc(questionsOfDic.id).collection("questions").withConverter(questionConverter).where("url", "==", questionUrl).limit(1).get();
+    const question = await prisma.question.findUnique({
+        include: {
+            alternatives: true,
+            alternativeRight: true,
+            notebook: true,
+            subTopic: true
+        },
+        where: {
+            notebookId_tag: {
+                notebookId: notebook.id,
+                tag: tag
+            }
+        }
+    })
 
-    if (!questionQueryMain.empty) {
-        const questionDoc = questionQueryMain.docs[0];
-        const questionData = questionDoc.data();
-        return questionData;
-    }
-
-    return null;
+    return question
 };
 export default getQuestion;

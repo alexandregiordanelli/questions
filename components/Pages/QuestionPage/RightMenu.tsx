@@ -1,12 +1,12 @@
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
-import { Question2Basic } from "../../../lib/types"
 import ActiveLink from "../../ActiveLink"
 import {ChevronDownIcon} from '@primer/octicons-react'
+import { SubTopicWithQuestions } from "../../../lib/types"
 
 const RightMenu: React.FC<{
     // title: JSX.Element,
-    questionSuggestions: Question2Basic[]
+    suggestions: SubTopicWithQuestions
 }> = props => {
     const router = useRouter()
     const [toggleMenu, setToggleMenu] = useState(false);
@@ -24,9 +24,9 @@ const RightMenu: React.FC<{
                 </label>
                 <input id="title-menu-right-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                 <ul>
-                {props.questionSuggestions.map((x, i) => (
+                {props.suggestions.map((x, i) => (
                     <li key={i}>
-                        <ActiveLink activeClassName="ativo" href={x.url}><a>{x.title}</a></ActiveLink>
+                        <ActiveLink activeClassName="ativo" href={x.tag}><a>{x.title}</a></ActiveLink>
                     </li>
                 ))}
                 </ul> 

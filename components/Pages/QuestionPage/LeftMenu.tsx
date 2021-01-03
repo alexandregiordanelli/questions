@@ -1,12 +1,12 @@
 import { ThreeBarsIcon } from '@primer/octicons-react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { Menu } from '../../../lib/types';
+import { MenuWithQuestions } from '../../../lib/types';
 import ActiveLink from '../../ActiveLink';
 import { MenuItem } from './MenuItem';
 
 export const LeftMenu = (props: {
-    menu: Menu[];
+    menu: MenuWithQuestions;
 }) => {
     const router = useRouter()
     const [toggleMenu, setToggleMenu] = useState(false);
@@ -24,14 +24,14 @@ export const LeftMenu = (props: {
                     {props.menu.map((x, i) => {
                         return (
                             <li key={`${i}.0`} className={"menu-block"}>
-                                <MenuItem url={x.topics[0].url} title={x.title} hasExpanded={x.topics.length > 1} />
+                                <MenuItem url={x.subtopics[0].questions[0].tag} title={x.name} hasExpanded={x.subtopics.length > 1} />
                                 <ul className={"submenu"}>
-                                    {x.topics.map((y, j) => {
-                                        if (y.url) {
+                                    {x.subtopics.map((y, j) => {
+                                        if (y.questions[0].tag) {
                                             return (
                                                 <li key={`${i}.${j}`}>
-                                                    <ActiveLink href={y.url}>
-                                                        <a>{y.title}</a>
+                                                    <ActiveLink href={y.questions[0].tag}>
+                                                        <a>{y.name}</a>
                                                     </ActiveLink>
                                                 </li>
                                             );

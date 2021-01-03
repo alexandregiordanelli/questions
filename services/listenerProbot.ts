@@ -1,42 +1,35 @@
 import { ApplicationFunction } from 'probot/lib/types';
 import { parseQuestionMd, parseReadMd } from '../lib/utils';
-import admin from '../lib/firebase-server';
+import { Alternative, PrismaClient } from '@prisma/client';
 
 const listenerProbot: ApplicationFunction = (app) => {
     app.on('push', async (context) => {
-        const db = admin.firestore()
 
-        const getFilesOnPath = path => {
-            const pathParams = context.repo({ path })
-            return context.octokit.repos.getContent(pathParams)
-        }
+        const prisma = new PrismaClient()
 
-        const getFileContent = async (filepath) => {
-            const resp = await getFilesOnPath(filepath)
+        const getFileContent = async (filepath: string) => {
+            const pathParams = context.repo({ path:  filepath})
+            const resp = await context.octokit.repos.getContent(pathParams)
             //@ts-ignore - data is in content property but I cant access on typescript
             const data: string = resp.data.content
             return Buffer.from(data, 'base64').toString();
         }
 
-        const notebookItem = await parseReadMd(await getFileContent("README.md"));
-        const notebookDoc = db.collection("questionsof").doc(context.payload.repository.id.toString());
-        await notebookDoc.set(notebookItem);
+        const notebookTag = context.payload.repository.id.toString()
 
-        const setQuestionDataOnDB = async (filepath) => {
-            
-            const id = encodeURIComponent(filepath)
-            const question = await parseQuestionMd(await getFileContent(filepath))
-            return await notebookDoc.collection("questions")
-                .doc(id)
-                .set(question);
-        }
+        const notebookOnRepo = await parseReadMd(await getFileContent("README.md"));
+
+
+
 
         const setFileOnDB = async (f) => {
             try {
                 const pathArray = f.split('/');
                 const fileName = pathArray[pathArray.length - 1];
                 if (fileName.split('.')[1] == "md" && fileName.split('.')[0] != "README") {
-                    await setQuestionDataOnDB(f);
+                    const questionFilename = encodeURIComponent(f)
+                    const questionOnRepo = await parseQuestionMd(await getFileContent(f))
+
                 }
             } catch (e) {
                 console.log('not found', f);
@@ -54,7 +47,7 @@ const listenerProbot: ApplicationFunction = (app) => {
             }
 
             for await (const f of removed) {
-                await notebookDoc.collection("questions").doc(encodeURIComponent(f)).delete();
+                encodeURIComponent(f)
             }
 
             console.log('added', added);

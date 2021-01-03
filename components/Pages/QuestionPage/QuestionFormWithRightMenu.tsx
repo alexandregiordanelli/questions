@@ -1,30 +1,27 @@
 import React from 'react';
 import { QuestionForm } from './QuestionForm';
-import { Menu, Question2, Question2Basic } from '../../../lib/types';
-import { letters, questionParsed2MD } from '../../../lib/utils';
+import { letters } from '../../../lib/utils';
 import Head from 'next/head';
-import { useAmp } from 'next/amp';
 import RightMenu from './RightMenu';
+import { QuestionWithAll, SubTopicWithQuestions } from '../../../lib/types';
 
 export const QuestionFormWithRightMenu = (props: {
-    question: Question2;
-    questionSuggestions: Question2Basic[]
-   // menu: Menu[];
+    question: QuestionWithAll;
+    suggestions: SubTopicWithQuestions
 }) => {
-    const isAmp = useAmp()
-    
-    const questionMD = questionParsed2MD(isAmp, props.question);
 
     //const menuFiltered = props.menu.find(x => x.topics.some(y => y.topic == props.question.topic))
 
     //const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == props.question.topic).title}</>: <>{menuFiltered.title}</>
+
+    const relativeAlternativeIndex = props.question.alternatives.findIndex(x => x.id == props.question.alternativeRightId)
 
     return (
         <>
             <Head>
                 <title>{props.question.title}</title>
                 <meta name="description" content={props.question.title}></meta>
-                {props.question.answer > -1 && <script
+                {relativeAlternativeIndex > -1 && <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
@@ -35,14 +32,14 @@ export const QuestionFormWithRightMenu = (props: {
                                 "name": props.question.question,
                                 "acceptedAnswer": {
                                     "@type": "Answer",
-                                    "text": props.question.options[props.question.answer]
+                                    "text": props.question.alternatives[relativeAlternativeIndex].alternative
                                 }
                             }]
                         })
                     }} />}
             </Head>
             <style jsx global>{`
-            #right-answer:checked ~ #${letters[props.question.answer]} + label {
+            #right-answer:checked ~ #${letters[relativeAlternativeIndex]} + label {
                 background-color: rgb(220, 255, 228);
                 border-color: rgba(23, 111, 44, 0.2);
             }
@@ -84,13 +81,13 @@ export const QuestionFormWithRightMenu = (props: {
             <div className="grid">
                 <RightMenu
                     // title={title}
-                    questionSuggestions={props.questionSuggestions} 
+                    suggestions={props.suggestions} 
                 />
                 <div>
                     <h2>{props.question.title}</h2>
                     {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
                     <QuestionForm
-                        data={questionMD}
+                       question ={props.question}
                     />
                 </div>
             </div>

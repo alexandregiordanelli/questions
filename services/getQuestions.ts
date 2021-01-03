@@ -1,17 +1,20 @@
-import admin from '../lib/firebase-server';
+import { PrismaClient } from '@prisma/client';
 import { Path } from '../lib/types';
-import { questionConverter } from '../lib/utils';
-import getQuestionof from './getQuestionof';
 
-const getQuestions = async (questionsof: string) => {
-    const db = admin.firestore();
+const getQuestions = async (notebookTag: string) => {
+    const prisma = new PrismaClient()
 
-    const questionsOfDic = await getQuestionof(questionsof);
-
-    const questionsQuery = await db.collection("questionsof").doc(questionsOfDic.id).collection("questions").withConverter(questionConverter).orderBy('url').get();
-    const questionsListPath = questionsQuery.docs.map(x => ({
+    const questions = await prisma.question.findMany({
+        where: {
+            notebook: {
+                tag: notebookTag
+            }
+        }
+    })
+    
+    const questionsListPath = questions.map(x => ({
         params: {
-            slug: [questionsOfDic.data.url].concat(x.data().url) // [enem,questao1]
+            slug: [notebookTag].concat(x.tag) // [enem,questao1]
         }
     }) as Path);
 

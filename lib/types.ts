@@ -1,48 +1,60 @@
+import { Notebook, PromiseReturnType } from "@prisma/client";
 import { NowRequest } from "@vercel/node";
 import { Probot } from "probot";
 import { Reducer } from "react"
 import firebase from '../lib/firebase-client';
+import getMenu from "../services/getMenu";
+import getQuestion from "../services/getQuestion";
+import getSuggestions from "../services/getSuggestions";
 
-export type Menu = {
-    title: string
-    topics: Topic[]
+export type MenuWithQuestions = PromiseReturnType<typeof getMenu>
+export type QuestionWithAll = PromiseReturnType<typeof getQuestion>
+export type SubTopicWithQuestions = PromiseReturnType<typeof getSuggestions>
+
+
+export type PagesProps = {
+    notebook: Notebook,
+    menu: MenuWithQuestions,
+    question?: QuestionWithAll,
+    suggestions?: SubTopicWithQuestions,
 }
-export type Topic = {
-    title: string
-    topic: string
-    url: string
-}
-export type Question = {
-    file: string
-    title: string
-    url: string
-    topic: string;
-    content?: string
-    absolutUrl?: string
-}
-export type Nav = {
-    menu: Menu[]
-    questions: Question[]
-}
-export type Notebook = {
-    name: string
-    files: string[]
-}
-export type GitHub = {
-    username: string
-    repo: string
-}
+
 export type Path = {
     params: {
         slug: string[]
     }
 }
-export type QuestionParsed = {
+export type QuestionOnRepo = {
     question: string
     solution: string
     options: string[]
     answer: number
+} & QuestionMetaOnRepo
+
+export type QuestionMetaOnRepo = {
+    topic: string
+    url: string
+    price?: number
+    title?: string
 }
+
+export type NotebookOnRepo = {
+    data: string
+} & NotebookMetaOnRepo
+
+export type NotebookMetaOnRepo = {
+    name: string
+    tag: string
+    price: number
+    topics: {
+        name: string
+        subtopics: {
+            name: string
+            tag: string
+        }[]
+    }[]
+}
+
 export enum Env {
     development = 'development',
     preview = 'preview',
@@ -75,32 +87,6 @@ export type MainAction = UserAction
 
 export type MainReducer = Reducer<MainState, MainAction>
 
-export type Question2 = {
-    question: string
-    solution: string
-    options: string[]
-    answer: number
-    topic: string
-} & Question2Basic
-
-export type QuestionsOf = {
-    data: string
-    menu: Menu[]
-    price: number
-    title: string
-    url: string
-    subtitle: string
-}
-
-export type Question2Basic = {
-    title: string
-    url: string
-}
-
-export type QuestionsOfDic = {
-    id: string,
-    data: QuestionsOf
-}
 
 export type ProbotRequest = NowRequest & {
     probot: Probot

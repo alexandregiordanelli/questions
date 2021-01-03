@@ -1,20 +1,15 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Question2, Question2Basic, QuestionsOf } from '../../lib/types'
 import { Header as Header } from '../Header'
 import { useAmp } from 'next/amp'
 import HeadHtml from '../HeadHtml'
 import { IndexPage } from './IndexPage/IndexPage'
 import QuestionPage from './QuestionPage/QuestionPage'
 import { StateProvider } from '../State'
+import { InferGetStaticPropsType } from 'next'
+import { getStaticProps } from '../../pages/[[...slug]]'
 
-
-export type PagesProps = {
-    question: Question2
-    content: QuestionsOf
-    questionSuggestions: Question2Basic[]
-}
-export const Pages: React.FC<PagesProps> = props => {
+export const Pages: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props => {
     const isAmp = useAmp()
     
     const router = useRouter()
@@ -23,11 +18,14 @@ export const Pages: React.FC<PagesProps> = props => {
         
     const deepth = slug?.length
 
-    if (deepth && !props.content) return null
+    if (deepth && !props.question) return null
 
     return (
         <StateProvider>
-            <HeadHtml isAmp={isAmp} slug={slug}/>
+            <HeadHtml 
+            isAmp={isAmp} 
+            slug={slug}
+            />
             <style jsx>{`
             .main {
                 flex-direction: column;
@@ -36,11 +34,21 @@ export const Pages: React.FC<PagesProps> = props => {
             }
             `}</style>
             <div className="main">
-            {!deepth && <IndexPage/>}
-            {deepth && (<>
-                <Header/>                
-                <QuestionPage deepth={deepth} content={props.content} question={props.question} questionSuggestions={props.questionSuggestions}/>
-            </>)}
+            {!deepth && 
+                <IndexPage/>
+            }
+            {deepth && 
+                <>
+                    <Header/>                
+                    <QuestionPage 
+                    deepth={deepth} 
+                    menu={props.menu}
+                    notebook={props.notebook} 
+                    question={props.question} 
+                    suggestions={props.suggestions}
+                    />
+                </>
+            }
             </div>
         </StateProvider>
     )
