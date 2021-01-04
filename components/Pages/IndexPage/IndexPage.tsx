@@ -2,14 +2,15 @@ import React from 'react';
 import firebase from '../../../lib/firebase-client';
 import Link from 'next/link';
 import { useStateValue } from '../../State';
-
+import Image from 'next/image'
+import { Img } from '../../Img';
 export const IndexPage: React.FC = () => {
     const [state] = useStateValue();
     
     const imgs = [
-        "https://lh3.googleusercontent.com/proxy/XZmP8KWDZev7phUM97puc-s7LHtyG3WKcQ_J2RGPX4BMlFIPnxkO58wxFbUsHgKFJK2C61ncUs36kCyS-dTtJ2dPuE4ubM2Y7FJLMe5TdO9MvSvvcXloNFOgOnR-ngWudGwoHDQYpKRT5q3GWkQ",
         "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
-        "https://lh3.googleusercontent.com/proxy/-XQNXlg9y9ME9OGiKdc9TB2ydabGdBa_0ymOXNvI-V1gA6dDVuH2ikqeWeKlW8McxJxHLaDjxg_IoO_ydyPlU7ev5zEN5px6"
+        "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
+        "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png"
     ];
     const names = [
         "ENEM",
@@ -47,7 +48,10 @@ export const IndexPage: React.FC = () => {
                 <div className="container">
                     <div className="flex2">
                         {[0, 1, 2].map((x, i) => <div key={i} className="box">
-                            <div><img src={imgs[i]} /></div>
+                            <div>
+                                <Img 
+                                src={imgs[i]} width={368} height={220}  />
+                            </div>
                             <h1>{!!urls[i] ? <Link href={urls[i]}><a>{names[i]}</a></Link> : names[i]}</h1>
                             <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>
                         </div>)}

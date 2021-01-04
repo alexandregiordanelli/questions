@@ -7,14 +7,19 @@ import rehype2react from 'rehype-react';
 import markdown from 'remark-parse';
 import gfm from 'remark-gfm';
 import "katex/dist/contrib/mhchem.js"
-export const QuestionFieldComponent: React.FC<{ md: string; }> = props => {
+import { Img } from './Img';
+import { useAmp } from 'next/amp';
+export const QuestionFieldComponent: React.FC<{
+    md: string 
+}> = props => {
+    const isAmp = useAmp();
     return unified()
         .use(markdown)
         .use(math)
         .use(gfm)
         .use(remark2rehype)
         .use(katex, {
-            //output: isAmp? 'html': 'htmlAndMathml'
+            output: isAmp? 'html': 'htmlAndMathml'
         })
         // .use(inspectUrls, {
         //     inspectEach({ url, node }) {
@@ -30,8 +35,9 @@ export const QuestionFieldComponent: React.FC<{ md: string; }> = props => {
             createElement: React.createElement,
             Fragment: React.Fragment,
             components: {
-                //img: (props: any) => isAmp? <div className="fixed-height-container "><amp-img className="contain" layout="fill" {...props}/></div>: <img {...props}/>
+                img: Img
             }
         })
         .processSync(props.md).result as ReactElement;
 };
+

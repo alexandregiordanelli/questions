@@ -3,6 +3,7 @@ import "katex/dist/contrib/mhchem.js"
 import { QuestionWithAll } from '../../../lib/types'
 import { letters } from '../../../lib/utils'
 import { QuestionFieldComponent } from "../../QuestionFieldComponent"
+import { useAmp } from 'next/amp'
 
 export const QuestionForm: React.FC<{
     question: QuestionWithAll

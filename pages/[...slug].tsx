@@ -15,6 +15,12 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
         
         const notebook = await getNotebook(questionsof)
 
+        if(!notebook){
+            return {
+                notFound: true
+            }
+        }
+
         const menu = await getMenu(questionsof)
 
         if (context.params.slug.length > 1) {
