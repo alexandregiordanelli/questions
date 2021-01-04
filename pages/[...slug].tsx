@@ -28,6 +28,12 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
 
             const question = await getQuestion(notebook.id, questionUrl)
 
+            if(!question){
+                return {
+                    notFound: true
+                }
+            }
+
             const suggestions = await getSuggestions(questionsof, question.subTopic.tag)
             
             prisma.$disconnect()
