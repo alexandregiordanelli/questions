@@ -1,23 +1,18 @@
-import { PrismaClient } from '@prisma/client';
-import getNotebook from './getNotebook';
-export const getQuestion = async (notebookTag: string, tag: string) => {
-    const prisma = new PrismaClient()
-
-    const notebook = await getNotebook(notebookTag)
-
+import { prisma } from '../prisma/prisma';
+export const getQuestion = async (notebookId: number, tag: string) => {
     const question = await prisma.question.findUnique({
+        where: {
+            notebookId_tag: {
+                notebookId: notebookId,
+                tag: tag
+            }
+        },
         include: {
             alternatives: true,
-            alternativeRight: true,
+            rightAlternative: true,
             notebook: true,
             subTopic: true
         },
-        where: {
-            notebookId_tag: {
-                notebookId: notebook.id,
-                tag: tag
-            }
-        }
     })
 
     return question

@@ -22,19 +22,27 @@ export const LeftMenu = (props: {
                 <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                 <ul className={"menu"}>
                     {props.menu.map((x, i) => {
+                        const firstSubtopicQuestion = x.subtopics[0].questions
                         return (
                             <li key={`${i}.0`} className={"menu-block"}>
-                                <MenuItem url={x.subtopics[0].questions[0].tag} title={x.name} hasExpanded={x.subtopics.length > 1} />
+                                <MenuItem url={firstSubtopicQuestion.length? firstSubtopicQuestion[0].tag: null} title={x.name} hasExpanded={x.subtopics.length > 1} />
                                 <ul className={"submenu"}>
                                     {x.subtopics.map((y, j) => {
-                                        if (y.questions[0].tag) {
+                                        const anotherSubtopicQuestion = y.questions[0]
+                                        if (anotherSubtopicQuestion) {
                                             return (
                                                 <li key={`${i}.${j}`}>
-                                                    <ActiveLink href={y.questions[0].tag}>
+                                                    <ActiveLink href={anotherSubtopicQuestion.tag}>
                                                         <a>{y.name}</a>
                                                     </ActiveLink>
                                                 </li>
                                             );
+                                        } else {
+                                            return (
+                                                <li key={`${i}.${j}`}>
+                                                    {y.name}
+                                                </li>
+                                            )
                                         }
                                     })}
                                 </ul>

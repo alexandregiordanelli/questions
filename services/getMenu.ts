@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "../prisma/prisma"
 
 const getMenu = async (notebookTag: string) => {
-
-    const prisma = new PrismaClient()
 
     const topicsOfNotebook = await prisma.topic.findMany({
         include: {
@@ -24,14 +22,20 @@ const getMenu = async (notebookTag: string) => {
 
     })
 
-    const topics = topicsOfNotebook.map(x => ({
-        ...x,
-        subtopics: x.subtopics.map(y => ({
-            ...y,
-            questions: [y.questions[0]]
-        }))
-    }))
+    topicsOfNotebook.forEach(x => {
+        x.subtopics.forEach(y => {
+            if(y.questions.length)
+                y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
+        })
+    })
+    // const topics = topicsOfNotebook.map(x => ({
+    //     ...x,
+    //     subtopics: x.subtopics.map(y => ({
+    //         ...y,
+    //         questions: y.questions.length ? [y.questions[0]]: []
+    //     }))
+    // }))
 
-    return topics
+    return topicsOfNotebook
 }
 export default getMenu

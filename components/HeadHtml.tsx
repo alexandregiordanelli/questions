@@ -10,22 +10,22 @@ import { useRouter } from 'next/router';
 
 const HeadHtml: React.FC<{
     isAmp: boolean,
-    slug: string[]
+    slug?: string[]
 }> = props => {
     const [state, dispatch] = useStateValue();
     const router = useRouter();
 
-    const byEmail = !!router.query && !!router.query["apiKey"] && !!router.query["oobCode"]
+    // const byEmail = !!router.query && !!router.query["apiKey"] && !!router.query["oobCode"]
 
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(user => {
-            dispatch({
-                type: UserActionType.ChangeUser,
-                value: user
-            })
-        })
-    }, []);
+    // useEffect(() => {
+    //     firebase.auth().onAuthStateChanged(user => {
+    //         dispatch({
+    //             type: UserActionType.ChangeUser,
+    //             value: user
+    //         })
+    //     })
+    // }, []);
 
     return (
         <>

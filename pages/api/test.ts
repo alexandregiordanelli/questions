@@ -10,14 +10,13 @@ export default async function (req: NowRequest, res: NowResponse) {
 
     
 
-    const md = (await readFile(resolve('./public', 'README.md'))).toString()
-    const notebookOnRepo = await parseReadMd(md)
-    const notebook = await postNotebook(notebookOnRepo)
+    // const md = (await readFile(resolve('./public', 'README.md'))).toString()
+    // const notebookOnRepo = await parseReadMd(md)
+    // const notebook = await postNotebook(notebookOnRepo)
 
-    //const md = (await readFile(resolve('./public', '985/985.md'))).toString()
-    //
-    //const questionOnRepo = await parseQuestionMd(md)
-    //const question = await postQuestion(9, questionOnRepo, '985/985.md')
+    const md = (await readFile(resolve('./public', '985/985.md'))).toString()
+    const questionOnRepo = await parseQuestionMd(md)
+    const question = await postQuestion(1, questionOnRepo, '985/985.md')
    
     res.send('sucesso')
 }

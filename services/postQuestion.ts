@@ -1,33 +1,43 @@
 import { Alternative, PrismaClient } from "@prisma/client"
 import { QuestionOnRepo } from "../lib/types"
+import { prisma } from "../prisma/prisma"
 
 const postQuestion = async (notebookId: number, questionOnRepo: QuestionOnRepo, questionFilename: string) => {
-    const prisma = new PrismaClient()
-
     const questionFilenameEncoded = encodeURIComponent(questionFilename)
 
-    let question = await prisma.question.create({
-        data: {
-            question: questionOnRepo.question,
-            solution: questionOnRepo.solution,
-            tag: questionOnRepo.url,
-            questionFilename: questionFilenameEncoded,
-            title: questionOnRepo.title,
-            notebook: {
-                connect: {
-                    id: notebookId
-                }
-            },
-            subTopic: {
-                connect: {
-                    notebookId_tag: {
-                        notebookId: notebookId,
-                        tag: questionOnRepo.topic
-                    }
-                }
+    let question = await prisma.question.findUnique({
+        where: {
+            notebookId_questionFilename: {
+                notebookId,
+                questionFilename: questionFilenameEncoded
             }
         }
     })
+    
+    if(!question){
+        question = await prisma.question.create({
+            data: {
+                question: questionOnRepo.question,
+                solution: questionOnRepo.solution,
+                tag: questionOnRepo.url,
+                questionFilename: questionFilenameEncoded,
+                title: questionOnRepo.title,
+                notebook: {
+                    connect: {
+                        id: notebookId
+                    }
+                },
+                subTopic: {
+                    connect: {
+                        notebookId_tag: {
+                            notebookId: notebookId,
+                            tag: questionOnRepo.topic
+                        }
+                    }
+                }
+            }
+        })
+    }
 
     const alternatives: Alternative[] = []
 
@@ -47,16 +57,18 @@ const postQuestion = async (notebookId: number, questionOnRepo: QuestionOnRepo, 
     }
 
     if(questionOnRepo.answer > -1){
-        question = await prisma.question.update({
+        await prisma.rightAlternative.create({
             data: {
-                alternativeRight: {
+                alternative: {
                     connect: {
                         id: alternatives[questionOnRepo.answer].id
                     }
+                },
+                question: {
+                    connect: {
+                        id: question.id
+                    }
                 }
-            },
-            where: {
-                id: question.id
             }
         })
     }

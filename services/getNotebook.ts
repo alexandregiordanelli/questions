@@ -1,13 +1,13 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from "../prisma/prisma"
 
 const getNotebook = async (notebookTag: string) => {
-    const prisma = new PrismaClient()
     
     const notebook = await prisma.notebook.findUnique({
         where: {
-            tag: notebookTag
+            tag: notebookTag,
         }
     })
+
     return notebook
 };
 export default getNotebook

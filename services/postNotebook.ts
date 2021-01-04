@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "../prisma/prisma"
 import { NotebookOnRepo } from "../lib/types"
 
 const postNotebook = async (notebookOnRepo: NotebookOnRepo) => {
-    const prisma = new PrismaClient()
 
     const notebook = await prisma.notebook.create({
         data: {

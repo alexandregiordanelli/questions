@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "../prisma/prisma"
 import { Path } from '../lib/types';
 
 const getQuestions = async (notebookTag: string) => {
-    const prisma = new PrismaClient()
 
     const questions = await prisma.question.findMany({
         where: {

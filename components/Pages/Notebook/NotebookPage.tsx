@@ -4,7 +4,7 @@ import { IndexQuestionPage } from "./IndexQuestionPage"
 import { QuestionFormWithRightMenu } from "./QuestionFormWithRightMenu"
 import { PagesProps } from "../../../lib/types"
 
-const QuestionPage: React.FC<{
+const NotebookPage: React.FC<{
     deepth: number
 } & PagesProps> = props => {
     return (
@@ -39,4 +39,4 @@ const QuestionPage: React.FC<{
     )
 }
 
-export default QuestionPage
+export default NotebookPage

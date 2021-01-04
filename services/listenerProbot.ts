@@ -1,11 +1,10 @@
 import { ApplicationFunction } from 'probot/lib/types';
 import { parseQuestionMd, parseReadMd } from '../lib/utils';
-import { Alternative, PrismaClient } from '@prisma/client';
+import { Alternative } from '@prisma/client';
+import { prisma } from "../prisma/prisma"
 
 const listenerProbot: ApplicationFunction = (app) => {
     app.on('push', async (context) => {
-
-        const prisma = new PrismaClient()
 
         const getFileContent = async (filepath: string) => {
             const pathParams = context.repo({ path:  filepath})

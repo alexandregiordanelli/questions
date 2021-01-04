@@ -5,8 +5,8 @@ import ActiveLink from '../../ActiveLink';
 
 export const MenuItem: React.FC<{
     hasExpanded: boolean;
-    url: string;
     title: string;
+    url?: string;
 }> = props => {
     const [opened, toggleOpened] = useState(false);
     // const router = useRouter();
@@ -37,10 +37,12 @@ export const MenuItem: React.FC<{
                 justify-content: space-between;
             }
             `}</style>
-        </>) : (
-        <>
-            <ActiveLink href={props.url}>
-                <a>{props.title}</a>
-            </ActiveLink>
-        </>)
+        </>) : 
+            props.url? 
+                <>
+                    <ActiveLink href={props.url}>
+                        <a>{props.title}</a>
+                    </ActiveLink>
+                </>: 
+                <>{props.title}</>
 };
