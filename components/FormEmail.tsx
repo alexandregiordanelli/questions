@@ -14,6 +14,15 @@ export const loginAnonymously = async () => {
     }
 }
 
+export const loginGitHub = async () => {
+    try{
+        const provider = new firebase.auth.GithubAuthProvider()
+        await firebase.auth().signInWithRedirect(provider)
+    } catch(e){
+        console.log("poi")
+    }
+}
+
 export const sendEmailLogin = async (url: string, email: string) => {
     url = url.split('').some(x => x == '?') ? url.concat(`&email=${encodeURIComponent(email)}`): url.concat(`?email=${email}`)
 
@@ -52,6 +61,25 @@ const FormEmail = props => {
             setCursorPosition(-1);
     }, [cursorPosition]);
 
+    useEffect(() => {
+        firebase.auth().getRedirectResult().then(function(result) {
+            const credential = result.credential as firebase.auth.OAuthCredential;
+            if (credential) {
+              console.log(credential.accessToken);
+            }
+            var user = result.user;
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+          });
+    }, [])
+
     const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         await sendEmailLogin(`${urlEnv}${router.asPath}`, email)
@@ -78,6 +106,7 @@ const FormEmail = props => {
                     }} onChange={x => setEmail(x.target.value)} value={email} />
                 </label>
                 <input type="submit" className="signupButton" value="Receber Link de Acesso"/>
+                <input type="button" className="signupButton" value="Continue with GitHub" onClick={loginGitHub}/>
             </> : <p>Abra o email com o link que você recebeu em {router.query['email']} para se logar.</p>}
         </form>
         <style jsx>{`

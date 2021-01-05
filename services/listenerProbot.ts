@@ -2,9 +2,20 @@ import { ApplicationFunction } from 'probot/lib/types';
 import { parseQuestionMd, parseReadMd } from '../lib/utils';
 import { Alternative } from '@prisma/client';
 import { prisma } from "../prisma/prisma"
+import admin from '../lib/firebase-server';
 
 const listenerProbot: ApplicationFunction = (app) => {
+    
     app.on('push', async (context) => {
+
+        const users = await admin.auth().getUsers([{
+            providerId: "github.com",
+            providerUid: context.payload.sender.id.toString()
+        }])
+        
+        if(users.notFound){
+            return
+        }
 
         const getFileContent = async (filepath: string) => {
             const pathParams = context.repo({ path:  filepath})
@@ -14,7 +25,7 @@ const listenerProbot: ApplicationFunction = (app) => {
             return Buffer.from(data, 'base64').toString();
         }
 
-        const notebookTag = context.payload.repository.id.toString()
+        const notebookTag = context.payload.repository.id
 
         const notebookOnRepo = await parseReadMd(await getFileContent("README.md"));
 

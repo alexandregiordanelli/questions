@@ -18,14 +18,16 @@ const HeadHtml: React.FC<{
     // const byEmail = !!router.query && !!router.query["apiKey"] && !!router.query["oobCode"]
 
 
-    // useEffect(() => {
-    //     firebase.auth().onAuthStateChanged(user => {
-    //         dispatch({
-    //             type: UserActionType.ChangeUser,
-    //             value: user
-    //         })
-    //     })
-    // }, []);
+    useEffect(() => {
+        console.log("aqui")
+        firebase.auth().onAuthStateChanged(user => {
+            console.log(1, user)
+            // dispatch({
+            //     type: UserActionType.ChangeUser,
+            //     value: user
+            // })
+        })
+    }, []);
 
     return (
         <>
