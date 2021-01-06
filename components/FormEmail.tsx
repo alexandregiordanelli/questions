@@ -16,7 +16,9 @@ export const loginAnonymously = async () => {
 
 export const loginGitHub = async () => {
     try{
+        await firebase.auth().signOut()
         const provider = new firebase.auth.GithubAuthProvider()
+        provider.addScope('repo')
         await firebase.auth().signInWithRedirect(provider)
     } catch(e){
         console.log("poi")
@@ -62,10 +64,18 @@ const FormEmail = props => {
     }, [cursorPosition]);
 
     useEffect(() => {
-        firebase.auth().getRedirectResult().then(function(result) {
+        firebase.auth().getRedirectResult().then(async (result) =>  {
             const credential = result.credential as firebase.auth.OAuthCredential;
             if (credential) {
-              console.log(credential.accessToken);
+              console.log(credential.accessToken);//?access_token=71c5361a31d77a37ea3e6aec0c035185329e7277
+              const data = await fetch(`https://api.github.com/orgs/${'alexandregiordanelli'}/repos`,
+                {
+                    headers: {
+                        "Accept": "application/vnd.github.v3+json",
+                        'Authorization': `token ${'71c5361a31d77a37ea3e6aec0c035185329e7277'}`
+                    }
+                }).then(x => x.ok && x.json())
+              console.log(data)
             }
             var user = result.user;
           }).catch(function(error) {

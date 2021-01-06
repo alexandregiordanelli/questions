@@ -20,13 +20,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 prisma.$use(async (params, next) => {
-    const before = Date.now();
+    const time = `Query ${params.model}.${params.action} took`
+    console.time(time)
     const result = await next(params);
-    const after = Date.now();
+    console.timeEnd(time)
 
-    console.log(
-      `Query ${params.model}.${params.action} took ${after - before}ms`
-    );
     return result;
 });
 
