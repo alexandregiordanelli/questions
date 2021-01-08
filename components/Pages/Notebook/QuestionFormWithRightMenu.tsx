@@ -14,7 +14,7 @@ export const QuestionFormWithRightMenu = (props: {
 
     //const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == props.question.topic).title}</>: <>{menuFiltered.title}</>
 
-    const relativeAlternativeIndex = props.question.alternatives.findIndex(x => x.id == props.question.rightAlternative.alternativeId)
+    const relativeAlternativeIndex = props.question.alternatives.findIndex(x => x.id == props.question.rightAlternative?.alternativeId)
 
     return (
         <>
