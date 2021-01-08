@@ -1,9 +1,19 @@
 import { prisma } from '../prisma/prisma';
-export const getQuestion = async (notebookId: number, tag: string) => {
+export const getQuestion = async (notebookTag: string, tag: string) => {
+
+    const notebook = await prisma.notebook.findUnique({
+        where: {
+            tag: notebookTag
+        },
+        select: {
+            id: true
+        }
+    })
+
     const question = await prisma.question.findUnique({
         where: {
             notebookId_tag: {
-                notebookId: notebookId,
+                notebookId: notebook.id,
                 tag: tag
             }
         },

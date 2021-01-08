@@ -8,4 +8,3 @@ export default async function (req: NowRequest, res: NowResponse) {
 
     res.json(menu)
 }
-

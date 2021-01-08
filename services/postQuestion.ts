@@ -1,4 +1,4 @@
-import { Alternative, PrismaClient } from "@prisma/client"
+import { Alternative } from "@prisma/client"
 import { QuestionOnRepo } from "../lib/types"
 import { prisma } from "../prisma/prisma"
 

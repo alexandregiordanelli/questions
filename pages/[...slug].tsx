@@ -11,22 +11,26 @@ import getSuggestions from '../services/getSuggestions';
 export default Notebook
 export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
     try {
-        const questionsof = context.params.slug[0]
+        const notebookTag = context.params.slug[0]
         
-        const notebook = await getNotebook(questionsof)
+        const notebook = await prisma.notebook.findUnique({
+            where: {
+                tag: notebookTag
+            }
+        })
 
-        if(!notebook){
+        if(!notebook.id){
             return {
                 notFound: true
             }
         }
 
-        const menu = await getMenu(questionsof)
+        const menu = await getMenu(notebookTag)
 
         if (context.params.slug.length > 1) {
             const questionUrl = context.params.slug[1]
 
-            const question = await getQuestion(notebook.id, questionUrl)
+            const question = await getQuestion(notebookTag, questionUrl)
 
             if(!question){
                 return {
@@ -34,7 +38,7 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
                 }
             }
 
-            const suggestions = await getSuggestions(questionsof, question.subTopic.tag)
+            const suggestions = await getSuggestions(notebookTag, question.subTopic.tag)
 
             return {
                 props: {
