@@ -1,4 +1,4 @@
-import { Notebook, PromiseReturnType } from "@prisma/client";
+import { Notebook, PromiseReturnType, Topic, SubTopic, Alternative, Question, RightAlternative } from "@prisma/client";
 import { NowRequest } from "@vercel/node";
 import { Probot } from "probot";
 import { Reducer } from "react"
@@ -8,9 +8,19 @@ import getQuestion from "../services/getQuestion";
 import getSuggestions from "../services/getSuggestions";
 
 export type MenuWithQuestions = PromiseReturnType<typeof getMenu>
-export type QuestionWithAll = PromiseReturnType<typeof getQuestion>
+export type QuestionWithAll = Question & {
+    notebook: Notebook;
+    alternatives: Alternative[];
+    rightAlternative: RightAlternative;
+    subTopic: SubTopic;
+}
 export type SubTopicWithQuestions = PromiseReturnType<typeof getSuggestions>
 
+export type NotebookWithTopicsAndSubTopics = Notebook & {
+    topics: (Topic & {
+        subtopics: SubTopic[];
+    })[];
+}
 
 export type PagesProps = {
     notebook: Notebook,
@@ -37,6 +47,7 @@ export type QuestionMetaOnRepo = {
     url: string
     price?: number
     title?: string
+    notebookId: number
 }
 
 export type NotebookOnRepo = {

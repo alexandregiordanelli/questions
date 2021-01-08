@@ -3,10 +3,10 @@ import getQuestions from '../../../services/getQuestions';
 
 export default async function (req: NowRequest, res: NowResponse) {
     
-    const questionsof = req.query.questionsof as string
+    const notebookTag = req.query.notebookTag as string
 
     if(req.method == 'GET'){
-        const questionsListPath = await getQuestions(questionsof)
+        const questionsListPath = await getQuestions(notebookTag)
     
         res.json(questionsListPath)
     } else {

@@ -3,7 +3,6 @@ import { Notebook } from '../components/Pages/Notebook/Notebook'
 import { PagesProps } from '../lib/types';
 import { prisma } from '../prisma/prisma';
 import getMenu from '../services/getMenu';
-import getNotebook from '../services/getNotebook';
 import getQuestion from '../services/getQuestion';
 import getQuestions from '../services/getQuestions';
 import getSuggestions from '../services/getSuggestions';
@@ -25,12 +24,12 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
             }
         }
 
-        const menu = await getMenu(notebookTag)
+        const menu = await getMenu(notebook.tag)
 
         if (context.params.slug.length > 1) {
             const questionUrl = context.params.slug[1]
 
-            const question = await getQuestion(notebookTag, questionUrl)
+            const question = await getQuestion(notebook.id, questionUrl)
 
             if(!question){
                 return {
@@ -38,7 +37,7 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
                 }
             }
 
-            const suggestions = await getSuggestions(notebookTag, question.subTopic.tag)
+            const suggestions = await getSuggestions(notebook.tag, question.subTopic.tag)
 
             return {
                 props: {

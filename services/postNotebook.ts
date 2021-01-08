@@ -1,10 +1,10 @@
-import { Prisma, SubTopic } from "@prisma/client"
-import { NotebookOnRepo } from "../lib/types"
+import { Notebook, Prisma, SubTopic } from "@prisma/client"
+import { NotebookOnRepo, NotebookWithTopicsAndSubTopics } from "../lib/types"
 import { prisma } from "../prisma/prisma"
 import _ from 'lodash'
 import getNotebook from "./getNotebook"
 
-const postNotebook = async (notebookOnRepo: NotebookOnRepo) => {
+const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
     const notebook = await prisma.notebook.upsert({
         create: {
@@ -35,15 +35,7 @@ const postNotebook = async (notebookOnRepo: NotebookOnRepo) => {
         }
     })
 
-    const topicsWithSubtopicsSent = notebookOnRepo.topics.map(x => ({
-        id: x.id,
-        name: x.name,
-        subtopics: x.subtopics.map(y => ({
-            id: y.id,
-            tag: y.tag,
-            name: y.name
-        } as SubTopic))
-    }))
+    const topicsWithSubtopicsSent = notebookOnRepo.topics
 
     const batch: any[] = []
 

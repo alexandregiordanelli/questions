@@ -4,8 +4,8 @@ import { prisma } from "../prisma/prisma"
 
 const deleteNotebook = async (notebookId: number) => {
     //https://github.com/prisma/prisma/issues/4650
-    const notebook = await prisma.$executeRaw`DELETE FROM Notebook WHERE id = ${notebookId};`
+    const nRowsUpdated = await prisma.$executeRaw`DELETE FROM Notebook WHERE id = ${notebookId};`
 
-    return notebook
+    return nRowsUpdated
 }
 export default deleteNotebook
