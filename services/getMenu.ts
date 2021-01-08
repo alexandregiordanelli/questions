@@ -28,13 +28,6 @@ const getMenu = async (notebookTag: string) => {
                 y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
         })
     })
-    // const topics = topicsOfNotebook.map(x => ({
-    //     ...x,
-    //     subtopics: x.subtopics.map(y => ({
-    //         ...y,
-    //         questions: y.questions.length ? [y.questions[0]]: []
-    //     }))
-    // }))
 
     return topicsOfNotebook
 }

@@ -35,8 +35,6 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
             }
 
             const suggestions = await getSuggestions(questionsof, question.subTopic.tag)
-            
-            prisma.$disconnect()
 
             return {
                 props: {
@@ -49,8 +47,6 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
             };
 
         } else if (context.params.slug.length == 1) {
-            
-            prisma.$disconnect()
 
             return {
                 props: {

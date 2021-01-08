@@ -41,7 +41,6 @@ model Question {
     id                          Int             @id @default(autoincrement())
     tag                         String
     question                    String
-    questionFilename            String
     notebookId                  Int
     solution                    String?
     alternatives                Alternative[]
@@ -50,7 +49,6 @@ model Question {
     subTopicId                  Int?
     subTopic                    SubTopic?       @relation(fields: [subTopicId], references: [id])
     notebook                    Notebook        @relation(fields: [notebookId], references: [id])
-    @@unique([notebookId, questionFilename])
     @@unique([notebookId, tag]) 
 }
 

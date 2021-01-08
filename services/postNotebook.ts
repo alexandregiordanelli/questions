@@ -7,6 +7,7 @@ const postNotebook = async (notebookOnRepo: NotebookOnRepo) => {
         data: {
             tag: notebookOnRepo.tag,
             name: notebookOnRepo.name,
+            price: notebookOnRepo.price,
             topics: {
                 create: notebookOnRepo.topics.map(x => ({
                     name: x.name,

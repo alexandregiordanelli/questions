@@ -32,6 +32,7 @@ export type QuestionOnRepo = {
 } & QuestionMetaOnRepo
 
 export type QuestionMetaOnRepo = {
+    id?: number
     topic: string
     url: string
     price?: number
@@ -43,12 +44,15 @@ export type NotebookOnRepo = {
 } & NotebookMetaOnRepo
 
 export type NotebookMetaOnRepo = {
+    id?: number
     name: string
     tag: string
     price: number
     topics: {
+        id?: number
         name: string
         subtopics: {
+            id?: number
             name: string
             tag: string
         }[]

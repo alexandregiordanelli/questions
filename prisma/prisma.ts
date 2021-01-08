@@ -19,13 +19,13 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.prisma
 }
 
-prisma.$use(async (params, next) => {
-    const time = `Query ${params.model}.${params.action} took`
-    console.time(time)
-    const result = await next(params);
-    console.timeEnd(time)
+// prisma.$use(async (params, next) => {
+//     const time = `Query ${params.model}.${params.action} took`
+//     console.time(time)
+//     const result = await next(params);
+//     console.timeEnd(time)
 
-    return result;
-});
+//     return result;
+// });
 
 export { prisma }

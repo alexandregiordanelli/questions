@@ -2,14 +2,13 @@ import { Alternative, PrismaClient } from "@prisma/client"
 import { QuestionOnRepo } from "../lib/types"
 import { prisma } from "../prisma/prisma"
 
-const postQuestion = async (notebookId: number, questionOnRepo: QuestionOnRepo, questionFilename: string) => {
-    const questionFilenameEncoded = encodeURIComponent(questionFilename)
+const postQuestion = async (notebookId: number, questionOnRepo: QuestionOnRepo) => {
 
     let question = await prisma.question.findUnique({
         where: {
-            notebookId_questionFilename: {
+            notebookId_tag: {
                 notebookId,
-                questionFilename: questionFilenameEncoded
+                tag: questionOnRepo.topic
             }
         }
     })
@@ -20,7 +19,6 @@ const postQuestion = async (notebookId: number, questionOnRepo: QuestionOnRepo, 
                 question: questionOnRepo.question,
                 solution: questionOnRepo.solution,
                 tag: questionOnRepo.url,
-                questionFilename: questionFilenameEncoded,
                 title: questionOnRepo.title,
                 notebook: {
                     connect: {
