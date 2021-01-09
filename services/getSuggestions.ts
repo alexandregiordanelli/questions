@@ -17,6 +17,10 @@ const getSuggestions = async (notebookTag: string, subTopicTag: string) => {
         }
     })
 
+    questionsOfSubTopic.forEach(x => {
+        x.tag = notebookTag + '/' + x.tag
+    })
+
     return questionsOfSubTopic;
 };
 export default getSuggestions;
