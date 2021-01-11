@@ -68,7 +68,7 @@ const FormItemEdit: React.FC<{
                 ...initValue,
                 name: e.target.value
             })}
-            // placeholder={props.contentType == ContentTypeItem.Topic? "new topic": "new subtopic"}
+            placeholder={props.contentType == ContentTypeItem.Topic? "Topic": "Subtopic"}
             className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-white rounded-md ${!disabled && 'border-gray-300 shadow-sm'}`}
             value={value.name}
             />
