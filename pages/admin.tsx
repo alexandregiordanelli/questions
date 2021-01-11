@@ -107,7 +107,7 @@ const FormItemEdit: React.FC<{
                         >
                             <PencilIcon />
                         </button>
-                        {props.contentType == ContentTypeItem.Topic && (
+                        {/* {props.contentType == ContentTypeItem.Topic && (
                             <button 
                             className="text-gray-600 w-12 rounded-md ml-2 focus:outline-none"
                             onClick={(e) => {
@@ -117,7 +117,7 @@ const FormItemEdit: React.FC<{
                             >
                                 <ChevronDownIcon />
                             </button>
-                        )}
+                        )} */}
                     </>
                 )
                 : 
@@ -141,7 +141,7 @@ const FormItemEdit: React.FC<{
                 contentType={ContentTypeItem.SubTopic} 
                 initialData={props.value.subtopics}
                 updateCb={updateSubtopics}
-                hidden={hidden}
+                hidden={!edit}
                 />
             // </div>
         }
@@ -330,13 +330,14 @@ const Admin: NextPage = () => {
    
 
                                             <div className="col-span-6 sm:col-span-3">
+                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">Topics</label>
                                                 <SubTopicsForm contentType={ContentTypeItem.Topic} initialData={draftData} updateCb={setDraftData} />
                                             </div>
 
-                                            <div className="col-span-6 sm:col-span-3">
+                                            {/* <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">Menu Preview</label>
                                                 {menu && <MenuCore menu={menu} />}
-                                            </div>
+                                            </div> */}
 
    
                                         </div>
