@@ -9,6 +9,7 @@ export const MenuCore: React.FC<{
     menu: MenuWithQuestions
     preview?: boolean
 }> = props => {
+
     return (
         <>
         <ul className={"menu"}>

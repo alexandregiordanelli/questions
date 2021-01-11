@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import React, { KeyboardEventHandler, useEffect, useState } from "react"
 import { MenuWithQuestions, NotebookWithTopicsAndSubTopics } from "../lib/types"
 
-import { CheckIcon, PencilIcon, PlusIcon, TrashIcon } from "@primer/octicons-react"
+import { CheckIcon, ChevronDownIcon, PencilIcon, PlusIcon, TrashIcon } from "@primer/octicons-react"
 import { SubTopic, Topic } from "@prisma/client"
 import _ from 'lodash'
 import { LeftMenu, MenuCore } from "../components/Pages/Notebook/LeftMenu"
@@ -32,6 +32,7 @@ const FormItemEdit: React.FC<{
     }
     const [value, setValue] = useState(initValue)
     const [edit, setEdit] = useState(false)
+    const [hidden, setHidden] = useState(false)
 
     useEffect(()=>{
         if(props.value)
@@ -58,7 +59,8 @@ const FormItemEdit: React.FC<{
 
     return (
         <>
-        <div className={`flex mt-1 ${props.operationType == OperationType.Add? 'mb-4': ''}`}>
+        <div className={`bg-gray-50 p-2 m-2 rounded-md`}>
+        <div className={`flex mt-1 ${props.operationType == OperationType.Add? '': ''} `}>
             <input 
             type="text"
             disabled={disabled}
@@ -66,8 +68,8 @@ const FormItemEdit: React.FC<{
                 ...initValue,
                 name: e.target.value
             })}
-            placeholder={props.contentType == ContentTypeItem.Topic? "Biology": "Citology"}
-            className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${disabled && 'bg-gray-50 text-gray-500'}`}
+            // placeholder={props.contentType == ContentTypeItem.Topic? "new topic": "new subtopic"}
+            className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-white rounded-md ${!disabled && 'border-gray-300 shadow-sm'}`}
             value={value.name}
             />
             {props.operationType==OperationType.Edit ? 
@@ -95,15 +97,28 @@ const FormItemEdit: React.FC<{
                         </button>
                     </>
                     :
-                    <button 
-                    className="bg-yellow-600 text-white w-12 rounded-md ml-2 focus:outline-none"
-                    onClick={(e) => {
-                        e.preventDefault()
-                        setEdit(true)
-                    }}
-                    >
-                        <PencilIcon />
-                    </button>
+                    <>
+                        <button 
+                        className="text-yellow-600 w-12 rounded-md ml-2 focus:outline-none"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            setEdit(true)
+                        }}
+                        >
+                            <PencilIcon />
+                        </button>
+                        {props.contentType == ContentTypeItem.Topic && (
+                            <button 
+                            className="text-gray-600 w-12 rounded-md ml-2 focus:outline-none"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                setHidden(!hidden)
+                            }}
+                            >
+                                <ChevronDownIcon />
+                            </button>
+                        )}
+                    </>
                 )
                 : 
                 <button 
@@ -118,17 +133,20 @@ const FormItemEdit: React.FC<{
                     <PlusIcon />
                 </button>}
         </div>
-        <div className="ml-6 mt-4">
         {
             props.operationType==OperationType.Edit && 
             props.contentType == ContentTypeItem.Topic && 
-            <SubTopicsForm 
-            contentType={ContentTypeItem.SubTopic} 
-            initialData={props.value.subtopics}
-            updateCb={updateSubtopics}
-            />
+            // <div className="bg-gray-50 p-2 m-2">
+                <SubTopicsForm 
+                contentType={ContentTypeItem.SubTopic} 
+                initialData={props.value.subtopics}
+                updateCb={updateSubtopics}
+                hidden={hidden}
+                />
+            // </div>
         }
         </div>
+        
         </>
     )
 }
@@ -143,6 +161,7 @@ const SubTopicsForm: React.FC<{
     contentType: ContentTypeItem,
     initialData: TopicForm[]
     updateCb: (data: TopicForm[]) => void 
+    hidden?: boolean
 }> = props => {
 
     const [subTopics, setSubTopics] = useState<TopicForm[]>(props.initialData)
@@ -186,8 +205,21 @@ const SubTopicsForm: React.FC<{
     }
 
     return <>
-        <span className="block text-sm font-medium text-gray-700">{props.contentType == ContentTypeItem.Topic? 'Topics': 'SubTopics'}</span>
+        {/* <div className="flex justify-between">
+            <span className="block text-sm font-medium text-gray-700">{props.contentType == ContentTypeItem.Topic? 'Topics': 'SubTopics'}</span>
+            <button 
+            className=" text-green-600 w-12 rounded-md ml-2 focus:outline-none"
+            onClick={(e) => {
+                e.preventDefault()
+            }}
+            // disabled={value.name.length == 0}
+            >
+                <PlusIcon />
+            </button>
+        </div> */}
+        <div className={`${props.contentType == ContentTypeItem.SubTopic && props.hidden && "hidden"}`}>
         <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem}/>
+        
         {subTopics.map((x, i) => 
             <FormItemEdit 
             key={x.name.toLocaleLowerCase()}
@@ -199,6 +231,7 @@ const SubTopicsForm: React.FC<{
             value={x}
             />
         )}
+        </div>
     </>
 }
 
