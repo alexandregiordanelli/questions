@@ -1,6 +1,5 @@
 import { Notebook, PromiseReturnType, Topic, SubTopic, Alternative, Question, RightAlternative } from "@prisma/client";
 import { NowRequest } from "@vercel/node";
-import { Probot } from "probot";
 import { Reducer } from "react"
 import firebase from '../lib/firebase-client';
 import getMenu from "../services/getMenu";
@@ -101,8 +100,3 @@ export type MainState = {
 export type MainAction = UserAction
 
 export type MainReducer = Reducer<MainState, MainAction>
-
-
-export type ProbotRequest = NowRequest & {
-    probot: Probot
-}
