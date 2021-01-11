@@ -24,7 +24,7 @@ const FormItemEdit: React.FC<{
     onOk?: (value: TopicForm) => void
     value?: TopicForm
     updateList?: (value: TopicForm[], topicId: number) => void
-    edit?: boolean
+    hasEdit?: boolean
 }> = props => {
     const initValue = props.value ?? {
         id: -Number(Date.now()),
@@ -32,34 +32,38 @@ const FormItemEdit: React.FC<{
         subtopics: []
     }
     const [value, setValue] = useState(initValue)
-    const [edit, setEdit] = useState(!!props.edit)
+    const [edit, setEdit] = useState(false)
+    const [hidden, setHidden] = useState(false)
 
-    useEffect(()=>{
-        if(props.value)
-            setValue(props.value)
-    }, [props.value])
+    // useEffect(()=>{
+    //     if(props.value)
+    //         setValue(props.value)
+    // }, [props.value])
 
     const disabled = props.operationType == OperationType.Add? false: !edit
 
-    useEffect(()=>{
-        if(props.contentType == ContentTypeItem.Topic && 
-            props.operationType == OperationType.Edit &&
-            value.subtopics){
-            props.updateList(value.subtopics, value.id)
-        }
+    // useEffect(()=>{
+    //     if(props.contentType == ContentTypeItem.Topic && 
+    //         props.operationType == OperationType.Edit &&
+    //         value.subtopics){
+    //         props.updateList(value.subtopics, value.id)
+    //     }
 
-    }, [value.subtopics])
+    // }, [value.subtopics])
 
     const updateSubtopics = (data: TopicForm[]) => {
         setValue({
             ...value,
             subtopics: data
         })
+        props.updateList(data, value.id)
     }
+
+    const hiddenWithEdit = !edit && hidden
 
     return (
         <>
-        <div className={`bg-gray-50 p-2 m-2 rounded-md`}>
+        <div className={` p-2 ${props.contentType == ContentTypeItem.Topic && 'm-2 bg-gray-50'} rounded-md`}>
         <div className={`flex mt-1 ${props.operationType == OperationType.Add? '': ''} `}>
             <input 
             type="text"
@@ -79,8 +83,8 @@ const FormItemEdit: React.FC<{
                         className="bg-blue-600 text-white w-14 rounded-md ml-2 focus:outline-none"
                         onClick={(e) => {
                             e.preventDefault()
-                            setEdit(false)
                             props.onOk(value)
+                            setEdit(false)
                         }}
                         disabled={value.name.length == 0}
                         >
@@ -98,7 +102,7 @@ const FormItemEdit: React.FC<{
                     </>
                     :
                     <>
-                        <button 
+                        {!props.hasEdit && <button 
                         className="text-yellow-600 w-12 rounded-md ml-2 focus:outline-none"
                         onClick={(e) => {
                             e.preventDefault()
@@ -107,7 +111,8 @@ const FormItemEdit: React.FC<{
                         >
                             <PencilIcon />
                         </button>
-                        {/* {props.contentType == ContentTypeItem.Topic && (
+                        }
+                        {props.contentType == ContentTypeItem.Topic && props.value.subtopics.length > 0 && (
                             <button 
                             className="text-gray-600 w-12 rounded-md ml-2 focus:outline-none"
                             onClick={(e) => {
@@ -117,7 +122,7 @@ const FormItemEdit: React.FC<{
                             >
                                 <ChevronDownIcon />
                             </button>
-                        )} */}
+                        )}
                     </>
                 )
                 : 
@@ -143,12 +148,12 @@ const FormItemEdit: React.FC<{
         {
             props.operationType==OperationType.Edit && 
             props.contentType == ContentTypeItem.Topic && 
-            <div className="border-l-8">
+            <div className={`bg-gray-100 m-2 p-2 rounded-md ${hiddenWithEdit && 'hidden'}`}>
                 <SubTopicsForm 
                 contentType={ContentTypeItem.SubTopic} 
-                initialData={props.value.subtopics}
-                updateCb={updateSubtopics}
-                hidden={!edit}
+                data={props.value.subtopics}
+                setData={updateSubtopics}
+                edit={edit}
                 />
              </div>
         }
@@ -166,40 +171,41 @@ type TopicForm = {
 
 const SubTopicsForm: React.FC<{
     contentType: ContentTypeItem,
-    initialData: TopicForm[]
-    updateCb: (data: TopicForm[]) => void 
-    hidden?: boolean
+    data: TopicForm[]
+    setData: (data: TopicForm[]) => void 
+    edit?: boolean
 }> = props => {
 
-    const [subTopics, setSubTopics] = useState<TopicForm[]>(props.initialData)
+    const [subTopics, setSubTopics] = useState<TopicForm[]>(props.data)
 
     useEffect(()=> {
-        if(!_.isEqual(props.initialData, subTopics)){
-            props.updateCb(subTopics)
+        if(!_.isEqual(props.data, subTopics)){
+            props.setData(subTopics)
         }
-    }, [subTopics])
+    }, [subTopics, props.data])
 
-    useEffect(()=> {
-        if(!_.isEqual(props.initialData, subTopics)){
-            setSubTopics(props.initialData)
-        }
-    }, [props.initialData])
+    // useEffect(()=> {
+    //     if(!_.isEqual(props.initialData, subTopics)){
+    //         setSubTopics(props.initialData)
+    //     }
+    // }, [props.initialData])
 
     const AddFormItem = (value: TopicForm) => {
         if(!subTopics.some(x => x.name.toLocaleLowerCase() == value.name.toLocaleLowerCase())){
-            const subTopicsUpdated = subTopics.concat(value).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1: -1)
+            const subTopicsUpdated = subTopics.concat(value)
             setSubTopics(subTopicsUpdated)
         }
     }
 
-    const UpdateFormItem = (value: TopicForm, index: number) => {
+    const UpdateFormItem = (value: TopicForm) => {
         const subTopicsUpdated = subTopics.concat()
+        const index = subTopicsUpdated.findIndex(x => x.id == value.id)
         subTopicsUpdated[index] = value
-        setSubTopics(subTopicsUpdated.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1: -1))
+        setSubTopics(subTopicsUpdated)
     }
 
     const RemoveFormItem = (index: number) => {
-        const subTopicsUpdated = subTopics.concat().sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1: -1)
+        const subTopicsUpdated = subTopics.concat()
         subTopicsUpdated.splice(index, 1)
         setSubTopics(subTopicsUpdated)
     }
@@ -211,23 +217,22 @@ const SubTopicsForm: React.FC<{
         setSubTopics(subTopicsNew)
     }
 
+    const subTopicHidden = props.contentType == ContentTypeItem.SubTopic && !props.edit
     return <>
-        <div className={`${props.contentType == ContentTypeItem.SubTopic && props.hidden && "hidden"}`}>
-        <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem}/>
+        {!subTopicHidden && <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem}/>}
         
-        {subTopics.map((x, i) => 
+        {subTopics.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1: -1).map((x, i) => 
             <FormItemEdit 
             key={x.name.toLocaleLowerCase()}
             contentType={props.contentType} 
             operationType={OperationType.Edit} 
             onRemove={()=> RemoveFormItem(i)}
-            onOk={(value) => UpdateFormItem(value, i)}
+            onOk={UpdateFormItem}
             updateList={UpdateList}
             value={x}
-            edit={props.contentType == ContentTypeItem.Topic && x.id < 0}
+            hasEdit={subTopicHidden}
             />
         )}
-        </div>
     </>
 }
 
@@ -327,7 +332,7 @@ const Admin: NextPage = () => {
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">Topics</label>
-                                                <SubTopicsForm contentType={ContentTypeItem.Topic} initialData={draftData} updateCb={setDraftData} />
+                                                <SubTopicsForm contentType={ContentTypeItem.Topic} data={draftData} setData={setDraftData} />
                                             </div>
 
                                             {/* <div className="col-span-6 sm:col-span-3">
