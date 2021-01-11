@@ -4,7 +4,7 @@ import { MenuWithQuestions, NotebookWithTopicsAndSubTopics } from "../lib/types"
 
 import { CheckIcon, ChevronDownIcon, PencilIcon, PlusIcon, TrashIcon } from "@primer/octicons-react"
 import { SubTopic, Topic } from "@prisma/client"
-import _ from 'lodash'
+import _, { values } from 'lodash'
 import { LeftMenu, MenuCore } from "../components/Pages/Notebook/LeftMenu"
 enum ContentTypeItem {
     Topic,
@@ -24,15 +24,15 @@ const FormItemEdit: React.FC<{
     onOk?: (value: TopicForm) => void
     value?: TopicForm
     updateList?: (value: TopicForm[], topicId: number) => void
+    edit?: boolean
 }> = props => {
     const initValue = props.value ?? {
-        id: Date.now(),
+        id: -Number(Date.now()),
         name: "",
         subtopics: []
     }
     const [value, setValue] = useState(initValue)
-    const [edit, setEdit] = useState(false)
-    const [hidden, setHidden] = useState(false)
+    const [edit, setEdit] = useState(!!props.edit)
 
     useEffect(()=>{
         if(props.value)
@@ -125,7 +125,14 @@ const FormItemEdit: React.FC<{
                 className="bg-green-600 text-white w-12 rounded-md ml-2 focus:outline-none"
                 onClick={(e) => {
                     e.preventDefault()
-                    props.onAdd(value)
+                    const data = value
+                    if(props.contentType == ContentTypeItem.Topic){
+                        data.subtopics = [{
+                            id: -Number(new Date()),
+                            name: 'All'
+                        }]
+                    }
+                    props.onAdd(data)
                     setValue(initValue)
                 }}
                 disabled={value.name.length == 0}
@@ -136,14 +143,14 @@ const FormItemEdit: React.FC<{
         {
             props.operationType==OperationType.Edit && 
             props.contentType == ContentTypeItem.Topic && 
-            // <div className="bg-gray-50 p-2 m-2">
+            <div className="border-l-8">
                 <SubTopicsForm 
                 contentType={ContentTypeItem.SubTopic} 
                 initialData={props.value.subtopics}
                 updateCb={updateSubtopics}
                 hidden={!edit}
                 />
-            // </div>
+             </div>
         }
         </div>
         
@@ -205,18 +212,6 @@ const SubTopicsForm: React.FC<{
     }
 
     return <>
-        {/* <div className="flex justify-between">
-            <span className="block text-sm font-medium text-gray-700">{props.contentType == ContentTypeItem.Topic? 'Topics': 'SubTopics'}</span>
-            <button 
-            className=" text-green-600 w-12 rounded-md ml-2 focus:outline-none"
-            onClick={(e) => {
-                e.preventDefault()
-            }}
-            // disabled={value.name.length == 0}
-            >
-                <PlusIcon />
-            </button>
-        </div> */}
         <div className={`${props.contentType == ContentTypeItem.SubTopic && props.hidden && "hidden"}`}>
         <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem}/>
         
@@ -229,6 +224,7 @@ const SubTopicsForm: React.FC<{
             onOk={(value) => UpdateFormItem(value, i)}
             updateList={UpdateList}
             value={x}
+            edit={props.contentType == ContentTypeItem.Topic && x.id < 0}
             />
         )}
         </div>
