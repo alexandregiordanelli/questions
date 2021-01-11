@@ -20,8 +20,8 @@ const FormItemEdit: React.FC<{
     contentType: ContentTypeItem
     operationType: OperationType
     onRemove?: () => void
-    onAdd?: (value: TopicForm) => void
-    onOk?: (value: TopicForm) => void
+    onAdd?: (value: TopicForm) => boolean
+    onOk?: (value: TopicForm) => boolean
     value?: TopicForm
     updateList?: (value: TopicForm[], topicId: number) => void
     hasEdit?: boolean
@@ -35,12 +35,12 @@ const FormItemEdit: React.FC<{
     const [edit, setEdit] = useState(false)
     const [hidden, setHidden] = useState(false)
 
-    // useEffect(()=>{
-    //     if(props.value)
-    //         setValue(props.value)
-    // }, [props.value])
+    useEffect(() => {
+        if (props.value)
+            setValue(props.value)
+    }, [props.value])
 
-    const disabled = props.operationType == OperationType.Add? false: !edit
+    const disabled = props.operationType == OperationType.Add ? false : !edit
 
     // useEffect(()=>{
     //     if(props.contentType == ContentTypeItem.Topic && 
@@ -61,104 +61,109 @@ const FormItemEdit: React.FC<{
 
     const hiddenWithEdit = !edit && hidden
 
+
     return (
         <>
-        <div className={` p-2 ${props.contentType == ContentTypeItem.Topic && 'm-2 bg-gray-50'} rounded-md`}>
-        <div className={`flex mt-1 ${props.operationType == OperationType.Add? '': ''} `}>
-            <input 
-            type="text"
-            disabled={disabled}
-            onChange={e => setValue({
-                ...initValue,
-                name: e.target.value
-            })}
-            placeholder={props.contentType == ContentTypeItem.Topic? "Topic": "Subtopic"}
-            className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-white rounded-md ${!disabled && 'border-gray-300 shadow-sm'}`}
-            value={value.name}
-            />
-            {props.operationType==OperationType.Edit ? 
-                (edit ? 
-                    <>
-                        <button 
-                        className="bg-blue-600 text-white w-14 rounded-md ml-2 focus:outline-none"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            props.onOk(value)
-                            setEdit(false)
-                        }}
-                        disabled={value.name.length == 0}
-                        >
-                            <CheckIcon />
-                        </button>
-                        <button 
-                        className="bg-red-600 text-white w-14 rounded-md ml-2 focus:outline-none"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            props.onRemove()
-                        }}
-                        >
-                            <TrashIcon />
-                        </button>
-                    </>
-                    :
-                    <>
-                        {!props.hasEdit && <button 
-                        className="text-yellow-600 w-12 rounded-md ml-2 focus:outline-none"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            setEdit(true)
-                        }}
-                        >
-                            <PencilIcon />
-                        </button>
-                        }
-                        {props.contentType == ContentTypeItem.Topic && props.value.subtopics.length > 0 && (
-                            <button 
-                            className="text-gray-600 w-12 rounded-md ml-2 focus:outline-none"
+            <div className={`p-2 rounded-md ${props.contentType == ContentTypeItem.Topic && 'm-2 bg-gray-50'}`}>
+                <div className={`flex mt-1`}>
+                    <input
+                        type="text"
+                        disabled={disabled}
+                        onChange={e => setValue({
+                            ...initValue,
+                            name: e.target.value
+                        })}
+                        placeholder={props.contentType == ContentTypeItem.Topic ? "Topic" : "Subtopic"}
+                        className={`focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-white rounded-md ${!disabled && 'border-gray-300 shadow-sm'}`}
+                        value={value.name}
+                    />
+                    {props.operationType == OperationType.Edit ?
+                        (edit ?
+                            <>
+                                <button
+                                    className="bg-blue-600 text-white w-14 rounded-md ml-2 focus:outline-none"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        const isOk = props.onOk(value)
+                                        if (isOk)
+                                            setEdit(false)
+                                    }}
+                                    disabled={value.name.length == 0}
+                                >
+                                    <CheckIcon />
+                                </button>
+                                <button
+                                    className="bg-red-600 text-white w-14 rounded-md ml-2 focus:outline-none"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        props.onRemove()
+                                    }}
+                                >
+                                    <TrashIcon />
+                                </button>
+                            </>
+                            :
+                            <>
+                                {!props.hasEdit && <button
+                                    className="text-yellow-600 w-12 rounded-md ml-2 focus:outline-none"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        setEdit(true)
+                                    }}
+                                >
+                                    <PencilIcon />
+                                </button>
+                                }
+                                {props.contentType == ContentTypeItem.Topic && props.value.subtopics.length > 0 && (
+                                    <button
+                                        className="text-gray-600 w-12 rounded-md ml-2 focus:outline-none"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setHidden(!hidden)
+                                        }}
+                                    >
+                                        <ChevronDownIcon />
+                                    </button>
+                                )}
+                            </>
+                        )
+                        :
+                        <button
+                            className="bg-green-600 text-white w-12 rounded-md ml-2 focus:outline-none"
                             onClick={(e) => {
                                 e.preventDefault()
-                                setHidden(!hidden)
+                                const data = value
+                                if (props.contentType == ContentTypeItem.Topic) {
+                                    data.subtopics = [{
+                                        id: -Number(new Date()),
+                                        name: 'All'
+                                    }]
+                                }
+                                const isOk = props.onAdd(data)
+                                if (isOk) {
+                                    setValue(initValue)
+                                    //setEdit(false)
+                                }
                             }}
-                            >
-                                <ChevronDownIcon />
-                            </button>
-                        )}
-                    </>
-                )
-                : 
-                <button 
-                className="bg-green-600 text-white w-12 rounded-md ml-2 focus:outline-none"
-                onClick={(e) => {
-                    e.preventDefault()
-                    const data = value
-                    if(props.contentType == ContentTypeItem.Topic){
-                        data.subtopics = [{
-                            id: -Number(new Date()),
-                            name: 'All'
-                        }]
-                    }
-                    props.onAdd(data)
-                    setValue(initValue)
-                }}
-                disabled={value.name.length == 0}
-                >
-                    <PlusIcon />
-                </button>}
-        </div>
-        {
-            props.operationType==OperationType.Edit && 
-            props.contentType == ContentTypeItem.Topic && 
-            <div className={`bg-gray-100 m-2 p-2 rounded-md ${hiddenWithEdit && 'hidden'}`}>
-                <SubTopicsForm 
-                contentType={ContentTypeItem.SubTopic} 
-                data={props.value.subtopics}
-                setData={updateSubtopics}
-                edit={edit}
-                />
-             </div>
-        }
-        </div>
-        
+                            disabled={value.name.length == 0}
+                        >
+                            <PlusIcon />
+                        </button>}
+                </div>
+                {
+                    props.operationType == OperationType.Edit &&
+                    props.contentType == ContentTypeItem.Topic &&
+                    <div className={`bg-gray-100 m-2 p-2 rounded-md ${hiddenWithEdit && 'hidden'}`}>
+                        <SubTopicsForm
+                            contentType={ContentTypeItem.SubTopic}
+                            data={props.value.subtopics}
+                            setData={updateSubtopics}
+                            edit={edit}
+                        />
+                    </div>
+                }
+            </div>
+
         </>
     )
 }
@@ -172,36 +177,48 @@ type TopicForm = {
 const SubTopicsForm: React.FC<{
     contentType: ContentTypeItem,
     data: TopicForm[]
-    setData: (data: TopicForm[]) => void 
+    setData: (data: TopicForm[]) => void
     edit?: boolean
 }> = props => {
 
     const [subTopics, setSubTopics] = useState<TopicForm[]>(props.data)
 
-    useEffect(()=> {
-        if(!_.isEqual(props.data, subTopics)){
+    useEffect(() => {
+        if (!_.isEqual(props.data, subTopics)) {
+            setSubTopics(props.data)
+            //props.setData(subTopics)
+
+        }
+    }, [props.data])
+
+    useEffect(() => {
+        if (!_.isEqual(props.data, subTopics)) {
             props.setData(subTopics)
         }
-    }, [subTopics, props.data])
-
-    // useEffect(()=> {
-    //     if(!_.isEqual(props.initialData, subTopics)){
-    //         setSubTopics(props.initialData)
-    //     }
-    // }, [props.initialData])
+    }, [subTopics])
 
     const AddFormItem = (value: TopicForm) => {
-        if(!subTopics.some(x => x.name.toLocaleLowerCase() == value.name.toLocaleLowerCase())){
+        const hasNone = !subTopics.some(x => x.name.toLocaleLowerCase() == value.name.toLocaleLowerCase())
+        if (hasNone) {
             const subTopicsUpdated = subTopics.concat(value)
             setSubTopics(subTopicsUpdated)
         }
+        return hasNone
     }
 
-    const UpdateFormItem = (value: TopicForm) => {
-        const subTopicsUpdated = subTopics.concat()
-        const index = subTopicsUpdated.findIndex(x => x.id == value.id)
-        subTopicsUpdated[index] = value
-        setSubTopics(subTopicsUpdated)
+    const UpdateFormItem = (value: TopicForm, index: number) => {
+        const oldName = subTopics[index].name.toLocaleLowerCase()
+        if(oldName != value.name.toLocaleLowerCase()){
+            const hasNone = !subTopics.some(x => x.name.toLocaleLowerCase() == value.name.toLocaleLowerCase())
+            if (hasNone) {
+                const subTopicsUpdated = subTopics.concat()
+                const index = subTopicsUpdated.findIndex(x => x.id == value.id)
+                subTopicsUpdated[index] = value
+                setSubTopics(subTopicsUpdated)
+            }
+            return hasNone
+        }
+        return true
     }
 
     const RemoveFormItem = (index: number) => {
@@ -219,18 +236,18 @@ const SubTopicsForm: React.FC<{
 
     const subTopicHidden = props.contentType == ContentTypeItem.SubTopic && !props.edit
     return <>
-        {!subTopicHidden && <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem}/>}
-        
-        {subTopics.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1: -1).map((x, i) => 
-            <FormItemEdit 
-            key={x.name.toLocaleLowerCase()}
-            contentType={props.contentType} 
-            operationType={OperationType.Edit} 
-            onRemove={()=> RemoveFormItem(i)}
-            onOk={UpdateFormItem}
-            updateList={UpdateList}
-            value={x}
-            hasEdit={subTopicHidden}
+        {!subTopicHidden && <FormItemEdit contentType={props.contentType} operationType={OperationType.Add} onAdd={AddFormItem} />}
+
+        {subTopics.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1).map((x, i) =>
+            <FormItemEdit
+                key={x.name.toLocaleLowerCase()}
+                contentType={props.contentType}
+                operationType={OperationType.Edit}
+                onRemove={() => RemoveFormItem(i)}
+                onOk={(value) => UpdateFormItem(value, i)}
+                updateList={UpdateList}
+                value={x}
+                hasEdit={subTopicHidden}
             />
         )}
     </>
@@ -305,30 +322,30 @@ const Admin: NextPage = () => {
 
                                             <div className="col-span-6 sm:col-span-3 lg:col-span-4">
                                                 <label
-                                                htmlFor="last_name"
-                                                className="block text-sm font-medium text-gray-700">Name</label>
-                                                <input 
-                                                type="text" 
-                                                name="last_name" 
-                                                id="last_name" 
-                                                autoComplete="family-name" 
-                                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                                                    htmlFor="last_name"
+                                                    className="block text-sm font-medium text-gray-700">Name</label>
+                                                <input
+                                                    type="text"
+                                                    name="last_name"
+                                                    id="last_name"
+                                                    autoComplete="family-name"
+                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 />
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                                                 <label
-                                                htmlFor="first_name"
-                                                className="block text-sm font-medium text-gray-700">Tag</label>
-                                                <input 
-                                                type="text"
-                                                name="first_name"
-                                                id="first_name"
-                                                autoComplete="given-name"
-                                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                                                    htmlFor="first_name"
+                                                    className="block text-sm font-medium text-gray-700">Tag</label>
+                                                <input
+                                                    type="text"
+                                                    name="first_name"
+                                                    id="first_name"
+                                                    autoComplete="given-name"
+                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                             </div>
 
-   
+
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">Topics</label>
@@ -340,7 +357,7 @@ const Admin: NextPage = () => {
                                                 {menu && <MenuCore menu={menu} />}
                                             </div> */}
 
-   
+
                                         </div>
                                     </div>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
