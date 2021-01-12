@@ -11,16 +11,38 @@ enum ActionType {
     UPDATE_SUBTOPICS,
     UPDATE_NOTEBOOK,
     UPDATE_TOPICS,
+    UPDATE_DESCRIPTION,
+    UPDATE_PRICE,
+    UPDATE_NAME
 }
 
-type Action = {
-    type: ActionType,
-    topicId?: number,
-    subtopics?: SubTopic[],
-    topics?: (Topic & {
+type Action = 
+{   
+    type: ActionType.UPDATE_TOPICS, 
+    topics: (Topic & {
         subtopics: SubTopic[];
-    })[],
-    value?: NotebookWithTopicsAndSubTopics
+    })[]
+} |
+{   
+    type: ActionType.UPDATE_SUBTOPICS, 
+    topicId: number,
+    subtopics: SubTopic[]
+} |
+{   
+    type: ActionType.UPDATE_NOTEBOOK, 
+    notebook: NotebookWithTopicsAndSubTopics,
+} |
+{   
+    type: ActionType.UPDATE_DESCRIPTION, 
+    description: string,
+} |
+{   
+    type: ActionType.UPDATE_PRICE, 
+    price: number,
+} |
+{   
+    type: ActionType.UPDATE_NAME, 
+    name: string,
 }
 
 type SelectOption = {
@@ -49,9 +71,26 @@ const Admin: NextPage = () => {
                 return newState;
             }
             case ActionType.UPDATE_NOTEBOOK: {
-                state = action.value
-
-                break;
+                const newState = action.notebook
+                return newState
+            }
+            case ActionType.UPDATE_NAME: {
+                const newState = _.cloneDeep(state)
+                newState.name = action.name
+                return newState
+            }
+            case ActionType.UPDATE_PRICE: {
+                const newState = _.cloneDeep(state)
+                newState.price = action.price
+                return newState
+            }
+            case ActionType.UPDATE_DESCRIPTION: {
+                const newState = _.cloneDeep(state)
+                newState.description = action.description
+                return newState
+            }
+            case ActionType.UPDATE_NOTEBOOK: {
+                return action.notebook
             }
             case ActionType.UPDATE_TOPICS: {
                 const newState = _.cloneDeep(state)
@@ -64,18 +103,27 @@ const Admin: NextPage = () => {
         return state
     }
 
+    const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(null)
     const [state, dispatch] = useReducer(reducer, initState)
 
     useEffect(() => {
         (async () => {
             const notebookFromApi: NotebookWithTopicsAndSubTopics = await fetch('/api/notebook/enem').then(x => x.ok && x.json())
-            dispatch({ type: ActionType.UPDATE_NOTEBOOK, value: notebookFromApi })
-
+            dispatch({ type: ActionType.UPDATE_NOTEBOOK, notebook: notebookFromApi })
+            setNotebook(notebookFromApi)
         })()
     }, [])
 
 
     const topics = state?.topics?.map(x => {
+        return {
+            label: x.name,
+            value: x.id.toString(),
+            __isNew__: false
+        } as SelectOption
+    })
+
+    const topicsOriginal = notebook?.topics?.map(x => {
         return {
             label: x.name,
             value: x.id.toString(),
@@ -97,7 +145,6 @@ const Admin: NextPage = () => {
                             </div>
                         </div>
                         <div className="mt-5 md:mt-0 md:col-span-2">
-                            <form action="#" method="POST">
                                 <div className="shadow overflow-hidden sm:rounded-md">
                                     <div className="px-4 py-5 bg-white sm:p-6">
                                         <div className="grid grid-cols-3 gap-3">
@@ -112,6 +159,8 @@ const Admin: NextPage = () => {
                                                     id="last_name"
                                                     autoComplete="family-name"
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                    onChange={x => dispatch({type: ActionType.UPDATE_NAME, name: x.target.value})}
+                                                    value={state?.name}
                                                 />
                                             </div>
 
@@ -124,6 +173,8 @@ const Admin: NextPage = () => {
                                                     name="last_name"
                                                     id="last_name"
                                                     autoComplete="family-name"
+                                                    onChange={x => dispatch({type: ActionType.UPDATE_PRICE, price: Number(x.target.value)})}
+                                                    value={state?.price}
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 />
                                             </div>
@@ -139,7 +190,7 @@ const Admin: NextPage = () => {
                                                             return {
                                                                 id: y.__isNew__ ? -Number(new Date()) : Number(y.value),
                                                                 name: y.label,
-                                                                subtopics: y.__isNew__ ? [] : state.topics.find(z => z.id == Number(y.value)).subtopics,
+                                                                subtopics: y.__isNew__ ? [] : state.topics?.find(z => z.id == Number(y.value))?.subtopics ?? [],
                                                             } as (Topic & {
                                                                 subtopics: SubTopic[];
                                                             })
@@ -147,13 +198,20 @@ const Admin: NextPage = () => {
                                                     })}
                                                     isClearable={false}
                                                     value={topics}
-                                                // value={topics}
+                                                    options={topicsOriginal}
 
                                                 />
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">SubTopics</label>
 
                                                 {state?.topics?.map(x => {
                                                     const subtopics = x.subtopics?.map(y => {
+                                                        return {
+                                                            label: y.name,
+                                                            value: y.id.toString(),
+                                                            __isNew__: false
+                                                        } as SelectOption
+                                                    })
+                                                    const subtopicsOriginal = notebook?.topics.find(z => z.id == x.id)?.subtopics?.map(y => {
                                                         return {
                                                             label: y.name,
                                                             value: y.id.toString(),
@@ -177,7 +235,7 @@ const Admin: NextPage = () => {
                                                                 })}
                                                                 isClearable={false}
                                                                 value={subtopics}
-                                                            // value={subtopics}
+                                                                options={subtopicsOriginal}
 
                                                             />
                                                         </div>
@@ -185,22 +243,21 @@ const Admin: NextPage = () => {
                                                 })}
                                             </div>
 
-                                            <div className="sm:col-span-3">
-                                            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">Description</label>
-
-
+                                            <div className="col-span-6 sm:col-span-3">
+                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">Description</label>
+                                                <textarea className="resize-y mt-1 font-mono focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onChange={x => dispatch({type: ActionType.UPDATE_DESCRIPTION, description: x.target.value}) } value={state.description}/>
                                             </div>
-
 
                                         </div>
                                     </div>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                        <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <button 
+                                        onClick={()=>console.log(state)}
+                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             Save
                                         </button>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
