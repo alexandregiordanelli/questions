@@ -27,14 +27,10 @@ model Topic {
 
 model SubTopic {
     id                          Int             @id @default(autoincrement())
-    tag                         String  
     topicId                     Int
-    notebookId                  Int
     name                        String?
     questions                   Question[]
     topic                       Topic           @relation(fields: [topicId], references: [id])
-    notebook                    Notebook        @relation(fields: [notebookId], references: [id])
-    @@unique([notebookId, tag])
 }
 
 model Question {

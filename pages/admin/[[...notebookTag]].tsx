@@ -1,10 +1,11 @@
 import { NextPage } from "next"
 import React, { useEffect, useReducer, useState } from "react"
-import { NotebookWithTopicsAndSubTopics } from "../lib/types"
+import { NotebookWithTopicsAndSubTopics } from "../../lib/types"
 
 import { SubTopic, Topic } from "@prisma/client"
 import CreatableSelect from 'react-select/creatable';
 import _ from "lodash";
+import { useRouter } from "next/router";
 
 
 enum ActionType {
@@ -53,8 +54,12 @@ type SelectOption = {
 
 const Admin: NextPage = () => {
 
+    const router = useRouter()
+        
+    const notebookTag = router.query['notebookTag'] as string[]
+
     const initState: NotebookWithTopicsAndSubTopics = {
-        id: -Number(new Date()),
+        id: 0,
         description: "",
         name: "",
         price: 0,
@@ -103,16 +108,21 @@ const Admin: NextPage = () => {
         return state
     }
 
-    const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(null)
+    const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(initState)
     const [state, dispatch] = useReducer(reducer, initState)
 
     useEffect(() => {
         (async () => {
-            const notebookFromApi: NotebookWithTopicsAndSubTopics = await fetch('/api/notebook/enem').then(x => x.ok && x.json())
-            dispatch({ type: ActionType.UPDATE_NOTEBOOK, notebook: notebookFromApi })
-            setNotebook(notebookFromApi)
+            if(notebookTag?.length){
+                const _notebookTag = notebookTag[0]
+                const notebookFromApi: NotebookWithTopicsAndSubTopics = await fetch(`/api/notebook/${_notebookTag}`).then(x => x.ok && x.json())
+                if(notebookFromApi){
+                    dispatch({ type: ActionType.UPDATE_NOTEBOOK, notebook: notebookFromApi })
+                    setNotebook(notebookFromApi)
+                }
+            }
         })()
-    }, [])
+    }, [notebookTag])
 
 
     const topics = state?.topics?.map(x => {
@@ -130,6 +140,14 @@ const Admin: NextPage = () => {
             __isNew__: false
         } as SelectOption
     })
+
+    const createNotebook = async (_notebook: NotebookWithTopicsAndSubTopics) => {
+        await fetch('/api/notebook', {
+            method: 'POST',
+            body: JSON.stringify(_notebook),
+            headers: {'Content-Type': 'application/json'}
+        }).then(x => x.ok && x.json())
+    }
 
     return (
         <div className="bg-gray-100">
@@ -183,7 +201,7 @@ const Admin: NextPage = () => {
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700  mb-1">Topics</label>
                                                 <CreatableSelect
-                                                    id="1"
+                                                    instanceId={"topics"}
                                                     isMulti
                                                     onChange={x => dispatch({
                                                         type: ActionType.UPDATE_TOPICS, topics: x?.map(y => {
@@ -219,17 +237,18 @@ const Admin: NextPage = () => {
                                                         } as SelectOption
                                                     })
                                                     return (
-                                                        <div className="bg-gray-50 p-4 m-2 rounded-md">
+                                                        <div className="bg-gray-50 p-4 m-2 rounded-md" key={x.id}>
                                                             <span className="block text-sm font-medium text-gray-700">{x.name}</span>
                                                             <CreatableSelect
                                                                 className="mt-2"
-                                                                id="3"
+                                                                instanceId={x.id}
                                                                 isMulti
                                                                 onChange={y => dispatch({
                                                                     type: ActionType.UPDATE_SUBTOPICS, subtopics: y?.map(z => {
                                                                         return {
                                                                             id: z.__isNew__ ? -Number(new Date()) : Number(z.value),
                                                                             name: z.label,
+                                                                            topicId: x.id
                                                                         } as SubTopic
                                                                     }), topicId: x.id
                                                                 })}
@@ -245,14 +264,14 @@ const Admin: NextPage = () => {
 
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">Description</label>
-                                                <textarea className="resize-y mt-1 font-mono focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onChange={x => dispatch({type: ActionType.UPDATE_DESCRIPTION, description: x.target.value}) } value={state.description}/>
+                                                <textarea className="resize-y mt-1 font-mono focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onChange={x => dispatch({type: ActionType.UPDATE_DESCRIPTION, description: x.target.value}) } value={state?.description ?? ""}/>
                                             </div>
 
                                         </div>
                                     </div>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                         <button 
-                                        onClick={()=>console.log(state)}
+                                        onClick={async () => await createNotebook(state)}
                                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                             Save
                                         </button>

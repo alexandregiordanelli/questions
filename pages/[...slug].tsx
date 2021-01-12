@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
                 }
             }
 
-            const suggestions = await getSuggestions(notebook.tag, question.subTopic?.tag)
+            const suggestions = await getSuggestions(notebook.tag, question.subTopic?.id)
 
             return {
                 props: {

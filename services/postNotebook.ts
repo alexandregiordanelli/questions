@@ -71,14 +71,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
         const createSubTopics:Prisma.SubTopicCreateManyWithoutTopicInput = {
             create: topicWillAdded.subtopics.map(x => { 
                 delete x.id
-                return {
-                    ...x,
-                    notebook: {
-                        connect: {
-                            id: notebookId
-                        }
-                    }
-                }
+                return x
             })
         }
 
@@ -115,15 +108,13 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
         batch.push(deleteSubtopics) //DELETE SUBTOPICS
 
         for(let subtopicWillAdded of subtopicsWillAdded){
+ 
             delete subtopicWillAdded.id
+            delete subtopicWillAdded.topicId
+
             const createSubtopic = prisma.subTopic.create({
                 data: {
                     ...subtopicWillAdded,
-                    notebook: {
-                        connect: {
-                            id: notebookId
-                        }
-                    },
                     topic: {
                         connect: {
                             id: topic.id
@@ -137,10 +128,19 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
         for(let subtopicWillUpdated of subtopicsWillUpdated){
             const id = subtopicWillUpdated.id
+            const topicId = subtopicWillUpdated.topicId
+
             delete subtopicWillUpdated.id
+            delete subtopicWillUpdated.topicId
+
             const updateSubtopic = prisma.subTopic.update({
                 data: {
                     ...subtopicWillUpdated,
+                    topic: {
+                        connect: {
+                            id: topicId
+                        }
+                    }
                 },
                 where: {
                     id

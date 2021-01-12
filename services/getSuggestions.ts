@@ -1,6 +1,6 @@
 import { prisma } from "../prisma/prisma"
 
-const getSuggestions = async (notebookTag: string, subTopicTag: string) => {
+const getSuggestions = async (notebookTag: string, subTopicId: number) => {
     
     const questionsOfSubTopic = await prisma.question.findMany({
         select: {
@@ -12,7 +12,7 @@ const getSuggestions = async (notebookTag: string, subTopicTag: string) => {
                 tag: notebookTag
             },
             subTopic: {
-                tag: subTopicTag
+                id: subTopicId
             }
         }
     })

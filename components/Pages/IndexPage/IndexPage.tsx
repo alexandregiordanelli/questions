@@ -49,8 +49,8 @@ export const IndexPage: React.FC = () => {
                     <div className="flex2">
                         {[0, 1, 2].map((x, i) => <div key={i} className="box">
                             <div>
-                                <Img 
-                                src={imgs[i]} width={368} height={220}  />
+                                {/* <Img 
+                                src={imgs[i]} width={368} height={220}  /> */}
                             </div>
                             <h1>{!!urls[i] ? <Link href={urls[i]}><a>{names[i]}</a></Link> : names[i]}</h1>
                             <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>

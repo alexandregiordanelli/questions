@@ -4,11 +4,11 @@ import getSuggestions from '../../../services/getSuggestions';
 export default async function (req: NowRequest, res: NowResponse) {
     
     const notebookTag = req.query.slug[0];
-    const subTopicTag = req.query.slug[1];
+    const subTopicId = Number(req.query.slug[1]);
 
     if(req.method == 'GET'){
         
-        const questionSuggestions = await getSuggestions(notebookTag, subTopicTag);
+        const questionSuggestions = await getSuggestions(notebookTag, subTopicId);
 
         res.json(questionSuggestions)
     }
