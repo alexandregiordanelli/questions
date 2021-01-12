@@ -31,7 +31,14 @@ type SelectOption = {
 
 const Admin: NextPage = () => {
 
-    const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(null)
+    const initState: NotebookWithTopicsAndSubTopics = {
+        id: -Number(new Date()),
+        description: "",
+        name: "",
+        price: 0,
+        tag: "",
+        topics: []
+    }
 
     const reducer = (state: NotebookWithTopicsAndSubTopics, action: Action) => {
         switch (action.type) {
@@ -57,7 +64,7 @@ const Admin: NextPage = () => {
         return state
     }
 
-    const [state, dispatch] = useReducer(reducer, null)
+    const [state, dispatch] = useReducer(reducer, initState)
 
     useEffect(() => {
         (async () => {
@@ -95,7 +102,7 @@ const Admin: NextPage = () => {
                                     <div className="px-4 py-5 bg-white sm:p-6">
                                         <div className="grid grid-cols-3 gap-3">
 
-                                            <div className="col-span-6 sm:col-span-3 ">
+                                            <div className="col-span-6 sm:col-span-2 ">
                                                 <label
                                                     htmlFor="last_name"
                                                     className="block text-sm font-medium text-gray-700">Name</label>
@@ -108,7 +115,18 @@ const Admin: NextPage = () => {
                                                 />
                                             </div>
 
-
+                                            <div className="col-span-6 sm:col-span-1 ">
+                                                <label
+                                                    htmlFor="last_name"
+                                                    className="block text-sm font-medium text-gray-700">Price</label>
+                                                <input
+                                                    type="number"
+                                                    name="last_name"
+                                                    id="last_name"
+                                                    autoComplete="family-name"
+                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                                />
+                                            </div>
 
 
                                             <div className="col-span-6 sm:col-span-3">
@@ -135,7 +153,7 @@ const Admin: NextPage = () => {
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">SubTopics</label>
 
                                                 {state?.topics?.map(x => {
-                                                    const subtopics = x.subtopics.map(y => {
+                                                    const subtopics = x.subtopics?.map(y => {
                                                         return {
                                                             label: y.name,
                                                             value: y.id.toString(),
@@ -167,8 +185,8 @@ const Admin: NextPage = () => {
                                                 })}
                                             </div>
 
-                                            <div className="col-span-6 sm:col-span-4">
-
+                                            <div className="sm:col-span-3">
+                                            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mt-5 mb-1">Description</label>
 
 
                                             </div>
