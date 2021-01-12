@@ -71,6 +71,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
         const createSubTopics:Prisma.SubTopicCreateManyWithoutTopicInput = {
             create: topicWillAdded.subtopics.map(x => { 
                 delete x.id
+                delete x.topicId
                 return x
             })
         }
