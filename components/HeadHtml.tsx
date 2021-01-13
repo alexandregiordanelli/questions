@@ -7,32 +7,20 @@ import { katexCSS } from "../styles/katexCSS"
 import { useStateValue } from './State';
 import { UserActionType } from '../lib/types';
 import { useRouter } from 'next/router';
+import { useAmp } from 'next/amp';
 
 const HeadHtml: React.FC<{
-    isAmp: boolean,
-    slug?: string[]
 }> = props => {
-    const [state, dispatch] = useStateValue();
-    const router = useRouter();
+    const router = useRouter()
+    
+    const isAmp = useAmp()
 
-    // const byEmail = !!router.query && !!router.query["apiKey"] && !!router.query["oobCode"]
-
-
-    useEffect(() => {
-        console.log("aqui")
-        firebase.auth().onAuthStateChanged(user => {
-            console.log(1, user)
-            // dispatch({
-            //     type: UserActionType.ChangeUser,
-            //     value: user
-            // })
-        })
-    }, []);
-
+    const slug = router.query['slug'] as string[]
+    
     return (
         <>
             <Head>
-                <link rel={props.isAmp? "canonical": "amphtml"} href={`${urlEnv}${ampUrl(!props.isAmp, props.slug?.join('/'))}`}/>
+                <link rel={isAmp? "canonical": "amphtml"} href={`${urlEnv}${ampUrl(!isAmp, slug?.join('/'))}`}/>
                 <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png"/>
                 <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png"/>
                 <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png"/>

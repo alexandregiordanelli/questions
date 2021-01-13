@@ -5,10 +5,12 @@ import markdown from 'remark-parse';
 import gfm from 'remark-gfm';
 import rehype2react from 'rehype-react';
 import { Notebook } from '@prisma/client';
-
+import { PencilIcon } from '@primer/octicons-react';
+import { useRouter } from 'next/router';
 export const IndexQuestionPage: React.FC<{
     notebook: Notebook;
 }> = props => {
+    const router = useRouter()
     return (
         <>
             <style jsx>{`
@@ -32,7 +34,6 @@ export const IndexQuestionPage: React.FC<{
                 font-size: 48px;
                 line-height: 1.25;
                 color: rgb(33, 136, 255);
-                padding-bottom: 16px;
                 margin: 0px;
             }
             .subtitle {
@@ -46,8 +47,19 @@ export const IndexQuestionPage: React.FC<{
             <div className="main">
                 <div className='box'>
                     <div className='center'>
-                        <h2 className="main-title">{props.notebook.name}</h2>
+                        <div className="flex items-center">
+                            <h2 className="main-title">{props.notebook.name}</h2>
+                            <button onClick={()=> router.push({
+                                pathname: `[...slug]`,
+                                query: {
+                                    slug: props.notebook.tag,
+                                    edit: true
+                                }
+                            })}><PencilIcon className="text-white" size={'medium'} /></button>
+                            
+                        </div>
                         <p className="subtitle">{props.notebook.price ?? ""}</p>
+                        
                         {/* <img src="/enem.png"/> */}
                     </div>
                 </div>

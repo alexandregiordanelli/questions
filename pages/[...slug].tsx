@@ -3,6 +3,7 @@ import { Notebook } from '../components/Pages/Notebook/Notebook'
 import { PagesProps } from '../lib/types';
 import { prisma } from '../prisma/prisma';
 import getMenu from '../services/getMenu';
+import getNotebook from '../services/getNotebook';
 import getQuestion from '../services/getQuestion';
 import getQuestions from '../services/getQuestions';
 import getSuggestions from '../services/getSuggestions';
@@ -12,11 +13,7 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
     try {
         const notebookTag = context.params.slug[0]
         
-        const notebook = await prisma.notebook.findUnique({
-            where: {
-                tag: notebookTag
-            }
-        })
+        const notebook = await getNotebook(notebookTag)
 
         if(!notebook.id){
             return {

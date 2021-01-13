@@ -22,7 +22,7 @@ export type NotebookWithTopicsAndSubTopics = Notebook & {
 }
 
 export type PagesProps = {
-    notebook: Notebook,
+    notebook: NotebookWithTopicsAndSubTopics,
     menu: MenuWithQuestions,
     question?: QuestionWithAll,
     suggestions?: SubTopicWithQuestions,

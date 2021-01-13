@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useStateValue } from '../../State';
 import Image from 'next/image'
 import { Img } from '../../Img';
+import EditNotebook from '../../EditNotebook';
 export const IndexPage: React.FC = () => {
     const [state] = useStateValue();
     

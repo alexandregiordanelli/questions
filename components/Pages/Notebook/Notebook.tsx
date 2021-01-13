@@ -11,20 +11,10 @@ import { getStaticProps } from '../../../pages/[...slug]'
 import { PagesProps } from '../../../lib/types'
 
 export const Notebook: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props => {
-    const isAmp = useAmp()
     
-    const router = useRouter()
-        
-    const slug = router.query['slug'] as string[]
-        
-    const deepth = slug?.length
-
     return (
         <StateProvider>
-            <HeadHtml 
-            isAmp={isAmp} 
-            slug={slug}
-            />
+            <HeadHtml />
             <style jsx>{`
             .main {
                 flex-direction: column;
@@ -33,21 +23,14 @@ export const Notebook: React.FC<InferGetStaticPropsType<typeof getStaticProps>> 
             }
             `}</style>
             <div className="main">
-            {!deepth && 
-                <IndexPage/>
-            }
-            {deepth && 
-                <>
+
                     <Header/>                
                     <NotebookPage 
-                    deepth={deepth} 
                     menu={props.menu}
                     notebook={props.notebook} 
                     question={props.question} 
                     suggestions={props.suggestions}
                     />
-                </>
-            }
             </div>
         </StateProvider>
     )

@@ -3,26 +3,34 @@ import { LeftMenu } from "./LeftMenu"
 import { IndexQuestionPage } from "./IndexQuestionPage"
 import { QuestionFormWithRightMenu } from "./QuestionFormWithRightMenu"
 import { PagesProps } from "../../../lib/types"
+import EditNotebook from "../../EditNotebook"
+import { useRouter } from "next/router"
 
 const NotebookPage: React.FC<{
-    deepth: number
+
 } & PagesProps> = props => {
+    const router = useRouter()
+        
+    const slug = router.query['slug'] as string[]
+        
+    const deepth = slug?.length
+
     return (
         <>
-
+            {router.query.edit && <EditNotebook notebook={props.notebook} />}
             <div className={"container"}>
-                {props.deepth >= 1 && 
+                {deepth >= 1 && 
                     <LeftMenu 
                     menu={props.menu} 
                     />
                 }
-                {props.deepth > 1 && props.question && 
+                {deepth > 1 && props.question && 
                     <QuestionFormWithRightMenu 
                     question={props.question} 
                     suggestions={props.suggestions} 
                     />
                 }
-                {props.deepth == 1 && 
+                {deepth == 1 && 
                     <IndexQuestionPage 
                     notebook={props.notebook} 
                     />
