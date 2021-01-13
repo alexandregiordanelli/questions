@@ -12,7 +12,6 @@ const Index: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props =>
     return (
         <StateProvider>
             <HeadHtml 
-            isAmp={isAmp} 
             />
             <style jsx>{`
             .main {
