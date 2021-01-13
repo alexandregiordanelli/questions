@@ -60,7 +60,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
     const deleteTopics = prisma.topic.deleteMany({
         where: {
             id: {
-                in: topicsWillRemoved.map(x => x.id)
+                in: topicsWillRemoved?.map(x => x.id)
             }
         }
     })
@@ -69,7 +69,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
     for(let topicWillAdded of topicsWillAdded ?? []){
         const createSubTopics:Prisma.SubTopicCreateManyWithoutTopicInput = {
-            create: topicWillAdded.subtopics.map(x => { 
+            create: topicWillAdded.subtopics?.map(x => { 
                 delete x.id
                 delete x.topicId
                 return x
@@ -101,7 +101,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
         const deleteSubtopics = prisma.subTopic.deleteMany({
             where: {
                 id: {
-                    in: subtopicsWillRemoved.map(x => x.id)
+                    in: subtopicsWillRemoved?.map(x => x.id)
                 }
             }
         })

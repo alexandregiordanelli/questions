@@ -5,9 +5,12 @@ import { useStateValue } from '../../State';
 import Image from 'next/image'
 import { Img } from '../../Img';
 import EditNotebook from '../../EditNotebook';
+import { useRouter } from 'next/router';
 export const IndexPage: React.FC = () => {
     const [state] = useStateValue();
     
+    const router = useRouter()
+
     const imgs = [
         "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
         "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
@@ -27,6 +30,7 @@ export const IndexPage: React.FC = () => {
 
     return (
         <>
+            {router.query.add && <EditNotebook />}
             <div className="first">
                 <div className="container">
                     <div className="flex">
