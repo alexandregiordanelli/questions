@@ -5,7 +5,7 @@ import CreatableSelect from 'react-select/creatable';
 import _ from "lodash";
 import slugify from 'slugify'
 import { useRouter } from "next/router";
-
+import NProgress from 'nprogress'
 enum ActionType {
     UPDATE_SUBTOPICS,
     UPDATE_NOTEBOOK,
@@ -127,6 +127,7 @@ const EditNotebook: React.FC<{
 
     const postNotebook = async (_notebook: NotebookWithTopicsAndSubTopics) => {
         try {
+            NProgress.start()
             await fetch('/api/notebook', {
                 method: 'POST',
                 body: JSON.stringify(_notebook),
@@ -134,6 +135,7 @@ const EditNotebook: React.FC<{
             }).then(x => x.ok && x.json())
             router.replace(_notebook.tag)
         } catch(e) {
+            NProgress.done()
             console.log(e)
         }
     }
