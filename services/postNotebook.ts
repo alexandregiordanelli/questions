@@ -39,12 +39,12 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
     const batch: any[] = []
 
-    const topicsWillAdded = _.clone(topicsWithSubtopicsSent).filter(x => !topicsWithSubtopicsOriginal.some(y => y.id == x.id))
-    const topicsWillUpdated = _.clone(topicsWithSubtopicsSent).filter(x => topicsWithSubtopicsOriginal.some(y => y.id == x.id))
-    const topicsWillRemoved = _.clone(topicsWithSubtopicsOriginal).filter(x => !topicsWithSubtopicsSent.some(y => y.id == x.id))
+    const topicsWillAdded = _.clone(topicsWithSubtopicsSent)?.filter(x => !topicsWithSubtopicsOriginal?.some(y => y.id == x.id))
+    const topicsWillUpdated = _.clone(topicsWithSubtopicsSent)?.filter(x => topicsWithSubtopicsOriginal?.some(y => y.id == x.id))
+    const topicsWillRemoved = _.clone(topicsWithSubtopicsOriginal)?.filter(x => !topicsWithSubtopicsSent?.some(y => y.id == x.id))
 
     //https://github.com/prisma/prisma/issues/4650
-    for(let topicWillRemoved of topicsWillRemoved){
+    for(let topicWillRemoved of topicsWillRemoved ?? []){
         const deleteSubtopic = prisma.subTopic.deleteMany({
             where: {
                 topic: {
@@ -67,7 +67,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
     batch.push(deleteTopics) //DELETE TOPICS
 
-    for(let topicWillAdded of topicsWillAdded){
+    for(let topicWillAdded of topicsWillAdded ?? []){
         const createSubTopics:Prisma.SubTopicCreateManyWithoutTopicInput = {
             create: topicWillAdded.subtopics.map(x => { 
                 delete x.id
@@ -91,12 +91,12 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
         batch.push(createTopic) //ADD TOPICS
     }
 
-    for(let topic of topicsWillUpdated){
+    for(let topic of topicsWillUpdated ?? []){
         const subtopicsOriginal = _.clone(topicsWithSubtopicsOriginal).find(x => x.id == topic.id).subtopics
 
-        const subtopicsWillAdded = _.clone(topic.subtopics).filter(x => !subtopicsOriginal.some(y => y.id == x.id))
-        const subtopicsWillUpdated = _.clone(topic.subtopics).filter(x => subtopicsOriginal.some(y => y.id == x.id))
-        const subtopicsWillRemoved = _.clone(subtopicsOriginal).filter(x => !topic.subtopics.some(y => y.id == x.id))
+        const subtopicsWillAdded = _.clone(topic.subtopics)?.filter(x => !subtopicsOriginal?.some(y => y.id == x.id))
+        const subtopicsWillUpdated = _.clone(topic.subtopics)?.filter(x => subtopicsOriginal?.some(y => y.id == x.id))
+        const subtopicsWillRemoved = _.clone(subtopicsOriginal)?.filter(x => !topic.subtopics?.some(y => y.id == x.id))
 
         const deleteSubtopics = prisma.subTopic.deleteMany({
             where: {
@@ -108,7 +108,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
 
         batch.push(deleteSubtopics) //DELETE SUBTOPICS
 
-        for(let subtopicWillAdded of subtopicsWillAdded){
+        for(let subtopicWillAdded of subtopicsWillAdded ?? []){
  
             delete subtopicWillAdded.id
             delete subtopicWillAdded.topicId
@@ -127,7 +127,7 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
             batch.push(createSubtopic) //ADD SUBTOPICS
         }
 
-        for(let subtopicWillUpdated of subtopicsWillUpdated){
+        for(let subtopicWillUpdated of subtopicsWillUpdated ?? []){
             const id = subtopicWillUpdated.id
             const topicId = subtopicWillUpdated.topicId
 
