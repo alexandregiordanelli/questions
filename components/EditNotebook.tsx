@@ -288,7 +288,7 @@ const EditNotebook: React.FC<{
                                                 })}
                                             </div>
 
-                                            <div className="col-span-6 sm:col-span-3 \">
+                                            <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                                 <textarea className="resize-y mt-1 font-mono focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onChange={x => dispatch({type: ActionType.UPDATE_DESCRIPTION, description: x.target.value}) } value={state?.description ?? ""}/>
                                             </div>
