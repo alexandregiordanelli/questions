@@ -122,7 +122,6 @@ const EditNotebook: React.FC<{
 
     const router = useRouter()
 
-    const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(initNotebook)
     const [state, dispatch] = useReducer(reducer, initNotebook)
 
     const postNotebook = async (_notebook: NotebookWithTopicsAndSubTopics) => {
@@ -148,7 +147,7 @@ const EditNotebook: React.FC<{
         } as SelectOption
     })
     
-    const topicsOriginal = notebook?.topics?.map(x => {
+    const topicsOriginal = initNotebook?.topics?.map(x => {
         return {
             label: x.name,
             value: x.id.toString(),
@@ -256,7 +255,7 @@ const EditNotebook: React.FC<{
                                                             __isNew__: false
                                                         } as SelectOption
                                                     })
-                                                    const subtopicsOriginal = notebook?.topics.find(z => z.id == x.id)?.subtopics?.map(y => {
+                                                    const subtopicsOriginal = initNotebook?.topics.find(z => z.id == x.id)?.subtopics?.map(y => {
                                                         return {
                                                             label: y.name,
                                                             value: y.id.toString(),
@@ -298,8 +297,13 @@ const EditNotebook: React.FC<{
                                     </div>
                                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                         <button 
+                                        onClick={() => router.replace(initNotebook.tag)}
+                                        className="inline-flex justify-center py-2 px-4 border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button 
                                         onClick={async () => await postNotebook(state)}
-                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-3">
                                             Save
                                         </button>
                                     </div>
