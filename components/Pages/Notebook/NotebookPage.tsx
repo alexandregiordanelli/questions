@@ -17,7 +17,7 @@ const NotebookPage: React.FC<{
 
     return (
         <>
-            <div className={`${router.query.edit? 'max-h-1000px': 'max-h-0'} transition-all overflow-hidden`}><EditNotebook notebook={props.notebook}/></div>
+            <div className={`${router.query.edit? 'max-h-1000px': 'max-h-0'} transition-all overflow-hidden`}>{router.query.edit && <EditNotebook notebook={props.notebook}/>}</div>
             <div className={"container"}>
                 {deepth >= 1 && 
                     <LeftMenu 
