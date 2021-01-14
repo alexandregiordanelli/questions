@@ -1,5 +1,5 @@
-import { Notebook, Prisma, SubTopic } from "@prisma/client"
-import { NotebookOnRepo, NotebookWithTopicsAndSubTopics } from "../lib/types"
+import { Prisma } from "@prisma/client"
+import { NotebookWithTopicsAndSubTopics } from "../lib/types"
 import { prisma } from "../prisma/prisma"
 import _ from 'lodash'
 import getNotebook from "./getNotebook"
@@ -11,11 +11,13 @@ const postNotebook = async (notebookOnRepo: NotebookWithTopicsAndSubTopics) => {
             tag: notebookOnRepo.tag,
             name: notebookOnRepo.name,
             price: notebookOnRepo.price,
+            description: notebookOnRepo.description
         },
         update: {
             tag: notebookOnRepo.tag,
             name: notebookOnRepo.name,
             price: notebookOnRepo.price,
+            description: notebookOnRepo.description
         },
         where: {
             id: notebookOnRepo.id
