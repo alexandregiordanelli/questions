@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../../../lib/firebase-client';
+
 import Link from 'next/link';
 import Image from 'next/image'
 import { Img } from '../../Img';

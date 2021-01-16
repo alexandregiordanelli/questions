@@ -1,6 +1,5 @@
-import { Notebook } from '@prisma/client'
 import { NowRequest, NowResponse } from '@vercel/node'
-import { NotebookOnRepo, NotebookWithTopicsAndSubTopics } from '../../../lib/types'
+import { NotebookWithTopicsAndSubTopics } from '../../../lib/types'
 import deleteNotebook from '../../../services/deleteNotebook'
 import getNotebook from '../../../services/getNotebook'
 import postNotebook from '../../../services/postNotebook'

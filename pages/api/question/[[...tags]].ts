@@ -1,7 +1,6 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { QuestionOnRepo, QuestionWithAll } from '../../../lib/types';
+import { QuestionWithAll } from '../../../lib/types';
 import deleteQuestion from '../../../services/deleteQuestion';
-import getNotebook from '../../../services/getNotebook';
 import { getQuestion } from '../../../services/getQuestion';
 import postQuestion from '../../../services/postQuestion';
 

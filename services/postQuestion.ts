@@ -1,12 +1,10 @@
-import { Alternative, Prisma } from "@prisma/client"
-import { QuestionOnRepo, QuestionWithAll } from "../lib/types"
+import { Alternative } from "@prisma/client"
+import { QuestionWithAll } from "../lib/types"
 import { prisma } from "../prisma/prisma"
 import _ from 'lodash'
 import getQuestion from "./getQuestion"
 
 const postQuestion = async (questionOnRepo: QuestionWithAll) => {
-
-    const batch: any[] = []
 
     const index = questionOnRepo.alternatives.findIndex(x => x.id == questionOnRepo.rightAlternative?.alternativeId) 
 

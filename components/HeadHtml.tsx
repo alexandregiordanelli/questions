@@ -1,10 +1,10 @@
-import firebase from '../lib/firebase-client';
+
 import Head from "next/head"
 import React, { useEffect, useState } from "react"
 import { ampUrl, urlEnv } from "../lib/utils"
 import { globalCSS } from "../styles/globalCSS"
 import { katexCSS } from "../styles/katexCSS"
-import { UserActionType } from '../lib/types';
+
 import { useRouter } from 'next/router';
 import { useAmp } from 'next/amp';
 
