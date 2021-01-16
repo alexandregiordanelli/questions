@@ -10,38 +10,36 @@ const postQuestion = async (questionOnRepo: QuestionWithAll) => {
 
     const index = questionOnRepo.alternatives.findIndex(x => x.id == questionOnRepo.rightAlternative?.alternativeId) 
 
-    const question = await prisma.question.upsert({
-        create: {
-            question: questionOnRepo.question,
-            solution: questionOnRepo.solution,
-            tag: questionOnRepo.tag,
-            title: questionOnRepo.title,
-            notebook: {
-                connect: {
-                    id: questionOnRepo.notebookId
-                }
-            },
-            subTopic: {
-                connect: {
-                    id: questionOnRepo.subTopicId
-                }
+    const data = {
+        question: questionOnRepo.question,
+        solution: questionOnRepo.solution,
+        tag: questionOnRepo.tag,
+        title: questionOnRepo.title,
+        notebook: {
+            connect: {
+                id: questionOnRepo.notebookId
             }
         },
-        update: {
-            question: questionOnRepo.question,
-            solution: questionOnRepo.solution,
-            tag: questionOnRepo.tag,
-            title: questionOnRepo.title,
-            notebook: {
-                connect: {
-                    id: questionOnRepo.notebookId
-                }
-            },
-            subTopic: {
+    }
+
+    const question = await prisma.question.upsert({
+        create: {
+            ...data,
+            subTopic: questionOnRepo.subTopicId ? {
                 connect: {
                     id: questionOnRepo.subTopicId
                 }
-            }
+            } : undefined
+        },
+        update: {
+            ...data,
+            subTopic: questionOnRepo.subTopicId ? {
+                    connect: {
+                        id: questionOnRepo.subTopicId
+                    }
+                } : {
+                    disconnect: true
+                }
         },
         where: {
             id: questionOnRepo.id
