@@ -5,10 +5,14 @@ import { HeaderCSS } from '../styles/HeaderCSS';
 import { useAmp } from 'next/amp'
 import { Logo, LogoTextual } from './Logo';
 import { useRouter } from 'next/router';
-
+import {
+    signIn, 
+    signOut,
+    useSession
+  } from 'next-auth/client'
 export const Header: React.FC = () => {
     const isAmp = useAmp()
-    const router = useRouter();
+    const [ session, loading ] = useSession()
 
     return (
         <>
@@ -23,7 +27,14 @@ export const Header: React.FC = () => {
                     </Link>
                     <h1><Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1>
                 </div>
-                    <a className="right">Sign In</a>
+                {!session && <>
+                    Not signed in <br/>
+                    <button onClick={() => signIn()}>Sign in</button>
+                    </>}
+                    {session && <>
+                    Signed in as {session.user.email} <br/>
+                    <button onClick={() => signOut()}>Sign out</button>
+                    </>}
 
             </div>
         </>

@@ -1,57 +1,16 @@
 import { NextRouter, useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Logo } from './Logo';
-import firebase from '../lib/firebase-client'
 import { urlEnv } from '../lib/utils';
 
-export const loginAnonymously = async () => {
-    try{
-        if(!firebase.auth().currentUser) 
-            await firebase.auth().signInAnonymously()
-    }
-    catch(e){
-        console.log('loginAnonymously', e)
-    }
-}
 
-export const loginGitHub = async () => {
-    try{
-        await firebase.auth().signOut()
-        const provider = new firebase.auth.GithubAuthProvider()
-        provider.addScope('repo')
-        await firebase.auth().signInWithRedirect(provider)
-    } catch(e){
-        console.log("poi")
-    }
-}
 
-export const sendEmailLogin = async (url: string, email: string) => {
-    url = url.split('').some(x => x == '?') ? url.concat(`&email=${encodeURIComponent(email)}`): url.concat(`?email=${email}`)
 
-    await firebase.auth().sendSignInLinkToEmail(email, {
-        url,
-        handleCodeInApp: true,
-    })
-}
 
-export const linkAuth = async (router: NextRouter) => {
-    const url = `${urlEnv}${router.asPath}`
 
-    const credential = firebase.auth.EmailAuthProvider.credentialWithLink(router.query.email as string, url);
 
-    console.log("tentar linkAuth")
-    await firebase.auth().currentUser.linkWithCredential(credential)
 
-}
 
-export const parseLinkEmailLogin = async (router: NextRouter) => {
-    const url = `${urlEnv}${router.asPath}`
-
-    //if (firebase.auth().isSignInWithEmailLink(url)) {
-        console.log("tentar parseLinkEmailLogin")
-        await firebase.auth().signInWithEmailLink(router.query.email as string, url)
-    //}
-}
 
 const FormEmail = props => {
     const router = useRouter();
@@ -63,41 +22,12 @@ const FormEmail = props => {
             setCursorPosition(-1);
     }, [cursorPosition]);
 
-    useEffect(() => {
-        firebase.auth().getRedirectResult().then(async (result) =>  {
-            const credential = result.credential as firebase.auth.OAuthCredential;
-            if (credential) {
-              console.log(credential.accessToken);//?access_token=71c5361a31d77a37ea3e6aec0c035185329e7277
-              const data = await fetch(`https://api.github.com/orgs/${'alexandregiordanelli'}/repos`,
-                {
-                    headers: {
-                        "Accept": "application/vnd.github.v3+json",
-                        'Authorization': `token ${'71c5361a31d77a37ea3e6aec0c035185329e7277'}`
-                    }
-                }).then(x => x.ok && x.json())
-              console.log(data)
-            }
-            var user = result.user;
-          }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            // ...
-          });
-    }, [])
 
-    const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        await sendEmailLogin(`${urlEnv}${router.asPath}`, email)
-    }
+
 
     return (
         <>
-        <form className="formLogin" onSubmit={OnSubmit}>
+        <form className="formLogin" onSubmit={()=>{}}>
             <div className="logo">
                 <Logo size={200} color={cursorPosition > -1 ? "rgb(33,136,255)" : "rgb(27,31,35)"} />
                 <div className="eye" style={{ right: 92 - cursorPosition * 0.3, display: cursorPosition > -1 ? 'block' : 'none' }}>
@@ -116,7 +46,6 @@ const FormEmail = props => {
                     }} onChange={x => setEmail(x.target.value)} value={email} />
                 </label>
                 <input type="submit" className="signupButton" value="Receber Link de Acesso"/>
-                <input type="button" className="signupButton" value="Continue with GitHub" onClick={loginGitHub}/>
             </> : <p>Abra o email com o link que você recebeu em {router.query['email']} para se logar.</p>}
         </form>
         <style jsx>{`

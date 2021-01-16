@@ -24,6 +24,7 @@
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
     "next": "^10.0.4",
+    "next-auth": "^3.1.0",
     "next-connect": "^0.9.1",
     "nprogress": "^0.2.0",
     "postcss": "^8.2.4",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@prisma/cli": "^2.14.0",
     "@types/lodash": "^4.14.167",
+    "@types/next-auth": "^3.1.21",
     "@types/node-fetch": "^2.5.7",
     "@types/nprogress": "^0.2.0",
     "@types/react": "^16.9.49",
