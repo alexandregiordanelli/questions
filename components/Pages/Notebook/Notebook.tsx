@@ -5,7 +5,6 @@ import { useAmp } from 'next/amp'
 import HeadHtml from '../../HeadHtml'
 import { IndexPage } from '../IndexPage/IndexPage'
 import NotebookPage from './NotebookPage'
-import { StateProvider } from '../../State'
 import { InferGetStaticPropsType } from 'next'
 import { getStaticProps } from '../../../pages/[...slug]'
 import { PagesProps } from '../../../lib/types'
@@ -13,7 +12,7 @@ import { PagesProps } from '../../../lib/types'
 export const Notebook: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props => {
     
     return (
-        <StateProvider>
+        <>
             <HeadHtml />
             <style jsx>{`
             .main {
@@ -32,7 +31,7 @@ export const Notebook: React.FC<InferGetStaticPropsType<typeof getStaticProps>> 
                     suggestions={props.suggestions}
                     />
             </div>
-        </StateProvider>
+        </>
     )
 }
 

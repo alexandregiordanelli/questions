@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react"
 import { ampUrl, urlEnv } from "../lib/utils"
 import { globalCSS } from "../styles/globalCSS"
 import { katexCSS } from "../styles/katexCSS"
-import { useStateValue } from './State';
 import { UserActionType } from '../lib/types';
 import { useRouter } from 'next/router';
 import { useAmp } from 'next/amp';

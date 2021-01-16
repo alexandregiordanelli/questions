@@ -1,32 +1,17 @@
 import React from 'react';
 import firebase from '../../../lib/firebase-client';
 import Link from 'next/link';
-import { useStateValue } from '../../State';
 import Image from 'next/image'
 import { Img } from '../../Img';
 import EditNotebook from '../../EditNotebook';
 import { useRouter } from 'next/router';
-export const IndexPage: React.FC = () => {
-    const [state] = useStateValue();
+import { Notebook } from '@prisma/client';
+export const IndexPage: React.FC<{
+    notebooks: Notebook[]
+}> = props => {
+
     
     const router = useRouter()
-
-    const imgs = [
-        "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
-        "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png",
-        "https://upload.wikimedia.org/wikipedia/en/9/97/Instituto_Tecnol%C3%B3gico_de_Aeron%C3%A1utica_%28logo%29.png"
-    ];
-    const names = [
-        "ENEM",
-        "ITA",
-        "IME"
-    ];
-
-    const urls = [
-        "/enem",
-        "",
-        ""
-    ];
 
     return (
         <>
@@ -43,7 +28,7 @@ export const IndexPage: React.FC = () => {
                         </div>
 
                         {/* {state.user.currentUser?.isAnonymous && <DynamicComponentWithNoSSR />} */}
-                        {state.user.currentUser && <button onClick={() => firebase.auth().currentUser.delete()}>Sair</button>}
+                        {/* {state.user.currentUser && <button onClick={() => firebase.auth().currentUser.delete()}>Sair</button>} */}
 
                     </div>
 
@@ -52,16 +37,15 @@ export const IndexPage: React.FC = () => {
             <div className="second">
                 <div className="container">
                     <div className="flex2">
-                        {[0, 1, 2].map((x, i) => <div key={i} className="box">
+                        {props.notebooks.map((x, i) => <div key={i} className="box">
                             <div>
                                 {/* <Img 
                                 src={imgs[i]} width={368} height={220}  /> */}
                             </div>
-                            <h1>{!!urls[i] ? <Link href={urls[i]}><a>{names[i]}</a></Link> : names[i]}</h1>
+                            <h1><Link href={x.tag}><a>{x.name}</a></Link></h1>
                             <p>Utility-centric and BEM-style components to give you the building blocks for any web project.</p>
                         </div>)}
                     </div>
-                    <div className="third">© questionsof 2020</div>
                 </div>
             </div>
             <style jsx>{`

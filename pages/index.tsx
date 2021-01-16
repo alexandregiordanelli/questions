@@ -3,14 +3,18 @@ import IndexPage from '../components/Pages/IndexPage/IndexPage'
 import React from 'react'
 import { useAmp } from 'next/amp'
 import HeadHtml from '../components/HeadHtml'
-import { StateProvider } from '../components/State'
 import { InferGetStaticPropsType } from 'next'
+import getNotebooks from '../services/getNotebooks';
+import { Notebook } from '@prisma/client';
 
-const Index: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props => {
-    const isAmp = useAmp()
+type PageProps = {
+    notebooks: Notebook[]
+}
 
+const Index: React.FC<PageProps> = props => {
+    
     return (
-        <StateProvider>
+        <>
             <HeadHtml 
             />
             <style jsx>{`
@@ -21,15 +25,21 @@ const Index: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props =>
             }
             `}</style>
             <div className="main">
-                <IndexPage/>
+                <IndexPage notebooks={props.notebooks}/>
             </div>
-        </StateProvider>
+        </>
     )
 }
-export const getStaticProps: GetStaticProps = async () => {
+
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
+
+    const notebooks = await getNotebooks()
+
     return { 
         revalidate: 1,
-        props: {}
+        props: {
+            notebooks
+        }
     };
 }
 export default Index
