@@ -38,12 +38,12 @@ const HeadHtml: React.FC<{
                 <meta name="theme-color" content="#1b1f23"/>
                 <link rel="manifest" href="/manifest.json" />
             </Head>
-            <style jsx global>
+            {/* <style jsx global>
                 {katexCSS}
             </style>
             <style jsx global>
                 {globalCSS}
-            </style>
+            </style> */}
         </>
     )
 }
