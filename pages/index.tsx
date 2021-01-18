@@ -62,14 +62,13 @@ const Index: React.FC<PageProps> = props => {
     ]
 
     return (
-        <div>
+        <>
             <HeadHtml />
             <Header/> 
             <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
                 {!isAmp  && <img className="opacity-30" src="main.jpg"/>}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container">
-                    <div className="
-                        text-center 
+                    <div className="text-center 
                         text-4xl 
                         sm:text-5xl
                         md:text-6xl
@@ -79,9 +78,7 @@ const Index: React.FC<PageProps> = props => {
                         leading-none 
                         tracking-tight 
                         font-extrabold 
-
-                        text-white 
-                        ">
+                        text-white ">
                         Prepare-se para a prova fazendo questões
                     </div>
                     {/* <div className="text-xl sm:text-4xl lg:text-5xl leading-none font-bold tracking-tight text-white">
@@ -115,7 +112,7 @@ const Index: React.FC<PageProps> = props => {
                 })}
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
