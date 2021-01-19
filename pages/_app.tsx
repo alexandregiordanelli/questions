@@ -2,7 +2,7 @@ import Router from 'next/router'
 import { Provider } from 'next-auth/client'
 import NProgress from 'nprogress'
 import "nprogress/nprogress.css"
-
+import "tailwindcss/tailwind.css"
 //import casa from "s"
 
 NProgress.configure({ showSpinner: false })

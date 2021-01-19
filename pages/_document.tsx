@@ -1,5 +1,5 @@
 // @ts-ignore
-import bundleCss from "!raw-loader!../styles/output.css";
+import bundleCss from "!raw-loader!../styles/tailwindSSR.css";
 import Document from "next/document";
 
 export default class MyDocument extends Document {
@@ -10,12 +10,12 @@ export default class MyDocument extends Document {
       ...page,
       styles: [
         ...initialProps.styles,
-        <style
+        process.env.NODE_ENV === 'production' ? <style
           key="custom"
           dangerouslySetInnerHTML={{
             __html: bundleCss,
           }}
-        />,
+        />: <></>,
       ],
     };
   }
