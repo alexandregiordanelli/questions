@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAmp } from 'next/amp';
-import Image, { ImageProps } from 'next/image'
+import Image from 'next/image'
 
 export const Img: React.FC<{
     width: number
@@ -10,17 +10,11 @@ export const Img: React.FC<{
     const isAmp = useAmp();
     if (isAmp) {
         return (
-            <div className="fixed-height-container ">
-                <amp-img className="contain" layout="fill" {...props} />
-            </div>
+            <amp-img {...props} />
         );
     } else {
         return (
-            <Image
-                width={props.width}
-                height={props.height} 
-                src={props.src}
-            />
+            <Image {...props} />
         );
     }
 };

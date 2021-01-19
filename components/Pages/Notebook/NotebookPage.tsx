@@ -6,6 +6,7 @@ import { PagesProps } from "../../../lib/types"
 import EditNotebook from "../../EditNotebook"
 import { useRouter } from "next/router"
 import EditQuestion from "../../EditQuestion"
+import Link from "next/link"
 
 const NotebookPage: React.FC<{
 
@@ -27,7 +28,7 @@ const NotebookPage: React.FC<{
                 router.query.edit && <EditQuestion notebook={props.notebook} question={props.question} />
             }
             </div>
-            <div className={"container"}>
+            <div className={"flex"}>
                 {deepth >= 1 && 
                     <LeftMenu 
                     menu={props.menu} 
@@ -45,13 +46,6 @@ const NotebookPage: React.FC<{
                     />
                 }
             </div>
-
-            <style jsx>{`
-            .container {
-                display: flex;
-            }
-            `}</style>
-
         </>
     )
 }

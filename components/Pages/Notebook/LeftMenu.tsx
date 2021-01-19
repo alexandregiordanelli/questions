@@ -170,7 +170,7 @@ export const LeftMenu = (props: {
     return (
         <>
             <div>
-                <label htmlFor="menu-check" className="menu-check-label"><ThreeBarsIcon /></label>
+                <label htmlFor="menu-check" className="z-50 fixed sm:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"><ThreeBarsIcon /></label>
                 <input id="menu-check" type="checkbox" onChange={x => setToggleMenu(x.target.checked)} checked={toggleMenu} />
                 <MenuCore menu={props.menu} />
             </div>
@@ -244,7 +244,7 @@ export const LeftMenu = (props: {
             }
 
             .menu-check-label {
-                z-index: 1;
+                z-index: 50;
                 left: 14px;
                 top: 14px;
                 position: fixed;

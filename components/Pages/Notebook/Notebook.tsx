@@ -22,8 +22,7 @@ export const Notebook: React.FC<InferGetStaticPropsType<typeof getStaticProps>> 
             }
             `}</style>
             <div className="main">
-
-                    <Header/>                
+                    <Header/>              
                     <NotebookPage 
                     menu={props.menu}
                     notebook={props.notebook} 
