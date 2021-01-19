@@ -17,7 +17,7 @@ export const MenuItem: React.FC<{
 
     return props.hasExpanded ? (
         <>
-            <label htmlFor={encodeURIComponent(props.title)}>
+            <label htmlFor={encodeURIComponent(props.title)} className="flex justify-between cursor-pointer items-center">
                 {props.title}
                 <ChevronDownIcon />
             </label>
@@ -30,11 +30,11 @@ export const MenuItem: React.FC<{
             />
 
             <style jsx>{`
-            label {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                justify-content: space-between;
+            :global(.menuItemLabel) {
+                display: none;
+            }
+            :global(.menuItemLabel:checked ~ ul) {
+                display: block;
             }
             `}</style>
         </>) : 
