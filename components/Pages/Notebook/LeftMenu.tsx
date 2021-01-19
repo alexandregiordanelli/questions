@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { MenuWithQuestions } from '../../../lib/types';
 import ActiveLink from '../../ActiveLink';
 import { MenuItem } from './MenuItem';
+import Link from 'next/link';
 
 export const MenuCore: React.FC<{
     menu: MenuWithQuestions
@@ -24,9 +25,9 @@ export const MenuCore: React.FC<{
                                 if (anotherSubtopicQuestion) {
                                     return (
                                         <li key={`${i}.${j}`}>
-                                            <ActiveLink href={anotherSubtopicQuestion.tag}>
+                                            <Link href={anotherSubtopicQuestion.tag}>
                                                 <a>{y.name}</a>
-                                            </ActiveLink>
+                                            </Link>
                                         </li>
                                     );
                                 } else {

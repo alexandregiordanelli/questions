@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from '@primer/octicons-react';
 import React, { useState } from 'react';
 import ActiveLink from '../../ActiveLink';
+import Link from 'next/link';
 
 
 export const MenuItem: React.FC<{
@@ -40,9 +41,9 @@ export const MenuItem: React.FC<{
         </>) : 
             props.url? 
                 <>
-                    <ActiveLink href={props.url}>
+                    <Link href={props.url}>
                         <a>{props.title}</a>
-                    </ActiveLink>
+                    </Link>
                 </>: 
                 <>{props.title}</>
 };

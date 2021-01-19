@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import ActiveLink from "../../ActiveLink"
 import {ChevronDownIcon} from '@primer/octicons-react'
 import { SubTopicWithQuestions } from "../../../lib/types"
+import Link from "next/link"
 
 const RightMenu: React.FC<{
     // title: JSX.Element,
@@ -26,7 +27,8 @@ const RightMenu: React.FC<{
                 <ul>
                 {props.suggestions.map((x, i) => (
                     <li key={i}>
-                        <ActiveLink activeClassName="ativo" href={x.tag}><a>{x.title}</a></ActiveLink>
+                        {/* activeClassName="ativo" */}
+                        <Link href={x.tag}><a>{x.title}</a></Link>
                     </li>
                 ))}
                 </ul> 

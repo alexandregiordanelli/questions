@@ -243,7 +243,7 @@ const EditQuestion: React.FC<{
                                                 <Select
                                                     instanceId={"topics"}
                                                     isClearable
-                                                    menuPortalTarget={document.querySelector('body')}
+                                                    menuPortalTarget={typeof document != "undefined" && document.querySelector('body')}
                                                     onChange={x => {
                                                         dispatch({
                                                             type: ActionType.UPDATE_SUBTOPIC, subTopicId: Number(x?.value)

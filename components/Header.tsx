@@ -31,10 +31,30 @@ export const Header: React.FC = () => {
                     Not signed in <br/>
                     <button className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md" onClick={() => signIn()}>Sign in</button>
                     </>}
-                    {session && <>
-                    Signed in as {session.user.email} <br/>
-                    <button className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md" onClick={() => signOut()}>Sign out</button>
-                    </>}
+                    {session && <div className="flex">
+                        {isInitialPage ?
+                            <button 
+                            className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md" 
+                            onClick={() => router.push(`${router.asPath}?add=true`,undefined, { shallow: true })}
+                            >
+                            Add Notebook
+                            </button>
+                        :   <>
+                                <button 
+                                className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md" 
+                                onClick={() => router.push(`${router.asPath}?add=true`,undefined, { shallow: true })}
+                                >
+                                Add Question
+                                </button>
+                                <button 
+                                className="bg-gray-800 text-white rounded-md px-4 py-2 mr-2 border-gray-700 border" 
+                                onClick={() => router.push(`${router.asPath}?edit=true`,undefined, { shallow: true })}
+                                >
+                                Edit Notebook
+                                </button>
+                            </>}
+                        <button className="text-white px-4 py-2 mr-2 " onClick={() => signOut()}>Sign out</button>
+                    </div>}
 
             </div>
         </>
