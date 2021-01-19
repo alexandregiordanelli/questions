@@ -7,7 +7,7 @@
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "prebuild": "tailwindcss-cli build -o styles/tailwindSSR.css",
+    "prebuild": "NODE_ENV=production tailwindcss-cli build -o styles/tailwindSSR.css",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start"
