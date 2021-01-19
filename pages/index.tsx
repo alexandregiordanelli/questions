@@ -21,7 +21,7 @@ const Index: React.FC<PageProps> = props => {
             <HeadHtml />
             <Header/> 
             <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
-                <div className="opacity-30">
+                <div className="opacity-30 flex">
                     <Img src={`/main.jpg`} height={4912} width={7360 } />
                 </div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 container">
