@@ -93,7 +93,7 @@ const Index: React.FC<PageProps> = props => {
                 
             </div>
             
-            <div className="p-10 bg-gray-200" style={{backgroundImage: `url("graph-paper.svg")`}}>
+            <div className="p-8 bg-gray-200" style={{backgroundImage: `url("graph-paper.svg")`}}>
                 <span className="font-semibold text-gray-400">Notebooks</span>
                 <div className="flex overflow-x-auto">
                 {notebooks.map((x, i) => {

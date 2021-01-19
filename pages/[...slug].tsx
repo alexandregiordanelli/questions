@@ -15,6 +15,12 @@ export const getStaticProps: GetStaticProps<PagesProps> = async (context) => {
         
         const notebook = await getNotebook(notebookTag)
 
+        if(!notebook){
+            return {
+                notFound: true
+            }
+        }
+
         if(!notebook.id){
             return {
                 notFound: true
