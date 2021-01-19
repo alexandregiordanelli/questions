@@ -1,5 +1,5 @@
 //const withPWA = require('next-pwa')
- 
+
 // module.exports = withPWA({
 //     images: {
 //         domains: ['raw.githubusercontent.com', 'upload.wikimedia.org'],
@@ -9,3 +9,18 @@
 //     //     disable: process.env.NODE_ENV === 'development',
 //     // }
 // })
+
+module.exports = {
+    async rewrites() {
+        return [
+            {
+                source: '/:notebookTag',
+                destination: '/notebook/:notebookTag',
+            },
+            {
+                source: '/:notebookTag/:questionTag',
+                destination: '/notebook/:notebookTag/question/:questionTag',
+            },
+        ]
+    },
+}

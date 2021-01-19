@@ -27,7 +27,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
             props: {
                 notebook,
             },
-            revalidate: 1
         };
 
 

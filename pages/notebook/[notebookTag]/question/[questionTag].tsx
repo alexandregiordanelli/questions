@@ -1,13 +1,13 @@
 import { GetStaticProps, NextPage, GetStaticPaths } from "next"
-import getNotebook from "../../../../../services/getNotebook"
-import getMenu from "../../../../../services/getMenu"
-import { NotebookWithTopicsAndSubTopics, MenuWithQuestions, QuestionWithAll, SubTopicWithQuestions } from "../../../../../lib/types"
-import HeadHtml from "../../../../../components/HeadHtml"
-import { Header } from "../../../../../components/Header"
-import { LeftMenu } from "../../../../../components/Pages/Notebook/LeftMenu"
-import getQuestion from "../../../../../services/getQuestion"
-import getSuggestions from "../../../../../services/getSuggestions"
-import { QuestionFormWithRightMenu } from "../../../../../components/Pages/Notebook/QuestionFormWithRightMenu"
+import getNotebook from "../../../../services/getNotebook"
+import getMenu from "../../../../services/getMenu"
+import { NotebookWithTopicsAndSubTopics, MenuWithQuestions, QuestionWithAll, SubTopicWithQuestions } from "../../../../lib/types"
+import HeadHtml from "../../../../components/HeadHtml"
+import { Header } from "../../../../components/Header"
+import { LeftMenu } from "../../../../components/Pages/Notebook/LeftMenu"
+import getQuestion from "../../../../services/getQuestion"
+import getSuggestions from "../../../../services/getSuggestions"
+import { QuestionFormWithRightMenu } from "../../../../components/Pages/Notebook/QuestionFormWithRightMenu"
 
 type PageProps = {
     notebook: NotebookWithTopicsAndSubTopics,
