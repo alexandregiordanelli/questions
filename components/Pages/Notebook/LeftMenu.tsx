@@ -31,7 +31,7 @@ export const MenuCore: React.FC<{
                   if (anotherSubtopicQuestion) {
                     return (
                       <li key={`${i}.${j}`}>
-                        <Link href={anotherSubtopicQuestion.tag}>
+                        <Link href={`/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`}>
                           <a>{y.name}</a>
                         </Link>
                       </li>

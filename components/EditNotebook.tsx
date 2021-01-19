@@ -104,8 +104,10 @@ const reducer = (
       newState.topics = action.topics
       return newState
     }
+    default: {
+      return state
+    }
   }
-  return state
 }
 
 const EditNotebook: React.FC<{

@@ -13,6 +13,11 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
           },
         },
       },
+      notebook: {
+        select: {
+          tag: true,
+        },
+      },
     },
     where: {
       notebook: {
@@ -21,11 +26,11 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
     },
   })
 
-  topicsOfNotebook.forEach((x) => {
-    x.subtopics.forEach((y) => {
-      if (y.questions.length) y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
-    })
-  })
+  // topicsOfNotebook.forEach((x) => {
+  //   x.subtopics.forEach((y) => {
+  //     if (y.questions.length) y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
+  //   })
+  // })
 
   return topicsOfNotebook
 }
