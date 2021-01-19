@@ -14,7 +14,6 @@ export default class MyDocument extends Document {
     return {
       ...page,
       styles: [
-        ...initialProps.styles,
         process.env.NODE_ENV === 'production' ? (
           <style
             key="custom"
@@ -25,6 +24,7 @@ export default class MyDocument extends Document {
         ) : (
           <></>
         ),
+        ...initialProps.styles,
       ],
     }
   }
