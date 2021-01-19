@@ -2,13 +2,19 @@ import { NextPage, GetServerSideProps } from 'next'
 import EditQuestion from '../../../../../components/EditQuestion'
 import getNotebook from '../../../../../services/getNotebook'
 import { NotebookWithTopicsAndSubTopics } from '../../../../../lib/types'
+import { Header } from '../../../../../components/Header'
 
 type PageProps = {
   notebook: NotebookWithTopicsAndSubTopics
 }
 
 const AddQuestionPage: NextPage<PageProps> = (props) => {
-  return <EditQuestion notebook={props.notebook} />
+  return (
+    <>
+      <Header />
+      <EditQuestion notebook={props.notebook} />
+    </>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {

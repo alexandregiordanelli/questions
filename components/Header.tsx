@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
 import { useRouter } from 'next/router'
 import { signIn, signOut, useSession } from 'next-auth/client'
-export const Header: React.FC = () => {
+export const Header: React.FC = (props) => {
   const [session] = useSession()
   const router = useRouter()
 
@@ -38,35 +38,7 @@ export const Header: React.FC = () => {
         )}
         {session && (
           <div className="flex">
-            {isInitialPage ? (
-              <button
-                className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md"
-                onClick={() =>
-                  router.push(`${router.asPath}?add=true`, undefined, { shallow: true })
-                }
-              >
-                Add Notebook
-              </button>
-            ) : (
-              <>
-                <button
-                  className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md"
-                  onClick={() =>
-                    router.push(`${router.asPath}?add=true`, undefined, { shallow: true })
-                  }
-                >
-                  Add Question
-                </button>
-                <button
-                  className="bg-gray-800 text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
-                  onClick={() =>
-                    router.push(`${router.asPath}?edit=true`, undefined, { shallow: true })
-                  }
-                >
-                  Edit Notebook
-                </button>
-              </>
-            )}
+            {props.children}
             <button className="text-white px-4 py-2 mr-2 " onClick={() => signOut()}>
               Sign out
             </button>

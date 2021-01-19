@@ -1,8 +1,14 @@
 import { NextPage } from 'next'
 import EditNotebook from '../../../components/EditNotebook'
+import { Header } from '../../../components/Header'
 
 const AddNotebookPage: NextPage = () => {
-  return <EditNotebook />
+  return (
+    <>
+      <Header />
+      <EditNotebook />
+    </>
+  )
 }
 
 export default AddNotebookPage

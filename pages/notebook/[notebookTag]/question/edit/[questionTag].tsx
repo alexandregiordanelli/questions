@@ -3,6 +3,7 @@ import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from '../../../../../
 import getNotebook from '../../../../../services/getNotebook'
 import EditQuestion from '../../../../../components/EditQuestion'
 import getQuestion from '../../../../../services/getQuestion'
+import { Header } from '../../../../../components/Header'
 
 type PageProps = {
   notebook: NotebookWithTopicsAndSubTopics
@@ -10,7 +11,12 @@ type PageProps = {
 }
 
 const EditQuestionPage: NextPage<PageProps> = (props) => {
-  return <EditQuestion notebook={props.notebook} question={props.question} />
+  return (
+    <>
+      <Header />
+      <EditQuestion notebook={props.notebook} question={props.question} />
+    </>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
