@@ -1,14 +1,11 @@
 import { GetStaticProps } from 'next';
-import IndexPage from '../components/Pages/IndexPage/IndexPage'
 import React from 'react'
 import { useAmp } from 'next/amp'
 import HeadHtml from '../components/HeadHtml'
-import { InferGetStaticPropsType } from 'next'
 import getNotebooks from '../services/getNotebooks';
 import { Notebook } from '@prisma/client';
 import Link from 'next/link';
 import { Header } from '../components/Header';
-import { ChevronRightIcon, ArrowRightIcon } from '@primer/octicons-react';
 import { Img } from '../components/Img';
 
 type PageProps = {
@@ -17,50 +14,7 @@ type PageProps = {
 
 const Index: React.FC<PageProps> = props => {
     
-    const isAmp = useAmp()
 
-    const notebooks = [
-        {
-            img: 0,
-            name: "ENEM",
-            price: 5
-        },
-        {
-            img: 1,
-            name: "IME",
-            price: 5
-        },
-        {
-            img: 2,
-            name: "ITA",
-            price: 5
-        },
-        {
-            img: 3,
-            name: "Enem",
-            price: 5
-        },
-        {
-            img: 2,
-            name: "Enem",
-            price: 5
-        },
-        {
-            img: 1,
-            name: "Enem",
-            price: 5
-        },
-        {
-            img: 0,
-            name: "Enem",
-            price: 5
-        },
-        {
-            img: 3,
-            name: "Enem",
-            price: 5
-        },
-    ]
 
     return (
         <>
