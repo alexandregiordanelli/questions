@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaClient } from '@prisma/client'
 
 let prisma: PrismaClient
@@ -11,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
   if (!global.prisma) {
     // @ts-ignore
     global.prisma = new PrismaClient({
-        log: []//['query', 'info', 'warn'],
+      log: [], //['query', 'info', 'warn'],
     })
   }
 

@@ -1,9 +1,9 @@
-import { Env } from "./types"
+import { Env } from './types'
 
 export const urlEnvDic = {
-    [Env.development]: 'http://localhost:3000',
-    [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
-    [Env.production]: 'https://questionsof.com'
+  [Env.development]: 'http://localhost:3000',
+  [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
+  [Env.production]: 'https://questionsof.com',
 }
 
 const env = process.env.NEXT_PUBLIC_VERCEL_ENV as Env
@@ -12,40 +12,36 @@ export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url = "") => isAmp? `/amp/${url}`: `/${url}`
+export const ampUrl = (isAmp: boolean, url = ''): string => (isAmp ? `/amp/${url}` : `/${url}`)
 
-export const absolute = (base, relative) => {
-    let stack = base.split("/");
-    let parts = relative.split("/");
-    stack.pop();
+export const absolute = (base: string, relative: string): string => {
+  const stack = base.split('/')
+  const parts = relative.split('/')
+  stack.pop()
 
-    for (let i = 0; i < parts.length; i++) {
-        if (parts[i] == ".")
-            continue;
-        if (parts[i] == "..")
-            stack.pop();
-
-        else
-            stack.push(parts[i]);
-    }
-    return stack.join("/");
-};
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] == '.') continue
+    if (parts[i] == '..') stack.pop()
+    else stack.push(parts[i])
+  }
+  return stack.join('/')
+}
 // export const parseQuestionMd = async (md: string) => {
 
 //     const mdparsed = matter(md)
-    
+
 //     const meta = mdparsed.data as QuestionMetaOnRepo
 //     const data = mdparsed.content
-    
+
 //     const firstData = data.split(/-\s\[[\sx]\]\s.*/gi)
-    
+
 //     const question = firstData[0].trim()
 //     const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
-    
+
 //     let answer = -1
 //     const options = []
 //     const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
-    
+
 //     var m
 //     do {
 //         m = regexOptions.exec(data);
@@ -61,7 +57,7 @@ export const absolute = (base, relative) => {
 //         question,
 //         solution,
 //         options,
-//         answer, 
+//         answer,
 //         ...meta
 //     }
 

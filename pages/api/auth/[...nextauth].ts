@@ -1,56 +1,57 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 import { NowRequest, NowResponse } from '@vercel/node'
 import Adapters from 'next-auth/adapters'
-import { prisma } from "../../../prisma/prisma"
+import { prisma } from '../../../prisma/prisma'
 import nodemailer from 'nodemailer'
 
 const sendVerificationRequest = (options) => {
-    const { identifier: email, url, baseUrl } = options
+  const { identifier: email, url, baseUrl } = options
 
-    // Strip protocol from URL and use domain as site name
-    const site = baseUrl.replace(/^https?:\/\//, '')
+  // Strip protocol from URL and use domain as site name
+  const site = baseUrl.replace(/^https?:\/\//, '')
 
-    const emailSent = nodemailer
-        .createTransport({
-            host: process.env.SMTP_SERVER,
-            port: Number(process.env.SMTP_PORT),
-            secure: false, // true for 465, false for other ports
-            auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASSWORD
-            }
-          })
-        .sendMail({
-            to: email,
-            from: process.env.EMAIL_FROM,
-            subject: `Sign in to ${site}`,
-            text: text({ url, site }),
-            html: html({ url, site, email })
-        })
-    
-    return emailSent
+  const emailSent = nodemailer
+    .createTransport({
+      host: process.env.SMTP_SERVER,
+      port: Number(process.env.SMTP_PORT),
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    })
+    .sendMail({
+      to: email,
+      from: process.env.EMAIL_FROM,
+      subject: `Sign in to ${site}`,
+      text: text({ url, site }),
+      html: html({ url, site, email }),
+    })
+
+  return emailSent
 }
 
 // Email HTML body
 const html = ({ url, site, email }) => {
-    // Insert invisible space into domains and email address to prevent both the
-    // email address and the domain from being turned into a hyperlink by email
-    // clients like Outlook and Apple mail, as this is confusing because it seems
-    // like they are supposed to click on their email address to sign in.
-    const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`
-    const escapedSite = `${site.replace(/\./g, '&#8203;.')}`
+  // Insert invisible space into domains and email address to prevent both the
+  // email address and the domain from being turned into a hyperlink by email
+  // clients like Outlook and Apple mail, as this is confusing because it seems
+  // like they are supposed to click on their email address to sign in.
+  const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`
+  const escapedSite = `${site.replace(/\./g, '&#8203;.')}`
 
-    // Some simple styling options
-    const backgroundColor = '#f9f9f9'
-    const textColor = '#444444'
-    const mainBackgroundColor = '#ffffff'
-    const buttonBackgroundColor = '#346df1'
-    const buttonBorderColor = '#346df1'
-    const buttonTextColor = '#ffffff'
+  // Some simple styling options
+  const backgroundColor = '#f9f9f9'
+  const textColor = '#444444'
+  const mainBackgroundColor = '#ffffff'
+  const buttonBackgroundColor = '#346df1'
+  const buttonBorderColor = '#346df1'
+  const buttonTextColor = '#ffffff'
 
-    // Uses tables for layout and inline CSS due to email client limitations
-    return `
+  // Uses tables for layout and inline CSS due to email client limitations
+  return `
 <body style="background: ${backgroundColor};">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -87,22 +88,21 @@ const html = ({ url, site, email }) => {
 // Email text body – fallback for email clients that don't render HTML
 const text = ({ url, site }) => `Sign in to ${site}\n${url}\n\n`
 
-
-export default (req: NowRequest, res: NowResponse) => NextAuth(req, res, {
-
+export default (req: NowRequest, res: NowResponse): Promise<void> =>
+  NextAuth(req, res, {
     providers: [
-        Providers.Email({
-            sendVerificationRequest
-        })
+      Providers.Email({
+        sendVerificationRequest,
+      }),
     ],
 
     pages: {
-        signIn: '/auth/signin',
-        // signOut: '/auth/signout',
-        // error: '/auth/error', // Error code passed in query string as ?error=
-        verifyRequest: '/auth/verify-request', // (used for check email message)
-        // newUser: null // If set, new users will be directed here on first sign in
+      signIn: '/auth/signin',
+      // signOut: '/auth/signout',
+      // error: '/auth/error', // Error code passed in query string as ?error=
+      verifyRequest: '/auth/verify-request', // (used for check email message)
+      // newUser: null // If set, new users will be directed here on first sign in
     },
 
     adapter: Adapters.Prisma.Adapter({ prisma }),
-})
+  })

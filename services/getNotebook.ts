@@ -1,20 +1,20 @@
-import { prisma } from "../prisma/prisma"
+import { prisma } from '../prisma/prisma'
+import { NotebookWithTopicsAndSubTopics } from '../lib/types'
 
-const getNotebook = async (notebookTag: string) => {
-    
-    const notebook = await prisma.notebook.findUnique({
-        where: {
-            tag: notebookTag,
-        },
+const getNotebook = async (notebookTag: string): Promise<NotebookWithTopicsAndSubTopics> => {
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      tag: notebookTag,
+    },
+    include: {
+      topics: {
         include: {
-            topics: {
-                include: {
-                    subtopics: true
-                }
-            }
-        }
-    })
+          subtopics: true,
+        },
+      },
+    },
+  })
 
-    return notebook
-};
+  return notebook
+}
 export default getNotebook

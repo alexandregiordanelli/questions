@@ -1,34 +1,32 @@
-import { prisma } from "../prisma/prisma"
+import { prisma } from '../prisma/prisma'
+import { MenuWithQuestions } from '../lib/types'
 
-const getMenu = async (notebookTag: string) => {
-
-    const topicsOfNotebook = await prisma.topic.findMany({
+const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
+  const topicsOfNotebook = await prisma.topic.findMany({
+    include: {
+      subtopics: {
         include: {
-            subtopics: {
-                include: {
-                    questions: {
-                        select: {
-                            tag: true
-                        }
-                    }
-                }
-            }
+          questions: {
+            select: {
+              tag: true,
+            },
+          },
         },
-        where: {
-            notebook: {
-                tag: notebookTag
-            }
-        }
+      },
+    },
+    where: {
+      notebook: {
+        tag: notebookTag,
+      },
+    },
+  })
 
+  topicsOfNotebook.forEach((x) => {
+    x.subtopics.forEach((y) => {
+      if (y.questions.length) y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
     })
+  })
 
-    topicsOfNotebook.forEach(x => {
-        x.subtopics.forEach(y => {
-            if(y.questions.length)
-                y.questions[0].tag = notebookTag + '/' + y.questions[0].tag
-        })
-    })
-
-    return topicsOfNotebook
+  return topicsOfNotebook
 }
 export default getMenu

@@ -1,9 +1,9 @@
-import { prisma } from "../prisma/prisma"
+import { prisma } from '../prisma/prisma'
+import { Notebook } from '@prisma/client'
 
-const getNotebooks = async () => {
+const getNotebooks = async (): Promise<Notebook[]> => {
+  const notebooks = await prisma.notebook.findMany()
 
-    const notebooks = await prisma.notebook.findMany()
-
-    return notebooks;
-};
-export default getNotebooks;
+  return notebooks
+}
+export default getNotebooks

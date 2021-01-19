@@ -1,6 +1,6 @@
-import Original from "../index"
+import Original from '../index'
 
-export { getStaticProps } from "../index"
+export { getStaticProps } from '../index'
 
 export const config = { amp: true }
 
