@@ -9,3 +9,15 @@
 //     //     disable: process.env.NODE_ENV === 'development',
 //     // }
 // })
+
+module.exports = {
+    webpack: (config) => {
+      config.module.rules.push(
+        {
+          test: /\.css$/,
+          use: 'raw-loader'
+        }
+      )
+      return config
+    },
+  }

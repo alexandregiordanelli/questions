@@ -7,6 +7,8 @@
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev:postcss": "postcss styles/index.css --config postcss.config.js -o styles/output.css -w",
+    "prebuild": "postcss styles/index.css --config postcss.config.js -o styles/output.css",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start"
@@ -21,12 +23,13 @@
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
-    "next": "^10.0.4",
+    "next": "^10.0.5",
     "next-auth": "^3.1.0",
     "next-connect": "^0.9.1",
     "nodemailer": "^6.4.17",
     "nprogress": "^0.2.0",
     "postcss": "^8.2.4",
+    "raw-loader": "^4.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-select": "^3.1.1",
@@ -55,6 +58,7 @@
     "@types/styled-jsx": "^2.2.8",
     "@vercel/node": "^1.8.5",
     "cross-env": "^7.0.3",
-    "next-sitemap": "^1.2.26"
+    "next-sitemap": "^1.2.26",
+    "postcss-cli": "^8.3.1"
   }
 }
