@@ -18,20 +18,20 @@ module.exports = {
         destination: '/api/:api*',
       },
       {
+        source: '/amp/:notebookTag',
+        destination: '/amp/notebook/:notebookTag',
+      },
+      {
+        source: '/amp/:notebookTag/:questionTag',
+        destination: '/amp/notebook/:notebookTag/question/:questionTag',
+      },
+      {
         source: '/:notebookTag',
         destination: '/notebook/:notebookTag',
       },
       {
         source: '/:notebookTag/:questionTag',
         destination: '/notebook/:notebookTag/question/:questionTag',
-      },
-      {
-        source: '/amp/:notebookTag/:questionTag',
-        destination: '/amp/notebook/:notebookTag/question/:questionTag',
-      },
-      {
-        source: '/amp/:notebookTag/:questionTag',
-        destination: '/amp/notebook/:notebookTag/question/:questionTag',
       },
     ]
   },
