@@ -30,7 +30,7 @@ const ReadNotebookPage: NextPage<PageProps> = (props) => {
               Add Question
             </button>
             <button
-              className="bg-gray-800 text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
+              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
               onClick={() => router.push(`/notebook/edit/${props.notebook.tag}`)}
             >
               Edit Notebook

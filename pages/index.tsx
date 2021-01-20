@@ -6,16 +6,26 @@ import { Notebook } from '@prisma/client'
 import Link from 'next/link'
 import { Header } from '../components/Header'
 import { Img } from '../components/Img'
+import { useRouter } from 'next/router'
 
 type PageProps = {
   notebooks: Notebook[]
 }
 
 const Index: React.FC<PageProps> = (props) => {
+  const router = useRouter()
+
   return (
     <>
       <HeadHtml />
-      <Header />
+      <Header>
+        <button
+          className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+          onClick={() => router.push(`/notebook/add`)}
+        >
+          Add Notebook
+        </button>
+      </Header>
       <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
         <div className="opacity-30 flex">
           <Img src={`/main.jpg`} height={4912} width={7360} />

@@ -9,12 +9,14 @@ datasource db {
 
 model Notebook {
     id          Int        @id @default(autoincrement())
+    userId      Int
     tag         String     @unique
     description String?
     topics      Topic[]
     price       Float?
     name        String?
     questions   Question[]
+    user        User       @relation(fields: [userId], references: [id])
 }
 
 model Topic {

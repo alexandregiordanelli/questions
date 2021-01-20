@@ -1,20 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
-import { useRouter } from 'next/router'
 import { signIn, signOut, useSession } from 'next-auth/client'
 export const Header: React.FC = (props) => {
   const [session] = useSession()
-  const router = useRouter()
-
-  const isInitialPage = router.asPath == '/'
 
   return (
     <>
       <div
-        className={`bg-gray-800 top-0 sticky h-16 items-center justify-between flex p-1 z-10  sm:pl-2 ${
-          isInitialPage ? 'pl-2' : 'pl-8'
-        }`}
+        className={`bg-gray-800 top-0 sticky h-16 items-center justify-between flex p-1 z-10 pl-8 lg:pl-2`}
       >
         <div className="items-center flex">
           <Link href="/">

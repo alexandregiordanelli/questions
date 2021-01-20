@@ -57,6 +57,7 @@ type SelectOption = {
 
 const initState: NotebookWithTopicsAndSubTopics = {
   id: 0,
+  userId: 0,
   description: '',
   name: '',
   price: 0,

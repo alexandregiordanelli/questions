@@ -30,13 +30,6 @@ export type NotebookWithTopicsAndSubTopics = Notebook & {
   })[]
 }
 
-export type PagesProps = {
-  notebook: NotebookWithTopicsAndSubTopics
-  menu: MenuWithQuestions
-  question?: QuestionWithAll
-  suggestions?: Suggestions
-}
-
 export type Path = {
   params: {
     slug: string[]

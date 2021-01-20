@@ -6,6 +6,7 @@
 // @ts-ignore
 import bundleCss from '!raw-loader!../styles/tailwindSSR.css'
 import Document from 'next/document'
+import { Fragment } from 'react'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
@@ -22,7 +23,7 @@ export default class MyDocument extends Document {
             }}
           />
         ) : (
-          <></>
+          <Fragment key="custom"></Fragment>
         ),
         ...initialProps.styles,
       ],

@@ -168,7 +168,7 @@ export const LeftMenu: React.FC<{ menu: MenuWithQuestions }> = (props) => {
       <div>
         <label
           htmlFor="menu-check"
-          className="z-50 fixed sm:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"
+          className="z-50 fixed lg:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"
         >
           <ThreeBarsIcon />
         </label>

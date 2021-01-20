@@ -13,6 +13,11 @@ const postNotebook = async (
       name: notebookOnRepo.name,
       price: notebookOnRepo.price,
       description: notebookOnRepo.description,
+      user: {
+        connect: {
+          id: notebookOnRepo.userId,
+        },
+      },
     },
     update: {
       tag: notebookOnRepo.tag,
