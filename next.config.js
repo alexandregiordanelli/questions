@@ -13,17 +13,25 @@
 module.exports = {
   async rewrites() {
     return [
-      {
-        source: '/:notebookTag',
-        destination: '/notebook/:notebookTag',
-      },
       { //bug ( catch all routes [[...notebookTag]] is not working for /api/notebook but working for /api/notebook/1 )
         source: '/api/:api*',
         destination: '/api/:api*',
       },
       {
+        source: '/:notebookTag',
+        destination: '/notebook/:notebookTag',
+      },
+      {
         source: '/:notebookTag/:questionTag',
         destination: '/notebook/:notebookTag/question/:questionTag',
+      },
+      {
+        source: '/amp/:notebookTag/:questionTag',
+        destination: '/amp/notebook/:notebookTag/question/:questionTag',
+      },
+      {
+        source: '/amp/:notebookTag/:questionTag',
+        destination: '/amp/notebook/:notebookTag/question/:questionTag',
       },
     ]
   },
