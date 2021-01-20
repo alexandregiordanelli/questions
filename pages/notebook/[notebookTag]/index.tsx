@@ -8,6 +8,8 @@ import getNotebooks from '../../../services/getNotebooks'
 import { LeftMenu } from '../../../components/Pages/Notebook/LeftMenu'
 import { IndexQuestionPage } from '../../../components/Pages/Notebook/IndexQuestionPage'
 import { useRouter } from 'next/router'
+import { useAmp } from 'next/amp'
+import { urlEnv, ampCanonicalUrl } from '../../../lib/utils'
 
 type PageProps = {
   notebook: NotebookWithTopicsAndSubTopics
@@ -16,10 +18,15 @@ type PageProps = {
 
 const ReadNotebookPage: NextPage<PageProps> = (props) => {
   const router = useRouter()
-
+  const isAmp = useAmp()
   return (
     <>
-      <HeadHtml />
+      <HeadHtml>
+        <link
+          rel={isAmp ? 'canonical' : 'amphtml'}
+          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
+        />
+      </HeadHtml>
       <div className="flex min-h-screen flex-col">
         <Header>
           <>
@@ -95,5 +102,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
-export const config = { amp: 'hybrid' }
 export default ReadNotebookPage

@@ -14,6 +14,8 @@ import getQuestion from '../../../../services/getQuestion'
 import getSuggestions from '../../../../services/getSuggestions'
 import { QuestionFormWithRightMenu } from '../../../../components/Pages/Notebook/QuestionFormWithRightMenu'
 import { useRouter } from 'next/router'
+import { useAmp } from 'next/amp'
+import { urlEnv, ampCanonicalUrl } from '../../../../lib/utils'
 
 type PageProps = {
   notebook: NotebookWithTopicsAndSubTopics
@@ -24,9 +26,16 @@ type PageProps = {
 
 const ReadQuestionPage: NextPage<PageProps> = (props) => {
   const router = useRouter()
+  const isAmp = useAmp()
   return (
     <>
-      <HeadHtml />
+      <HeadHtml>
+        <link
+          rel={isAmp ? 'canonical' : 'amphtml'}
+          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
+        />
+      </HeadHtml>
+
       <div className="flex min-h-screen flex-col">
         <Header>
           <>
@@ -117,6 +126,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
-
-export const config = { amp: 'hybrid' }
 export default ReadQuestionPage

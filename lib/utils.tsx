@@ -12,7 +12,8 @@ export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')
 
-export const ampUrl = (isAmp: boolean, url = ''): string => (isAmp ? `/amp/${url}` : `/${url}`)
+export const ampCanonicalUrl = (isAmp: boolean, url = ''): string =>
+  isAmp ? url.replace('/amp', '') : `/amp${url}`
 
 export const absolute = (base: string, relative: string): string => {
   const stack = base.split('/')

@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import React from 'react'
 
-const HeadHtml: React.FC = () => {
+const HeadHtml: React.FC = (props) => {
   return (
     <>
       <Head>
-        {/* <link rel={isAmp? "canonical": "amphtml"} href={`${urlEnv}${ampUrl(!isAmp, slug?.join('/'))}`}/> */}
         <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png" />
         <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png" />
@@ -28,6 +27,7 @@ const HeadHtml: React.FC = () => {
         <meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
         <meta name="theme-color" content="#1b1f23" />
         <link rel="manifest" href="/manifest.json" />
+        {props.children}
       </Head>
     </>
   )
