@@ -117,4 +117,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
+
+export const config = { amp: 'hybrid' }
 export default ReadQuestionPage

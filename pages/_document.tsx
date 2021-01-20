@@ -6,27 +6,30 @@
 // @ts-ignore
 import bundleCss from '!raw-loader!../styles/tailwindSSR.css'
 import Document from 'next/document'
-import { Fragment } from 'react'
+
+//export default Document
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
     const page = ctx.renderPage((App) => (props) => <App {...props} />)
     const initialProps: any = await Document.getInitialProps(ctx)
+
+    const styles = initialProps.styles
+
+    if (process.env.NODE_ENV == 'production') {
+      styles.unshift(
+        <style
+          key="custom"
+          dangerouslySetInnerHTML={{
+            __html: bundleCss,
+          }}
+        />
+      )
+    }
+
     return {
       ...page,
-      styles: [
-        process.env.NODE_ENV === 'production' ? (
-          <style
-            key="custom"
-            dangerouslySetInnerHTML={{
-              __html: bundleCss,
-            }}
-          />
-        ) : (
-          <Fragment key="custom"></Fragment>
-        ),
-        ...initialProps.styles,
-      ],
+      styles,
     }
   }
 }
