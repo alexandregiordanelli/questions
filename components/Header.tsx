@@ -2,13 +2,21 @@ import React from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
 import { signIn, signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 export const Header: React.FC = (props) => {
   const [session] = useSession()
+  const router = useRouter()
+
+  const offsetPaddingLeft =
+    router.pathname == '/notebook/[notebookTag]' ||
+    router.pathname == '/notebook/[notebookTag]/question/[questionTag]'
 
   return (
     <>
       <div
-        className={`bg-gray-800 top-0 sticky h-16 items-center justify-between flex p-1 z-10 pl-8 lg:pl-2`}
+        className={`bg-gray-800 top-0 sticky h-16 items-center justify-between flex p-1 z-10 ${
+          offsetPaddingLeft ? 'pl-8 lg:pl-2' : 'pl-2'
+        }`}
       >
         <div className="items-center flex">
           <Link href="/">
