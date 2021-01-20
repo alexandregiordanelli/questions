@@ -43,7 +43,7 @@ export const MenuItem: React.FC<{
     </>
   ) : props.url ? (
     <>
-      <Link href={props.url}>
+      <Link href={`/${props.url}`}>
         <a>{props.title}</a>
       </Link>
     </>

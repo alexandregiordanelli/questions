@@ -34,7 +34,7 @@ const RightMenu: React.FC<{
           {props.suggestions.map((x, i) => (
             <li key={i}>
               {/* activeClassName="ativo" */}
-              <Link href={x.tag}>
+              <Link href={`/${x.notebook.tag}/${x.tag}`}>
                 <a>{x.title}</a>
               </Link>
             </li>

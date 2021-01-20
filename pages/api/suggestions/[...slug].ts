@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from '@vercel/node'
 import getSuggestions from '../../../services/getSuggestions'
 
-export default async function (req: NowRequest, res: NowResponse): Promise<void> {
+const SuggestionsController = async (req: NowRequest, res: NowResponse): Promise<void> => {
   const notebookTag = req.query.slug[0]
   const subTopicId = Number(req.query.slug[1])
 
@@ -13,3 +13,5 @@ export default async function (req: NowRequest, res: NowResponse): Promise<void>
     throw new Error(`${req.method} not exists`)
   }
 }
+
+export default SuggestionsController

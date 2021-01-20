@@ -19,6 +19,9 @@ export type QuestionWithAll = Question & {
 export type Suggestions = {
   tag: string
   title: string
+  notebook: {
+    tag: string
+  }
 }[]
 
 export type NotebookWithTopicsAndSubTopics = Notebook & {

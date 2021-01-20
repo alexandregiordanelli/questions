@@ -171,7 +171,7 @@ const EditQuestion: React.FC<{
         body: JSON.stringify(_question),
         headers: { 'Content-Type': 'application/json' },
       }).then((x) => x.ok && x.json())
-      router.replace(`${props.notebook.tag}/${_question.tag}`)
+      router.push(`/${props.notebook.tag}/${_question.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)

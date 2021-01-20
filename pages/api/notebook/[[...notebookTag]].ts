@@ -4,7 +4,7 @@ import deleteNotebook from '../../../services/deleteNotebook'
 import getNotebook from '../../../services/getNotebook'
 import postNotebook from '../../../services/postNotebook'
 
-export default async function (req: NowRequest, res: NowResponse): Promise<void> {
+const NotebookController = async (req: NowRequest, res: NowResponse): Promise<void> => {
   const notebookTag = req.query.notebookTag as string[]
 
   try {
@@ -12,7 +12,7 @@ export default async function (req: NowRequest, res: NowResponse): Promise<void>
       const notebook = await getNotebook(notebookTag[0])
 
       if (notebook) res.json(notebook)
-      throw new Error(`notebook ${notebookTag} not exists`)
+      else throw new Error(`notebook ${notebookTag} not exists`)
     } else if (req.method == 'POST') {
       const notebookOnRepo = req.body as NotebookWithTopicsAndSubTopics
       const notebook = await postNotebook(notebookOnRepo)
@@ -28,5 +28,8 @@ export default async function (req: NowRequest, res: NowResponse): Promise<void>
     }
   } catch (e) {
     console.log(e)
+    res.end(e.toString())
   }
 }
+
+export default NotebookController

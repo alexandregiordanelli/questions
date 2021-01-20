@@ -127,7 +127,7 @@ const EditNotebook: React.FC<{
         body: JSON.stringify(_notebook),
         headers: { 'Content-Type': 'application/json' },
       }).then((x) => x.ok && x.json())
-      router.replace(_notebook.tag)
+      router.push(`/${_notebook.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)

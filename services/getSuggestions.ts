@@ -6,6 +6,11 @@ const getSuggestions = async (notebookTag: string, subTopicId: number): Promise<
     select: {
       title: true,
       tag: true,
+      notebook: {
+        select: {
+          tag: true,
+        },
+      },
     },
     where: {
       notebook: {
@@ -15,10 +20,6 @@ const getSuggestions = async (notebookTag: string, subTopicId: number): Promise<
         id: subTopicId,
       },
     },
-  })
-
-  questionsOfSubTopic.forEach((x) => {
-    x.tag = notebookTag + '/' + x.tag
   })
 
   return questionsOfSubTopic

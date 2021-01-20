@@ -29,7 +29,7 @@ export const Header: React.FC = (props) => {
           <>
             Not signed in <br />
             <button
-              className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md"
+              className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
               onClick={() => signIn()}
             >
               Sign in
@@ -39,7 +39,7 @@ export const Header: React.FC = (props) => {
         {session && (
           <div className="flex">
             {props.children}
-            <button className="text-white px-4 py-2 mr-2 " onClick={() => signOut()}>
+            <button className="text-white px-4 py-2 mr-2 text-sm " onClick={() => signOut()}>
               Sign out
             </button>
           </div>

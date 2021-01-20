@@ -24,7 +24,7 @@ const ReadNotebookPage: NextPage<PageProps> = (props) => {
         <Header>
           <>
             <button
-              className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md"
+              className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
               onClick={() => router.push(`/notebook/${props.notebook.tag}/question/add`)}
             >
               Add Question

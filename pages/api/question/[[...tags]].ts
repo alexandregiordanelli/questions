@@ -4,7 +4,7 @@ import deleteQuestion from '../../../services/deleteQuestion'
 import { getQuestion } from '../../../services/getQuestion'
 import postQuestion from '../../../services/postQuestion'
 
-export default async function (req: NowRequest, res: NowResponse): Promise<void> {
+const QuestionController = async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method == 'GET') {
     const notebookId = Number(req.query.tags[0])
     const questionTag = req.query.tags[1]
@@ -27,3 +27,4 @@ export default async function (req: NowRequest, res: NowResponse): Promise<void>
     throw new Error(`${req.method} not exists`)
   }
 }
+export default QuestionController

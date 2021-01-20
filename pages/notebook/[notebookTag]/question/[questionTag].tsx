@@ -31,7 +31,7 @@ const ReadQuestionPage: NextPage<PageProps> = (props) => {
         <Header>
           <>
             <button
-              className="bg-gray-700 text-white rounded-md px-4 py-2 mr-2 shadow-md"
+              className="bg-gray-700 text-sm text-white rounded-md px-4 py-2 mr-2 shadow-md"
               onClick={() =>
                 router.push(`/notebook/${props.notebook.tag}/question/edit/${props.question.tag}`)
               }
@@ -39,7 +39,7 @@ const ReadQuestionPage: NextPage<PageProps> = (props) => {
               Edit Question
             </button>
             <button
-              className="bg-gray-800 text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
+              className="bg-gray-800 text-sm text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
               onClick={() => router.push(`/notebook/edit/${props.notebook.tag}`)}
             >
               Edit Notebook

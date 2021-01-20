@@ -19,7 +19,7 @@ export const MenuCore: React.FC<{
               <MenuItem
                 url={
                   firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? firstSubtopicQuestion[0].tag
+                    ? `${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
                     : null
                 }
                 title={x.name}
