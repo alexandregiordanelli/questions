@@ -11,7 +11,7 @@ export const NotebookListComponent: React.FC<{
       <div className="p-8 bg-gray-200" style={{ backgroundImage: `url("/graph-paper.svg")` }}>
         <span className="font-semibold text-gray-400">Notebooks</span>
         <div className="flex overflow-x-auto">
-          {props.customer.notebooks.map((x, i) => {
+          {props.customer?.notebooks.map((x, i) => {
             //const imgSrc = fs.readFile(`${i}.jpg`)
             return (
               <div className="bg-white shadow-md mt-4 mr-4 rounded-md flex-none" key={i}>

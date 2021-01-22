@@ -2,7 +2,7 @@ import { prisma } from '../prisma/prisma'
 import { CustomerWithNotebook } from '../lib/types'
 
 const getNotebook = async (
-  customerId?: number,
+  customerId: number,
   notebookTag?: string
 ): Promise<CustomerWithNotebook> => {
   const customer = await prisma.customer.findUnique({
@@ -12,7 +12,7 @@ const getNotebook = async (
     include: {
       notebooks: {
         where: {
-          tag: notebookTag,
+          tag: notebookTag ?? '',
         },
         include: {
           topics: {

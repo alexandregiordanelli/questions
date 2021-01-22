@@ -78,7 +78,7 @@ const Index: React.FC<PageProps> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const customer = await getNotebooks()
+  const customer = await getNotebooks(1)
 
   return {
     revalidate: 1,
