@@ -1,40 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
-import { NowRequest, NowResponse } from '@vercel/node'
-import Adapters from 'next-auth/adapters'
-import { prisma } from '../../../prisma/prisma'
+
 import nodemailer from 'nodemailer'
-import { getUserIdByAccessToken } from '../../../services/getUserId'
-import { getCustomerByUserId } from '../../../services/getCustomer'
-import { SessionWithCustomer } from '../../../lib/types'
-
-const sendVerificationRequest = (options) => {
-  const { identifier: email, url, baseUrl } = options
-
-  // Strip protocol from URL and use domain as site name
-  const site = baseUrl.replace(/^https?:\/\//, '')
-
-  const emailSent = nodemailer
-    .createTransport({
-      host: process.env.SMTP_SERVER,
-      port: Number(process.env.SMTP_PORT),
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    })
-    .sendMail({
-      to: email,
-      from: process.env.EMAIL_FROM,
-      subject: `Sign in to ${site}`,
-      text: text({ url, site }),
-      html: html({ url, site, email }),
-    })
-
-  return emailSent
-}
 
 // Email HTML body
 const html = ({ url, site, email }) => {
@@ -91,33 +57,24 @@ const html = ({ url, site, email }) => {
 // Email text body – fallback for email clients that don't render HTML
 const text = ({ url, site }) => `Sign in to ${site}\n${url}\n\n`
 
-export default (req: NowRequest, res: NowResponse): Promise<void> =>
-  NextAuth(req, res, {
-    providers: [
-      Providers.Email({
-        sendVerificationRequest,
-      }),
-    ],
+const url = 'localhost:3000'
+const site = 'urlwithtoken'
+const email = 'alexandre.giordanelli@gmail.com'
 
-    pages: {
-      signIn: '/auth/signin',
-      // signOut: '/auth/signout',
-      // error: '/auth/error', // Error code passed in query string as ?error=
-      verifyRequest: '/auth/verify-request', // (used for check email message)
-      // newUser: '/settings', // If set, new users will be directed here on first sign in
+nodemailer
+  .createTransport({
+    host: process.env.SMTP_SERVER,
+    port: Number(process.env.SMTP_PORT),
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
-
-    callbacks: {
-      session: async (session: SessionWithCustomer) => {
-        const userId = await getUserIdByAccessToken(session.accessToken)
-        const customer = await getCustomerByUserId(userId)
-        if (customer) {
-          session.customer = customer
-          delete session.customer.userId
-        }
-        return Promise.resolve(session)
-      },
-    },
-
-    adapter: Adapters.Prisma.Adapter({ prisma }),
+  })
+  .sendMail({
+    to: email,
+    from: process.env.EMAIL_FROM,
+    subject: `Sign in to `,
+    text: text({ url, site }),
+    html: html({ url, site, email }),
   })

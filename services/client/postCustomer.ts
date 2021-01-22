@@ -8,6 +8,8 @@ export const postCustomer = async (_customer: Customer): Promise<Customer> => {
     headers: { 'Content-Type': 'application/json' },
   })
 
+  console.log(response)
+
   const customer: Customer = await response.json()
   return customer
 }

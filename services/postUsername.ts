@@ -1,6 +1,6 @@
 import { prisma } from '../prisma/prisma'
 
-const postUsername = async (userId: number, username: string): Promise<string> => {
+const postUsername = async (userId: string, username: string): Promise<string> => {
   const customer = await prisma.customer.update({
     data: {
       username,

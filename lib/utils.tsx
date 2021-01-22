@@ -6,8 +6,7 @@ export const urlEnvDic = {
   [Env.production]: 'https://questionsof.com',
 }
 
-const env = process.env.NEXT_PUBLIC_VERCEL_ENV as Env
-
+const env = (process.env.NEXT_PUBLIC_VERCEL_ENV ?? 'development') as Env
 export const urlEnv = urlEnvDic[Env[env]]
 
 export const letters = 'abcdefgh'.split('')

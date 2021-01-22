@@ -7,11 +7,7 @@ import {
   RightAlternative,
   Customer,
 } from '@prisma/client'
-import { SessionBase } from 'next-auth/_utils'
 
-export type SessionWithCustomer = {
-  customer?: Customer
-} & SessionBase
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {
     questions: {

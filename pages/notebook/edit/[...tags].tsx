@@ -4,7 +4,6 @@ import { CustomerWithNotebook } from 'lib/types'
 import getNotebook from 'services/getNotebook'
 import { Header } from 'components/Header'
 import { getCustomerIdByUsername } from 'services/getUserId'
-import { getSession } from 'next-auth/client'
 
 type PageProps = {
   customer: CustomerWithNotebook
@@ -27,13 +26,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
       }
     }
 
-    const session = await getSession(context)
+    // const session = await getSession(context)
 
-    if (!session) {
-      return {
-        notFound: true,
-      }
-    }
+    // if (!session) {
+    //   return {
+    //     notFound: true,
+    //   }
+    // }
 
     const username = context.params.tags[0]
 

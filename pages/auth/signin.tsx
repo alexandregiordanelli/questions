@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { csrfToken } from 'next-auth/client'
 import { NextPage } from 'next'
 import FormEmail from '../../components/FormEmail'
 
@@ -37,12 +36,6 @@ const SignIn: NextPage<{
       </button>
     </FormEmail>
   )
-}
-
-SignIn.getInitialProps = async (context) => {
-  return {
-    csrfToken: await csrfToken(context),
-  }
 }
 
 export default SignIn

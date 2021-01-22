@@ -2,7 +2,7 @@ import { NextPage, GetServerSideProps } from 'next'
 import EditUsername from 'components/EditUsername'
 import { Header } from 'components/Header'
 import { getCustomerIdByUsername } from 'services/getUserId'
-import { getSession } from 'next-auth/client'
+//import { getSession } from 'next-auth/client'
 
 type PageProps = {
   username: string
@@ -19,13 +19,13 @@ const EditUsernamePage: NextPage<PageProps> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
   try {
-    const session = await getSession(context)
+    // const session = await getSession(context)
 
-    if (!session) {
-      return {
-        notFound: true,
-      }
-    }
+    // if (!session) {
+    //   return {
+    //     notFound: true,
+    //   }
+    // }
 
     const username = context.params.username as string
 

@@ -1,7 +1,7 @@
 import { prisma } from '../prisma/prisma'
 import { Customer } from '@prisma/client'
 import { CustomerWithNotebooks } from 'lib/types'
-export const getCustomerByUserId = async (userId: number): Promise<Customer> => {
+export const getCustomerByUserId = async (userId: string): Promise<Customer> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,

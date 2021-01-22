@@ -1,10 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
-import { signIn, signOut, useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 export const Header: React.FC = (props) => {
-  const [session] = useSession()
   const router = useRouter()
 
   const offsetPaddingLeft =

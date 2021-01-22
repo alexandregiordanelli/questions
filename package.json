@@ -20,14 +20,16 @@
     "@prisma/client": "^2.15.0",
     "@tailwindcss/forms": "^0.2.1",
     "autoprefixer": "^10.2.1",
+    "firebase": "^8.2.4",
+    "firebase-admin": "^9.4.2",
     "gray-matter": "^4.0.2",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
     "next": "^10.0.5",
-    "next-auth": "^3.2.0-canary.28",
     "next-connect": "^0.9.1",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.17",
+    "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
     "postcss": "^8.2.4",
     "raw-loader": "^4.0.2",
@@ -51,7 +53,6 @@
     "@prisma/cli": "^2.15.0",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.167",
-    "@types/next-auth": "^3.1.21",
     "@types/node-fetch": "^2.5.8",
     "@types/nodemailer": "^6.4.0",
     "@types/nprogress": "^0.2.0",
@@ -69,12 +70,14 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^26.6.3",
-    "jest-fetch-mock": "^3.0.3",
     "next-sitemap": "^1.2.26",
     "prettier": "^2.2.1",
     "tailwindcss-cli": "^0.1.2"
   },
   "jest": {
-    "moduleDirectories": ["node_modules", "."]
+    "moduleDirectories": [
+      "node_modules",
+      "."
+    ]
   }
 }
