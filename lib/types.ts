@@ -1,5 +1,17 @@
-import { Notebook, Topic, SubTopic, Alternative, Question, RightAlternative } from '@prisma/client'
+import {
+  Notebook,
+  Topic,
+  SubTopic,
+  Alternative,
+  Question,
+  RightAlternative,
+  Customer,
+} from '@prisma/client'
+import { SessionBase } from 'next-auth/_utils'
 
+export type SessionWithCustomer = {
+  customer?: Customer
+} & SessionBase
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {
     questions: {
@@ -23,6 +35,14 @@ export type Suggestions = {
     tag: string
   }
 }[]
+
+export type CustomerWithNotebooks = Customer & {
+  notebooks: NotebookWithTopicsAndSubTopics[]
+}
+
+export type CustomerWithNotebook = Customer & {
+  notebook: NotebookWithTopicsAndSubTopics
+}
 
 export type NotebookWithTopicsAndSubTopics = Notebook & {
   topics: (Topic & {

@@ -5,6 +5,9 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import Adapters from 'next-auth/adapters'
 import { prisma } from '../../../prisma/prisma'
 import nodemailer from 'nodemailer'
+import { getUserIdByAccessToken } from '../../../services/getUserId'
+import getCustomer from '../../../services/getCustomer'
+import { SessionWithCustomer } from '../../../lib/types'
 
 const sendVerificationRequest = (options) => {
   const { identifier: email, url, baseUrl } = options
@@ -101,7 +104,19 @@ export default (req: NowRequest, res: NowResponse): Promise<void> =>
       // signOut: '/auth/signout',
       // error: '/auth/error', // Error code passed in query string as ?error=
       verifyRequest: '/auth/verify-request', // (used for check email message)
-      // newUser: null // If set, new users will be directed here on first sign in
+      // newUser: '/settings', // If set, new users will be directed here on first sign in
+    },
+
+    callbacks: {
+      session: async (session: SessionWithCustomer) => {
+        const userId = await getUserIdByAccessToken(session.accessToken)
+        const customer = await getCustomer(userId)
+        if (customer) {
+          session.customer = customer
+          delete session.customer.userId
+        }
+        return Promise.resolve(session)
+      },
     },
 
     adapter: Adapters.Prisma.Adapter({ prisma }),

@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react'
-import { NotebookWithTopicsAndSubTopics } from '../lib/types'
+import { CustomerWithNotebook, NotebookWithTopicsAndSubTopics } from '../lib/types'
 import { SubTopic, Topic } from '@prisma/client'
 import CreatableSelect from 'react-select/creatable'
 import _ from 'lodash'
@@ -57,7 +57,7 @@ type SelectOption = {
 
 const initState: NotebookWithTopicsAndSubTopics = {
   id: 0,
-  userId: 0,
+  customerId: 0,
   description: '',
   name: '',
   price: 0,
@@ -112,9 +112,9 @@ const reducer = (
 }
 
 const EditNotebook: React.FC<{
-  notebook?: NotebookWithTopicsAndSubTopics
+  customer: CustomerWithNotebook
 }> = (props) => {
-  const initNotebook = props.notebook ? props.notebook : initState
+  const initNotebook = props.customer.notebook ? props.customer.notebook : initState
 
   const router = useRouter()
 

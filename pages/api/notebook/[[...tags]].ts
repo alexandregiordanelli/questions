@@ -1,30 +1,33 @@
 import { NowRequest, NowResponse } from '@vercel/node'
-import { NotebookWithTopicsAndSubTopics } from '../../../lib/types'
+import { NotebookWithTopicsAndSubTopics, SessionWithCustomer } from '../../../lib/types'
 import deleteNotebook from '../../../services/deleteNotebook'
 import getNotebook from '../../../services/getNotebook'
 import postNotebook from '../../../services/postNotebook'
 import { getSession } from 'next-auth/client'
-import getUserId from '../../../services/getUserId'
+import { getCustomerIdByUsername } from '../../../services/getUserId'
 
 const NotebookController = async (req: NowRequest, res: NowResponse): Promise<void> => {
   try {
-    const notebookTag = req.query.notebookTag as string[]
+    const tags = req.query.tags as string[]
 
-    if (req.method == 'GET' && notebookTag.length == 1) {
-      const notebook = await getNotebook(notebookTag[0])
+    if (req.method == 'GET' && tags.length == 2) {
+      const customerTag = tags[0]
+      const notebookTag = tags[1]
+
+      const customerId = await getCustomerIdByUsername(customerTag)
+      const notebook = await getNotebook(customerId, notebookTag)
 
       if (notebook) res.json(notebook)
       else throw new Error(`notebook ${notebookTag} not exists`)
     } else if (req.method == 'POST') {
-      const session = await getSession({ req })
+      const session: SessionWithCustomer = await getSession({ req })
 
       if (!session || new Date(session.expires) < new Date()) {
         throw new Error(`token's expired`)
       }
 
-      const userId = await getUserId(session.accessToken)
       const notebookOnRepo = req.body as NotebookWithTopicsAndSubTopics
-      notebookOnRepo.userId = userId
+      notebookOnRepo.customerId = session.customer.id
       const notebook = await postNotebook(notebookOnRepo)
 
       res.json(notebook)

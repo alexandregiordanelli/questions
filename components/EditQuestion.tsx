@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react'
-import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from '../lib/types'
+import { QuestionWithAll, CustomerWithNotebook } from '../lib/types'
 import { Alternative, Question, RightAlternative } from '@prisma/client'
 import Select, { GroupType, OptionsType } from 'react-select'
 import _ from 'lodash'
@@ -148,7 +148,7 @@ const reducer = (
 
 const EditQuestion: React.FC<{
   question?: QuestionWithAll
-  notebook: NotebookWithTopicsAndSubTopics
+  customer: CustomerWithNotebook
 }> = (props) => {
   const initQuestion = props.question ? mapQuestionWithAllToTypeToPost(props.question) : initState
 
@@ -162,7 +162,7 @@ const EditQuestion: React.FC<{
       rightAlternative: RightAlternative
     }
   ): Promise<void> => {
-    _question.notebookId = props.notebook.id
+    _question.notebookId = props.customer.notebook.id
 
     try {
       NProgress.start()
@@ -171,14 +171,14 @@ const EditQuestion: React.FC<{
         body: JSON.stringify(_question),
         headers: { 'Content-Type': 'application/json' },
       }).then((x) => x.ok && x.json())
-      router.push(`/${props.notebook.tag}/${_question.tag}`)
+      router.push(`/${props.customer.notebook.tag}/${_question.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)
     }
   }
 
-  const topics: OptionsType<GroupType<SelectOption>> = props.notebook.topics?.map((x) => {
+  const topics: OptionsType<GroupType<SelectOption>> = props.customer.notebook.topics?.map((x) => {
     return {
       label: x.name,
       options: x.subtopics?.map((y) => {
@@ -310,7 +310,9 @@ const EditQuestion: React.FC<{
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
-                    onClick={() => router.replace(`${props.notebook.tag}/${initQuestion.tag}`)}
+                    onClick={() =>
+                      router.replace(`${props.customer.notebook.tag}/${initQuestion.tag}`)
+                    }
                     className="inline-flex justify-center py-2 px-4 border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Cancel

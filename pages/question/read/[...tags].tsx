@@ -1,27 +1,24 @@
 import { GetStaticProps, NextPage, GetStaticPaths } from 'next'
-import getNotebook from '../../../../services/getNotebook'
-import getMenu from '../../../../services/getMenu'
-import {
-  NotebookWithTopicsAndSubTopics,
-  MenuWithQuestions,
-  QuestionWithAll,
-  Suggestions,
-} from '../../../../lib/types'
-import HeadHtml from '../../../../components/HeadHtml'
-import { Header } from '../../../../components/Header'
-import { LeftMenu } from '../../../../components/Pages/Notebook/LeftMenu'
-import getQuestion from '../../../../services/getQuestion'
-import getSuggestions from '../../../../services/getSuggestions'
-import { QuestionFormWithRightMenu } from '../../../../components/Pages/Notebook/QuestionFormWithRightMenu'
+import getNotebook from 'services/getNotebook'
+import getMenu from 'services/getMenu'
+import { MenuWithQuestions, QuestionWithAll, Suggestions, CustomerWithNotebook } from 'lib/types'
+import HeadHtml from 'components/HeadHtml'
+import { Header } from 'components/Header'
+import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
+import getQuestion from 'services/getQuestion'
+import getSuggestions from 'services/getSuggestions'
+import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
-import { urlEnv, ampCanonicalUrl } from '../../../../lib/utils'
+import { urlEnv, ampCanonicalUrl } from 'lib/utils'
+import { getCustomerIdByUsername } from 'services/getUserId'
 
 type PageProps = {
-  notebook: NotebookWithTopicsAndSubTopics
+  customer: CustomerWithNotebook
   menu: MenuWithQuestions
   question: QuestionWithAll
   suggestions: Suggestions
+  username: string
 }
 
 const ReadQuestionPage: NextPage<PageProps> = (props) => {
@@ -42,14 +39,16 @@ const ReadQuestionPage: NextPage<PageProps> = (props) => {
             <button
               className="bg-gray-700 text-sm text-white rounded-md px-4 py-2 mr-2 shadow-md"
               onClick={() =>
-                router.push(`/notebook/${props.notebook.tag}/question/edit/${props.question.tag}`)
+                router.push(
+                  `/notebook/${props.customer.notebook.tag}/question/edit/${props.question.tag}`
+                )
               }
             >
               Edit Question
             </button>
             <button
               className="bg-gray-800 text-sm text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/notebook/edit/${props.notebook.tag}`)}
+              onClick={() => router.push(`/notebook/edit/${props.customer.notebook.tag}`)}
             >
               Edit Notebook
             </button>
@@ -66,26 +65,35 @@ const ReadQuestionPage: NextPage<PageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   try {
-    const notebookTag = context.params.notebookTag as string
-    const questionTag = context.params.questionTag as string
-
-    const notebook = await getNotebook(notebookTag)
-
-    if (!notebook) {
+    if (context.params.tags.length != 3) {
       return {
         notFound: true,
       }
     }
 
-    if (!notebook.id) {
+    const username = context.params.tags[0]
+
+    const customerId = await getCustomerIdByUsername(username)
+
+    if (!customerId) {
       return {
         notFound: true,
       }
     }
 
-    const menu = await getMenu(notebook.tag)
+    const notebookTag = context.params.tags[1]
 
-    const question = await getQuestion(notebook.id, questionTag)
+    const customer = await getNotebook(customerId, notebookTag)
+
+    if (!customer.notebook || !customer.notebook.id) {
+      return {
+        notFound: true,
+      }
+    }
+
+    const questionTag = context.params.tags[2]
+
+    const question = await getQuestion(customer.notebook.id, questionTag)
 
     if (!question) {
       return {
@@ -93,14 +101,17 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
       }
     }
 
-    const suggestions = await getSuggestions(notebook.tag, question.subTopic?.id)
+    const menu = await getMenu(customer.notebook.tag)
+
+    const suggestions = await getSuggestions(customer.notebook.tag, question.subTopic?.id)
 
     return {
       props: {
-        notebook,
+        customer,
         menu,
         question,
         suggestions,
+        username,
       },
       revalidate: 1,
     }

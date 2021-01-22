@@ -1,6 +1,6 @@
 import { prisma } from '../prisma/prisma'
 
-const getUserId = async (accessToken: string): Promise<number> => {
+export const getUserIdByAccessToken = async (accessToken: string): Promise<number> => {
   const session = await prisma.session.findUnique({
     where: {
       accessToken: accessToken,
@@ -13,4 +13,15 @@ const getUserId = async (accessToken: string): Promise<number> => {
   return session.userId
 }
 
-export default getUserId
+export const getCustomerIdByUsername = async (username: string): Promise<number> => {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  return customer.id
+}

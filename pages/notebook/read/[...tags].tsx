@@ -1,19 +1,20 @@
 import { GetStaticProps, NextPage, GetStaticPaths } from 'next'
-import getNotebook from '../../../services/getNotebook'
-import getMenu from '../../../services/getMenu'
-import { NotebookWithTopicsAndSubTopics, MenuWithQuestions } from '../../../lib/types'
-import HeadHtml from '../../../components/HeadHtml'
-import { Header } from '../../../components/Header'
-import getNotebooks from '../../../services/getNotebooks'
-import { LeftMenu } from '../../../components/Pages/Notebook/LeftMenu'
-import { IndexQuestionPage } from '../../../components/Pages/Notebook/IndexQuestionPage'
+import getNotebook from 'services/getNotebook'
+import getMenu from 'services/getMenu'
+import { MenuWithQuestions, CustomerWithNotebook } from 'lib/types'
+import HeadHtml from 'components/HeadHtml'
+import { Header } from 'components/Header'
+import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
+import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
-import { urlEnv, ampCanonicalUrl } from '../../../lib/utils'
+import { urlEnv, ampCanonicalUrl } from 'lib/utils'
+import { getCustomerIdByUsername } from 'services/getUserId'
 
 type PageProps = {
-  notebook: NotebookWithTopicsAndSubTopics
+  customer: CustomerWithNotebook
   menu: MenuWithQuestions
+  username: string
 }
 
 const ReadNotebookPage: NextPage<PageProps> = (props) => {
@@ -32,13 +33,13 @@ const ReadNotebookPage: NextPage<PageProps> = (props) => {
           <>
             <button
               className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() => router.push(`/notebook/${props.notebook.tag}/question/add`)}
+              onClick={() => router.push(`/notebook/${props.customer.notebook.tag}/question/add`)}
             >
               Add Question
             </button>
             <button
               className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/notebook/edit/${props.notebook.tag}`)}
+              onClick={() => router.push(`/notebook/edit/${props.customer.notebook.tag}`)}
             >
               Edit Notebook
             </button>
@@ -46,7 +47,7 @@ const ReadNotebookPage: NextPage<PageProps> = (props) => {
         </Header>
         <div className="flex">
           <LeftMenu menu={props.menu} />
-          <IndexQuestionPage notebook={props.notebook} />
+          <IndexQuestionPage notebook={props.customer.notebook} />
         </div>
       </div>
     </>
@@ -55,28 +56,39 @@ const ReadNotebookPage: NextPage<PageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   try {
-    const notebookTag = context.params.notebookTag as string
-
-    const notebook = await getNotebook(notebookTag)
-
-    if (!notebook) {
+    if (context.params.tags.length != 2) {
       return {
         notFound: true,
       }
     }
 
-    if (!notebook.id) {
+    const username = context.params.tags[0]
+
+    const customerId = await getCustomerIdByUsername(username)
+
+    if (!customerId) {
       return {
         notFound: true,
       }
     }
 
-    const menu = await getMenu(notebook.tag)
+    const notebookTag = context.params.tags[1]
+
+    const customer = await getNotebook(customerId, notebookTag)
+
+    if (!customer.notebook || !customer.notebook.id) {
+      return {
+        notFound: true,
+      }
+    }
+
+    const menu = await getMenu(customer.notebook.tag)
 
     return {
       props: {
-        notebook,
+        customer,
         menu,
+        username,
       },
       revalidate: 1,
     }
@@ -90,15 +102,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const notebooks = await getNotebooks()
-  const paths = notebooks.map((x) => ({
-    params: {
-      notebookTag: x.tag,
-    },
-  }))
-
   return {
-    paths,
+    paths: [],
     fallback: 'blocking',
   }
 }

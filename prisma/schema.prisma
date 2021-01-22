@@ -9,14 +9,15 @@ datasource db {
 
 model Notebook {
     id          Int        @id @default(autoincrement())
-    userId      Int
-    tag         String     @unique
+    customerId  Int
+    tag         String
     description String?
     topics      Topic[]
     price       Float?
     name        String?
     questions   Question[]
-    user        User       @relation(fields: [userId], references: [id])
+    customer    Customer   @relation(fields: [customerId], references: [id])
+    @@unique([customerId, tag])
 }
 
 model Topic {
@@ -120,4 +121,12 @@ model VerificationRequest {
     updatedAt  DateTime @default(now()) @map(name: "updated_at")
 
     @@map(name: "verification_requests")
+}
+
+model Customer {
+  id          Int        @id @default(autoincrement())
+  userId      Int        @unique
+  username    String     @unique
+  user        User       @relation(fields: [userId], references: [id])
+  notebooks   Notebook[] 
 }

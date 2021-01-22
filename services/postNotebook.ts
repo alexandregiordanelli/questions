@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { NotebookWithTopicsAndSubTopics } from '../lib/types'
 import { prisma } from '../prisma/prisma'
 import _ from 'lodash'
-import getNotebook from './getNotebook'
+import getNotebooks from './getNotebooks'
 
 const postNotebook = async (
   notebookOnRepo: NotebookWithTopicsAndSubTopics
@@ -13,11 +13,7 @@ const postNotebook = async (
       name: notebookOnRepo.name,
       price: notebookOnRepo.price,
       description: notebookOnRepo.description,
-      user: {
-        connect: {
-          id: notebookOnRepo.userId,
-        },
-      },
+      customerId: notebookOnRepo.customerId,
     },
     update: {
       tag: notebookOnRepo.tag,
@@ -135,11 +131,7 @@ const postNotebook = async (
       const createSubtopic = prisma.subTopic.create({
         data: {
           ...subtopicWillAdded,
-          topic: {
-            connect: {
-              id: topic.id,
-            },
-          },
+          topicId: topic.id,
         },
       })
 
@@ -156,11 +148,7 @@ const postNotebook = async (
       const updateSubtopic = prisma.subTopic.update({
         data: {
           ...subtopicWillUpdated,
-          topic: {
-            connect: {
-              id: topicId,
-            },
-          },
+          topicId: topicId,
         },
         where: {
           id,
@@ -184,8 +172,8 @@ const postNotebook = async (
 
   await prisma.$transaction(batch)
 
-  const notebookNew = await getNotebook(notebook.tag)
+  const customerWithNotebooks = await getNotebooks(notebook.customerId, notebook.tag)
 
-  return notebookNew
+  return customerWithNotebooks.notebooks[0]
 }
 export default postNotebook
