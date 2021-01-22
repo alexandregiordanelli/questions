@@ -6,7 +6,7 @@ import Adapters from 'next-auth/adapters'
 import { prisma } from '../../../prisma/prisma'
 import nodemailer from 'nodemailer'
 import { getUserIdByAccessToken } from '../../../services/getUserId'
-import getCustomer from '../../../services/getCustomer'
+import { getCustomerByUserId } from '../../../services/getCustomer'
 import { SessionWithCustomer } from '../../../lib/types'
 
 const sendVerificationRequest = (options) => {
@@ -110,7 +110,7 @@ export default (req: NowRequest, res: NowResponse): Promise<void> =>
     callbacks: {
       session: async (session: SessionWithCustomer) => {
         const userId = await getUserIdByAccessToken(session.accessToken)
-        const customer = await getCustomer(userId)
+        const customer = await getCustomerByUserId(userId)
         if (customer) {
           session.customer = customer
           delete session.customer.userId

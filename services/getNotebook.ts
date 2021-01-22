@@ -1,5 +1,6 @@
 import { prisma } from '../prisma/prisma'
-import { CustomerWithNotebook } from '../lib/types'
+import { CustomerWithNotebook, NotebookWithTopicsAndSubTopics } from '../lib/types'
+import { getCustomerByTag } from './getCustomer'
 
 const getNotebook = async (
   customerId: number,
@@ -34,4 +35,30 @@ const getNotebook = async (
 
   return customerWithOneNotebook
 }
+
+export const getNotebookByTags = async (
+  customerTag: string,
+  notebookTag: string
+): Promise<NotebookWithTopicsAndSubTopics> => {
+  const customer = await getCustomerByTag(customerTag)
+
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      customerId_tag: {
+        tag: notebookTag,
+        customerId: customer.id,
+      },
+    },
+    include: {
+      topics: {
+        include: {
+          subtopics: true,
+        },
+      },
+    },
+  })
+
+  return notebook
+}
+
 export default getNotebook

@@ -77,8 +77,6 @@ const initState: Question & {
 
 const mapQuestionWithAllToTypeToPost = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  notebook,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   subTopic,
   ...newObj
 }: QuestionWithAll): Question & {

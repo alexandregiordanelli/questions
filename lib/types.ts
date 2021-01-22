@@ -23,7 +23,6 @@ export type MenuWithQuestions = (Topic & {
   }
 })[]
 export type QuestionWithAll = Question & {
-  notebook: Notebook
   alternatives: Alternative[]
   rightAlternative: RightAlternative
   subTopic: SubTopic

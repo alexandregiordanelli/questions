@@ -1,7 +1,7 @@
 import { prisma } from '../prisma/prisma'
 import { Customer } from '@prisma/client'
-
-const getCustomer = async (userId: number): Promise<Customer> => {
+import { CustomerWithNotebooks } from 'lib/types'
+export const getCustomerByUserId = async (userId: number): Promise<Customer> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,
@@ -10,4 +10,34 @@ const getCustomer = async (userId: number): Promise<Customer> => {
 
   return customer
 }
-export default getCustomer
+
+export const getCustomerById = async (id: number): Promise<Customer> => {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id,
+    },
+  })
+
+  return customer
+}
+
+export const getCustomerByTag = async (username: string): Promise<CustomerWithNotebooks> => {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      username,
+    },
+    include: {
+      notebooks: {
+        include: {
+          topics: {
+            include: {
+              subtopics: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  return customer
+}
