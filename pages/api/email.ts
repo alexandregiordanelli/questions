@@ -3,6 +3,7 @@
 import nodemailer from 'nodemailer'
 import admin from 'lib/firebase-server'
 import { VercelApiHandler } from '@vercel/node'
+import { urlEnv } from 'lib/utils'
 
 // Email HTML body
 const html = ({ url, email }) => {
@@ -82,12 +83,12 @@ const EmailController: VercelApiHandler = async (req, res) => {
   if (req.method == 'POST') {
     const email = req.body as string
     const link = await admin.auth().generateSignInWithEmailLink(email, {
-      url: 'http://localhost:3000',
+      url: urlEnv,
       handleCodeInApp: true,
     })
 
     const obj = Object.fromEntries(new URL(link).searchParams)
-    const url = new URL('http://localhost:3000')
+    const url = new URL(urlEnv)
     for (const key in obj) {
       url.searchParams.append(key, obj[key])
     }
