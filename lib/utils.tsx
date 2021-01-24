@@ -1,14 +1,6 @@
-import { Env } from './types'
-
-export const urlEnvDic = {
-  [Env.development]: 'http://localhost:3000',
-  [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
-  [Env.production]: 'https://questionsof.com',
-}
-
-const env = (process.env.VERCEL_ENV ?? 'development') as Env
-export const urlEnv = urlEnvDic[Env[env]] // process.env.NEXT_PUBLIC_VERCEL_URL
-
+export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000'
 export const letters = 'abcdefgh'.split('')
 
 export const ampCanonicalUrl = (isAmp: boolean, url = ''): string =>

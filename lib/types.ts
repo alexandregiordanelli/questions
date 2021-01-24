@@ -50,9 +50,3 @@ export type Path = {
     slug: string[]
   }
 }
-
-export enum Env {
-  development = 'development',
-  preview = 'preview',
-  production = 'production',
-}
