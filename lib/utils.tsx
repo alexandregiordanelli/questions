@@ -2,7 +2,7 @@ export const urlEnv =
   process.env.NEXT_PUBLIC_VERCEL_URL != ''
     ? process.env.NEXT_PUBLIC_VERCEL_URL != 'questionsof.com'
       ? 'https://questionsof.vercel.app'
-      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : `https://questionsof.com`
     : 'http://localhost:3000'
 export const letters = 'abcdefgh'.split('')
 
