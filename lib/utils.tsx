@@ -1,13 +1,13 @@
-//import { Env } from './types'
+import { Env } from './types'
 
-// export const urlEnvDic = {
-//   [Env.development]: 'http://localhost:3000',
-//   [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
-//   [Env.production]: 'https://questionsof.com',
-// }
+export const urlEnvDic = {
+  [Env.development]: 'http://localhost:3000',
+  [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
+  [Env.production]: 'https://questionsof.com',
+}
 
-//const env = (process.env.NEXT_PUBLIC_VERCEL_ENV ?? 'development') as Env
-export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL //urlEnvDic[Env[env]]
+const env = (process.env.VERCEL_ENV ?? 'development') as Env
+export const urlEnv = urlEnvDic[Env[env]] // process.env.NEXT_PUBLIC_VERCEL_URL
 
 export const letters = 'abcdefgh'.split('')
 
