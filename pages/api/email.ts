@@ -58,8 +58,8 @@ const html = ({ url, email }) => {
 // Email text body – fallback for email clients that don't render HTML
 const text = ({ url }) => `Sign in to \n${url}\n\n`
 
-const sendSignInEmail = (email: string, url: string) => {
-  nodemailer
+const sendSignInEmail = async (email: string, url: string) => {
+  await nodemailer
     .createTransport({
       host: process.env.SMTP_SERVER,
       port: Number(process.env.SMTP_PORT),
@@ -81,21 +81,18 @@ const sendSignInEmail = (email: string, url: string) => {
 const EmailController: VercelApiHandler = async (req, res) => {
   if (req.method == 'POST') {
     const email = req.body as string
-    await admin
-      .auth()
-      .generateSignInWithEmailLink(email, {
-        url: 'http://localhost:3000',
-        handleCodeInApp: true,
-      })
-      .then((link) => {
-        // Construct sign-in with email link template, embed the link and
-        // send using custom SMTP server.
-        return sendSignInEmail(email, link)
-      })
-      .catch((error) => {
-        console.log(error)
-        // Some error occurred.
-      })
+    const link = await admin.auth().generateSignInWithEmailLink(email, {
+      url: 'http://localhost:3000',
+      handleCodeInApp: true,
+    })
+
+    const obj = Object.fromEntries(new URL(link).searchParams)
+    const url = new URL('http://localhost:3000')
+    for (const key in obj) {
+      url.searchParams.append(key, obj[key])
+    }
+    const urlString = url.toString()
+    await sendSignInEmail(email, urlString)
 
     res.status(200).send('ok')
   }

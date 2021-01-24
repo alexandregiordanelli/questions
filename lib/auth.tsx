@@ -1,70 +1,51 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import nookies from 'nookies'
 import firebase from 'lib/firebase-client'
+import { useRouter } from 'next/router'
+import cookie from 'js-cookie'
 
-const AuthContext = createContext<{ user: firebase.User | null }>({
-  user: null,
-})
+type Auth = {
+  user: firebase.User
+  logout: () => Promise<void>
+}
 
-export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<firebase.User | null>(null)
+const authContext = createContext<Auth>({ user: null, logout: firebase.auth().signOut })
+
+const useProvideAuth = (): Auth => {
+  const [user, setUser] = useState<firebase.User>(null)
+  const router = useRouter()
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      ;(window as any).nookies = nookies
-    }
     return firebase.auth().onIdTokenChanged(async (user) => {
-      console.log(`token changed!`)
       if (!user) {
-        console.log(`no token found...`)
         setUser(null)
-        nookies.destroy(null, 'token')
-        nookies.set(null, 'token', '', {})
-        return
+        cookie.remove('token')
+      } else {
+        const token = await user.getIdToken()
+        setUser(user)
+        cookie.set('token', token)
       }
-
-      console.log(`updating token...`)
-      const token = await user.getIdToken()
-      setUser(user)
-      nookies.destroy(null, 'token')
-      nookies.set(null, 'token', token, {})
     })
   }, [])
 
   useEffect(() => {
-    // Confirm the link is a sign-in with email link.
-    if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-      // Additional state parameters can also be passed via URL.
-      // This can be used to continue the user's intended action before triggering
-      // the sign-in operation.
-      // Get the email if available. This should be available if the user completes
-      // the flow on the same device where they started it.
-      let email = window.localStorage.getItem('emailForSignIn')
+    const cameFromEmail = firebase.auth().isSignInWithEmailLink(window.location.href)
+    if (cameFromEmail && !cookie.get('token')) {
+      let email = cookie.get('email')
       if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
         email = window.prompt('Please provide your email for confirmation')
+        email && cookie.set('email', email)
       }
-      // The client SDK will parse the code from the link for you.
       firebase
         .auth()
         .signInWithEmailLink(email, window.location.href)
         .then(() => {
-          // Clear email from storage.
-          window.localStorage.removeItem('emailForSignIn')
-          // You can access the new user via result.user
-          // Additional user info profile not available via:
-          // result.additionalUserInfo.profile == null
-          // You can check if the user is new or existing:
-          // result.additionalUserInfo.isNewUser
+          cookie.remove('email')
+          router.replace(window.location.href.split('?')[0])
         })
-        .catch((error) => {
-          console.log(error)
-          // Some error occurred, you can inspect the code: error.code
-          // Common errors could be invalid email and invalid or expired OTPs.
-        })
+    } else if (cameFromEmail && cookie.get('token')) {
+      router.replace(window.location.href.split('?')[0])
     }
-  })
+  }, [router])
 
   // force refresh the token every 10 minutes
   useEffect(() => {
@@ -76,7 +57,15 @@ export function AuthProvider({ children }: any) {
     return () => clearInterval(handle)
   }, [])
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+  return {
+    user,
+    logout: firebase.auth().signOut,
+  }
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const AuthProvider: React.FC = (props) => {
+  const auth = useProvideAuth()
+  return <authContext.Provider value={auth}>{props.children}</authContext.Provider>
+}
+
+export const useAuth = (): Auth => useContext(authContext)

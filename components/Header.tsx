@@ -31,9 +31,9 @@ export const Header: React.FC = (props) => {
         {!user && (
           <>
             Not signed in <br />
-            <Link href="/auth/signin">
+            <Link href="/login">
               <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
-                Go to authenticated route
+                Login
               </a>
             </Link>
           </>
