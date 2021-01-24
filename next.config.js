@@ -10,37 +10,37 @@
 //     // }
 // })
 
-module.exports = {
-  async rewrites() {
-    return [
-      { //bug ( catch all routes [[...notebookTag]] is not working for /api/notebook but working for /api/notebook/1 )
-        source: '/api/:api*',
-        destination: '/api/:api*',
-      },
-      {
-        source: '/amp/:username',
-        destination: '/amp/username/read/:username',
-      },
-      {
-        source: '/amp/:username/:notebookTag',
-        destination: '/amp/notebook/read/:username/:notebookTag',
-      },
-      {
-        source: '/amp/:username/:notebookTag/:questionTag',
-        destination: '/amp/question/read/:username/:notebookTag/:questionTag',
-      },
-      {
-        source: '/:username',
-        destination: '/username/read/:username',
-      },
-      {
-        source: '/:username/:notebookTag',
-        destination: '/notebook/read/:username/:notebookTag',
-      },
-      {
-        source: '/:username/:notebookTag/:questionTag',
-        destination: '/question/read//:username/:notebookTag/:questionTag',
-      },
-    ]
-  },
-}
+// module.exports = {
+//   async rewrites() {
+//     return [
+//       { //bug ( catch all routes [[...notebookTag]] is not working for /api/notebook but working for /api/notebook/1 )
+//         source: '/api/:api*',
+//         destination: '/api/:api*',
+//       },
+//       {
+//         source: '/amp/:username',
+//         destination: '/amp/username/read/:username',
+//       },
+//       {
+//         source: '/amp/:username/:notebookTag',
+//         destination: '/amp/notebook/read/:username/:notebookTag',
+//       },
+//       {
+//         source: '/amp/:username/:notebookTag/:questionTag',
+//         destination: '/amp/question/read/:username/:notebookTag/:questionTag',
+//       },
+//       {
+//         source: '/:username',
+//         destination: '/username/read/:username',
+//       },
+//       {
+//         source: '/:username/:notebookTag',
+//         destination: '/notebook/read/:username/:notebookTag',
+//       },
+//       {
+//         source: '/:username/:notebookTag/:questionTag',
+//         destination: '/question/read//:username/:notebookTag/:questionTag',
+//       },
+//     ]
+//   },
+// }
