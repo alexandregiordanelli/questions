@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 import nodemailer from 'nodemailer'
+import admin from 'lib/firebase-server'
+import { VercelApiHandler } from '@vercel/node'
 
 // Email HTML body
-const html = ({ url, site, email }) => {
+const html = ({ url, email }) => {
   // Insert invisible space into domains and email address to prevent both the
   // email address and the domain from being turned into a hyperlink by email
   // clients like Outlook and Apple mail, as this is confusing because it seems
   // like they are supposed to click on their email address to sign in.
   const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`
-  const escapedSite = `${site.replace(/\./g, '&#8203;.')}`
 
   // Some simple styling options
   const backgroundColor = '#f9f9f9'
@@ -25,7 +26,7 @@ const html = ({ url, site, email }) => {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td align="center" style="padding: 10px 0px 20px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-        <strong>${escapedSite}</strong>
+        <strong>Questionsof</strong>
       </td>
     </tr>
   </table>
@@ -55,26 +56,49 @@ const html = ({ url, site, email }) => {
 }
 
 // Email text body – fallback for email clients that don't render HTML
-const text = ({ url, site }) => `Sign in to ${site}\n${url}\n\n`
+const text = ({ url }) => `Sign in to \n${url}\n\n`
 
-const url = 'localhost:3000'
-const site = 'urlwithtoken'
-const email = 'alexandre.giordanelli@gmail.com'
+const sendSignInEmail = (email: string, url: string) => {
+  nodemailer
+    .createTransport({
+      host: process.env.SMTP_SERVER,
+      port: Number(process.env.SMTP_PORT),
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    })
+    .sendMail({
+      to: email,
+      from: process.env.EMAIL_FROM,
+      subject: `Sign in to `,
+      text: text({ url }),
+      html: html({ url, email }),
+    })
+}
 
-nodemailer
-  .createTransport({
-    host: process.env.SMTP_SERVER,
-    port: Number(process.env.SMTP_PORT),
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  })
-  .sendMail({
-    to: email,
-    from: process.env.EMAIL_FROM,
-    subject: `Sign in to `,
-    text: text({ url, site }),
-    html: html({ url, site, email }),
-  })
+const EmailController: VercelApiHandler = async (req, res) => {
+  if (req.method == 'POST') {
+    const email = req.body as string
+    await admin
+      .auth()
+      .generateSignInWithEmailLink(email, {
+        url: 'http://localhost:3000',
+        handleCodeInApp: true,
+      })
+      .then((link) => {
+        // Construct sign-in with email link template, embed the link and
+        // send using custom SMTP server.
+        return sendSignInEmail(email, link)
+      })
+      .catch((error) => {
+        console.log(error)
+        // Some error occurred.
+      })
+
+    res.status(200).send('ok')
+  }
+}
+
+export default EmailController

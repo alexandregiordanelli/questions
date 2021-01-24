@@ -16,39 +16,28 @@ const Controller: VercelApiHandler = async (req, res) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (req.method == 'POST') {
-      const token = await admin.auth().verifyIdToken(req.cookies.token)
-      const { uid, email } = token
-      console.log(uid, email)
-      // const session: SessionWithCustomer = await getSession({ req })
-      // const token = await jwt.getToken({ req, secret })
-
-      // if (!session || new Date(session.expires) < new Date()) {
-      //   throw new Error(`token's expired`)
-      // } else if (!session.customer) {
-      //   throw new Error(`session has not customer`)
-      // } else if (!token) {
-      //   throw new Error(`token's null`)
-      // }
+      const tokenHeader = req.headers.authorization.substring('Bearer '.length) || req.cookies.token
+      const token = await admin.auth().verifyIdToken(tokenHeader)
 
       if (tags.length == 0) {
         const _customer = req.body as Customer
-        //_customer.userId = session.customer.userId
+        _customer.userId = token.uid
         const customer = await postCustomer(_customer)
         res.json(customer)
       } else if (tags.length == 1) {
         const customer = await getCustomerByTag(customerTag)
-        // if (customer.userId != session.customer.userId) {
-        //   throw new Error(`user not authorized to use this endpoint`)
-        // }
+        if (customer.userId != token.uid) {
+          throw new Error(`user not authorized to use this endpoint`)
+        }
         const _notebook = req.body as NotebookWithTopicsAndSubTopics
         _notebook.customerId = customer.id
         const notebook = await postNotebook(_notebook)
         res.json(notebook)
       } else if (tags.length == 2) {
-        //const customer = await getCustomerByTag(customerTag)
-        // if (customer.userId != session.customer.userId) {
-        //   throw new Error(`user not authorized to use this endpoint`)
-        // }
+        const customer = await getCustomerByTag(customerTag)
+        if (customer.userId != token.uid) {
+          throw new Error(`user not authorized to use this endpoint`)
+        }
         const _notebook = await getNotebookByTags(customerTag, notebookTag)
         const _question = req.body as QuestionWithAll
         _question.notebookId = _notebook.id

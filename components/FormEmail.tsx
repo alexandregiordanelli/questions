@@ -1,23 +1,45 @@
 import React from 'react'
 import { Logo } from './Logo'
+import { postEmail } from 'services/client/postEmail'
+//import firebase from 'lib/firebase-client'
 
 const linearPositionEye = (x: number): number => {
   if (x < 40) return 92 - x * 0.3
   else if (x > -1) return 80
 }
 
+// firebase
+//   .auth()
+//   .sendSignInLinkToEmail(email, {
+//     url: 'http://localhost:3000',
+//     handleCodeInApp: true,
+//   })
+//   .then(() => {
+//     // The link was successfully sent. Inform the user.
+//     // Save the email locally so you don't need to ask the user for it again
+//     // if they open the link on the same device.
+//     window.localStorage.setItem('emailForSignIn', email)
+//     // ...
+//   })
+//   .catch((error) => {
+//     console.log(error)
+//     // ...
+//   })
+
 const FormEmail: React.FC<{
-  csrfToken?: string
+  email: string
   cursorPosition?: number
 }> = (props) => {
   return (
     <div className="w-screen h-screen bg-gray-800 pt-4">
       <form
         className="bg-white p-6 flex rounded-md items-center flex-col sm:absolute top-1/2 left-1/2 transform sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-sm"
-        method="post"
-        action="/api/auth/signin/email"
+        onSubmit={async (e) => {
+          e.preventDefault()
+          console.log(props.email)
+          await postEmail(props.email)
+        }}
       >
-        <input name="csrfToken" type="hidden" defaultValue={props.csrfToken} />
         <div className="logo relative">
           <Logo
             size={200}

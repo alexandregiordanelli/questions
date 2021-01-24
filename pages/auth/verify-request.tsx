@@ -3,7 +3,7 @@ import FormEmail from '../../components/FormEmail'
 
 const VerifyRequest: NextPage = () => {
   return (
-    <FormEmail>
+    <FormEmail email="">
       <p className="text-2xl text-center my-4 font-medium text-gray-700">
         Abra o email com o link que você recebeu para se logar.
       </p>

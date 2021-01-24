@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react'
 import { NextPage } from 'next'
 import FormEmail from '../../components/FormEmail'
 
-const SignIn: NextPage<{
-  csrfToken: string
-}> = (props) => {
+const SignIn: NextPage = () => {
   const [email, setEmail] = useState('')
   const [cursorPosition, setCursorPosition] = useState(-1)
 
@@ -13,7 +11,7 @@ const SignIn: NextPage<{
   }, [cursorPosition, email.length])
 
   return (
-    <FormEmail csrfToken={props.csrfToken} cursorPosition={cursorPosition}>
+    <FormEmail email={email} cursorPosition={cursorPosition}>
       <label className="w-full">
         <span className="mb-1 font-semibold text-sm leading-5">Email</span>
         <input
