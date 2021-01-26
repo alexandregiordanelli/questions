@@ -8,6 +8,9 @@ import postQuestion from 'services/postQuestion'
 import { getNotebookByTags } from 'services/getNotebook'
 import { getQuestionByTags } from 'services/getQuestion'
 import admin from 'lib/firebase-server'
+import { deleteCustomerByTag } from 'services/deleteCustomer'
+import { deleteNotebookByTags } from 'services/deleteNotebook'
+import { deleteQuestionByTags } from 'services/deleteQuestion'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -16,46 +19,80 @@ const Controller: VercelApiHandler = async (req, res) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (req.method == 'POST') {
-      const tokenHeader = req.headers.authorization.substring('Bearer '.length) || req.cookies.token
+      const tokenHeader = req.cookies.token
+        ? req.cookies.token
+        : req.headers.authorization.substring('Bearer '.length)
       const token = await admin.auth().verifyIdToken(tokenHeader)
 
-      if (tags.length == 0) {
+      if (tags.length > 0 && tags.length < 3) {
+        const customer = await getCustomerByTag(customerTag)
+        if (!customer) {
+          throw new Error(`customer not exists`)
+        }
+
+        if (customer.userId != token.uid) {
+          throw new Error(`user not authorized to use this endpoint`)
+        }
+
+        if (tags.length == 1) {
+          const _notebook = req.body as NotebookWithTopicsAndSubTopics
+          _notebook.customerId = customer.id
+          const notebook = await postNotebook(_notebook)
+          res.send(notebook)
+        } else if (tags.length == 2) {
+          const _notebook = await getNotebookByTags(customerTag, notebookTag)
+          const _question = req.body as QuestionWithAll
+          _question.notebookId = _notebook.id
+          const question = await postQuestion(_question)
+          res.send(question)
+        }
+      } else if (tags.length == 0) {
         const _customer = req.body as Customer
         _customer.userId = token.uid
         const customer = await postCustomer(_customer)
-        res.json(customer)
-      } else if (tags.length == 1) {
-        const customer = await getCustomerByTag(customerTag)
-        if (customer.userId != token.uid) {
-          throw new Error(`user not authorized to use this endpoint`)
-        }
-        const _notebook = req.body as NotebookWithTopicsAndSubTopics
-        _notebook.customerId = customer.id
-        const notebook = await postNotebook(_notebook)
-        res.json(notebook)
-      } else if (tags.length == 2) {
-        const customer = await getCustomerByTag(customerTag)
-        if (customer.userId != token.uid) {
-          throw new Error(`user not authorized to use this endpoint`)
-        }
-        const _notebook = await getNotebookByTags(customerTag, notebookTag)
-        const _question = req.body as QuestionWithAll
-        _question.notebookId = _notebook.id
-        const question = await postQuestion(_question)
-        res.json(question)
+        res.send(customer)
       } else {
         throw new Error('more tags than necessary')
       }
     } else if (req.method == 'GET') {
       if (tags.length == 1) {
         const customer = await getCustomerByTag(customerTag)
-        res.json(customer)
+        res.send(customer)
       } else if (tags.length == 2) {
         const notebook = await getNotebookByTags(customerTag, notebookTag)
-        res.json(notebook)
+        res.send(notebook)
       } else if (tags.length == 3) {
         const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
-        res.json(question)
+        res.send(question)
+      } else {
+        throw new Error('more/less tags than necessary')
+      }
+    } else if (req.method == 'DELETE') {
+      const tokenHeader = req.cookies.token
+        ? req.cookies.token
+        : req.headers.authorization.substring('Bearer '.length)
+      const token = await admin.auth().verifyIdToken(tokenHeader)
+
+      if (tags.length > 0 && tags.length < 4) {
+        const customer = await getCustomerByTag(customerTag)
+        if (!customer) {
+          throw new Error(`customer not exists`)
+        }
+
+        if (customer.userId != token.uid) {
+          throw new Error(`user not authorized to use this endpoint`)
+        }
+
+        if (tags.length == 1) {
+          const nRowsUpdated = await deleteCustomerByTag(customerTag)
+          res.send(nRowsUpdated)
+        } else if (tags.length == 2) {
+          const nRowsUpdated = await deleteNotebookByTags(customerTag, notebookTag)
+          res.send(nRowsUpdated)
+        } else if (tags.length == 3) {
+          const nRowsUpdated = await deleteQuestionByTags(customerTag, notebookTag, questionTag)
+          res.send(nRowsUpdated)
+        }
       } else {
         throw new Error('more/less tags than necessary')
       }

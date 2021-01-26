@@ -85,21 +85,6 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
 
   const alternatives: Alternative[] = []
 
-  for (const alternativeWillAdded of alternativesWillAdded) {
-    const createAlternative = await prisma.alternative.create({
-      data: {
-        alternative: alternativeWillAdded.alternative,
-        question: {
-          connect: {
-            id: question.id,
-          },
-        },
-      },
-    })
-
-    alternatives.push(createAlternative)
-  }
-
   for (const alternativeWillUpdated of alternativesWillUpdated) {
     const updateAlternative = await prisma.alternative.update({
       data: {
@@ -118,6 +103,21 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
     alternatives.push(updateAlternative)
   }
 
+  for (const alternativeWillAdded of alternativesWillAdded) {
+    const createAlternative = await prisma.alternative.create({
+      data: {
+        alternative: alternativeWillAdded.alternative,
+        question: {
+          connect: {
+            id: question.id,
+          },
+        },
+      },
+    })
+
+    alternatives.push(createAlternative)
+  }
+
   if (index > -1) {
     await prisma.rightAlternative.upsert({
       create: {
@@ -133,18 +133,14 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
         },
       },
       update: {
-        alternative: {
-          connect: {
-            id: alternatives[index].id,
-          },
-        },
+        alternativeId: alternatives[index].id,
       },
       where: {
-        alternativeId: alternatives[index].id,
+        id: questionOnRepo.rightAlternative?.id,
       },
     })
   } else {
-    await prisma.rightAlternative.deleteMany({
+    await prisma.rightAlternative.delete({
       where: {
         questionId: question.id,
       },
