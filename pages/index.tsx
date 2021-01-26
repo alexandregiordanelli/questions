@@ -1,19 +1,21 @@
 import { GetStaticProps } from 'next'
 import React from 'react'
 import HeadHtml from '../components/HeadHtml'
-import getNotebooks from '../services/getNotebooks'
+import { getCustomers } from '../services/getCustomers'
 import { Header } from '../components/Header'
 import { Img } from '../components/Img'
 import { useRouter } from 'next/router'
 import { NotebookListComponent } from '../components/NotebookListComponent'
 import { CustomerWithNotebooks } from 'lib/types'
+import { useAuth } from 'lib/auth'
 
 type PageProps = {
-  customer: CustomerWithNotebooks
+  customers: CustomerWithNotebooks[]
 }
 
 const Index: React.FC<PageProps> = (props) => {
   const router = useRouter()
+  const { user } = useAuth()
 
   return (
     <>
@@ -21,9 +23,9 @@ const Index: React.FC<PageProps> = (props) => {
       <Header>
         <button
           className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-          onClick={() => router.push(`/notebook/add`)}
+          onClick={() => router.push(`/edit/${user.uid}`)}
         >
-          Add Notebook
+          Edit Profile
         </button>
       </Header>
       <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
@@ -72,18 +74,17 @@ const Index: React.FC<PageProps> = (props) => {
         </div>
       </div>
 
-      <NotebookListComponent customer={props.customer} />
+      <NotebookListComponent customer={props.customers[0]} />
     </>
   )
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const customer = await getNotebooks(1)
+  const customers = await getCustomers()
 
   return {
-    revalidate: 1,
     props: {
-      customer,
+      customers,
     },
   }
 }

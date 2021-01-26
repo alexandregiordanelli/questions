@@ -29,14 +29,11 @@ export const Header: React.FC = (props) => {
           {/* <h1><Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1> */}
         </div>
         {!user && (
-          <>
-            Not signed in <br />
-            <Link href="/login">
-              <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
-                Login
-              </a>
-            </Link>
-          </>
+          <Link href="/login">
+            <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
+              Login
+            </a>
+          </Link>
         )}
         {user && (
           <div className="flex">

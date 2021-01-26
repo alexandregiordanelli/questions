@@ -58,7 +58,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         <Header>
           <button
             className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-            onClick={() => router.push(`/notebook/add/${props.customer.username}`)}
+            onClick={() => router.push(`/add`)}
           >
             Add Notebook
           </button>
@@ -86,13 +86,13 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           <>
             <button
               className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() => router.push(`/notebook/${props.notebook.tag}/question/add`)}
+              onClick={() => router.push(`/add/${props.customer.username}/${props.notebook.tag}`)}
             >
               Add Question
             </button>
             <button
               className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/notebook/edit/${props.notebook.tag}`)}
+              onClick={() => router.push(`/edit/${props.customer.username}/${props.notebook.tag}`)}
             >
               Edit Notebook
             </button>

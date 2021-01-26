@@ -1,27 +1,22 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
+import { getCustomerByTag } from 'services/getCustomer'
 import { getNotebookByTags } from 'services/getNotebook'
-import { getQuestionByTags } from 'services/getQuestion'
-import { CustomerWithNotebooks, NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
+import { CustomerWithNotebooks, NotebookWithTopicsAndSubTopics } from 'lib/types'
 import { Customer } from '@prisma/client'
 import { Header } from 'components/Header'
 import { EditCustomer } from 'components/EditCustomer'
 import { EditNotebook } from 'components/EditNotebook'
 import { EditQuestion } from 'components/EditQuestion'
 
-type CustomerPageProps = {
-  customer: CustomerWithNotebooks
-}
-
+// eslint-disable-next-line @typescript-eslint/ban-types
+type CustomerPageProps = {}
 type NotebookPageProps = {
-  customer: Customer
-  notebook: NotebookWithTopicsAndSubTopics
+  customer: CustomerWithNotebooks
 }
 
 type QuestionPageProps = {
   customer: Customer
   notebook: NotebookWithTopicsAndSubTopics
-  question: QuestionWithAll
 }
 
 type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
@@ -54,24 +49,26 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 }
 
 export const Page: NextPage<PageProps> = (props) => {
-  if ('customer' in props && 'notebook' in props && 'question' in props) {
-    return (
-      <QuestionPage customer={props.customer} notebook={props.notebook} question={props.question} />
-    )
-  } else if ('customer' in props && 'notebook' in props) {
-    return <NotebookPage customer={props.customer} notebook={props.notebook} />
+  if ('customer' in props && 'notebook' in props) {
+    return <QuestionPage customer={props.customer} notebook={props.notebook} />
   } else if ('customer' in props) {
-    return <CustomerPage customer={props.customer} />
+    return <NotebookPage customer={props.customer} />
+  } else {
+    return <CustomerPage />
   }
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-  const tags = context.params.tags as string[]
+  const tags = (context.params.tags as string[]) ?? []
 
-  const [customerTag, notebookTag, questionTag] = tags
+  const [customerTag, notebookTag] = tags
 
-  if (tags.length == 1) {
-    const customer = await getCustomerNotebooksByTag(customerTag)
+  if (tags.length == 0) {
+    return {
+      props: {},
+    }
+  } else if (tags.length == 1) {
+    const customer = await getCustomerByTag(customerTag)
 
     if (customer) {
       return {
@@ -89,20 +86,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         props: {
           customer,
           notebook,
-        },
-      }
-    }
-  } else if (tags.length == 3) {
-    const customer = await getCustomerByTag(customerTag)
-    const notebook = await getNotebookByTags(customerTag, notebookTag)
-    const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
-
-    if (customer && notebook && question) {
-      return {
-        props: {
-          customer,
-          notebook,
-          question,
         },
       }
     }

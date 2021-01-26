@@ -7,16 +7,15 @@ import { postClient } from 'services/client/post'
 export const EditCustomer: React.FC<{
   customer?: Customer
 }> = (props) => {
-  const [username, setUsername] = useState(props.customer?.username ?? '')
+  const initCustomer: Customer = {
+    id: 0,
+    userId: '',
+    username: '',
+  }
+  const [customer, setCustomer] = useState(props.customer ?? initCustomer)
   const router = useRouter()
 
-  const postUsername = async (_username: string): Promise<void> => {
-    const _customer: Customer = {
-      id: 0,
-      userId: '',
-      username: _username,
-    }
-
+  const postCustomer = async (_customer: Customer): Promise<void> => {
     try {
       NProgress.start()
       const customer = await postClient<Customer>(_customer, [])
@@ -60,11 +59,16 @@ export const EditCustomer: React.FC<{
                         id="last_name"
                         autoComplete="family-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        onChange={(x) => setUsername(x.target.value)}
-                        value={username}
+                        onChange={(x) =>
+                          setCustomer({
+                            ...customer,
+                            username: x.target.value,
+                          })
+                        }
+                        value={customer.username}
                       />
                       <span className="text-xs font-medium text-right block">
-                        {username && `questionsof.com/${username}`}
+                        {customer.username && `questionsof.com/${customer.username}`}
                       </span>
                     </div>
                   </div>
@@ -72,7 +76,7 @@ export const EditCustomer: React.FC<{
 
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
-                    onClick={async () => await postUsername(username)}
+                    onClick={async () => await postCustomer(customer)}
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-3"
                   >
                     Save
