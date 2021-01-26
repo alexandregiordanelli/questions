@@ -39,7 +39,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   return (
     <>
       <Header />
-      <EditNotebook customer={props.customer} />
+      <EditNotebook customer={props.customer} notebook={props.notebook} />
     </>
   )
 }
@@ -48,7 +48,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   return (
     <>
       <Header />
-      <EditQuestion customer={props.customer} notebook={props.notebook} />
+      <EditQuestion customer={props.customer} notebook={props.notebook} question={props.question} />
     </>
   )
 }

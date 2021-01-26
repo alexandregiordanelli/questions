@@ -281,7 +281,15 @@ export const EditQuestion: React.FC<{
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
-                    onClick={() => router.replace(`${props.notebook.tag}/${initQuestion.tag}`)}
+                    onClick={() => {
+                      if (props.question) {
+                        router.replace(
+                          `/${props.customer.username}/${props.notebook.tag}/${props.question.tag}`
+                        )
+                      } else {
+                        router.replace(`/${props.customer.username}/${props.notebook.tag}`)
+                      }
+                    }}
                     className="inline-flex justify-center py-2 px-4 border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Cancel

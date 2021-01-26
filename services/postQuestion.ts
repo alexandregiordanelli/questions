@@ -140,7 +140,7 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
       },
     })
   } else {
-    await prisma.rightAlternative.delete({
+    await prisma.rightAlternative.deleteMany({
       where: {
         questionId: question.id,
       },
