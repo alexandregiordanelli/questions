@@ -1,11 +1,12 @@
 import React, { useReducer } from 'react'
 import { QuestionWithAll, NotebookWithTopicsAndSubTopics } from '../lib/types'
-import { Alternative, Question, RightAlternative, Customer } from '@prisma/client'
+import { Alternative, RightAlternative, Customer } from '@prisma/client'
 import Select, { GroupType, OptionsType } from 'react-select'
 import _ from 'lodash'
 import slugify from 'slugify'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
+import { postClient } from 'services/client/post'
 enum ActionType {
   UPDATE_RIGHT_ALTERNATIVE,
   UPDATE_ALTERNATIVES,
@@ -24,10 +25,7 @@ type Action =
     }
   | {
       type: ActionType.UPDATE_QUESTION
-      question: Question & {
-        alternatives: Alternative[]
-        rightAlternative: RightAlternative
-      }
+      question: QuestionWithAll
     }
   | {
       type: ActionType.UPDATE_SOLUTION
@@ -60,12 +58,14 @@ type SelectOption = {
   __isNew__?: boolean
 }
 
-const initState: Question & {
-  alternatives: Alternative[]
-  rightAlternative: RightAlternative
-} = {
+const initState: QuestionWithAll = {
   id: 0,
   tag: '',
+  subTopic: {
+    id: 0,
+    name: '',
+    topicId: 0,
+  },
   question: '',
   notebookId: 0,
   solution: '',
@@ -75,30 +75,7 @@ const initState: Question & {
   rightAlternative: null,
 }
 
-const mapQuestionWithAllToTypeToPost = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  subTopic,
-  ...newObj
-}: QuestionWithAll): Question & {
-  alternatives: Alternative[]
-  rightAlternative: RightAlternative
-} => {
-  return newObj as Question & {
-    alternatives: Alternative[]
-    rightAlternative: RightAlternative
-  }
-}
-
-const reducer = (
-  state: Question & {
-    alternatives: Alternative[]
-    rightAlternative: RightAlternative
-  },
-  action: Action
-): Question & {
-  alternatives: Alternative[]
-  rightAlternative: RightAlternative
-} => {
+const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
   switch (action.type) {
     case ActionType.UPDATE_RIGHT_ALTERNATIVE: {
       const newState = _.cloneDeep(state)
@@ -136,6 +113,7 @@ const reducer = (
     case ActionType.UPDATE_SUBTOPIC: {
       const newState = _.cloneDeep(state)
       newState.subTopicId = action.subTopicId
+      newState.subTopic.id = action.subTopicId
       return newState
     }
     default:
@@ -149,28 +127,22 @@ export const EditQuestion: React.FC<{
   notebook: NotebookWithTopicsAndSubTopics
   customer: Customer
 }> = (props) => {
-  const initQuestion = props.question ? mapQuestionWithAllToTypeToPost(props.question) : initState
+  const initQuestion = props.question ? props.question : initState
 
   const router = useRouter()
 
   const [state, dispatch] = useReducer(reducer, initQuestion)
 
-  const postQuestion = async (
-    _question: Question & {
-      alternatives: Alternative[]
-      rightAlternative: RightAlternative
-    }
-  ): Promise<void> => {
+  const postQuestion = async (_question: QuestionWithAll): Promise<void> => {
     _question.notebookId = props.notebook.id
 
     try {
       NProgress.start()
-      await fetch('/api/question', {
-        method: 'POST',
-        body: JSON.stringify(_question),
-        headers: { 'Content-Type': 'application/json' },
-      }).then((x) => x.ok && x.json())
-      router.push(`/${props.notebook.tag}/${_question.tag}`)
+      const question = await postClient<QuestionWithAll>(_question, [
+        props.customer.username,
+        props.notebook.tag,
+      ])
+      router.push(`/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)

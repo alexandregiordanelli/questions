@@ -6,6 +6,7 @@ import _ from 'lodash'
 import slugify from 'slugify'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
+import { postClient } from 'services/client/post'
 enum ActionType {
   UPDATE_SUBTOPICS,
   UPDATE_NOTEBOOK,
@@ -122,14 +123,15 @@ export const EditNotebook: React.FC<{
   const [state, dispatch] = useReducer(reducer, initNotebook)
 
   const postNotebook = async (_notebook: NotebookWithTopicsAndSubTopics): Promise<void> => {
+    _notebook.customerId = props.customer.id
+
     try {
       NProgress.start()
-      await fetch('/api/notebook', {
-        method: 'POST',
-        body: JSON.stringify(_notebook),
-        headers: { 'Content-Type': 'application/json' },
-      }).then((x) => x.ok && x.json())
-      router.push(`/${_notebook.tag}`)
+      const notebook = await postClient<NotebookWithTopicsAndSubTopics>(_notebook, [
+        props.customer.username,
+      ])
+      router.push(`/${props.customer.username}/${notebook.tag}`)
+      NProgress.done()
     } catch (e) {
       NProgress.done()
       console.log(e)
