@@ -14,9 +14,6 @@ export type MenuWithQuestions = (Topic & {
       tag: string
     }[]
   })[]
-  notebook: {
-    tag: string
-  }
 })[]
 export type QuestionWithAll = Question & {
   alternatives: Alternative[]
@@ -26,13 +23,10 @@ export type QuestionWithAll = Question & {
 export type Suggestions = {
   tag: string
   title: string
-  notebook: {
-    tag: string
-  }
 }[]
 
 export type CustomerWithNotebooks = Customer & {
-  notebooks: NotebookWithTopicsAndSubTopics[]
+  notebooks: Notebook[]
 }
 
 export type CustomerWithNotebook = Customer & {

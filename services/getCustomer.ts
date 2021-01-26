@@ -21,6 +21,21 @@ export const getCustomerById = async (id: number): Promise<Customer> => {
   return customer
 }
 
+export const getCustomerNotebooksByTag = async (
+  customerTag: string
+): Promise<CustomerWithNotebooks> => {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      username: customerTag,
+    },
+    include: {
+      notebooks: true,
+    },
+  })
+
+  return customer
+}
+
 export const getCustomerByTag = async (username: string): Promise<CustomerWithNotebooks> => {
   const customer = await prisma.customer.findUnique({
     where: {

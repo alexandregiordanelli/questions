@@ -1,7 +1,7 @@
 import { VercelApiHandler } from '@vercel/node'
 import postCustomer from 'services/postCustomer'
 import { Customer } from '@prisma/client'
-import { getCustomerByTag } from 'services/getCustomer'
+import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
 import postNotebook from 'services/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 import postQuestion from 'services/postQuestion'
@@ -56,7 +56,7 @@ const Controller: VercelApiHandler = async (req, res) => {
       }
     } else if (req.method == 'GET') {
       if (tags.length == 1) {
-        const customer = await getCustomerByTag(customerTag)
+        const customer = await getCustomerNotebooksByTag(customerTag)
         res.send(customer)
       } else if (tags.length == 2) {
         const notebook = await getNotebookByTags(customerTag, notebookTag)

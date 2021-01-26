@@ -7,6 +7,8 @@ import Link from 'next/link'
 const RightMenu: React.FC<{
   // title: JSX.Element,
   suggestions: Suggestions
+  notebookTag: string
+  customerTag: string
 }> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)
@@ -31,10 +33,10 @@ const RightMenu: React.FC<{
           checked={toggleMenu}
         />
         <ul>
-          {props.suggestions.map((x, i) => (
+          {props.suggestions?.map((x, i) => (
             <li key={i}>
               {/* activeClassName="ativo" */}
-              <Link href={`/${x.notebook.tag}/${x.tag}`}>
+              <Link href={`/${props.customerTag}/${props.notebookTag}/${x.tag}`}>
                 <a>{x.title}</a>
               </Link>
             </li>

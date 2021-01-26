@@ -7,7 +7,8 @@ import Link from 'next/link'
 
 export const MenuCore: React.FC<{
   menu: MenuWithQuestions
-  preview?: boolean
+  notebookTag: string
+  customerTag: string
 }> = (props) => {
   return (
     <>
@@ -19,7 +20,7 @@ export const MenuCore: React.FC<{
               <MenuItem
                 url={
                   firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? `${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
+                    ? `${props.customerTag}/${props.notebookTag}/${firstSubtopicQuestion[0].tag}`
                     : null
                 }
                 title={x.name}
@@ -31,7 +32,9 @@ export const MenuCore: React.FC<{
                   if (anotherSubtopicQuestion) {
                     return (
                       <li key={`${i}.${j}`}>
-                        <Link href={`/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`}>
+                        <Link
+                          href={`/${props.customerTag}/${props.notebookTag}/${anotherSubtopicQuestion.tag}`}
+                        >
                           <a>{y.name}</a>
                         </Link>
                       </li>
@@ -155,7 +158,11 @@ export const MenuCore: React.FC<{
   )
 }
 
-export const LeftMenu: React.FC<{ menu: MenuWithQuestions }> = (props) => {
+export const LeftMenu: React.FC<{
+  menu: MenuWithQuestions
+  notebookTag: string
+  customerTag: string
+}> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)
 
@@ -178,7 +185,11 @@ export const LeftMenu: React.FC<{ menu: MenuWithQuestions }> = (props) => {
           onChange={(x) => setToggleMenu(x.target.checked)}
           checked={toggleMenu}
         />
-        <MenuCore menu={props.menu} />
+        <MenuCore
+          menu={props.menu}
+          notebookTag={props.notebookTag}
+          customerTag={props.customerTag}
+        />
       </div>
 
       <style jsx>{`

@@ -8,6 +8,8 @@ import { QuestionWithAll, Suggestions } from '../../../lib/types'
 export const QuestionFormWithRightMenu: React.FC<{
   question: QuestionWithAll
   suggestions: Suggestions
+  notebookTag: string
+  customerTag: string
 }> = (props) => {
   //const menuFiltered = props.menu.find(x => x.topics.some(y => y.topic == props.question.topic))
 
@@ -87,6 +89,8 @@ export const QuestionFormWithRightMenu: React.FC<{
       <div className="grid">
         <RightMenu
           // title={title}
+          customerTag={props.customerTag}
+          notebookTag={props.notebookTag}
           suggestions={props.suggestions}
         />
         <div>
