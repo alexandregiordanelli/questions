@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react'
-import { CustomerWithNotebook, NotebookWithTopicsAndSubTopics } from '../lib/types'
-import { SubTopic, Topic } from '@prisma/client'
+import { NotebookWithTopicsAndSubTopics } from '../lib/types'
+import { SubTopic, Topic, Customer } from '@prisma/client'
 import CreatableSelect from 'react-select/creatable'
 import _ from 'lodash'
 import slugify from 'slugify'
@@ -111,10 +111,11 @@ const reducer = (
   }
 }
 
-const EditNotebook: React.FC<{
-  customer: CustomerWithNotebook
+export const EditNotebook: React.FC<{
+  customer: Customer
+  notebook?: NotebookWithTopicsAndSubTopics
 }> = (props) => {
-  const initNotebook = props.customer.notebook ? props.customer.notebook : initState
+  const initNotebook = props.notebook ? props.notebook : initState
 
   const router = useRouter()
 
@@ -363,4 +364,3 @@ const EditNotebook: React.FC<{
     </div>
   )
 }
-export default EditNotebook

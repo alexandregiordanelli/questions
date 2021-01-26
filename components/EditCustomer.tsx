@@ -1,22 +1,27 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
+import { Customer } from '@prisma/client'
+import { postClient } from 'services/client/post'
 
-const EditUsername: React.FC<{
-  username?: string
+export const EditCustomer: React.FC<{
+  customer?: Customer
 }> = (props) => {
-  const [username, setUsername] = useState(props.username ?? '')
+  const [username, setUsername] = useState(props.customer?.username ?? '')
   const router = useRouter()
 
   const postUsername = async (_username: string): Promise<void> => {
+    const _customer: Customer = {
+      id: 0,
+      userId: '',
+      username: _username,
+    }
+
     try {
       NProgress.start()
-      await fetch(`/api/customer`, {
-        method: 'POST',
-        body: JSON.stringify(_username),
-        headers: { 'Content-Type': 'application/json' },
-      }).then((x) => x.ok && x.json())
-      router.push(`/${_username}`)
+      const customer = await postClient<Customer>(_customer, [])
+      router.push(`/${customer.username}`)
+      NProgress.done()
     } catch (e) {
       NProgress.done()
       console.log(e)
@@ -81,4 +86,3 @@ const EditUsername: React.FC<{
     </div>
   )
 }
-export default EditUsername
