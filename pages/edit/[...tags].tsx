@@ -78,6 +78,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         props: {
           customer,
         },
+        revalidate: 1,
       }
     }
   } else if (tags.length == 2) {
@@ -90,6 +91,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
           customer,
           notebook,
         },
+        revalidate: 1,
       }
     }
   } else if (tags.length == 3) {
@@ -104,6 +106,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
           notebook,
           question,
         },
+        revalidate: 1,
       }
     }
   }

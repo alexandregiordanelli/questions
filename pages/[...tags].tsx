@@ -193,6 +193,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         props: {
           customer,
         },
+        revalidate: 1,
       }
     }
   } else if (tags.length == 2) {
@@ -207,16 +208,18 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
           notebook,
           menu,
         },
+        revalidate: 1,
       }
     }
   } else if (tags.length == 3) {
     const customer = await getCustomerByTag(customerTag)
     const notebook = await getNotebookByTags(customerTag, notebookTag)
     const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
-    const menu = await getMenu(notebookTag)
-    const suggestions = await getSuggestions(notebookTag, question.subTopicId)
 
     if (customer && notebook && question) {
+      const menu = await getMenu(notebookTag)
+      const suggestions = await getSuggestions(notebookTag, question.subTopicId)
+
       return {
         props: {
           customer,
@@ -225,6 +228,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
           suggestions,
           question,
         },
+        revalidate: 1,
       }
     }
   }
