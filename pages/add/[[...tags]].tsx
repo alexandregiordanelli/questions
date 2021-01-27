@@ -1,7 +1,7 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import { getCustomerByTag } from 'services/getCustomer'
 import { getNotebookByTags } from 'services/getNotebook'
-import { CustomerWithNotebooks, NotebookWithTopicsAndSubTopics } from 'lib/types'
+import { NotebookWithTopicsAndSubTopics } from 'lib/types'
 import { Customer } from '@prisma/client'
 import { Header } from 'components/Header'
 import { EditCustomer } from 'components/EditCustomer'
@@ -11,13 +11,11 @@ import { EditQuestion } from 'components/EditQuestion'
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CustomerPageProps = {}
 type NotebookPageProps = {
-  customer: CustomerWithNotebooks
-}
-
-type QuestionPageProps = {
   customer: Customer
+} & CustomerPageProps
+type QuestionPageProps = {
   notebook: NotebookWithTopicsAndSubTopics
-}
+} & NotebookPageProps
 
 type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 
@@ -49,7 +47,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 }
 
 export const Page: NextPage<PageProps> = (props) => {
-  if ('customer' in props && 'notebook' in props) {
+  if ('notebook' in props) {
     return <QuestionPage customer={props.customer} notebook={props.notebook} />
   } else if ('customer' in props) {
     return <NotebookPage customer={props.customer} />

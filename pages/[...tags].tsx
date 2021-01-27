@@ -163,7 +163,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 }
 
 export const Page: NextPage<PageProps> = (props) => {
-  if ('customer' in props && 'notebook' in props && 'question' in props) {
+  if ('question' in props) {
     return (
       <QuestionPage
         customer={props.customer}
@@ -173,7 +173,7 @@ export const Page: NextPage<PageProps> = (props) => {
         question={props.question}
       />
     )
-  } else if ('customer' in props && 'notebook' in props) {
+  } else if ('notebook' in props) {
     return <NotebookPage customer={props.customer} notebook={props.notebook} menu={props.menu} />
   } else if ('customer' in props) {
     return <CustomerPage customer={props.customer} />

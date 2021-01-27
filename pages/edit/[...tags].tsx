@@ -21,7 +21,7 @@ type QuestionPageProps = {
   question: QuestionWithAll
 } & NotebookPageProps
 
-type PageProps = QuestionPageProps | NotebookPageProps | CustomerPageProps
+type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   return (
