@@ -11,7 +11,7 @@ import {
   NotebookHook,
   QuestionHook,
 } from 'lib/types'
-export const getClient = async <T>(_tags: string[]): Promise<T> => {
+export const getClient = async <T>(_tags: string[] = []): Promise<T> => {
   try {
     const response = await fetch(`${urlEnv}/api/${_tags.join('/')}`, {
       method: 'GET',
@@ -28,6 +28,7 @@ export const getClient = async <T>(_tags: string[]): Promise<T> => {
     }
   } catch (e) {
     console.log(e.message)
+    return null
   }
 }
 

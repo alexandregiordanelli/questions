@@ -15,18 +15,20 @@ type PageProps = {
 
 const Index: React.FC<PageProps> = (props) => {
   const router = useRouter()
-  const { user } = useAuth()
+  const { customerLogged } = useAuth()
 
   return (
     <>
       <HeadHtml />
       <Header>
-        <button
-          className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-          onClick={() => router.push(`/edit/${user.uid}`)}
-        >
-          Edit Profile
-        </button>
+        {customerLogged && (
+          <button
+            className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+            onClick={() => router.push(`/edit/${customerLogged.username}`)}
+          >
+            Edit Profile
+          </button>
+        )}
       </Header>
       <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
         <div className="opacity-30 flex">

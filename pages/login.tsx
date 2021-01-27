@@ -18,7 +18,7 @@ const Login: NextPage = () => {
   const [emailInCookie, setEmailInCookie] = useState(cookie.get('email') ?? '')
   const [email, setEmail] = useState('')
   const [cursorPosition, setCursorPosition] = useState(-1)
-  const { user } = useAuth()
+  const { customerLogged } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
@@ -27,10 +27,10 @@ const Login: NextPage = () => {
   }, [emailInCookie])
 
   useEffect(() => {
-    if (user) {
+    if (customerLogged) {
       router.push('/')
     }
-  }, [user, router])
+  }, [customerLogged, router])
 
   useEffect(() => {
     if (email.length == 0) setCursorPosition(-1)

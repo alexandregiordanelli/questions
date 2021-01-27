@@ -19,6 +19,7 @@ export const postClient = async <T>(_customer: T, _tags: string[], token = ''): 
     }
   } catch (e) {
     console.log(e.message)
+    return null
   }
 }
 export const postEmail = async (email: string): Promise<boolean> => {

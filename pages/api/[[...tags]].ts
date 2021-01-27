@@ -1,7 +1,11 @@
 import { VercelApiHandler } from '@vercel/node'
 import postCustomer from 'services/postCustomer'
 import { Customer } from '@prisma/client'
-import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
+import {
+  getCustomerByTag,
+  getCustomerNotebooksByTag,
+  getCustomerByUserId,
+} from 'services/getCustomer'
 import postNotebook from 'services/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 import postQuestion from 'services/postQuestion'
@@ -55,7 +59,14 @@ const Controller: VercelApiHandler = async (req, res) => {
         throw new Error('more tags than necessary')
       }
     } else if (req.method == 'GET') {
-      if (tags.length == 1) {
+      if (tags.length == 0) {
+        const tokenHeader = req.cookies.token
+          ? req.cookies.token
+          : req.headers.authorization.substring('Bearer '.length)
+        const token = await admin.auth().verifyIdToken(tokenHeader)
+        const customer = await getCustomerByUserId(token.uid)
+        res.send(customer)
+      } else if (tags.length == 1) {
         if (req.query.notebooks) {
           const customer = await getCustomerNotebooksByTag(customerTag)
           res.send(customer)

@@ -18,5 +18,6 @@ export const deleteClient = async (_tags: string[], token = ''): Promise<number>
     }
   } catch (e) {
     console.log(e.message)
+    return 0
   }
 }

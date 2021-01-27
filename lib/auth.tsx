@@ -2,15 +2,23 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
 import { useRouter } from 'next/router'
 import cookie from 'js-cookie'
+import { getClient } from 'services/client/get'
+import { Customer } from '@prisma/client'
 
 type Auth = {
+  customerLogged: Customer
   user: firebase.User
   logout: () => Promise<void>
 }
 
-const authContext = createContext<Auth>({ user: null, logout: firebase.auth().signOut })
+const authContext = createContext<Auth>({
+  customerLogged: null,
+  user: null,
+  logout: firebase.auth().signOut,
+})
 
 const useProvideAuth = (): Auth => {
+  const [customerLogged, setCustomerLogged] = useState<Customer>(null)
   const [user, setUser] = useState<firebase.User>(null)
   const router = useRouter()
 
@@ -18,11 +26,15 @@ const useProvideAuth = (): Auth => {
     return firebase.auth().onIdTokenChanged(async (user) => {
       if (!user) {
         setUser(null)
+        setCustomerLogged(null)
         cookie.remove('token')
       } else {
-        const token = await user.getIdToken()
         setUser(user)
+        const token = await user.getIdToken()
         cookie.set('token', token)
+        const customer = await getClient<Customer>()
+        if (customer) setCustomerLogged(customer)
+        else router.push('/add')
       }
     })
   }, [])
@@ -45,7 +57,7 @@ const useProvideAuth = (): Auth => {
     } else if (cameFromEmail && cookie.get('token')) {
       router.replace(window.location.href.split('?')[0])
     }
-  }, [router])
+  }, [])
 
   // force refresh the token every 10 minutes
   useEffect(() => {
@@ -58,6 +70,7 @@ const useProvideAuth = (): Auth => {
   }, [])
 
   return {
+    customerLogged,
     user,
     logout: firebase.auth().signOut,
   }

@@ -22,7 +22,7 @@ type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 const CustomerPage: React.FC<CustomerPageProps> = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <EditCustomer />
     </>
   )
