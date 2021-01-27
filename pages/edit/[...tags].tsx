@@ -1,8 +1,8 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
+import { getCustomerByTag } from 'services/getCustomer'
 import { getNotebookByTags } from 'services/getNotebook'
 import { getQuestionByTags } from 'services/getQuestion'
-import { CustomerWithNotebooks, NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
+import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 import { Customer } from '@prisma/client'
 import { Header } from 'components/Header'
 import { EditCustomer } from 'components/EditCustomer'
@@ -10,21 +10,18 @@ import { EditNotebook } from 'components/EditNotebook'
 import { EditQuestion } from 'components/EditQuestion'
 
 type CustomerPageProps = {
-  customer: CustomerWithNotebooks
+  customer: Customer
 }
 
 type NotebookPageProps = {
-  customer: Customer
   notebook: NotebookWithTopicsAndSubTopics
-}
+} & CustomerPageProps
 
 type QuestionPageProps = {
-  customer: Customer
-  notebook: NotebookWithTopicsAndSubTopics
   question: QuestionWithAll
-}
+} & NotebookPageProps
 
-type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
+type PageProps = QuestionPageProps | NotebookPageProps | CustomerPageProps
 
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   return (
@@ -54,15 +51,15 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 }
 
 export const Page: NextPage<PageProps> = (props) => {
-  if ('customer' in props && 'notebook' in props && 'question' in props) {
+  if ('question' in props) {
     return (
       <QuestionPage customer={props.customer} notebook={props.notebook} question={props.question} />
     )
-  } else if ('customer' in props && 'notebook' in props) {
+  } else if ('notebook' in props) {
     return <NotebookPage customer={props.customer} notebook={props.notebook} />
   } else if ('customer' in props) {
     return <CustomerPage customer={props.customer} />
-  }
+  } else null
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
@@ -71,7 +68,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const [customerTag, notebookTag, questionTag] = tags
 
   if (tags.length == 1) {
-    const customer = await getCustomerNotebooksByTag(customerTag)
+    const customer = await getCustomerByTag(customerTag)
 
     if (customer) {
       return {

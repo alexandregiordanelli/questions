@@ -3,7 +3,7 @@ import { tokenForTest } from 'lib/utils'
 import { Customer } from '@prisma/client'
 import { deleteClient } from 'services/client/delete'
 import { getClient } from 'services/client/get'
-import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
+import { NotebookWithTopicsAndSubTopics, QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
 import _ from 'lodash'
 
 jest.setTimeout(30000)
@@ -90,7 +90,7 @@ describe('API real', () => {
   })
 
   it('Get customer', async () => {
-    const customer = await getClient<Customer>([_username])
+    const customer = await getClient<Customer>([`${_username}`])
 
     expect(customer.username).toBe(_username)
 
@@ -375,6 +375,18 @@ describe('API real', () => {
     }
 
     _question = question
+  })
+
+  it('Get customer with Notebooks', async () => {
+    const customer = await getClient<CustomerWithNotebooks>([
+      `${_customer.username}?notebooks=true`,
+    ])
+
+    expect(customer.username).toBe(_customer.username)
+
+    expect(customer.notebooks[0].tag).toBe(_notebook.tag)
+
+    _customer = customer
   })
 
   it('Delete question', async () => {

@@ -29,10 +29,6 @@ export type CustomerWithNotebooks = Customer & {
   notebooks: Notebook[]
 }
 
-export type CustomerWithNotebook = Customer & {
-  notebook: NotebookWithTopicsAndSubTopics
-}
-
 export type NotebookWithTopicsAndSubTopics = Notebook & {
   topics: (Topic & {
     subtopics: SubTopic[]
@@ -43,4 +39,24 @@ export type Path = {
   params: {
     slug: string[]
   }
+}
+export type CustomerHook = {
+  customer: Customer
+} & DataBaseHook
+
+export type NotebookHook = {
+  notebook: NotebookWithTopicsAndSubTopics
+} & DataBaseHook
+
+export type QuestionHook = {
+  question: QuestionWithAll
+} & DataBaseHook
+
+export type CustomerWithNotebooksHook = {
+  customer: CustomerWithNotebooks
+} & DataBaseHook
+
+export type DataBaseHook = {
+  isLoading: boolean
+  isError: any
 }

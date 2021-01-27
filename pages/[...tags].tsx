@@ -2,6 +2,7 @@ import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
 import { getNotebookByTags } from 'services/getNotebook'
 import { getQuestionByTags } from 'services/getQuestion'
+
 import {
   CustomerWithNotebooks,
   NotebookWithTopicsAndSubTopics,
@@ -21,6 +22,12 @@ import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import getSuggestions from 'services/getSuggestions'
+import {
+  useCustomer,
+  useQuestion,
+  useNotebook,
+  useCustomerWithNotebooks,
+} from 'services/client/get'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -33,18 +40,16 @@ type NotebookPageProps = {
 }
 
 type QuestionPageProps = {
-  customer: Customer
-  notebook: NotebookWithTopicsAndSubTopics
-  menu: MenuWithQuestions
   suggestions: Suggestions
   question: QuestionWithAll
-}
+} & NotebookPageProps
 
 type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customer } = useCustomerWithNotebooks(props.customer)
   return (
     <>
       <HeadHtml>
@@ -58,13 +63,13 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         <Header>
           <button
             className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-            onClick={() => router.push(`/add/${props.customer.username}`)}
+            onClick={() => router.push(`/add/${customer.username}`)}
           >
             Add Notebook
           </button>
         </Header>
 
-        <NotebookListComponent customer={props.customer} />
+        <NotebookListComponent customer={customer} />
       </div>
     </>
   )
@@ -73,6 +78,8 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customer } = useCustomer(props.customer)
+  const { notebook } = useNotebook(customer.username, props.notebook)
   return (
     <>
       <HeadHtml>
@@ -86,25 +93,21 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           <>
             <button
               className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() => router.push(`/add/${props.customer.username}/${props.notebook.tag}`)}
+              onClick={() => router.push(`/add/${customer.username}/${notebook.tag}`)}
             >
               Add Question
             </button>
             <button
               className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${props.customer.username}/${props.notebook.tag}`)}
+              onClick={() => router.push(`/edit/${customer.username}/${notebook.tag}`)}
             >
               Edit Notebook
             </button>
           </>
         </Header>
         <div className="flex">
-          <LeftMenu
-            menu={props.menu}
-            notebookTag={props.notebook.tag}
-            customerTag={props.customer.username}
-          />
-          <IndexQuestionPage notebook={props.notebook} />
+          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.username} />
+          <IndexQuestionPage notebook={notebook} />
         </div>
       </div>
     </>
@@ -114,6 +117,9 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customer } = useCustomer(props.customer)
+  const { notebook } = useNotebook(customer.username, props.notebook)
+  const { question } = useQuestion(customer.username, notebook.tag, props.question)
   return (
     <>
       <HeadHtml>
@@ -129,32 +135,26 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
             <button
               className="bg-gray-700 text-sm text-white rounded-md px-4 py-2 mr-2 shadow-md"
               onClick={() =>
-                router.push(
-                  `/edit/${props.customer.username}/${props.notebook.tag}/${props.question.tag}`
-                )
+                router.push(`/edit/${customer.username}/${notebook.tag}/${question.tag}`)
               }
             >
               Edit Question
             </button>
             <button
               className="bg-gray-800 text-sm text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${props.customer.username}/${props.notebook.tag}`)}
+              onClick={() => router.push(`/edit/${customer.username}/${notebook.tag}`)}
             >
               Edit Notebook
             </button>
           </>
         </Header>
         <div className="flex">
-          <LeftMenu
-            menu={props.menu}
-            notebookTag={props.notebook.tag}
-            customerTag={props.customer.username}
-          />
+          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.username} />
           <QuestionFormWithRightMenu
-            question={props.question}
+            question={question}
             suggestions={props.suggestions}
-            notebookTag={props.notebook.tag}
-            customerTag={props.customer.username}
+            notebookTag={notebook.tag}
+            customerTag={customer.username}
           />
         </div>
       </div>

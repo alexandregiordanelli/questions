@@ -56,8 +56,13 @@ const Controller: VercelApiHandler = async (req, res) => {
       }
     } else if (req.method == 'GET') {
       if (tags.length == 1) {
-        const customer = await getCustomerNotebooksByTag(customerTag)
-        res.send(customer)
+        if (req.query.notebooks) {
+          const customer = await getCustomerNotebooksByTag(customerTag)
+          res.send(customer)
+        } else {
+          const customer = await getCustomerByTag(customerTag)
+          res.send(customer)
+        }
       } else if (tags.length == 2) {
         const notebook = await getNotebookByTags(customerTag, notebookTag)
         res.send(notebook)
