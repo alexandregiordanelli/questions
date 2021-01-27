@@ -8,6 +8,7 @@ import { Header } from 'components/Header'
 import { EditCustomer } from 'components/EditCustomer'
 import { EditNotebook } from 'components/EditNotebook'
 import { EditQuestion } from 'components/EditQuestion'
+import { useCustomer, useNotebook, useQuestion } from 'services/client/get'
 
 type CustomerPageProps = {
   customer: Customer
@@ -24,28 +25,35 @@ type QuestionPageProps = {
 type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
+  const { customer } = useCustomer(props.customer)
+
   return (
     <>
       <Header />
-      <EditCustomer customer={props.customer} />
+      <EditCustomer customer={customer} />
     </>
   )
 }
 
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
+  const { customer } = useCustomer(props.customer)
+  const { notebook } = useNotebook(customer.username, props.notebook)
   return (
     <>
       <Header />
-      <EditNotebook customer={props.customer} notebook={props.notebook} />
+      <EditNotebook customer={customer} notebook={notebook} />
     </>
   )
 }
 
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
+  const { customer } = useCustomer(props.customer)
+  const { notebook } = useNotebook(customer.username, props.notebook)
+  const { question } = useQuestion(customer.username, notebook.tag, props.question)
   return (
     <>
       <Header />
-      <EditQuestion customer={props.customer} notebook={props.notebook} question={props.question} />
+      <EditQuestion customer={props.customer} notebook={props.notebook} question={question} />
     </>
   )
 }
