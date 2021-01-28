@@ -184,7 +184,7 @@ export const Page: NextPage<PageProps> = (props) => {
     return <NotebookPage customer={props.customer} notebook={props.notebook} menu={props.menu} />
   } else if ('customer' in props) {
     return <CustomerPage customer={props.customer} />
-  }
+  } else return null
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
