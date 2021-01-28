@@ -25,7 +25,7 @@ export const getClient = async <T>(url: string): Promise<T> => {
 
 export const fetcher = <T>(url: string): Promise<T> => fetch(url).then((r) => r.json())
 
-export const useData = <T>(url: string, initialData: T): DataBaseHook<T> => {
+export const useData = <T>(url: string, initialData: T = null): DataBaseHook<T> => {
   const { data, error } = useSWR<T>(url, fetcher, {
     initialData,
   })
