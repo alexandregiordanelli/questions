@@ -149,7 +149,6 @@ export const EditQuestion: React.FC<{
       )
       mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`, question)
       router.push(`/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
-      mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)

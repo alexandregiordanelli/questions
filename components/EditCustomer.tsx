@@ -27,7 +27,6 @@ export const EditCustomer: React.FC<{
       const customer = await postClient<Customer>(_customer, `/api`)
       mutate(`/api/${customer.username}`, customer)
       router.push(`/${customer.username}`)
-      mutate(`/api/${customer.username}`)
     } catch (e) {
       NProgress.done()
       console.log(e)

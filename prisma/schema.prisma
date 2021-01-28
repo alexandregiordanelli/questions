@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -10,20 +11,20 @@ datasource db {
 model Customer {
   id        Int        @id @default(autoincrement())
   userId    String     @unique
-  username  String     @unique
+  tag       String     @unique
   notebooks Notebook[]
 }
 
 model Notebook {
-  id          Int        @id @default(autoincrement())
-  customerId  Int
-  tag         String
-  description String?
-  price       Float?
-  name        String?
-  customer    Customer   @relation(fields: [customerId], references: [id])
-  questions   Question[]
-  topics      Topic[]
+  id         Int        @id @default(autoincrement())
+  customerId Int
+  tag        String
+  text       String?    @db.Text
+  price      Decimal?   @db.Decimal(6, 2)
+  name       String?
+  customer   Customer   @relation(fields: [customerId], references: [id])
+  questions  Question[]
+  topics     Topic[]
 
   @@unique([customerId, tag])
 }
@@ -47,10 +48,10 @@ model SubTopic {
 model Question {
   id               Int               @id @default(autoincrement())
   tag              String
-  question         String
+  text             String            @db.Text
   notebookId       Int
-  solution         String?
-  title            String?
+  solution         String?           @db.Text
+  name             String?
   subTopicId       Int?
   notebook         Notebook          @relation(fields: [notebookId], references: [id])
   subTopic         SubTopic?         @relation(fields: [subTopicId], references: [id])
@@ -62,7 +63,7 @@ model Question {
 
 model Alternative {
   id               Int               @id @default(autoincrement())
-  alternative      String
+  text             String            @db.Text
   questionId       Int
   question         Question          @relation(fields: [questionId], references: [id])
   RightAlternative RightAlternative?

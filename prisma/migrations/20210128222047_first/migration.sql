@@ -2,9 +2,9 @@
 CREATE TABLE `Customer` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `userId` VARCHAR(191) NOT NULL,
-    `username` VARCHAR(191) NOT NULL,
+    `tag` VARCHAR(191) NOT NULL,
 UNIQUE INDEX `Customer.userId_unique`(`userId`),
-UNIQUE INDEX `Customer.username_unique`(`username`),
+UNIQUE INDEX `Customer.tag_unique`(`tag`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -14,8 +14,8 @@ CREATE TABLE `Notebook` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `customerId` INT NOT NULL,
     `tag` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191),
-    `price` DECIMAL(65,30),
+    `text` TEXT,
+    `price` DECIMAL(6, 2),
     `name` VARCHAR(191),
 UNIQUE INDEX `Notebook.customerId_tag_unique`(`customerId`, `tag`),
 
@@ -44,11 +44,12 @@ CREATE TABLE `SubTopic` (
 CREATE TABLE `Question` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `tag` VARCHAR(191) NOT NULL,
-    `question` VARCHAR(191) NOT NULL,
+    `text` TEXT NOT NULL,
     `notebookId` INT NOT NULL,
-    `solution` VARCHAR(191),
-    `title` VARCHAR(191),
+    `solution` TEXT,
+    `name` VARCHAR(191),
     `subTopicId` INT,
+UNIQUE INDEX `Question.notebookId_tag_unique`(`notebookId`, `tag`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -56,7 +57,7 @@ CREATE TABLE `Question` (
 -- CreateTable
 CREATE TABLE `Alternative` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `alternative` VARCHAR(191) NOT NULL,
+    `text` TEXT NOT NULL,
     `questionId` INT NOT NULL,
 
     PRIMARY KEY (`id`)
