@@ -132,9 +132,8 @@ export const EditNotebook: React.FC<{
         _notebook,
         `/api/${props.customer.username}`
       )
-      mutate(`/api/${props.customer.username}/${notebook.tag}`)
       router.push(`/${props.customer.username}/${notebook.tag}`)
-      NProgress.done()
+      mutate(`/api/${props.customer.username}/${notebook.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)
