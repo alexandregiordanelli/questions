@@ -4,11 +4,11 @@ import { Customer } from '@prisma/client'
 const postCustomer = async (_customer: Customer): Promise<Customer> => {
   const customer = await prisma.customer.upsert({
     create: {
-      username: _customer.username,
+      tag: _customer.tag,
       userId: _customer.userId,
     },
     update: {
-      username: _customer.username,
+      tag: _customer.tag,
     },
     where: {
       id: _customer.id,

@@ -22,7 +22,7 @@ export type QuestionWithAll = Question & {
 }
 export type Suggestions = {
   tag: string
-  title: string
+  name: string
 }[]
 
 export type CustomerWithNotebooks = Customer & {

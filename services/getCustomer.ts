@@ -26,7 +26,7 @@ export const getCustomerNotebooksByTag = async (
 ): Promise<CustomerWithNotebooks> => {
   const customer = await prisma.customer.findUnique({
     where: {
-      username: customerTag,
+      tag: customerTag,
     },
     include: {
       notebooks: true,
@@ -36,10 +36,10 @@ export const getCustomerNotebooksByTag = async (
   return customer
 }
 
-export const getCustomerByTag = async (username: string): Promise<Customer> => {
+export const getCustomerByTag = async (tag: string): Promise<Customer> => {
   const customer = await prisma.customer.findUnique({
     where: {
-      username,
+      tag,
     },
   })
 

@@ -3,10 +3,10 @@ import { prisma } from '../prisma/prisma'
 const getUsernames = async (): Promise<string[]> => {
   const customer = await prisma.customer.findMany({
     select: {
-      username: true,
+      tag: true,
     },
   })
 
-  return customer.map((x) => x.username)
+  return customer.map((x) => x.tag)
 }
 export default getUsernames

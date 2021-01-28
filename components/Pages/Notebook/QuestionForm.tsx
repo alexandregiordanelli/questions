@@ -29,7 +29,7 @@ export const QuestionForm: React.FC<{
       Right Answer
     </label>,
     <div key={2} className="q">
-      <QuestionFieldComponent md={props.question.question} />
+      <QuestionFieldComponent md={props.question.text} />
     </div>,
   ]
 
@@ -46,7 +46,7 @@ export const QuestionForm: React.FC<{
           onChange={(x) => setLetterChosen(x.target.value)}
         />
         <label htmlFor={letter}>
-          <QuestionFieldComponent md={x.alternative} />
+          <QuestionFieldComponent md={x.text} />
         </label>
       </Fragment>
     )

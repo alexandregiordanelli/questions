@@ -1,9 +1,9 @@
 import { prisma } from '../prisma/prisma'
 
-export const getCustomerIdByUsername = async (username: string): Promise<number> => {
+export const getCustomerIdByUsername = async (tag: string): Promise<number> => {
   const customer = await prisma.customer.findUnique({
     where: {
-      username,
+      tag,
     },
     select: {
       id: true,

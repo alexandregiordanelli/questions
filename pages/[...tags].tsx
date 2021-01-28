@@ -45,7 +45,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
   const { data: customer } = useData<CustomerWithNotebooks>(
-    `/api/${props.customer.username}?notebooks=true`,
+    `/api/${props.customer.tag}?notebooks=true`,
     props.customer
   )
   return (
@@ -61,7 +61,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         <Header>
           <button
             className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-            onClick={() => router.push(`/add/${customer.username}`)}
+            onClick={() => router.push(`/add/${customer.tag}`)}
           >
             Add Notebook
           </button>
@@ -76,9 +76,9 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
-    `/api/${props.customer.username}/${props.notebook.tag}`,
+    `/api/${props.customer.tag}/${props.notebook.tag}`,
     props.notebook
   )
   return (
@@ -94,20 +94,20 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           <>
             <button
               className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() => router.push(`/add/${customer.username}/${notebook.tag}`)}
+              onClick={() => router.push(`/add/${customer.tag}/${notebook.tag}`)}
             >
               Add Question
             </button>
             <button
               className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${customer.username}/${notebook.tag}`)}
+              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
             >
               Edit Notebook
             </button>
           </>
         </Header>
         <div className="flex">
-          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.username} />
+          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
           <IndexQuestionPage notebook={notebook} />
         </div>
       </div>
@@ -118,13 +118,13 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
-    `/api/${props.customer.username}/${props.notebook.tag}`,
+    `/api/${props.customer.tag}/${props.notebook.tag}`,
     props.notebook
   )
   const { data: question } = useData<QuestionWithAll>(
-    `/api/${props.customer.username}/${props.notebook.tag}/${props.question.tag}`,
+    `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
     props.question
   )
   return (
@@ -141,27 +141,25 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
           <>
             <button
               className="bg-gray-700 text-sm text-white rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() =>
-                router.push(`/edit/${customer.username}/${notebook.tag}/${question.tag}`)
-              }
+              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}/${question.tag}`)}
             >
               Edit Question
             </button>
             <button
               className="bg-gray-800 text-sm text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${customer.username}/${notebook.tag}`)}
+              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
             >
               Edit Notebook
             </button>
           </>
         </Header>
         <div className="flex">
-          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.username} />
+          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
           <QuestionFormWithRightMenu
             question={question}
             suggestions={props.suggestions}
             notebookTag={notebook.tag}
-            customerTag={customer.username}
+            customerTag={customer.tag}
           />
         </div>
       </div>

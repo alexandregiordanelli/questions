@@ -37,7 +37,7 @@ const RightMenu: React.FC<{
             <li key={i}>
               {/* activeClassName="ativo" */}
               <Link href={`/${props.customerTag}/${props.notebookTag}/${x.tag}`}>
-                <a>{x.title}</a>
+                <a>{x.name}</a>
               </Link>
             </li>
           ))}

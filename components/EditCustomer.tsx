@@ -11,7 +11,7 @@ export const EditCustomer: React.FC<{
   const initCustomer: Customer = {
     id: 0,
     userId: '',
-    username: '',
+    tag: '',
   }
 
   const [customer, setCustomer] = useState(props.customer ?? initCustomer)
@@ -25,8 +25,8 @@ export const EditCustomer: React.FC<{
     try {
       NProgress.start()
       const customer = await postClient<Customer>(_customer, `/api`)
-      mutate(`/api/${customer.username}`, customer)
-      router.push(`/${customer.username}`)
+      mutate(`/api/${customer.tag}`, customer)
+      router.push(`/${customer.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)
@@ -57,7 +57,7 @@ export const EditCustomer: React.FC<{
                         htmlFor="last_name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Username
+                        tag
                       </label>
                       <input
                         type="text"
@@ -68,13 +68,13 @@ export const EditCustomer: React.FC<{
                         onChange={(x) =>
                           setCustomer({
                             ...customer,
-                            username: x.target.value,
+                            tag: x.target.value,
                           })
                         }
-                        value={customer.username}
+                        value={customer.tag}
                       />
                       <span className="text-xs font-medium text-right block">
-                        {customer.username && `questionsof.com/${customer.username}`}
+                        {customer.tag && `questionsof.com/${customer.tag}`}
                       </span>
                     </div>
                   </div>

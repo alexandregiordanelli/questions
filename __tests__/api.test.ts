@@ -1,6 +1,6 @@
 import { postClient } from 'services/client/post'
 import { tokenForTest } from 'lib/utils'
-import { Customer } from '@prisma/client'
+import { Customer, Prisma } from '@prisma/client'
 import { deleteClient } from 'services/client/delete'
 import { getClient } from 'services/client/get'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
@@ -9,19 +9,19 @@ import _ from 'lodash'
 jest.setTimeout(30000)
 
 describe('API real', () => {
-  const _username = 'customer'
+  const _tag = 'customer'
   let _customer: Customer = {
     id: 0,
     userId: '',
-    username: _username,
+    tag: _tag,
   }
 
   let _notebook: NotebookWithTopicsAndSubTopics = {
     customerId: 0,
     id: 0,
     tag: 'notebook-create',
-    description: 'Description',
-    price: 1,
+    text: 'Description',
+    price: new Prisma.Decimal(24.454545),
     name: 'Name',
     topics: [
       {
@@ -47,7 +47,7 @@ describe('API real', () => {
   let _question: QuestionWithAll = {
     id: 0,
     tag: 'question-create',
-    question: 'question',
+    text: 'question',
     notebookId: 0,
     subTopic: {
       id: 0,
@@ -56,21 +56,21 @@ describe('API real', () => {
     },
     subTopicId: 0,
     solution: 'solution',
-    title: 'title',
+    name: 'title',
     alternatives: [
       {
         id: 0,
-        alternative: 'alternative a',
+        text: 'alternative a',
         questionId: 0,
       },
       {
         id: 1,
-        alternative: 'alternative b',
+        text: 'alternative b',
         questionId: 0,
       },
       {
         id: 2,
-        alternative: 'alternative c',
+        text: 'alternative c',
         questionId: 0,
       },
     ],
@@ -84,25 +84,25 @@ describe('API real', () => {
   it('Create customer', async () => {
     const customer = await postClient<Customer>(_customer, '/api', tokenForTest)
 
-    expect(customer.username).toBe(_username)
+    expect(customer.tag).toBe(_tag)
 
     _customer = customer
   })
 
   it('Get customer', async () => {
-    const customer = await getClient<Customer>(`/api/${_username}`)
+    const customer = await getClient<Customer>(`/api/${_tag}`)
 
-    expect(customer.username).toBe(_username)
+    expect(customer.tag).toBe(_tag)
 
     _customer = customer
   })
 
   it('Update customer', async () => {
-    const _newUsername = 'new-customer'
-    _customer.username = _newUsername
+    const _newtag = 'new-customer'
+    _customer.tag = _newtag
     const customer = await postClient<Customer>(_customer, '/api', tokenForTest)
 
-    expect(customer.username).toBe(_newUsername)
+    expect(customer.tag).toBe(_newtag)
 
     _customer = customer
   })
@@ -111,7 +111,7 @@ describe('API real', () => {
     _notebook.customerId = _customer.id
     const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
       _notebook,
-      `/api/${_customer.username}`,
+      `/api/${_customer.tag}`,
       tokenForTest
     )
 
@@ -121,7 +121,7 @@ describe('API real', () => {
 
     expect(notebook.name).toBe(_notebook.name)
 
-    expect(notebook.description).toBe(_notebook.description)
+    expect(notebook.text).toBe(_notebook.text)
 
     expect(notebook.topics).toEqual(
       expect.arrayContaining([
@@ -148,7 +148,7 @@ describe('API real', () => {
   it('Get notebook', async () => {
     const _notebookTag = _notebook.tag
     const notebook = await getClient<NotebookWithTopicsAndSubTopics>(
-      `/api/${_customer.username}/${_notebook.tag}`
+      `/api/${_customer.tag}/${_notebook.tag}`
     )
 
     expect(notebook.tag).toBe(_notebookTag)
@@ -159,9 +159,9 @@ describe('API real', () => {
   it('Update notebook', async () => {
     const _newNotebook = _.clone(_notebook)
     _newNotebook.tag = 'notebook-update'
-    _newNotebook.description = 'new description'
+    _newNotebook.text = 'new description'
     _newNotebook.name = 'new name'
-    _newNotebook.price = 2
+    _newNotebook.price = new Prisma.Decimal(2.21)
     _newNotebook.topics = [
       ..._newNotebook.topics,
       {
@@ -202,7 +202,7 @@ describe('API real', () => {
 
     const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
       _newNotebook,
-      `/api/${_customer.username}`,
+      `/api/${_customer.tag}`,
       tokenForTest
     )
 
@@ -212,7 +212,7 @@ describe('API real', () => {
 
     expect(notebook.name).toBe(_newNotebook.name)
 
-    expect(notebook.description).toBe(_newNotebook.description)
+    expect(notebook.text).toBe(_newNotebook.text)
 
     expect(notebook.topics).toEqual(
       expect.arrayContaining([
@@ -270,25 +270,25 @@ describe('API real', () => {
 
     const question = await postClient<QuestionWithAll>(
       _question,
-      `/api/${_customer.username}/${_notebook.tag}`,
+      `/api/${_customer.tag}/${_notebook.tag}`,
       tokenForTest
     )
 
     expect(question.tag).toBe(_question.tag)
     expect(question.solution).toBe(_question.solution)
-    expect(question.title).toBe(_question.title)
+    expect(question.name).toBe(_question.name)
     expect(question.subTopic.id).toBe(_question.subTopicId)
 
     expect(question.alternatives).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          alternative: _question.alternatives[0].alternative,
+          text: _question.alternatives[0].text,
         }),
         expect.objectContaining({
-          alternative: _question.alternatives[1].alternative,
+          text: _question.alternatives[1].text,
         }),
         expect.objectContaining({
-          alternative: _question.alternatives[2].alternative,
+          text: _question.alternatives[2].text,
         }),
       ])
     )
@@ -296,11 +296,11 @@ describe('API real', () => {
     if (_question.rightAlternative.alternativeId) {
       const alternative = question.alternatives.find(
         (x) => x.id == question.rightAlternative.alternativeId
-      ).alternative
+      ).text
 
       const alternativeExpected = _question.alternatives.find(
         (x) => x.id == _question.rightAlternative.alternativeId
-      ).alternative
+      ).text
 
       expect(alternative).toBe(alternativeExpected)
     }
@@ -312,17 +312,17 @@ describe('API real', () => {
     const _newQuestion = _.clone(_question)
     _newQuestion.tag = 'question-update'
     _newQuestion.solution = 'new solution'
-    _newQuestion.title = 'new name'
+    _newQuestion.name = 'new name'
     _newQuestion.alternatives = [
       ..._newQuestion.alternatives,
       {
         id: -1,
-        alternative: 'alternative d',
+        text: 'alternative d',
         questionId: 0,
       },
       {
         id: -2,
-        alternative: 'alternative e',
+        text: 'alternative e',
         questionId: 0,
       },
     ]
@@ -330,31 +330,31 @@ describe('API real', () => {
 
     const question = await postClient<QuestionWithAll>(
       _newQuestion,
-      `/api/${_customer.username}/${_notebook.tag}`,
+      `/api/${_customer.tag}/${_notebook.tag}`,
       tokenForTest
     )
 
     expect(question.tag).toBe(_newQuestion.tag)
     expect(question.solution).toBe(_newQuestion.solution)
-    expect(question.title).toBe(_newQuestion.title)
+    expect(question.name).toBe(_newQuestion.name)
     expect(question.subTopic.id).toBe(_newQuestion.subTopicId)
 
     expect(question.alternatives).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          alternative: _newQuestion.alternatives[0].alternative,
+          text: _newQuestion.alternatives[0].text,
         }),
         expect.objectContaining({
-          alternative: _newQuestion.alternatives[1].alternative,
+          text: _newQuestion.alternatives[1].text,
         }),
         expect.objectContaining({
-          alternative: _newQuestion.alternatives[2].alternative,
+          text: _newQuestion.alternatives[2].text,
         }),
         expect.objectContaining({
-          alternative: _newQuestion.alternatives[3].alternative,
+          text: _newQuestion.alternatives[3].text,
         }),
         expect.objectContaining({
-          alternative: _newQuestion.alternatives[4].alternative,
+          text: _newQuestion.alternatives[4].text,
         }),
       ])
     )
@@ -362,11 +362,11 @@ describe('API real', () => {
     if (_newQuestion.rightAlternative?.alternativeId && question.rightAlternative?.alternativeId) {
       const alternativeReceived = question.alternatives.find(
         (x) => x.id == question.rightAlternative.alternativeId
-      ).alternative
+      ).text
 
       const alternativeExpected = _newQuestion.alternatives.find(
         (x) => x.id == _newQuestion.rightAlternative.alternativeId
-      ).alternative
+      ).text
 
       expect(alternativeExpected).toBe(alternativeReceived)
     } else {
@@ -377,11 +377,9 @@ describe('API real', () => {
   })
 
   it('Get customer with Notebooks', async () => {
-    const customer = await getClient<CustomerWithNotebooks>(
-      `/api/${_customer.username}?notebooks=true`
-    )
+    const customer = await getClient<CustomerWithNotebooks>(`/api/${_customer.tag}?notebooks=true`)
 
-    expect(customer.username).toBe(_customer.username)
+    expect(customer.tag).toBe(_customer.tag)
 
     expect(customer.notebooks[0].tag).toBe(_notebook.tag)
 
@@ -389,10 +387,7 @@ describe('API real', () => {
   })
 
   it('Delete question', async () => {
-    const nRows = await deleteClient(
-      [_customer.username, _notebook.tag, _question.tag],
-      tokenForTest
-    )
+    const nRows = await deleteClient([_customer.tag, _notebook.tag, _question.tag], tokenForTest)
 
     expect(nRows).toBe(1)
 
@@ -400,7 +395,7 @@ describe('API real', () => {
   })
 
   it('Delete notebook', async () => {
-    const nRows = await deleteClient([_customer.username, _notebook.tag], tokenForTest)
+    const nRows = await deleteClient([_customer.tag, _notebook.tag], tokenForTest)
 
     expect(nRows).toBe(1)
 
@@ -408,7 +403,7 @@ describe('API real', () => {
   })
 
   it('Delete customer', async () => {
-    const nRows = await deleteClient([_customer.username], tokenForTest)
+    const nRows = await deleteClient([_customer.tag], tokenForTest)
 
     expect(nRows).toBe(1)
 

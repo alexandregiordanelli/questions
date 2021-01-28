@@ -34,11 +34,11 @@ type Action =
     }
   | {
       type: ActionType.UPDATE_DESCRIPTION
-      description: string
+      text: string
     }
   | {
       type: ActionType.UPDATE_TITLE
-      title: string
+      name: string
     }
   | {
       type: ActionType.UPDATE_TAG
@@ -67,10 +67,10 @@ const initState: QuestionWithAll = {
     name: '',
     topicId: 0,
   },
-  question: '',
+  text: '',
   notebookId: 0,
   solution: '',
-  title: '',
+  name: '',
   subTopicId: 0,
   alternatives: [],
   rightAlternative: null,
@@ -85,7 +85,7 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
     }
     case ActionType.UPDATE_DESCRIPTION: {
       const newState = _.cloneDeep(state)
-      newState.question = action.description
+      newState.text = action.text
       return newState
     }
     case ActionType.UPDATE_ALTERNATIVES: {
@@ -108,7 +108,7 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
     }
     case ActionType.UPDATE_TITLE: {
       const newState = _.cloneDeep(state)
-      newState.title = action.title
+      newState.name = action.name
       return newState
     }
     case ActionType.UPDATE_SUBTOPIC: {
@@ -145,10 +145,10 @@ export const EditQuestion: React.FC<{
       NProgress.start()
       const question = await postClient<QuestionWithAll>(
         _question,
-        `/api/${props.customer.username}/${props.notebook.tag}`
+        `/api/${props.customer.tag}/${props.notebook.tag}`
       )
-      mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`, question)
-      router.push(`/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
+      mutate(`/api/${props.customer.tag}/${props.notebook.tag}/${question.tag}`, question)
+      router.push(`/${props.customer.tag}/${props.notebook.tag}/${question.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)
@@ -204,7 +204,7 @@ export const EditQuestion: React.FC<{
                         autoComplete="family-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         onChange={(x) => {
-                          dispatch({ type: ActionType.UPDATE_TITLE, title: x.target.value })
+                          dispatch({ type: ActionType.UPDATE_TITLE, name: x.target.value })
                           dispatch({
                             type: ActionType.UPDATE_TAG,
                             tag: slugify(x.target.value, {
@@ -212,7 +212,7 @@ export const EditQuestion: React.FC<{
                             }),
                           })
                         }}
-                        value={state?.title}
+                        value={state?.name}
                       />
                       <span className="text-xs font-medium text-right block">
                         {state?.tag && `questionsof.com/${state?.tag}`}
@@ -277,10 +277,10 @@ export const EditQuestion: React.FC<{
                         onChange={(x) =>
                           dispatch({
                             type: ActionType.UPDATE_DESCRIPTION,
-                            description: x.target.value,
+                            text: x.target.value,
                           })
                         }
-                        value={state?.question ?? ''}
+                        value={state?.text ?? ''}
                       />
                     </div>
                   </div>
@@ -290,10 +290,10 @@ export const EditQuestion: React.FC<{
                     onClick={() => {
                       if (props.question) {
                         router.replace(
-                          `/${props.customer.username}/${props.notebook.tag}/${props.question.tag}`
+                          `/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`
                         )
                       } else {
-                        router.replace(`/${props.customer.username}/${props.notebook.tag}`)
+                        router.replace(`/${props.customer.tag}/${props.notebook.tag}`)
                       }
                     }}
                     className="inline-flex justify-center py-2 px-4 border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

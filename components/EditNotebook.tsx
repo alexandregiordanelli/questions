@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react'
 import { NotebookWithTopicsAndSubTopics } from '../lib/types'
-import { SubTopic, Topic, Customer } from '@prisma/client'
+import { SubTopic, Topic, Customer, Prisma } from '@prisma/client'
 import CreatableSelect from 'react-select/creatable'
 import _ from 'lodash'
 import slugify from 'slugify'
@@ -40,7 +40,7 @@ type Action =
     }
   | {
       type: ActionType.UPDATE_DESCRIPTION
-      description: string
+      text: string
     }
   | {
       type: ActionType.UPDATE_PRICE
@@ -64,9 +64,9 @@ type SelectOption = {
 const initState: NotebookWithTopicsAndSubTopics = {
   id: 0,
   customerId: 0,
-  description: '',
+  text: '',
   name: '',
-  price: 0,
+  price: new Prisma.Decimal(0),
   tag: '',
   topics: [],
 }
@@ -98,12 +98,12 @@ const reducer = (
     }
     case ActionType.UPDATE_PRICE: {
       const newState = _.cloneDeep(state)
-      newState.price = action.price
+      newState.price = new Prisma.Decimal(action.price)
       return newState
     }
     case ActionType.UPDATE_DESCRIPTION: {
       const newState = _.cloneDeep(state)
-      newState.description = action.description
+      newState.text = action.text
       return newState
     }
     case ActionType.UPDATE_TOPICS: {
@@ -216,10 +216,10 @@ export const EditNotebook: React.FC<{
       NProgress.start()
       const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
         _notebook,
-        `/api/${props.customer.username}`
+        `/api/${props.customer.tag}`
       )
-      mutate(`/api/${props.customer.username}/${notebook.tag}`, notebook)
-      router.push(`/${props.customer.username}/${notebook.tag}`)
+      mutate(`/api/${props.customer.tag}/${notebook.tag}`, notebook)
+      router.push(`/${props.customer.tag}/${notebook.tag}`)
     } catch (e) {
       NProgress.done()
       console.log(e)
@@ -430,11 +430,11 @@ export const EditNotebook: React.FC<{
                         onChange={(editor, data, value) => {
                           dispatch({
                             type: ActionType.UPDATE_DESCRIPTION,
-                            description: value,
+                            text: value,
                           })
                         }}
                       />
-                      <textarea>{state.description}</textarea>
+                      <textarea>{state.text}</textarea>
                     </div>
                   </div>
                 </div>
@@ -442,9 +442,9 @@ export const EditNotebook: React.FC<{
                   <button
                     onClick={() => {
                       if (props.notebook) {
-                        router.replace(`/${props.customer.username}/${props.notebook.tag}`)
+                        router.replace(`/${props.customer.tag}/${props.notebook.tag}`)
                       } else {
-                        router.replace(`/${props.customer.username}`)
+                        router.replace(`/${props.customer.tag}`)
                       }
                     }}
                     className="inline-flex justify-center py-2 px-4 border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

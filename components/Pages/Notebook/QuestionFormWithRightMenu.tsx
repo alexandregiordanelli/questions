@@ -22,8 +22,8 @@ export const QuestionFormWithRightMenu: React.FC<{
   return (
     <>
       <Head>
-        <title>{props.question.title}</title>
-        <meta name="description" content={props.question.title}></meta>
+        <title>{props.question.name}</title>
+        <meta name="description" content={props.question.name}></meta>
         {relativeAlternativeIndex > -1 && (
           <script
             type="application/ld+json"
@@ -34,10 +34,10 @@ export const QuestionFormWithRightMenu: React.FC<{
                 mainEntity: [
                   {
                     '@type': 'Question',
-                    name: props.question.question,
+                    name: props.question.text,
                     acceptedAnswer: {
                       '@type': 'Answer',
-                      text: props.question.alternatives[relativeAlternativeIndex].alternative,
+                      text: props.question.alternatives[relativeAlternativeIndex].text,
                     },
                   },
                 ],
@@ -94,7 +94,7 @@ export const QuestionFormWithRightMenu: React.FC<{
           suggestions={props.suggestions}
         />
         <div>
-          <h2>{props.question.title}</h2>
+          <h2>{props.question.name}</h2>
           {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
           <QuestionForm question={props.question} />
         </div>

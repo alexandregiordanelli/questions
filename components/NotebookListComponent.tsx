@@ -22,7 +22,7 @@ export const NotebookListComponent: React.FC<{
                   <h1 className="font-medium">{x.name}</h1>
                   <span className="">R${x.price}</span>
                   <div className="flex justify-end mt-5 rounded-b-lg">
-                    <Link href={`${props.customer.username}/${x.tag}`}>
+                    <Link href={`${props.customer.tag}/${x.tag}`}>
                       <a
                         className={
                           'bg-gray-500 text-white rounded-lg shadow-md px-4 py-2 font-semibold'

@@ -62,7 +62,7 @@ export const IndexQuestionPage: React.FC<{
                 createElement: React.createElement,
                 Fragment: React.Fragment,
               })
-              .processSync(props.notebook.description).result
+              .processSync(props.notebook.text).result
           }
         </div>
       </div>

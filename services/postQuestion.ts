@@ -10,10 +10,10 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
   )
 
   const data = {
-    question: questionOnRepo.question,
+    text: questionOnRepo.text,
     solution: questionOnRepo.solution,
     tag: questionOnRepo.tag,
-    title: questionOnRepo.title,
+    name: questionOnRepo.name,
     notebook: {
       connect: {
         id: questionOnRepo.notebookId,
@@ -88,7 +88,7 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
   for (const alternativeWillUpdated of alternativesWillUpdated) {
     const updateAlternative = await prisma.alternative.update({
       data: {
-        alternative: alternativeWillUpdated.alternative,
+        text: alternativeWillUpdated.text,
         question: {
           connect: {
             id: question.id,
@@ -106,7 +106,7 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
   for (const alternativeWillAdded of alternativesWillAdded) {
     const createAlternative = await prisma.alternative.create({
       data: {
-        alternative: alternativeWillAdded.alternative,
+        text: alternativeWillAdded.text,
         question: {
           connect: {
             id: question.id,
