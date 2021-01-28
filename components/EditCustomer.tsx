@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { Customer } from '@prisma/client'
@@ -13,8 +13,13 @@ export const EditCustomer: React.FC<{
     userId: '',
     username: '',
   }
+
   const [customer, setCustomer] = useState(props.customer ?? initCustomer)
   const router = useRouter()
+
+  useEffect(() => {
+    setCustomer(props.customer)
+  }, [props.customer])
 
   const postCustomer = async (_customer: Customer): Promise<void> => {
     try {

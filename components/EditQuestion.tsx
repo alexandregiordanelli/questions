@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import { QuestionWithAll, NotebookWithTopicsAndSubTopics } from '../lib/types'
 import { Alternative, RightAlternative, Customer } from '@prisma/client'
 import Select, { GroupType, OptionsType } from 'react-select'
@@ -134,6 +134,10 @@ export const EditQuestion: React.FC<{
 
   const [state, dispatch] = useReducer(reducer, initQuestion)
 
+  useEffect(() => {
+    dispatch({ type: ActionType.UPDATE_QUESTION, question: initQuestion })
+  }, [initQuestion])
+
   const postQuestion = async (_question: QuestionWithAll): Promise<void> => {
     _question.notebookId = props.notebook.id
 
@@ -152,7 +156,7 @@ export const EditQuestion: React.FC<{
     }
   }
 
-  const topics: OptionsType<GroupType<SelectOption>> = props.notebook.topics?.map((x) => {
+  const topics: OptionsType<GroupType<SelectOption>> = props.notebook?.topics?.map((x) => {
     return {
       label: x.name,
       options: x.subtopics?.map((y) => {
@@ -165,7 +169,7 @@ export const EditQuestion: React.FC<{
   })
 
   const topic = topics
-    .find((x) => x?.options.some((y) => Number(y.value) == state.subTopicId))
+    ?.find((x) => x?.options.some((y) => Number(y.value) == state.subTopicId))
     ?.options?.find((y) => Number(y.value) == state.subTopicId)
 
   return (

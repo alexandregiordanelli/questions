@@ -76,6 +76,6 @@ export const Page: NextPage<PageProps> = () => {
     return <NotebookPage customerTag={customerTag} notebookTag={notebookTag} />
   } else if (customerTag) {
     return <CustomerPage customerTag={customerTag} />
-  } else null
+  } else return null
 }
 export default Page

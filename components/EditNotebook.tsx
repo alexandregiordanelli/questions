@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 import { NotebookWithTopicsAndSubTopics } from '../lib/types'
 import { SubTopic, Topic, Customer } from '@prisma/client'
 import CreatableSelect from 'react-select/creatable'
@@ -122,6 +122,10 @@ export const EditNotebook: React.FC<{
   const router = useRouter()
 
   const [state, dispatch] = useReducer(reducer, initNotebook)
+
+  useEffect(() => {
+    dispatch({ type: ActionType.UPDATE_NOTEBOOK, notebook: initNotebook })
+  }, [initNotebook])
 
   const postNotebook = async (_notebook: NotebookWithTopicsAndSubTopics): Promise<void> => {
     _notebook.customerId = props.customer.id
