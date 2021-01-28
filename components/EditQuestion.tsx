@@ -143,6 +143,7 @@ export const EditQuestion: React.FC<{
         _question,
         `/api/${props.customer.username}/${props.notebook.tag}`
       )
+      mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`, question)
       router.push(`/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
       mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
     } catch (e) {

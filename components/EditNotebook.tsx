@@ -132,6 +132,7 @@ export const EditNotebook: React.FC<{
         _notebook,
         `/api/${props.customer.username}`
       )
+      mutate(`/api/${props.customer.username}/${notebook.tag}`, notebook)
       router.push(`/${props.customer.username}/${notebook.tag}`)
       mutate(`/api/${props.customer.username}/${notebook.tag}`)
     } catch (e) {
