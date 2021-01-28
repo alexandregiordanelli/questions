@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { Customer } from '@prisma/client'
 import { postClient } from 'services/client/post'
+import { mutate } from 'swr'
 
 export const EditCustomer: React.FC<{
   customer?: Customer
@@ -18,7 +19,8 @@ export const EditCustomer: React.FC<{
   const postCustomer = async (_customer: Customer): Promise<void> => {
     try {
       NProgress.start()
-      const customer = await postClient<Customer>(_customer, [])
+      const customer = await postClient<Customer>(_customer, `/api`)
+      mutate(`/api/${customer.username}`)
       router.push(`/${customer.username}`)
       NProgress.done()
     } catch (e) {

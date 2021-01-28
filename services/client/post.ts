@@ -1,9 +1,8 @@
 import { urlEnv } from 'lib/utils'
 import fetch from 'node-fetch'
-import { mutate } from 'swr'
-export const postClient = async <T>(_customer: T, _tags: string[], token = ''): Promise<T> => {
+
+export const postClient = async <T>(_customer: T, url: string, token = ''): Promise<T> => {
   try {
-    const url = `/api/${_tags.join('/')}`
     const response = await fetch(`${urlEnv}${url}`, {
       method: 'POST',
       body: JSON.stringify(_customer),
@@ -14,7 +13,6 @@ export const postClient = async <T>(_customer: T, _tags: string[], token = ''): 
     })
 
     if (response.ok) {
-      mutate(url)
       const res: T = await response.json()
       return res
     } else {

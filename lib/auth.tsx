@@ -32,7 +32,7 @@ const useProvideAuth = (): Auth => {
         setUser(user)
         const token = await user.getIdToken()
         cookie.set('token', token)
-        const customer = await getClient<Customer>()
+        const customer = await getClient<Customer>('/api')
         if (customer) setCustomerLogged(customer)
         else router.push('/add')
       }

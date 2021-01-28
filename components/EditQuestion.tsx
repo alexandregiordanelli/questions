@@ -7,6 +7,7 @@ import slugify from 'slugify'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { postClient } from 'services/client/post'
+import { mutate } from 'swr'
 enum ActionType {
   UPDATE_RIGHT_ALTERNATIVE,
   UPDATE_ALTERNATIVES,
@@ -138,10 +139,11 @@ export const EditQuestion: React.FC<{
 
     try {
       NProgress.start()
-      const question = await postClient<QuestionWithAll>(_question, [
-        props.customer.username,
-        props.notebook.tag,
-      ])
+      const question = await postClient<QuestionWithAll>(
+        _question,
+        `/api/${props.customer.username}/${props.notebook.tag}`
+      )
+      mutate(`/api/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
       router.push(`/${props.customer.username}/${props.notebook.tag}/${question.tag}`)
     } catch (e) {
       NProgress.done()

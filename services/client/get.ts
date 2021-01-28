@@ -11,9 +11,9 @@ import {
   NotebookHook,
   QuestionHook,
 } from 'lib/types'
-export const getClient = async <T>(_tags: string[] = []): Promise<T> => {
+export const getClient = async <T>(url: string): Promise<T> => {
   try {
-    const response = await fetch(`${urlEnv}/api/${_tags.join('/')}`, {
+    const response = await fetch(`${urlEnv}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

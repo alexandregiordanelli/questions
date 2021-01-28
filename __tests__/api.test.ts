@@ -82,7 +82,7 @@ describe('API real', () => {
   }
 
   it('Create customer', async () => {
-    const customer = await postClient<Customer>(_customer, [], tokenForTest)
+    const customer = await postClient<Customer>(_customer, '/api', tokenForTest)
 
     expect(customer.username).toBe(_username)
 
@@ -90,7 +90,7 @@ describe('API real', () => {
   })
 
   it('Get customer', async () => {
-    const customer = await getClient<Customer>([`${_username}`])
+    const customer = await getClient<Customer>(`/api/${_username}`)
 
     expect(customer.username).toBe(_username)
 
@@ -100,7 +100,7 @@ describe('API real', () => {
   it('Update customer', async () => {
     const _newUsername = 'new-customer'
     _customer.username = _newUsername
-    const customer = await postClient<Customer>(_customer, [], tokenForTest)
+    const customer = await postClient<Customer>(_customer, '/api', tokenForTest)
 
     expect(customer.username).toBe(_newUsername)
 
@@ -111,7 +111,7 @@ describe('API real', () => {
     _notebook.customerId = _customer.id
     const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
       _notebook,
-      [_customer.username],
+      `/api/${_customer.username}`,
       tokenForTest
     )
 
@@ -147,10 +147,9 @@ describe('API real', () => {
 
   it('Get notebook', async () => {
     const _notebookTag = _notebook.tag
-    const notebook = await getClient<NotebookWithTopicsAndSubTopics>([
-      _customer.username,
-      _notebook.tag,
-    ])
+    const notebook = await getClient<NotebookWithTopicsAndSubTopics>(
+      `/api/${_customer.username}/${_notebook.tag}`
+    )
 
     expect(notebook.tag).toBe(_notebookTag)
 
@@ -203,7 +202,7 @@ describe('API real', () => {
 
     const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
       _newNotebook,
-      [_customer.username],
+      `/api/${_customer.username}`,
       tokenForTest
     )
 
@@ -271,7 +270,7 @@ describe('API real', () => {
 
     const question = await postClient<QuestionWithAll>(
       _question,
-      [_customer.username, _notebook.tag],
+      `/api/${_customer.username}/${_notebook.tag}`,
       tokenForTest
     )
 
@@ -331,7 +330,7 @@ describe('API real', () => {
 
     const question = await postClient<QuestionWithAll>(
       _newQuestion,
-      [_customer.username, _notebook.tag],
+      `/api/${_customer.username}/${_notebook.tag}`,
       tokenForTest
     )
 
@@ -378,9 +377,9 @@ describe('API real', () => {
   })
 
   it('Get customer with Notebooks', async () => {
-    const customer = await getClient<CustomerWithNotebooks>([
-      `${_customer.username}?notebooks=true`,
-    ])
+    const customer = await getClient<CustomerWithNotebooks>(
+      `/api/${_customer.username}?notebooks=true`
+    )
 
     expect(customer.username).toBe(_customer.username)
 

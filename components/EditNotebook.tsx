@@ -7,6 +7,7 @@ import slugify from 'slugify'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { postClient } from 'services/client/post'
+import { mutate } from 'swr'
 enum ActionType {
   UPDATE_SUBTOPICS,
   UPDATE_NOTEBOOK,
@@ -127,9 +128,11 @@ export const EditNotebook: React.FC<{
 
     try {
       NProgress.start()
-      const notebook = await postClient<NotebookWithTopicsAndSubTopics>(_notebook, [
-        props.customer.username,
-      ])
+      const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
+        _notebook,
+        `/api/${props.customer.username}`
+      )
+      mutate(`/api/${props.customer.username}/${notebook.tag}`)
       router.push(`/${props.customer.username}/${notebook.tag}`)
       NProgress.done()
     } catch (e) {
