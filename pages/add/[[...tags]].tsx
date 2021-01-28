@@ -7,7 +7,7 @@ import { Header } from 'components/Header'
 import { EditCustomer } from 'components/EditCustomer'
 import { EditNotebook } from 'components/EditNotebook'
 import { EditQuestion } from 'components/EditQuestion'
-import { useCustomer, useNotebook } from 'services/client/get'
+import { useData } from 'services/client/get'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CustomerPageProps = {}
@@ -30,7 +30,7 @@ const CustomerPage: React.FC<CustomerPageProps> = () => {
 }
 
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
-  const { customer } = useCustomer(props.customer)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
   return (
     <>
       <Header />
@@ -40,8 +40,11 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 }
 
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
-  const { customer } = useCustomer(props.customer)
-  const { notebook } = useNotebook(customer.username, props.notebook)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
+  const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
+    `/api/${props.customer.username}/${props.notebook.tag}`,
+    props.notebook
+  )
   return (
     <>
       <Header />

@@ -40,23 +40,9 @@ export type Path = {
     slug: string[]
   }
 }
-export type CustomerHook = {
-  customer: Customer
-} & DataBaseHook
 
-export type NotebookHook = {
-  notebook: NotebookWithTopicsAndSubTopics
-} & DataBaseHook
-
-export type QuestionHook = {
-  question: QuestionWithAll
-} & DataBaseHook
-
-export type CustomerWithNotebooksHook = {
-  customer: CustomerWithNotebooks
-} & DataBaseHook
-
-export type DataBaseHook = {
+export type DataBaseHook<T> = {
+  data: T
   isLoading: boolean
   isError: any
 }

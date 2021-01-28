@@ -22,12 +22,7 @@ import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import getSuggestions from 'services/getSuggestions'
-import {
-  useCustomer,
-  useQuestion,
-  useNotebook,
-  useCustomerWithNotebooks,
-} from 'services/client/get'
+import { useData } from 'services/client/get'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -49,7 +44,10 @@ type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customer } = useCustomerWithNotebooks(props.customer)
+  const { data: customer } = useData<CustomerWithNotebooks>(
+    `/api/${props.customer.username}?notebooks=true`,
+    props.customer
+  )
   return (
     <>
       <HeadHtml>
@@ -78,8 +76,11 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customer } = useCustomer(props.customer)
-  const { notebook } = useNotebook(customer.username, props.notebook)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
+  const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
+    `/api/${props.customer.username}/${props.notebook.tag}`,
+    props.notebook
+  )
   return (
     <>
       <HeadHtml>
@@ -117,9 +118,15 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customer } = useCustomer(props.customer)
-  const { notebook } = useNotebook(customer.username, props.notebook)
-  const { question } = useQuestion(customer.username, notebook.tag, props.question)
+  const { data: customer } = useData<Customer>(`/api/${props.customer.username}`, props.customer)
+  const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
+    `/api/${props.customer.username}/${props.notebook.tag}`,
+    props.notebook
+  )
+  const { data: question } = useData<QuestionWithAll>(
+    `/api/${props.customer.username}/${props.notebook.tag}/${props.question.tag}`,
+    props.question
+  )
   return (
     <>
       <HeadHtml>
