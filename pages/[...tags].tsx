@@ -23,6 +23,7 @@ import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import getSuggestions from 'services/getSuggestions'
 import { useData } from 'services/client/get'
+import { useAuth } from 'lib/auth'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -44,6 +45,7 @@ type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customerLogged } = useAuth()
   const { data: customer } = useData<CustomerWithNotebooks>(
     `/api/${props.customer.tag}?notebooks=true`,
     props.customer
@@ -62,12 +64,14 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
         <Header>
-          <button
-            className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-            onClick={() => router.push(`/add/${customer.tag}`)}
-          >
-            Add Notebook
-          </button>
+          {customerLogged?.tag == customer.tag && (
+            <button
+              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+              onClick={() => router.push(`/add/${customer.tag}`)}
+            >
+              Add Notebook
+            </button>
+          )}
         </Header>
 
         <div className="p-12">
@@ -81,6 +85,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customerLogged } = useAuth()
   const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
     `/api/${props.customer.tag}/${props.notebook.tag}`,
@@ -96,20 +101,22 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       </HeadHtml>
       <div className="flex min-h-screen flex-col">
         <Header>
-          <>
-            <button
-              className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-              onClick={() => router.push(`/add/${customer.tag}/${notebook.tag}`)}
-            >
-              Add Question
-            </button>
-            <button
-              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
-            >
-              Edit Notebook
-            </button>
-          </>
+          {customerLogged?.tag == customer.tag && (
+            <>
+              <button
+                className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
+                onClick={() => router.push(`/add/${customer.tag}/${notebook.tag}`)}
+              >
+                Add Question
+              </button>
+              <button
+                className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+                onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
+              >
+                Edit Notebook
+              </button>
+            </>
+          )}
         </Header>
         <div className="flex">
           <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
@@ -123,6 +130,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const { customerLogged } = useAuth()
   const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
     `/api/${props.customer.tag}/${props.notebook.tag}`,
@@ -143,14 +151,16 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 
       <div className="flex min-h-screen flex-col">
         <Header>
-          <>
-            <button
-              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}/${question.tag}`)}
-            >
-              Edit Question
-            </button>
-          </>
+          {customerLogged?.tag == customer.tag && (
+            <>
+              <button
+                className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+                onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}/${question.tag}`)}
+              >
+                Edit Question
+              </button>
+            </>
+          )}
         </Header>
         <div className="flex">
           <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />

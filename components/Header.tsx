@@ -5,10 +5,10 @@ import { useRouter } from 'next/router'
 import { useAuth } from 'lib/auth'
 import firebase from 'lib/firebase-client'
 import { ChevronRightIcon } from '@primer/octicons-react'
+import NoSSR from 'react-no-ssr'
 
 export const Header: React.FC = (props) => {
   const { user } = useAuth()
-
   const route = useRouter()
   const tags = (route.query.tags as string[]) ?? []
 
@@ -63,24 +63,26 @@ export const Header: React.FC = (props) => {
             </>
           )}
         </div>
-        {!user && (
-          <Link href="/login">
-            <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
-              Login
-            </a>
-          </Link>
-        )}
-        {user && (
-          <div className="flex">
-            {props.children}
-            <button
-              className="text-white px-4 py-2 mr-2 text-sm "
-              onClick={() => firebase.auth().signOut()}
-            >
-              Sign out
-            </button>
-          </div>
-        )}
+        <NoSSR>
+          {!user && (
+            <Link href="/login">
+              <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
+                Login
+              </a>
+            </Link>
+          )}
+          {user && (
+            <div className="flex">
+              {props.children}
+              <button
+                className="text-white px-4 py-2 mr-2 text-sm "
+                onClick={() => firebase.auth().signOut()}
+              >
+                Sign out
+              </button>
+            </div>
+          )}
+        </NoSSR>
       </div>
     </>
   )
