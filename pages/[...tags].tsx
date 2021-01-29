@@ -186,60 +186,69 @@ export const Page: NextPage<PageProps> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-  const tags = context.params.tags as string[]
+  try {
+    const tags = context.params.tags as string[]
 
-  const [customerTag, notebookTag, questionTag] = tags
+    const [customerTag, notebookTag, questionTag] = tags
 
-  if (tags.length == 1) {
-    const customer = await getCustomerNotebooksByTag(customerTag)
+    if (tags.length == 1) {
+      const customer = await getCustomerNotebooksByTag(customerTag)
 
-    if (customer) {
-      return {
-        props: {
-          customer,
-        },
-        revalidate: 1,
+      if (customer) {
+        return {
+          props: {
+            customer,
+          },
+          revalidate: 1,
+        }
       }
-    }
-  } else if (tags.length == 2) {
-    const customer = await getCustomerByTag(customerTag)
-    const notebook = await getNotebookByTags(customerTag, notebookTag)
-    const menu = await getMenu(notebookTag)
-
-    if (customer && notebook) {
-      return {
-        props: {
-          customer,
-          notebook,
-          menu,
-        },
-        revalidate: 1,
-      }
-    }
-  } else if (tags.length == 3) {
-    const customer = await getCustomerByTag(customerTag)
-    const notebook = await getNotebookByTags(customerTag, notebookTag)
-    const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
-
-    if (customer && notebook && question) {
+    } else if (tags.length == 2) {
+      const customer = await getCustomerByTag(customerTag)
+      const notebook = await getNotebookByTags(customerTag, notebookTag)
       const menu = await getMenu(notebookTag)
-      const suggestions = await getSuggestions(notebookTag, question.subTopicId)
 
-      return {
-        props: {
-          customer,
-          notebook,
-          menu,
-          suggestions,
-          question,
-        },
-        revalidate: 1,
+      if (customer && notebook) {
+        return {
+          props: {
+            customer,
+            notebook,
+            menu,
+          },
+          revalidate: 1,
+        }
+      }
+    } else if (tags.length == 3) {
+      const customer = await getCustomerByTag(customerTag)
+      const notebook = await getNotebookByTags(customerTag, notebookTag)
+      const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
+
+      if (customer && notebook && question) {
+        const menu = await getMenu(notebookTag)
+        const suggestions = await getSuggestions(notebookTag, question.subTopicId)
+
+        return {
+          props: {
+            customer,
+            notebook,
+            menu,
+            suggestions,
+            question,
+          },
+          revalidate: 1,
+        }
       }
     }
-  }
 
-  return {
-    notFound: true,
+    return {
+      revalidate: 1,
+      notFound: true,
+    }
+  } catch (e) {
+    console.log(e)
+    return {
+      revalidate: 1,
+      notFound: true,
+    }
   }
 }
 
