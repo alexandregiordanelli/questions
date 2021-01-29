@@ -57,7 +57,10 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         />
       </HeadHtml>
 
-      <div className="flex min-h-screen flex-col">
+      <div
+        className="flex min-h-screen bg-gray-200 flex-col"
+        style={{ backgroundImage: `url("/graph-paper.svg")` }}
+      >
         <Header>
           <button
             className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
@@ -67,7 +70,9 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
           </button>
         </Header>
 
-        <NotebookListComponent customer={customer} />
+        <div className="p-12">
+          <NotebookListComponent customer={customer} />
+        </div>
       </div>
     </>
   )
@@ -140,16 +145,10 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
         <Header>
           <>
             <button
-              className="bg-gray-700 text-sm text-white rounded-md px-4 py-2 mr-2 shadow-md"
+              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
               onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}/${question.tag}`)}
             >
               Edit Question
-            </button>
-            <button
-              className="bg-gray-800 text-sm text-white rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
-            >
-              Edit Notebook
             </button>
           </>
         </Header>

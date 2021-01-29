@@ -4,13 +4,17 @@ import { Logo, LogoTextual } from './Logo'
 import { useRouter } from 'next/router'
 import { useAuth } from 'lib/auth'
 import firebase from 'lib/firebase-client'
+import { ChevronRightIcon } from '@primer/octicons-react'
 
 export const Header: React.FC = (props) => {
-  const router = useRouter()
   const { user } = useAuth()
-  const offsetPaddingLeft =
-    router.pathname == '/notebook/[notebookTag]' ||
-    router.pathname == '/notebook/[notebookTag]/question/[questionTag]'
+
+  const route = useRouter()
+  const tags = (route.query.tags as string[]) ?? []
+
+  const [customerTag, notebookTag, questionTag] = tags
+
+  const offsetPaddingLeft = questionTag || notebookTag
 
   return (
     <>
@@ -26,7 +30,38 @@ export const Header: React.FC = (props) => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {/* <h1><Link href={ampUrl(isAmp, "enem")}><a>Enem</a></Link></h1> */}
+          {customerTag && (
+            <>
+              {!notebookTag && (
+                <>
+                  <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
+                </>
+              )}
+              {notebookTag && (
+                <>
+                  <Link href={`/${customerTag}`}>
+                    <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
+                  </Link>
+                  {!questionTag && (
+                    <>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
+                    </>
+                  )}
+                  {questionTag && (
+                    <>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <Link href={`/${customerTag}/${notebookTag}`}>
+                        <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
+                      </Link>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
         </div>
         {!user && (
           <Link href="/login">

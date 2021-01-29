@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next'
-import React from 'react'
+import React, { Fragment } from 'react'
 import HeadHtml from '../components/HeadHtml'
 import { getCustomers } from '../services/getCustomers'
 import { Header } from '../components/Header'
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { NotebookListComponent } from '../components/NotebookListComponent'
 import { CustomerWithNotebooks } from 'lib/types'
 import { useAuth } from 'lib/auth'
+import Link from 'next/link'
 
 type PageProps = {
   customers: CustomerWithNotebooks[]
@@ -76,7 +77,20 @@ const Index: React.FC<PageProps> = (props) => {
         </div>
       </div>
 
-      <NotebookListComponent customer={props.customers[0]} />
+      {props.customers.map((x, i) => {
+        return (
+          <div
+            className="p-8 bg-gray-200"
+            style={{ backgroundImage: `url("/graph-paper.svg")` }}
+            key={i}
+          >
+            <Link href={`/${x.tag}`}>
+              <a className="font-semibold text-gray-500">@{x.tag}</a>
+            </Link>
+            <NotebookListComponent customer={x} />
+          </div>
+        )
+      })}
     </>
   )
 }
@@ -88,6 +102,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
     props: {
       customers,
     },
+    revalidate: 1,
   }
 }
 export default Index
