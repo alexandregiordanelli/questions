@@ -240,13 +240,11 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     }
 
     return {
-      revalidate: 1,
       notFound: true,
     }
   } catch (e) {
     console.log(e)
     return {
-      revalidate: 1,
       notFound: true,
     }
   }
