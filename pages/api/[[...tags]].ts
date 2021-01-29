@@ -69,17 +69,21 @@ const Controller: VercelApiHandler = async (req, res) => {
       } else if (tags.length == 1) {
         if (req.query.notebooks) {
           const customer = await getCustomerNotebooksByTag(customerTag)
-          res.send(customer)
+          if (customer) res.send(customer)
+          else throw new Error('not found')
         } else {
           const customer = await getCustomerByTag(customerTag)
-          res.send(customer)
+          if (customer) res.send(customer)
+          else throw new Error('not found')
         }
       } else if (tags.length == 2) {
         const notebook = await getNotebookByTags(customerTag, notebookTag)
-        res.send(notebook)
+        if (notebook) res.send(notebook)
+        else throw new Error('not found')
       } else if (tags.length == 3) {
         const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
-        res.send(question)
+        if (question) res.send(question)
+        else throw new Error('not found')
       } else {
         throw new Error('more/less tags than necessary')
       }
