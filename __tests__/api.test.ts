@@ -1,6 +1,6 @@
 import { postClient } from 'services/client/post'
 import { tokenForTest } from 'lib/utils'
-import { Customer, Prisma } from '@prisma/client'
+import { Customer } from '@prisma/client'
 import { deleteClient } from 'services/client/delete'
 import { getClient } from 'services/client/get'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
@@ -21,7 +21,7 @@ describe('API real', () => {
     id: 0,
     tag: 'notebook-create',
     text: 'Description',
-    price: new Prisma.Decimal(24.454545),
+    price: 24.4,
     name: 'Name',
     topics: [
       {
@@ -161,7 +161,7 @@ describe('API real', () => {
     _newNotebook.tag = 'notebook-update'
     _newNotebook.text = 'new description'
     _newNotebook.name = 'new name'
-    _newNotebook.price = new Prisma.Decimal(2.21)
+    _newNotebook.price = 2.21
     _newNotebook.topics = [
       ..._newNotebook.topics,
       {

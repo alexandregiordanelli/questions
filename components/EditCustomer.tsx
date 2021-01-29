@@ -18,7 +18,7 @@ export const EditCustomer: React.FC<{
   const router = useRouter()
 
   useEffect(() => {
-    setCustomer(props.customer)
+    setCustomer(props.customer ?? initCustomer)
   }, [props.customer])
 
   const postCustomer = async (_customer: Customer): Promise<void> => {
@@ -71,10 +71,10 @@ export const EditCustomer: React.FC<{
                             tag: x.target.value,
                           })
                         }
-                        value={customer.tag}
+                        value={customer?.tag}
                       />
                       <span className="text-xs font-medium text-right block">
-                        {customer.tag && `questionsof.com/${customer.tag}`}
+                        {customer?.tag && `questionsof.com/${customer?.tag}`}
                       </span>
                     </div>
                   </div>

@@ -7,6 +7,10 @@ import { getNotebook } from './getNotebook'
 const postNotebook = async (
   notebookOnRepo: NotebookWithTopicsAndSubTopics
 ): Promise<NotebookWithTopicsAndSubTopics> => {
+  if (!notebookOnRepo.tag || !notebookOnRepo.name) {
+    throw new Error('no tag or name')
+  }
+
   const notebook = await prisma.notebook.upsert({
     create: {
       tag: notebookOnRepo.tag,

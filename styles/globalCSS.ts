@@ -1,6 +1,17 @@
 import css from 'styled-jsx/css'
 
 export const globalCSS = css.global`
+  .CodeMirror {
+    height: 100%;
+    /* min-height: 70px; */
+    /* max-height: 300px; */
+    z-index: 0;
+  }
+
+  .CodeMirror-gutters {
+    /* background-color: white; */
+  }
+
   html,
   body {
     padding: 0;

@@ -15,7 +15,7 @@ CREATE TABLE `Notebook` (
     `customerId` INT NOT NULL,
     `tag` VARCHAR(191) NOT NULL,
     `text` TEXT,
-    `price` DECIMAL(6, 2),
+    `price` DECIMAL(65,30),
     `name` VARCHAR(191),
 UNIQUE INDEX `Notebook.customerId_tag_unique`(`customerId`, `tag`),
 

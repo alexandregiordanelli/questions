@@ -8,6 +8,8 @@ import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { postClient } from 'services/client/post'
 import { mutate } from 'swr'
+import { Editor } from 'components/Editor'
+
 enum ActionType {
   UPDATE_RIGHT_ALTERNATIVE,
   UPDATE_ALTERNATIVES,
@@ -15,7 +17,7 @@ enum ActionType {
   UPDATE_SOLUTION,
   UPDATE_TITLE,
   UPDATE_TAG,
-  UPDATE_DESCRIPTION,
+  UPDATE_TEXT,
   UPDATE_SUBTOPIC,
 }
 
@@ -33,7 +35,7 @@ type Action =
       solution: string
     }
   | {
-      type: ActionType.UPDATE_DESCRIPTION
+      type: ActionType.UPDATE_TEXT
       text: string
     }
   | {
@@ -83,7 +85,7 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
       newState.rightAlternative = action.rightAlternative
       return newState
     }
-    case ActionType.UPDATE_DESCRIPTION: {
+    case ActionType.UPDATE_TEXT: {
       const newState = _.cloneDeep(state)
       newState.text = action.text
       return newState
@@ -195,7 +197,7 @@ export const EditQuestion: React.FC<{
                         htmlFor="last_name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Notebook&apos;s name
+                        Question&apos;s name
                       </label>
                       <input
                         type="text"
@@ -214,8 +216,9 @@ export const EditQuestion: React.FC<{
                         }}
                         value={state?.name}
                       />
-                      <span className="text-xs font-medium text-right block">
-                        {state?.tag && `questionsof.com/${state?.tag}`}
+                      <span className="text-xs font-light text-right block mt-1">
+                        {state?.tag &&
+                          `questionsof.com/${props.customer.tag}/${props.notebook.tag}/${state?.tag}`}
                       </span>
                     </div>
 
@@ -224,19 +227,23 @@ export const EditQuestion: React.FC<{
                         htmlFor="last_name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Price
+                        Subject
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <input
-                          type="text"
-                          name="price"
-                          id="price"
-                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                          placeholder="0.00"
-                          onChange={(x) =>
-                            dispatch({ type: ActionType.UPDATE_SOLUTION, solution: x.target.value })
+                      <div className="mt-1">
+                        <Select
+                          instanceId={'topics'}
+                          isClearable
+                          menuPortalTarget={
+                            typeof document != 'undefined' && document.querySelector('body')
                           }
-                          value={state?.solution}
+                          onChange={(x) => {
+                            dispatch({
+                              type: ActionType.UPDATE_SUBTOPIC,
+                              subTopicId: Number(x?.value),
+                            })
+                          }}
+                          value={(topic as unknown) as GroupType<SelectOption>}
+                          options={topics}
                         />
                       </div>
                     </div>
@@ -244,24 +251,20 @@ export const EditQuestion: React.FC<{
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="country"
-                        className="block text-sm font-medium text-gray-700  mb-1"
+                        className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Topics
+                        Body
                       </label>
-                      <Select
-                        instanceId={'topics'}
-                        isClearable
-                        menuPortalTarget={
-                          typeof document != 'undefined' && document.querySelector('body')
-                        }
-                        onChange={(x) => {
+
+                      <Editor
+                        className="h-32"
+                        onChange={(x) =>
                           dispatch({
-                            type: ActionType.UPDATE_SUBTOPIC,
-                            subTopicId: Number(x?.value),
+                            type: ActionType.UPDATE_TEXT,
+                            text: x,
                           })
-                        }}
-                        value={(topic as unknown) as GroupType<SelectOption>}
-                        options={topics}
+                        }
+                        value={state.text}
                       />
                     </div>
 
@@ -270,17 +273,18 @@ export const EditQuestion: React.FC<{
                         htmlFor="country"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Description
+                        Solution
                       </label>
-                      <textarea
-                        className="resize-y mt-1 font-mono focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+
+                      <Editor
+                        className="h-48"
                         onChange={(x) =>
                           dispatch({
-                            type: ActionType.UPDATE_DESCRIPTION,
-                            text: x.target.value,
+                            type: ActionType.UPDATE_SOLUTION,
+                            solution: x,
                           })
                         }
-                        value={state?.text ?? ''}
+                        value={state.solution}
                       />
                     </div>
                   </div>

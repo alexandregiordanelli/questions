@@ -20,8 +20,8 @@ model Notebook {
   customerId Int
   tag        String
   text       String?    @db.Text
-  price      Decimal?   @db.Decimal(6, 2)
-  name       String?
+  price      Float?
+  name       String
   customer   Customer   @relation(fields: [customerId], references: [id])
   questions  Question[]
   topics     Topic[]
