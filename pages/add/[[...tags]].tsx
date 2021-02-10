@@ -7,6 +7,7 @@ import { EditNotebook } from 'components/EditNotebook'
 import { EditQuestion } from 'components/EditQuestion'
 import { useData } from 'services/client/get'
 import { useRouter } from 'next/router'
+import { HeaderSecondary } from 'components/HeaderSecondary'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type CustomerPageProps = {}
@@ -32,6 +33,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   return (
     <>
       <Header />
+      <HeaderSecondary />
       <EditNotebook customer={customer} />
     </>
   )
@@ -45,6 +47,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   return (
     <>
       <Header />
+      <HeaderSecondary />
       <EditQuestion customer={customer} notebook={notebook} />
     </>
   )
@@ -55,6 +58,10 @@ export const Page: NextPage<PageProps> = () => {
   const tags = (route.query.tags as string[]) ?? []
 
   const [customerTag, notebookTag] = tags
+
+  if (tags.length > 2) {
+    throw new Error('not exists')
+  }
 
   if (notebookTag) {
     return <QuestionPage customerTag={customerTag} notebookTag={notebookTag} />

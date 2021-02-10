@@ -16,14 +16,13 @@ import { useAmp } from 'next/amp'
 import HeadHtml from 'components/HeadHtml'
 import { urlEnv, ampCanonicalUrl } from 'lib/utils'
 import { Header } from 'components/Header'
-import { NotebookListComponent } from 'components/NotebookListComponent'
 import getMenu from 'services/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
-import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import getSuggestions from 'services/getSuggestions'
 import { useData } from 'services/client/get'
-import { useAuth } from 'lib/auth'
+import { NotebookCard } from 'components/NotebookCard'
+import { HeaderSecondary } from '../components/HeaderSecondary'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -45,7 +44,6 @@ type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customerLogged } = useAuth()
   const { data: customer } = useData<CustomerWithNotebooks>(
     `/api/${props.customer.tag}?notebooks=true`,
     props.customer
@@ -60,22 +58,18 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
       </HeadHtml>
 
       <div
-        className="flex min-h-screen bg-gray-200 flex-col"
-        style={{ backgroundImage: `url("/graph-paper.svg")` }}
+        className="flex min-h-screen bg-gray-100 flex-col"
+        // style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
-        <Header>
-          {customerLogged?.tag == customer.tag && (
-            <button
-              className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-              onClick={() => router.push(`/add/${customer.tag}`)}
-            >
-              Add Notebook
-            </button>
-          )}
-        </Header>
-
-        <div className="p-12">
-          <NotebookListComponent customer={customer} />
+        <Header />
+        <HeaderSecondary />
+        <div className=" bg-white border-t border-b">
+          <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
+        </div>
+        <div className="flex flex-wrap">
+          {props.customer.notebooks.map((x, i) => (
+            <NotebookCard notebook={x} key={i} customerTag={props.customer.tag} className="m-8" />
+          ))}
         </div>
       </div>
     </>
@@ -85,12 +79,6 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customerLogged } = useAuth()
-  const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
-  const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
-    `/api/${props.customer.tag}/${props.notebook.tag}`,
-    props.notebook
-  )
   return (
     <>
       <HeadHtml>
@@ -99,28 +87,59 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
         />
       </HeadHtml>
-      <div className="flex min-h-screen flex-col">
-        <Header>
-          {customerLogged?.tag == customer.tag && (
-            <>
-              <button
-                className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md"
-                onClick={() => router.push(`/add/${customer.tag}/${notebook.tag}`)}
-              >
-                Add Question
-              </button>
-              <button
-                className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-                onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}`)}
-              >
-                Edit Notebook
-              </button>
-            </>
-          )}
-        </Header>
-        <div className="flex">
-          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
-          <IndexQuestionPage notebook={notebook} />
+
+      <Header />
+      <HeaderSecondary />
+      <div className=" bg-white border-t border-b">
+        <div className="max-w-screen-lg mx-auto items-center">
+          <h1 className="text-xl font-medium text-black my-8">{props.notebook.name}</h1>
+        </div>
+      </div>
+      <div className="bg-gray-50 shadow-inner">
+        <div className="flex max-w-screen-lg mx-auto">
+          <p className="py-8 pr-8">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam convallis laoreet magna,
+            eget molestie urna mollis et. In lorem arcu, cursus sed felis non, porttitor fringilla
+            lectus. Phasellus pretium suscipit luctus. Proin iaculis elit nisl, quis elementum ex
+            consequat et. Integer posuere ipsum et sem egestas, et vulputate enim aliquam. Donec vel
+            maximus nisl. Curabitur id tempor magna. Mauris feugiat orci vehicula risus eleifend
+            venenatis. Curabitur quis turpis faucibus, interdum nisl tempor, sagittis lectus. Proin
+            at eros in arcu mattis ullamcorper vitae sed elit. Pellentesque habitant morbi tristique
+            senectus et netus et malesuada fames ac turpis egestas. Integer facilisis diam vitae
+            risus rutrum, in sollicitudin urna mollis. Pellentesque eleifend augue lacinia, posuere
+            elit sit amet, imperdiet neque. Maecenas at hendrerit magna, vitae lobortis arcu.
+            Aliquam non porta lacus, et efficitur erat. Nam non nisi quis purus ullamcorper
+            tristique ut bibendum lorem. Duis lacinia, neque et mollis tincidunt, orci lectus
+            laoreet tellus, at posuere ipsum urna vitae erat. Duis tincidunt dapibus accumsan. Cras
+            hendrerit nisl eu sapien rutrum elementum. Quisque aliquam est a volutpat vulputate.
+            Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed eu est eget sapien
+            tristique dapibus in ac nisl. Nullam tempor malesuada faucibus. Phasellus rutrum urna
+            nec vehicula vehicula. Quisque et ullamcorper lacus, eget ornare neque. Nunc nec massa
+            hendrerit, mattis mauris sit amet, rutrum sapien. Suspendisse ut libero neque. Nulla
+            pretium magna quis porttitor ullamcorper. Nam lacinia elit augue, at cursus mi fermentum
+            id. Suspendisse ultricies eget arcu non scelerisque. Cras eget pharetra turpis. Donec
+            scelerisque pharetra viverra. Pellentesque pulvinar sem in congue rutrum. Duis
+            scelerisque, augue quis aliquam faucibus, quam felis interdum nunc, non feugiat sapien
+            augue id est. Quisque eleifend congue hendrerit. Donec eget ligula elementum, suscipit
+            augue vel, imperdiet tortor. Maecenas dui nulla, pulvinar gravida blandit id, finibus
+            venenatis leo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+            ridiculus mus. Vestibulum vehicula turpis quam, sed volutpat lorem suscipit id. Nulla
+            nec turpis metus. Vestibulum tempus, quam sed tempus imperdiet, urna tortor ultricies
+            augue, nec condimentum metus lectus sit amet tortor. Etiam consequat ultricies rutrum.
+            Aliquam erat volutpat. Maecenas vitae ultrices enim. Morbi id auctor mi, a condimentum
+            est. Sed ligula turpis, imperdiet elementum feugiat at, rhoncus sed turpis. Aliquam id
+            laoreet lectus. Integer euismod tellus pulvinar libero condimentum cursus. Pellentesque
+            eleifend velit vel auctor commodo.
+          </p>
+          <div>
+            <div className="sticky top-24 transform -translate-y-8">
+              <NotebookCard
+                notebook={props.notebook}
+                customerTag={props.customer.tag}
+                className="shadow-2xl"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -130,7 +149,6 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { customerLogged } = useAuth()
   const { data: customer } = useData<Customer>(`/api/${props.customer.tag}`, props.customer)
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
     `/api/${props.customer.tag}/${props.notebook.tag}`,
@@ -150,18 +168,8 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
       </HeadHtml>
 
       <div className="flex min-h-screen flex-col">
-        <Header>
-          {customerLogged?.tag == customer.tag && (
-            <>
-              <button
-                className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-                onClick={() => router.push(`/edit/${customer.tag}/${notebook.tag}/${question.tag}`)}
-              >
-                Edit Question
-              </button>
-            </>
-          )}
-        </Header>
+        <Header />
+        <HeaderSecondary />
         <div className="flex">
           <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
           <QuestionFormWithRightMenu

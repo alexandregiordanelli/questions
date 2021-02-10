@@ -79,14 +79,13 @@ const Index: React.FC<PageProps> = (props) => {
 
       {props.customers.map((x, i) => {
         return (
-          <div
-            className="p-8 bg-gray-200"
-            style={{ backgroundImage: `url("/graph-paper.svg")` }}
-            key={i}
-          >
-            <Link href={`/${x.tag}`}>
-              <a className="font-semibold text-gray-500">@{x.tag}</a>
-            </Link>
+          <div key={i}>
+            <div className=" border-t border-b p-6 pt-16">
+              <Link href={`/${x.tag}`}>
+                <a className="text-xl font-medium text-black my-8">{x.tag}</a>
+              </Link>
+            </div>
+
             <NotebookListComponent customer={x} />
           </div>
         )
