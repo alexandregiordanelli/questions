@@ -15,6 +15,7 @@ import admin from 'lib/firebase-server'
 import { deleteCustomerByTag } from 'services/deleteCustomer'
 import { deleteNotebookByTags } from 'services/deleteNotebook'
 import { deleteQuestionByTags } from 'services/deleteQuestion'
+import getQuestions from 'services/getQuestions'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -70,6 +71,10 @@ const Controller: VercelApiHandler = async (req, res) => {
         if (req.query.notebooks) {
           const customer = await getCustomerNotebooksByTag(customerTag)
           if (customer) res.send(customer)
+          else throw new Error('not found')
+        } else if (req.query.questions) {
+          const questions = await getQuestions(customerTag)
+          if (questions) res.send(questions)
           else throw new Error('not found')
         } else {
           const customer = await getCustomerByTag(customerTag)

@@ -11,7 +11,7 @@ export const Editor: React.FC<{
   className?: string
 }> = (props) => (
   <CodeMirror
-    className={`text-xs shadow-sm border-gray-300 rounded-md border p-1 ${props.className ?? ''}`}
+    className={`shadow-sm border-gray-300 rounded-md border p-1 ${props.className ?? ''}`}
     options={{
       mode: 'gfm',
       lineNumbers: true,

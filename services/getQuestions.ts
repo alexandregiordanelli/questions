@@ -1,24 +1,28 @@
 import { prisma } from '../prisma/prisma'
-import { Path } from '../lib/types'
+import { QuestionWithAll } from '../lib/types'
 
-const getQuestions = async (notebookTag: string): Promise<Path[]> => {
+const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => {
   const questions = await prisma.question.findMany({
     where: {
       notebook: {
-        tag: notebookTag,
+        customer: {
+          tag: customerTag,
+        },
+      },
+    },
+    include: {
+      alternatives: true,
+      rightAlternative: true,
+      subTopic: true,
+      notebook: {
+        select: {
+          name: true,
+          tag: true,
+        },
       },
     },
   })
 
-  const questionsListPath = questions.map(
-    (x) =>
-      ({
-        params: {
-          slug: [notebookTag].concat(x.tag), // [enem,questao1]
-        },
-      } as Path)
-  )
-
-  return questionsListPath
+  return questions
 }
 export default getQuestions
