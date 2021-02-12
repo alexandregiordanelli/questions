@@ -22,7 +22,6 @@ import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFor
 import getSuggestions from 'services/getSuggestions'
 import { useData } from 'services/client/get'
 import { NotebookCard } from 'components/NotebookCard'
-import { HeaderSecondary } from '../components/HeaderSecondary'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -62,7 +61,6 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         // style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
         <Header />
-        <HeaderSecondary />
         <div className=" bg-white border-t border-b">
           <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
         </div>
@@ -89,7 +87,6 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       </HeadHtml>
 
       <Header />
-      <HeaderSecondary />
       <div className=" bg-white border-t border-b">
         <div className="max-w-screen-lg mx-auto items-center">
           <h1 className="text-xl font-medium text-black my-8">{props.notebook.name}</h1>
@@ -169,7 +166,6 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
 
       <div className="flex min-h-screen flex-col">
         <Header />
-        <HeaderSecondary />
         <div className="flex">
           <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
           <QuestionFormWithRightMenu

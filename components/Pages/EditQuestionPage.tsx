@@ -9,21 +9,11 @@ import { useReducer, useEffect } from 'react'
 import NProgress from 'nprogress'
 import { postClient } from 'services/client/post'
 import { mutate } from 'swr'
-import { HeaderAdmin } from 'pages/admin/[tag]'
-
-type CustomerPageProps = {
-  customerTag: string
-}
-
-type NotebookPageProps = {
-  notebookTag: string
-} & CustomerPageProps
-
-type QuestionPageProps = {
-  questionTag: string
-} & NotebookPageProps
+import { HeaderAdmin } from 'pages/admin/questions'
 
 export enum ActionType {
+  UPDATE_NOTEBOOK_ID,
+  UPDATE_NOTEBOOK,
   UPDATE_RIGHT_ALTERNATIVE,
   UPDATE_ALTERNATIVES,
   UPDATE_QUESTION,
@@ -35,6 +25,17 @@ export enum ActionType {
 }
 
 export type Action =
+  | {
+      type: ActionType.UPDATE_NOTEBOOK_ID
+      notebookId: number
+    }
+  | {
+      type: ActionType.UPDATE_NOTEBOOK
+      notebook: {
+        name: string
+        tag: string
+      }
+    }
   | {
       type: ActionType.UPDATE_ALTERNATIVES
       alternatives: Alternative[]
@@ -76,6 +77,10 @@ const initState: QuestionWithAll = {
     name: '',
     topicId: 0,
   },
+  notebook: {
+    name: '',
+    tag: '',
+  },
   text: '',
   notebookId: 0,
   solution: '',
@@ -87,6 +92,16 @@ const initState: QuestionWithAll = {
 
 const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
   switch (action.type) {
+    case ActionType.UPDATE_NOTEBOOK: {
+      const newState = _.cloneDeep(state)
+      newState.notebook = action.notebook
+      return newState
+    }
+    case ActionType.UPDATE_NOTEBOOK_ID: {
+      const newState = _.cloneDeep(state)
+      newState.notebookId = action.notebookId
+      return newState
+    }
     case ActionType.UPDATE_RIGHT_ALTERNATIVE: {
       const newState = _.cloneDeep(state)
       newState.rightAlternative = action.rightAlternative
@@ -132,6 +147,12 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
   return state
 }
 
+type QuestionPageProps = {
+  customerTag: string
+  notebookTag: string
+  questionTag?: string
+}
+
 export const EditQuestionPage: React.FC<QuestionPageProps> = (props) => {
   const { data: customer } = useData<CustomerWithNotebooks>(
     `/api/${props.customerTag}?notebooks=true`,
@@ -139,7 +160,7 @@ export const EditQuestionPage: React.FC<QuestionPageProps> = (props) => {
   )
 
   const { data: question } = useData<QuestionWithAll>(
-    `/api/${props.customerTag}/${props.notebookTag}/${props.questionTag}`
+    props.questionTag ? `/api/${props.customerTag}/${props.notebookTag}/${props.questionTag}` : null
   )
 
   const initQuestion = question ? question : initState
@@ -169,7 +190,7 @@ export const EditQuestionPage: React.FC<QuestionPageProps> = (props) => {
 
   return (
     <>
-      <HeaderAdmin breadcrumb={<span>{question?.tag ? question.name : ''}</span>}>
+      <HeaderAdmin breadcrumb={<span>{question?.tag ? question.name : 'New'}</span>}>
         <button
           onClick={async () => await postQuestion(state)}
           className="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -179,54 +200,7 @@ export const EditQuestionPage: React.FC<QuestionPageProps> = (props) => {
       </HeaderAdmin>
 
       <div className="p-20">
-        <EditQuestion
-          customer={customer}
-          notebookTag={props.notebookTag}
-          question={state}
-          dispatch={dispatch}
-        />
-      </div>
-    </>
-  )
-}
-
-export const NewQuestionPage: React.FC<NotebookPageProps> = (props) => {
-  const { data: customer } = useData<CustomerWithNotebooks>(
-    `/api/${props.customerTag}?notebooks=true`
-  )
-
-  const router = useRouter()
-
-  const [state, dispatch] = useReducer(reducer, initState)
-
-  const postQuestion = async (_question: QuestionWithAll): Promise<void> => {
-    try {
-      NProgress.start()
-      const question = await postClient<QuestionWithAll>(
-        _question,
-        `/api/${customer.tag}/${_question.notebook.tag}`
-      )
-      mutate(`/api/${customer.tag}/${_question.notebook.tag}/${_question.tag}`, question)
-      router.push(`/${customer.tag}/${_question.notebook.tag}/${_question.tag}`)
-    } catch (e) {
-      NProgress.done()
-      console.log(e)
-    }
-  }
-
-  return (
-    <>
-      <HeaderAdmin breadcrumb={<span>New</span>}>
-        <button
-          onClick={async () => await postQuestion(state)}
-          className="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Save
-        </button>
-      </HeaderAdmin>
-
-      <div className="p-20">
-        <EditQuestion question={initState} notebookTag="" customer={customer} dispatch={dispatch} />
+        <EditQuestion customer={customer} question={state} dispatch={dispatch} />
       </div>
     </>
   )

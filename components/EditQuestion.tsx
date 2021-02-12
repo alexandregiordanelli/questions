@@ -18,21 +18,22 @@ type SelectOption = {
 
 export const EditQuestion: React.FC<{
   question: QuestionWithAll
-  notebookTag: string
   customer: CustomerWithNotebooks
   dispatch: Dispatch<Action>
 }> = (props) => {
-  const [notebookTag, setNotebookTag] = useState(props.notebookTag)
   const [notebook, setNotebook] = useState<NotebookWithTopicsAndSubTopics>(null)
 
   useEffect(() => {
     ;(async () => {
-      const _notebook = await fetcher<NotebookWithTopicsAndSubTopics>(
-        `/api/${props.customer?.tag}/${notebookTag}`
-      )
-      setNotebook(_notebook)
+      console.log('aqui')
+      if (props.customer?.tag && props.question?.notebook.tag) {
+        const _notebook = await fetcher<NotebookWithTopicsAndSubTopics>(
+          `/api/${props.customer?.tag}/${props.question?.notebook.tag}`
+        )
+        setNotebook(_notebook)
+      }
     })()
-  }, [notebookTag])
+  }, [props.customer?.tag, props.question?.notebook.tag])
 
   const topics: OptionsType<GroupType<SelectOption>> = notebook?.topics?.map((x) => {
     return {
@@ -84,12 +85,22 @@ export const EditQuestion: React.FC<{
               <div className="mt-1">
                 <Select
                   onChange={(x) => {
-                    setNotebookTag(x.value)
+                    props.dispatch({
+                      type: ActionType.UPDATE_NOTEBOOK,
+                      notebook: {
+                        name: x.label,
+                        tag: x.value,
+                      },
+                    })
+                    props.dispatch({
+                      type: ActionType.UPDATE_NOTEBOOK_ID,
+                      notebookId: props.customer?.notebooks.find((y) => y.tag == x.value)?.id,
+                    })
                   }}
                   value={
                     {
-                      value: notebookTag,
-                      label: props.customer?.notebooks.find((x) => x.tag == notebookTag)?.name,
+                      value: props.question.notebook.tag,
+                      label: props.question.notebook.name,
                     } as SelectOption
                   }
                   options={props.customer?.notebooks.map(
