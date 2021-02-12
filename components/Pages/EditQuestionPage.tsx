@@ -138,7 +138,6 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
     case ActionType.UPDATE_SUBTOPIC: {
       const newState = _.cloneDeep(state)
       newState.subTopicId = action.subTopicId
-      newState.subTopic.id = action.subTopicId
       return newState
     }
     default:
