@@ -9,6 +9,8 @@ import slugify from 'slugify'
 import { Editor } from 'components/Editor'
 import { Action, ActionType } from './Pages/EditQuestionPage'
 import { fetcher } from 'services/client/get'
+import _ from 'lodash'
+import { Alternative } from '@prisma/client'
 
 type SelectOption = {
   label: string
@@ -152,6 +154,60 @@ export const EditQuestion: React.FC<{
                 value={props.question.text}
               />
             </div>
+
+            <select
+              onChange={(x) => {
+                const n = Number(x.target.value)
+
+                const alternatives: Alternative[] = props.question.alternatives.slice(0, n)
+
+                for (let i = props.question.alternatives.length; i < n; i++) {
+                  alternatives.push({
+                    id: -i,
+                    questionId: props.question.id,
+                    text: '',
+                  })
+                }
+
+                props.dispatch({
+                  type: ActionType.UPDATE_ALTERNATIVES,
+                  alternatives,
+                })
+              }}
+              value={props.question.alternatives.length}
+            >
+              {Array.from(Array(10).keys()).map((x) => (
+                <option key={x} value={x}>
+                  {x}
+                </option>
+              ))}
+            </select>
+
+            {props.question.alternatives.map((alternative, i) => {
+              const alternatives = _.cloneDeep(props.question.alternatives)
+              return (
+                <div className="col-span-6 sm:col-span-4" key={i}>
+                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                    Alternative {i + 1}
+                  </label>
+
+                  <Editor
+                    className="h-24"
+                    onChange={(x) => {
+                      alternatives[i] = {
+                        ...alternatives[i],
+                        text: x,
+                      }
+                      props.dispatch({
+                        type: ActionType.UPDATE_ALTERNATIVES,
+                        alternatives,
+                      })
+                    }}
+                    value={alternative.text}
+                  />
+                </div>
+              )
+            })}
 
             <div className="col-span-6 sm:col-span-4">
               <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
