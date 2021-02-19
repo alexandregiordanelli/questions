@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
-import { NotebookWithTopicsAndSubTopics } from '../lib/types'
-import { prisma } from '../prisma/prisma'
+import { NotebookWithTopicsAndSubTopics } from '../../lib/types'
+import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
 import { getNotebook } from './getNotebook'
 
@@ -81,7 +81,7 @@ const postNotebook = async (
   batch.push(deleteTopics) //DELETE TOPICS
 
   for (const topicWillAdded of topicsWillAdded ?? []) {
-    const createSubTopics: Prisma.SubTopicCreateManyWithoutTopicInput = {
+    const createSubTopics: Prisma.SubTopicCreateNestedManyWithoutTopicInput = {
       create: topicWillAdded.subtopics?.map((x) => {
         delete x.id
         delete x.topicId

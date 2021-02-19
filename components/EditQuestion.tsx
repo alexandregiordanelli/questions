@@ -166,6 +166,8 @@ export const EditQuestion: React.FC<{
                     id: -i,
                     questionId: props.question.id,
                     text: '',
+                    createdAt: null,
+                    updatedAt: null,
                   })
                 }
 

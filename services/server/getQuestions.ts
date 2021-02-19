@@ -1,5 +1,5 @@
-import { prisma } from '../prisma/prisma'
-import { QuestionWithAll } from '../lib/types'
+import { prisma } from '../../prisma/prisma'
+import { QuestionWithAll } from '../../lib/types'
 
 const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => {
   const questions = await prisma.question.findMany({

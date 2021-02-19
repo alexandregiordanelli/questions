@@ -9,6 +9,7 @@ if (!admin.apps.length) {
 
   admin.initializeApp({
     credential: credential.cert(serviceAccount),
+    storageBucket: 'questionsofcom.appspot.com',
   })
 }
 export default admin

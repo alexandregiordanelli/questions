@@ -12,13 +12,15 @@ export const EditCustomer: React.FC<{
     id: 0,
     userId: '',
     tag: '',
+    createdAt: null,
+    updatedAt: null,
   }
 
   const [customer, setCustomer] = useState(props.customer ?? initCustomer)
   const router = useRouter()
 
   useEffect(() => {
-    setCustomer(props.customer ?? initCustomer)
+    if (props.customer) setCustomer(props.customer)
   }, [props.customer])
 
   const postCustomer = async (_customer: Customer): Promise<void> => {

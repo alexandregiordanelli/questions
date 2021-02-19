@@ -1,11 +1,11 @@
 import { urlEnv } from 'lib/utils'
 import fetch from 'node-fetch'
 
-export const postClient = async <T>(_customer: T, url: string, token = ''): Promise<T> => {
+export const postClient = async <T>(body: T, url: string, token = ''): Promise<T> => {
   try {
     const response = await fetch(`${urlEnv}${url}`, {
       method: 'POST',
-      body: JSON.stringify(_customer),
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

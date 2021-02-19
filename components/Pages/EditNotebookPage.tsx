@@ -61,6 +61,8 @@ const initState: NotebookWithTopicsAndSubTopics = {
   price: 0,
   tag: '',
   topics: [],
+  createdAt: null,
+  updatedAt: null,
 }
 
 const reducer = (

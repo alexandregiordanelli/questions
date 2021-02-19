@@ -1,7 +1,7 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/getCustomer'
-import { getNotebookByTags } from 'services/getNotebook'
-import { getQuestionByTags } from 'services/getQuestion'
+import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/server/getCustomer'
+import { getNotebookByTags } from 'services/server/getNotebook'
+import { getQuestionByTags } from 'services/server/getQuestion'
 
 import {
   CustomerWithNotebooks,
@@ -16,10 +16,10 @@ import { useAmp } from 'next/amp'
 import HeadHtml from 'components/HeadHtml'
 import { urlEnv, ampCanonicalUrl } from 'lib/utils'
 import { Header } from 'components/Header'
-import getMenu from 'services/getMenu'
+import getMenu from 'services/server/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
-import getSuggestions from 'services/getSuggestions'
+import getSuggestions from 'services/server/getSuggestions'
 import { useData } from 'services/client/get'
 import { NotebookCard } from 'components/NotebookCard'
 

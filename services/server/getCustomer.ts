@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/prisma'
+import { prisma } from '../../prisma/prisma'
 import { Customer } from '@prisma/client'
 import { CustomerWithNotebooks } from 'lib/types'
 export const getCustomerByUserId = async (userId: string): Promise<Customer> => {

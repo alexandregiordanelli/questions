@@ -76,6 +76,8 @@ const initState: QuestionWithAll = {
     id: 0,
     name: '',
     topicId: 0,
+    createdAt: null,
+    updatedAt: null,
   },
   notebook: {
     name: '',
@@ -88,6 +90,8 @@ const initState: QuestionWithAll = {
   subTopicId: 0,
   alternatives: [],
   rightAlternative: null,
+  createdAt: null,
+  updatedAt: null,
 }
 
 const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {

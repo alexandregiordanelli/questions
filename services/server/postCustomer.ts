@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/prisma'
+import { prisma } from '../../prisma/prisma'
 import { Customer } from '@prisma/client'
 
 const postCustomer = async (_customer: Customer): Promise<Customer> => {

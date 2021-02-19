@@ -1,8 +1,10 @@
 -- CreateTable
 CREATE TABLE `Customer` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` VARCHAR(191) NOT NULL,
     `tag` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 UNIQUE INDEX `Customer.userId_unique`(`userId`),
 UNIQUE INDEX `Customer.tag_unique`(`tag`),
 
@@ -11,12 +13,14 @@ UNIQUE INDEX `Customer.tag_unique`(`tag`),
 
 -- CreateTable
 CREATE TABLE `Notebook` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `customerId` INT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `customerId` INTEGER NOT NULL,
     `tag` VARCHAR(191) NOT NULL,
     `text` TEXT,
-    `price` DECIMAL(65,30),
-    `name` VARCHAR(191),
+    `price` DOUBLE,
+    `name` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 UNIQUE INDEX `Notebook.customerId_tag_unique`(`customerId`, `tag`),
 
     PRIMARY KEY (`id`)
@@ -24,31 +28,37 @@ UNIQUE INDEX `Notebook.customerId_tag_unique`(`customerId`, `tag`),
 
 -- CreateTable
 CREATE TABLE `Topic` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `notebookId` INT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `notebookId` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `SubTopic` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `topicId` INT NOT NULL,
-    `name` VARCHAR(191),
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `topicId` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Question` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `tag` VARCHAR(191) NOT NULL,
     `text` TEXT NOT NULL,
-    `notebookId` INT NOT NULL,
+    `notebookId` INTEGER NOT NULL,
     `solution` TEXT,
     `name` VARCHAR(191),
-    `subTopicId` INT,
+    `subTopicId` INTEGER,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 UNIQUE INDEX `Question.notebookId_tag_unique`(`notebookId`, `tag`),
 
     PRIMARY KEY (`id`)
@@ -56,20 +66,44 @@ UNIQUE INDEX `Question.notebookId_tag_unique`(`notebookId`, `tag`),
 
 -- CreateTable
 CREATE TABLE `Alternative` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `text` TEXT NOT NULL,
-    `questionId` INT NOT NULL,
+    `questionId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `RightAlternative` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `alternativeId` INT NOT NULL,
-    `questionId` INT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `alternativeId` INTEGER NOT NULL,
+    `questionId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
 UNIQUE INDEX `RightAlternative.alternativeId_unique`(`alternativeId`),
 UNIQUE INDEX `RightAlternative.questionId_unique`(`questionId`),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Media` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `customerId` INTEGER NOT NULL,
+    `tag` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `ext` VARCHAR(191) NOT NULL,
+    `mime` VARCHAR(191) NOT NULL,
+    `size` DOUBLE NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
+    `text` VARCHAR(191),
+    `caption` VARCHAR(191),
+    `width` INTEGER,
+    `height` INTEGER,
+UNIQUE INDEX `Media.customerId_tag_unique`(`customerId`, `tag`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -1,6 +1,6 @@
 import { Alternative } from '@prisma/client'
-import { QuestionWithAll } from '../lib/types'
-import { prisma } from '../prisma/prisma'
+import { QuestionWithAll } from '../../lib/types'
+import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
 import getQuestion from './getQuestion'
 

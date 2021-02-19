@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/prisma'
+import { prisma } from '../../prisma/prisma'
 
 const getUsernames = async (): Promise<string[]> => {
   const customer = await prisma.customer.findMany({

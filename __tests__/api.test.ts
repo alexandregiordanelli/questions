@@ -14,6 +14,8 @@ describe('API real', () => {
     id: 0,
     userId: '',
     tag: _tag,
+    createdAt: null,
+    updatedAt: null,
   }
 
   let _notebook: NotebookWithTopicsAndSubTopics = {
@@ -23,21 +25,29 @@ describe('API real', () => {
     text: 'Description',
     price: 24.4,
     name: 'Name',
+    createdAt: null,
+    updatedAt: null,
     topics: [
       {
         id: 0,
         notebookId: 0,
         name: 'topic',
+        createdAt: null,
+        updatedAt: null,
         subtopics: [
           {
             id: 0,
             topicId: 0,
             name: 'subtopic 1',
+            createdAt: null,
+            updatedAt: null,
           },
           {
             id: 0,
             topicId: 0,
             name: 'subtopic 2',
+            createdAt: null,
+            updatedAt: null,
           },
         ],
       },
@@ -49,10 +59,14 @@ describe('API real', () => {
     tag: 'question-create',
     text: 'question',
     notebookId: 0,
+    createdAt: null,
+    updatedAt: null,
     subTopic: {
       id: 0,
       name: '',
       topicId: 0,
+      createdAt: null,
+      updatedAt: null,
     },
     subTopicId: 0,
     solution: 'solution',
@@ -62,22 +76,30 @@ describe('API real', () => {
         id: 0,
         text: 'alternative a',
         questionId: 0,
+        createdAt: null,
+        updatedAt: null,
       },
       {
         id: 1,
         text: 'alternative b',
         questionId: 0,
+        createdAt: null,
+        updatedAt: null,
       },
       {
         id: 2,
         text: 'alternative c',
         questionId: 0,
+        createdAt: null,
+        updatedAt: null,
       },
     ],
     rightAlternative: {
       id: 0,
       alternativeId: 1,
       questionId: 0,
+      createdAt: null,
+      updatedAt: null,
     },
   }
 
@@ -168,11 +190,15 @@ describe('API real', () => {
         id: 0,
         name: 'new topic',
         notebookId: 0,
+        createdAt: null,
+        updatedAt: null,
         subtopics: [
           {
             id: 0,
             name: 'new subtopic',
             topicId: 0,
+            createdAt: null,
+            updatedAt: null,
           },
         ],
       },
@@ -180,21 +206,29 @@ describe('API real', () => {
         id: 0,
         name: 'new topic 2',
         notebookId: 0,
+        createdAt: null,
+        updatedAt: null,
         subtopics: [
           {
             id: 0,
             name: 'new subtopic 1',
             topicId: 0,
+            createdAt: null,
+            updatedAt: null,
           },
           {
             id: 0,
             name: 'new subtopic 2',
             topicId: 0,
+            createdAt: null,
+            updatedAt: null,
           },
           {
             id: 0,
             name: 'new subtopic 3',
             topicId: 0,
+            createdAt: null,
+            updatedAt: null,
           },
         ],
       },
@@ -319,11 +353,15 @@ describe('API real', () => {
         id: -1,
         text: 'alternative d',
         questionId: 0,
+        createdAt: null,
+        updatedAt: null,
       },
       {
         id: -2,
         text: 'alternative e',
         questionId: 0,
+        createdAt: null,
+        updatedAt: null,
       },
     ]
     _newQuestion.rightAlternative.alternativeId = -1

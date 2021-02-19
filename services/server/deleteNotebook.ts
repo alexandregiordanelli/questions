@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/prisma'
+import { prisma } from '../../prisma/prisma'
 import { getCustomerByTag } from './getCustomer'
 
 export const deleteNotebookById = async (notebookId: number): Promise<number> => {

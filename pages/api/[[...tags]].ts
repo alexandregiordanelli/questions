@@ -1,21 +1,21 @@
 import { VercelApiHandler } from '@vercel/node'
-import postCustomer from 'services/postCustomer'
+import postCustomer from 'services/server/postCustomer'
 import { Customer } from '@prisma/client'
 import {
   getCustomerByTag,
   getCustomerNotebooksByTag,
   getCustomerByUserId,
-} from 'services/getCustomer'
-import postNotebook from 'services/postNotebook'
+} from 'services/server/getCustomer'
+import postNotebook from 'services/server/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
-import postQuestion from 'services/postQuestion'
-import { getNotebookByTags } from 'services/getNotebook'
-import { getQuestionByTags } from 'services/getQuestion'
+import postQuestion from 'services/server/postQuestion'
+import { getNotebookByTags } from 'services/server/getNotebook'
+import { getQuestionByTags } from 'services/server/getQuestion'
 import admin from 'lib/firebase-server'
-import { deleteCustomerByTag } from 'services/deleteCustomer'
-import { deleteNotebookByTags } from 'services/deleteNotebook'
-import { deleteQuestionByTags } from 'services/deleteQuestion'
-import getQuestions from 'services/getQuestions'
+import { deleteCustomerByTag } from 'services/server/deleteCustomer'
+import { deleteNotebookByTags } from 'services/server/deleteNotebook'
+import { deleteQuestionByTags } from 'services/server/deleteQuestion'
+import getQuestions from 'services/server/getQuestions'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {

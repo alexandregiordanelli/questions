@@ -1,5 +1,5 @@
-import { prisma } from '../prisma/prisma'
-import { NotebookWithTopicsAndSubTopics } from '../lib/types'
+import { prisma } from '../../prisma/prisma'
+import { NotebookWithTopicsAndSubTopics } from '../../lib/types'
 import { getCustomerByTag } from './getCustomer'
 
 export const getNotebook = async (

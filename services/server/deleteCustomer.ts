@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/prisma'
+import { prisma } from '../../prisma/prisma'
 
 export const deleteCustomerById = async (customerId: number): Promise<number> => {
   //https://github.com/prisma/prisma/issues/4650

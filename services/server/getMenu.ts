@@ -1,5 +1,5 @@
-import { prisma } from '../prisma/prisma'
-import { MenuWithQuestions } from '../lib/types'
+import { prisma } from '../../prisma/prisma'
+import { MenuWithQuestions } from '../../lib/types'
 
 const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
   const topicsOfNotebook = await prisma.topic.findMany({

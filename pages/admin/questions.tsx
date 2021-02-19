@@ -1,5 +1,11 @@
 import { useRouter } from 'next/router'
-import { FileBadgeIcon, FileBinaryIcon, ChevronRightIcon, PlusIcon } from '@primer/octicons-react'
+import {
+  FileBadgeIcon,
+  FileBinaryIcon,
+  ChevronRightIcon,
+  PlusIcon,
+  FileMediaIcon,
+} from '@primer/octicons-react'
 import Link from 'next/link'
 import { Table } from 'components/Table'
 import { EditQuestionPage } from 'components/Pages/EditQuestionPage'
@@ -40,6 +46,20 @@ const Page: NextPage = () => {
               >
                 <FileBinaryIcon />
                 <span className="mx-3">Questions</span>
+              </a>
+            </Link>
+          </li>
+          <li className="flex items-center mt-4">
+            <Link href="/admin/media">
+              <a
+                className={`flex-1 py-2 px-6 hover:bg-opacity-20 hover:bg-gray-700 ${
+                  route.route == '/admin/media'
+                    ? 'bg-opacity-20 bg-gray-700 text-white'
+                    : 'text-gray-500'
+                }`}
+              >
+                <FileMediaIcon />
+                <span className="mx-3">Media Library</span>
               </a>
             </Link>
           </li>
