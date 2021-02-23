@@ -256,6 +256,12 @@ export const TableNotebooks: React.FC<{
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
+                      Image
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Name
                     </th>
                     <th
@@ -278,6 +284,15 @@ export const TableNotebooks: React.FC<{
                 <tbody className="bg-white divide-y divide-gray-200">
                   {customer?.notebooks.map((notebook, i) => (
                     <tr key={i}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {notebook.media && (
+                          <img
+                            className="w-20"
+                            src={`https://assets.questionsof.com/${notebook.media.customerId}/${notebook.media.tag}`}
+                            alt={notebook.media.text}
+                          />
+                        )}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="ml-4">

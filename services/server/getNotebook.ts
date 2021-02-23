@@ -19,6 +19,7 @@ export const getNotebook = async (
           subtopics: true,
         },
       },
+      media: true,
     },
   })
 
@@ -44,6 +45,7 @@ export const getNotebookByTags = async (
           subtopics: true,
         },
       },
+      media: true,
     },
   })
 

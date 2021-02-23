@@ -29,7 +29,11 @@ export const getCustomerNotebooksByTag = async (
       tag: customerTag,
     },
     include: {
-      notebooks: true,
+      notebooks: {
+        include: {
+          media: true,
+        },
+      },
     },
   })
 

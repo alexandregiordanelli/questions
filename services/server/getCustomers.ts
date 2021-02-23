@@ -4,7 +4,11 @@ import { CustomerWithNotebooks } from '../../lib/types'
 export const getCustomers = async (): Promise<CustomerWithNotebooks[]> => {
   const customers = await prisma.customer.findMany({
     include: {
-      notebooks: true,
+      notebooks: {
+        include: {
+          media: true,
+        },
+      },
     },
   })
 

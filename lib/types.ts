@@ -31,7 +31,9 @@ export type Suggestions = {
 }[]
 
 export type CustomerWithNotebooks = Customer & {
-  notebooks: Notebook[]
+  notebooks: (Notebook & {
+    media: Media
+  })[]
 }
 
 export type NotebookWithTopicsAndSubTopics = Notebook & {
