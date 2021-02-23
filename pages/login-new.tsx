@@ -33,7 +33,7 @@ const Page: NextPage = () => {
     <>
       <style jsx global>{`
         .firebaseui-idp-text-short {
-          @apply bg-gray-200;
+          @apply hidden;
         }
       `}</style>
       <div id="firebaseui-auth-container"></div>
