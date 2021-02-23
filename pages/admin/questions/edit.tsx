@@ -12,7 +12,7 @@ const Page: NextPage = () => {
   return (
     <TemplateAdmin className="bg-gray-200">
       <EditQuestionPage
-        customerTag={auth.customerLogged.tag}
+        customerTag={auth.customerLogged?.tag}
         notebookTag={notebookTag}
         questionTag={questionTag}
       />
