@@ -35,7 +35,10 @@ const Page: NextPage = () => {
             </Link>
           </HeaderAdmin>
           <div className="p-20">
-            <Thumbs medias={mediasWithURL} />
+            <Thumbs
+              medias={mediasWithURL}
+              getLink={async (link) => await navigator.clipboard.writeText(link)}
+            />
           </div>
         </>
       )}

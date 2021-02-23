@@ -24,7 +24,6 @@ import { useData } from 'services/client/get'
 import { NotebookCard } from 'components/NotebookCard'
 import { useAuth } from 'lib/auth'
 import React from 'react'
-import { MarkdownText } from 'components/MarkdownText'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 
 type CustomerPageProps = {
