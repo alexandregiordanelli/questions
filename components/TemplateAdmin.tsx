@@ -7,7 +7,7 @@ export const TemplateAdmin: React.FC<{
   return (
     <div className="h-screen flex flex-col">
       <Header />
-      <div className="flex-grow flex">
+      <div className="flex-grow flex overflow-auto">
         <div className="w-60 bg-gray-800">
           <MenuAdmin />
         </div>

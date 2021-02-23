@@ -30,7 +30,7 @@ export const Header: React.FC = (props) => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {customerTag && (
+          {!route.pathname.startsWith('/admin') && customerTag && (
             <>
               {!notebookTag && (
                 <>

@@ -127,10 +127,13 @@ export const EditNotebookPage: React.FC<{
   customerTag: string
   notebookTag?: string
 }> = (props) => {
-  const { data: customer } = useData<Customer>(`/api/${props.customerTag}`, null)
+  const { data: customer } = useData<Customer>(
+    props.customerTag ? `/api/${props.customerTag}` : null,
+    null
+  )
 
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
-    props.notebookTag ? `/api/${props.customerTag}/${props.notebookTag}` : null
+    props.customerTag && props.notebookTag ? `/api/${props.customerTag}/${props.notebookTag}` : null
   )
 
   const initNotebook = notebook ? notebook : initState
