@@ -6,6 +6,7 @@ import {
   Question,
   RightAlternative,
   Customer,
+  Media,
 } from '@prisma/client'
 
 export type MenuWithQuestions = (Topic & {
@@ -50,3 +51,6 @@ export type DataBaseHook<T> = {
   isLoading: boolean
   isError: any
 }
+export type MediaWithUrl = {
+  url: string
+} & Media

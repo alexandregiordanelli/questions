@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
   if (!global.prisma) {
     // @ts-ignore
     global.prisma = new PrismaClient({
-      log: [], //['query', 'info', 'warn'],
+      //log: ['query', 'info', 'warn'],
     })
   }
 

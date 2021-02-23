@@ -111,12 +111,10 @@ const reducer = (
   }
 }
 
-type QuestionPageProps = {
+export const EditNotebookPage: React.FC<{
   customerTag: string
   notebookTag?: string
-}
-
-export const EditNotebookPage: React.FC<QuestionPageProps> = (props) => {
+}> = (props) => {
   const { data: customer } = useData<Customer>(`/api/${props.customerTag}`, null)
 
   const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(

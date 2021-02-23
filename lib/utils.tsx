@@ -1,3 +1,6 @@
+import { MediaWithUrl } from './types'
+import slugify from 'slugify'
+
 export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL
   ? process.env.NEXT_PUBLIC_VERCEL_URL != 'questionsof.com'
     ? 'https://questionsof.vercel.app'
@@ -70,3 +73,43 @@ export const absolute = (base: string, relative: string): string => {
 
 //     return resp
 // }
+
+export const getMediafromFile = (file: File): Promise<MediaWithUrl> => {
+  return new Promise<MediaWithUrl>((resolve) => {
+    const parts = file.name.split('.')
+    const ext = parts[parts.length - 1]
+    const media: MediaWithUrl = {
+      width: null,
+      height: null,
+      ext,
+      mime: file.type,
+      size: file.size,
+      name: file.name,
+      id: 0,
+      caption: null,
+      createdAt: null,
+      updatedAt: null,
+      customerId: 0,
+      tag: slugify(file.name, {
+        lower: true,
+      }),
+      text: null,
+      url: null,
+    }
+
+    if (file.type.toLowerCase().startsWith('image')) {
+      const img = new Image()
+      img.src = URL.createObjectURL(file)
+      img.onload = () => {
+        resolve({
+          ...media,
+          width: img.width,
+          height: img.height,
+          url: img.src,
+        })
+      }
+    } else {
+      resolve(media)
+    }
+  })
+}

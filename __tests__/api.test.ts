@@ -425,7 +425,10 @@ describe('API real', () => {
   })
 
   it('Delete question', async () => {
-    const nRows = await deleteClient([_customer.tag, _notebook.tag, _question.tag], tokenForTest)
+    const nRows = await deleteClient(
+      `/api/${[_customer.tag, _notebook.tag, _question.tag].join('/')}`,
+      tokenForTest
+    )
 
     expect(nRows).toBe(1)
 
@@ -433,7 +436,10 @@ describe('API real', () => {
   })
 
   it('Delete notebook', async () => {
-    const nRows = await deleteClient([_customer.tag, _notebook.tag], tokenForTest)
+    const nRows = await deleteClient(
+      `/api/${[_customer.tag, _notebook.tag].join('/')}`,
+      tokenForTest
+    )
 
     expect(nRows).toBe(1)
 
@@ -441,7 +447,7 @@ describe('API real', () => {
   })
 
   it('Delete customer', async () => {
-    const nRows = await deleteClient([_customer.tag], tokenForTest)
+    const nRows = await deleteClient(`/api/${[_customer.tag].join('/')}`, tokenForTest)
 
     expect(nRows).toBe(1)
 

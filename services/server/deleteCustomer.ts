@@ -15,7 +15,7 @@ export const deleteCustomerByUserId = async (userId: string): Promise<number> =>
 
 export const deleteCustomerByTag = async (customerTag: string): Promise<number> => {
   //https://github.com/prisma/prisma/issues/4650
-  const nRowsUpdated = await prisma.$executeRaw`DELETE FROM Customer WHERE username = ${customerTag};`
+  const nRowsUpdated = await prisma.$executeRaw`DELETE FROM Customer WHERE tag = ${customerTag};`
 
   return nRowsUpdated
 }

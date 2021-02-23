@@ -152,7 +152,7 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
 
 type QuestionPageProps = {
   customerTag: string
-  notebookTag: string
+  notebookTag?: string
   questionTag?: string
 }
 

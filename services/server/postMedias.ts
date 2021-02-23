@@ -10,16 +10,9 @@ const postMedias = async (medias: Media[]): Promise<boolean> => {
     if (_file.customerId != customerId) {
       throw new Error(`customerId is different of others customerId from list.`)
     }
-    const media = await prisma.media.upsert({
-      create: {
-        ..._file,
-      },
-      update: {
-        ..._file,
-      },
-      where: {
-        id: _file.id,
-      },
+    delete _file.id
+    const media = prisma.media.create({
+      data: _file,
     })
 
     batch.push(media)
@@ -27,6 +20,6 @@ const postMedias = async (medias: Media[]): Promise<boolean> => {
 
   const media = await prisma.$transaction(batch)
 
-  return media
+  return !!media
 }
 export default postMedias
