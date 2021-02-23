@@ -11,6 +11,10 @@ const postNotebook = async (
     throw new Error('no tag or name')
   }
 
+  if (notebookOnRepo.mediaId == 0) {
+    notebookOnRepo.mediaId = null
+  }
+
   const notebook = await prisma.notebook.upsert({
     create: {
       tag: notebookOnRepo.tag,
