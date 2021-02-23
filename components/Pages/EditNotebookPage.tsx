@@ -18,6 +18,7 @@ export enum ActionType {
   UPDATE_PRICE,
   UPDATE_NAME,
   UPDATE_TAG,
+  UPDATE_MEDIA,
 }
 
 export type Action =
@@ -52,6 +53,10 @@ export type Action =
       type: ActionType.UPDATE_TAG
       tag: string
     }
+  | {
+      type: ActionType.UPDATE_MEDIA
+      mediaId: number
+    }
 
 const initState: NotebookWithTopicsAndSubTopics = {
   id: 0,
@@ -63,6 +68,7 @@ const initState: NotebookWithTopicsAndSubTopics = {
   topics: [],
   createdAt: null,
   updatedAt: null,
+  mediaId: 0,
 }
 
 const reducer = (
@@ -103,6 +109,11 @@ const reducer = (
     case ActionType.UPDATE_TOPICS: {
       const newState = _.cloneDeep(state)
       newState.topics = action.topics
+      return newState
+    }
+    case ActionType.UPDATE_MEDIA: {
+      const newState = _.cloneDeep(state)
+      newState.mediaId = action.mediaId
       return newState
     }
     default: {

@@ -9,7 +9,9 @@ import { deleteClient } from 'services/client/delete'
 export const Table: React.FC<{
   customerTag: string
 }> = (props) => {
-  const { data: questions } = useData<QuestionWithAll[]>(`/api/${props.customerTag}?questions=true`)
+  const { data: questions } = useData<QuestionWithAll[]>(
+    props.customerTag ? `/api/${props.customerTag}?questions=true` : null
+  )
   const [isOpened, setIsOpened] = useState(false)
   const [tagsSelected, setTagsSelected] = useState('')
   return (
@@ -181,7 +183,7 @@ export const TableNotebooks: React.FC<{
   customerTag: string
 }> = (props) => {
   const { data: customer } = useData<CustomerWithNotebooks>(
-    `/api/${props.customerTag}?notebooks=true`
+    props.customerTag ? `/api/${props.customerTag}?notebooks=true` : null
   )
   const [isOpened, setIsOpened] = useState(false)
   const [tagsSelected, setTagsSelected] = useState('')

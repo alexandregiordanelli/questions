@@ -18,12 +18,14 @@ const postNotebook = async (
       price: notebookOnRepo.price,
       text: notebookOnRepo.text,
       customerId: notebookOnRepo.customerId,
+      mediaId: notebookOnRepo.mediaId,
     },
     update: {
       tag: notebookOnRepo.tag,
       name: notebookOnRepo.name,
       price: notebookOnRepo.price,
       text: notebookOnRepo.text,
+      mediaId: notebookOnRepo.mediaId,
     },
     where: {
       id: notebookOnRepo.id,

@@ -27,6 +27,7 @@ describe('API real', () => {
     name: 'Name',
     createdAt: null,
     updatedAt: null,
+    mediaId: 0,
     topics: [
       {
         id: 0,
