@@ -69,6 +69,7 @@ const initState: NotebookWithTopicsAndSubTopics = {
   createdAt: null,
   updatedAt: null,
   mediaId: 0,
+  media: null,
 }
 
 const reducer = (

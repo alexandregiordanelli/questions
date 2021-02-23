@@ -25,9 +25,9 @@ const Index: React.FC<PageProps> = (props) => {
         {customerLogged && (
           <button
             className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
-            onClick={() => router.push(`/edit/${customerLogged.tag}`)}
+            onClick={() => router.push(`/admin`)}
           >
-            Edit Profile
+            Admin
           </button>
         )}
       </Header>

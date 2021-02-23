@@ -9,3 +9,9 @@
 //     //     disable: process.env.NODE_ENV === 'development',
 //     // }
 // })
+
+module.exports = {
+  images: {
+    domains: ['assets.questionsof.com']
+  }
+}

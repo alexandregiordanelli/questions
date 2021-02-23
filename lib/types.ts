@@ -37,6 +37,7 @@ export type CustomerWithNotebooks = Customer & {
 }
 
 export type NotebookWithTopicsAndSubTopics = Notebook & {
+  media: Media
   topics: (Topic & {
     subtopics: SubTopic[]
   })[]
