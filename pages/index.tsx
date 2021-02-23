@@ -1,13 +1,11 @@
 import { GetStaticProps } from 'next'
-import React, { Fragment } from 'react'
+import React from 'react'
 import HeadHtml from '../components/HeadHtml'
 import { getCustomers } from '../services/server/getCustomers'
 import { Header } from '../components/Header'
 import { Img } from '../components/Img'
-import { useRouter } from 'next/router'
 import { NotebookListComponent } from '../components/NotebookListComponent'
 import { CustomerWithNotebooks } from 'lib/types'
-import { useAuth } from 'lib/auth'
 import Link from 'next/link'
 
 type PageProps = {
