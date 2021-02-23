@@ -24,7 +24,7 @@ export const MenuCore: React.FC<{
                     : null
                 }
                 title={x.name}
-                hasExpanded={x.subtopics.length > 1}
+                hasExpanded={x.subtopics.length > 0}
               />
               <ul className={'submenu'}>
                 {x.subtopics.map((y, j) => {

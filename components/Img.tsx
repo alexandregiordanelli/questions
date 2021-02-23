@@ -6,6 +6,7 @@ export const Img: React.FC<{
   width: number
   height: number
   src: string
+  className?: string
 }> = (props) => {
   const isAmp = useAmp()
   if (isAmp) {

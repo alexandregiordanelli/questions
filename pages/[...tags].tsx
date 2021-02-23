@@ -25,6 +25,7 @@ import { NotebookCard } from 'components/NotebookCard'
 import { useAuth } from 'lib/auth'
 import React from 'react'
 import { MarkdownText } from 'components/MarkdownText'
+import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -90,27 +91,15 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
         />
       </HeadHtml>
-
-      <Header />
-      <div className=" bg-white border-t border-b">
-        <div className="max-w-screen-lg mx-auto items-center">
-          <h1 className="text-xl font-medium text-black my-8">{props.notebook.name}</h1>
-        </div>
-      </div>
-      <div className="shadow-inner">
-        <div className="flex max-w-screen-lg mx-auto">
-          <div className="py-8 pr-8 qmd flex flex-col">
-            <MarkdownText md={props.notebook.text} />
-          </div>
-          <div>
-            <div className="sticky top-24 transform -translate-y-8">
-              <NotebookCard
-                notebook={props.notebook}
-                customerTag={props.customer.tag}
-                className="shadow-2xl"
-              />
-            </div>
-          </div>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="flex">
+          <LeftMenu
+            menu={props.menu}
+            notebookTag={props.notebook.tag}
+            customerTag={props.customer.tag}
+          />
+          <IndexQuestionPage notebook={props.notebook} />
         </div>
       </div>
     </>

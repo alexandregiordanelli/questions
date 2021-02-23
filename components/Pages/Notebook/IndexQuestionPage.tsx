@@ -1,69 +1,33 @@
 import React from 'react'
-import remark2rehype from 'remark-rehype'
-import unified from 'unified'
-import markdown from 'remark-parse'
-import gfm from 'remark-gfm'
-import rehype2react from 'rehype-react'
-import { Notebook } from '@prisma/client'
+import { Notebook, Media } from '@prisma/client'
+import { MarkdownText } from 'components/MarkdownText'
+import { NotebookCard } from 'components/NotebookCard'
 
 export const IndexQuestionPage: React.FC<{
-  notebook: Notebook
+  notebook: Notebook & {
+    media: Media
+  }
 }> = (props) => {
   return (
     <>
-      <style jsx>{`
-        .main {
-          flex: 1;
-        }
-        .box {
-          background-color: rgb(27, 31, 35);
-          padding-top: 40px;
-          padding-bottom: 40px;
-        }
-        .center {
-          padding: 32px;
-          margin-left: auto;
-          margin-right: auto;
-          width: 100%;
-          max-width: 960px;
-        }
-        .main-title {
-          font-weight: 600;
-          font-size: 48px;
-          line-height: 1.25;
-          color: rgb(33, 136, 255);
-          margin: 0px;
-        }
-        .subtitle {
-          font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-          font-size: 16px;
-          margin-top: 0px;
-          margin-bottom: 8px;
-          color: rgb(121, 184, 255);
-        }
-      `}</style>
-      <div className="main">
-        <div className="box">
-          <div className="center">
-            <div className="flex items-center">
-              <h2 className="main-title">{props.notebook.name}</h2>
-            </div>
-            <p className="subtitle">{props.notebook.price ?? ''}</p>
-            {/* <img src="/enem.png"/> */}
+      <div className="flex flex-col flex-grow">
+        <div className=" bg-gray-800">
+          <div className="max-w-screen-lg mx-auto">
+            <h1 className="text-xl font-medium text-white my-8">{props.notebook.name}</h1>
           </div>
         </div>
-        <div className="center">
-          {
-            unified()
-              .use(markdown)
-              .use(gfm)
-              .use(remark2rehype)
-              .use(rehype2react, {
-                createElement: React.createElement,
-                Fragment: React.Fragment,
-              })
-              .processSync(props.notebook.text).result
-          }
+        <div className="">
+          <div className="flex max-w-screen-lg mx-auto">
+            <div className="py-8 pr-8 qmd flex flex-col">
+              <MarkdownText md={props.notebook.text} />
+            </div>
+            <div className="sticky top-24 transform -translate-y-8">
+              <NotebookCard notebook={props.notebook} className="shadow-2xl" />
+            </div>
+            {/* <div>
+
+            </div> */}
+          </div>
         </div>
       </div>
     </>
