@@ -7,10 +7,10 @@ import firebase from 'lib/firebase-client'
 import { ChevronRightIcon } from '@primer/octicons-react'
 import NoSSR from 'react-no-ssr'
 
-export const Header: React.FC = (props) => {
+export const Header: React.FC = () => {
   const { user } = useAuth()
-  const route = useRouter()
-  const tags = (route.query.tags as string[]) ?? []
+  const router = useRouter()
+  const tags = (router.query.tags as string[]) ?? []
 
   const [customerTag, notebookTag, questionTag] = tags
 
@@ -30,7 +30,7 @@ export const Header: React.FC = (props) => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {!route.pathname.startsWith('/admin') && customerTag && (
+          {!router.pathname.startsWith('/admin') && customerTag && (
             <>
               {!notebookTag && (
                 <>
@@ -62,6 +62,11 @@ export const Header: React.FC = (props) => {
               )}
             </>
           )}
+          {router.pathname.startsWith('/admin') && (
+            <Link href={`/admin`}>
+              <a className="text-white px-2 py-2 text-sm">Admin</a>
+            </Link>
+          )}
         </div>
         <NoSSR>
           {!user && (
@@ -73,7 +78,14 @@ export const Header: React.FC = (props) => {
           )}
           {user && (
             <div className="flex">
-              {props.children}
+              {!router.pathname.startsWith('/admin') && (
+                <button
+                  className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+                  onClick={() => router.push(`/admin`)}
+                >
+                  Admin
+                </button>
+              )}
               <button
                 className="text-white px-4 py-2 mr-2 text-sm "
                 onClick={() => firebase.auth().signOut()}
