@@ -140,7 +140,7 @@ export const EditNotebook: React.FC<{
                 </button>
               ) : (
                 <Thumb
-                  media={mediasWithURL.find((x) => x.id == props.notebook.mediaId)}
+                  media={mediasWithURL?.find((x) => x.id == props.notebook.mediaId)}
                   onClick={() => {
                     setIsOpened(true)
                   }}

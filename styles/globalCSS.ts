@@ -150,7 +150,7 @@ export const globalCSS = css.global`
     flex-basis: 100%;
   }
 
-  .qmd {
+  /* .qmd {
     box-sizing: border-box;
     min-width: 200px;
     max-width: 980px;
@@ -158,7 +158,7 @@ export const globalCSS = css.global`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-  }
+  } */
 
   .qmd label > p {
     margin: 0;

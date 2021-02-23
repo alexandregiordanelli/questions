@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import 'katex/dist/contrib/mhchem.js'
 import { QuestionWithAll } from '../../../lib/types'
 import { letters } from '../../../lib/utils'
-import { QuestionFieldComponent } from '../../QuestionFieldComponent'
+import { MarkdownText } from '../../MarkdownText'
 
 export const QuestionForm: React.FC<{
   question: QuestionWithAll
@@ -29,7 +29,7 @@ export const QuestionForm: React.FC<{
       Right Answer
     </label>,
     <div key={2} className="q">
-      <QuestionFieldComponent md={props.question.text} />
+      <MarkdownText md={props.question.text} />
     </div>,
   ]
 
@@ -46,7 +46,7 @@ export const QuestionForm: React.FC<{
           onChange={(x) => setLetterChosen(x.target.value)}
         />
         <label htmlFor={letter}>
-          <QuestionFieldComponent md={x.text} />
+          <MarkdownText md={x.text} />
         </label>
       </Fragment>
     )
@@ -65,7 +65,7 @@ export const QuestionForm: React.FC<{
         Solution
       </label>,
       <div key={7} className="s">
-        <QuestionFieldComponent md={props.question.solution} />
+        <MarkdownText md={props.question.solution} />
       </div>,
     ]
   )

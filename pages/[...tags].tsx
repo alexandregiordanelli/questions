@@ -2,11 +2,6 @@ import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/server/getCustomer'
 import { getNotebookByTags } from 'services/server/getNotebook'
 import { getQuestionByTags } from 'services/server/getQuestion'
-import remark2rehype from 'remark-rehype'
-import unified from 'unified'
-import markdown from 'remark-parse'
-import gfm from 'remark-gfm'
-import rehype2react from 'rehype-react'
 
 import {
   CustomerWithNotebooks,
@@ -29,6 +24,7 @@ import { useData } from 'services/client/get'
 import { NotebookCard } from 'components/NotebookCard'
 import { useAuth } from 'lib/auth'
 import React from 'react'
+import { MarkdownText } from 'components/MarkdownText'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -101,21 +97,11 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           <h1 className="text-xl font-medium text-black my-8">{props.notebook.name}</h1>
         </div>
       </div>
-      <div className="bg-gray-50 shadow-inner">
+      <div className="shadow-inner">
         <div className="flex max-w-screen-lg mx-auto">
-          <p className="py-8 pr-8">
-            {
-              unified()
-                .use(markdown)
-                .use(gfm)
-                .use(remark2rehype)
-                .use(rehype2react, {
-                  createElement: React.createElement,
-                  Fragment: React.Fragment,
-                })
-                .processSync(props.notebook.text).result
-            }
-          </p>
+          <div className="py-8 pr-8 qmd flex flex-col">
+            <MarkdownText md={props.notebook.text} />
+          </div>
           <div>
             <div className="sticky top-24 transform -translate-y-8">
               <NotebookCard
