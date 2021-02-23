@@ -22,6 +22,7 @@ import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFor
 import getSuggestions from 'services/server/getSuggestions'
 import { useData } from 'services/client/get'
 import { NotebookCard } from 'components/NotebookCard'
+import { useAuth } from 'lib/auth'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -43,6 +44,7 @@ type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
+  const auth = useAuth()
   const { data: customer } = useData<CustomerWithNotebooks>(
     `/api/${props.customer.tag}?notebooks=true`,
     props.customer
@@ -61,7 +63,8 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         // style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
         <Header />
-        <div className=" bg-white border-t border-b">
+        <div className=" bg-white border-t border-b flex py-4 px-8">
+          <img className="rounded-full" src={auth.user?.photoURL} alt={auth.user?.displayName} />
           <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
         </div>
         <div className="flex flex-wrap">
