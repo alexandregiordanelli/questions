@@ -17,7 +17,7 @@ const Index: React.FC<PageProps> = (props) => {
     <>
       <HeadHtml />
       <Header />
-      <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
+      {/* <div className="relative bg-gradient-to-b from-gray-800 to-gray-600">
         <div className="opacity-30 flex">
           <Img src={`/main.jpg`} height={4912} width={7360} />
         </div>
@@ -52,16 +52,8 @@ const Index: React.FC<PageProps> = (props) => {
           >
             Porque a melhor maneira de aprender é exercitando
           </div>
-          {/* <div className="text-xl sm:text-4xl lg:text-5xl leading-none font-bold tracking-tight text-white">
-                        <ul>
-                            <li>Escolha a prova.</li>
-                            <li>Faça questões.</li>
-                            <li>Aprenda com a solução da questão.</li>
-                            <li>Analise suas estatísticas.</li>
-                        </ul>
-                    </div> */}
         </div>
-      </div>
+      </div> */}
 
       {props.customers.map((x, i) => {
         return (
