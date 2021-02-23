@@ -18,7 +18,7 @@ export const IndexQuestionPage: React.FC<{
         </div>
         <div className="">
           <div className="flex max-w-screen-lg mx-auto">
-            <div className="py-8 pr-8 qmd flex flex-col">
+            <div className="py-8 pr-8 qmd flex flex-col flex-grow">
               <MarkdownText md={props.notebook.text} />
             </div>
             <div className="sticky top-24 transform -translate-y-8">
