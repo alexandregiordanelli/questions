@@ -74,6 +74,7 @@ export const EditQuestion: React.FC<{
                     type: ActionType.UPDATE_TAG,
                     tag: slugify(x.target.value, {
                       lower: true,
+                      strict: true,
                     }),
                   })
                 }}

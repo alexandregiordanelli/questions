@@ -92,6 +92,7 @@ export const getMediafromFile = (file: File): Promise<MediaWithUrl> => {
       customerId: 0,
       tag: slugify(file.name, {
         lower: true,
+        strict: true,
       }),
       text: null,
       url: null,
