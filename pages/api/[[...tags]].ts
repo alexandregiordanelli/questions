@@ -23,6 +23,8 @@ const Controller: VercelApiHandler = async (req, res) => {
 
     const [customerTag, notebookTag, questionTag] = tags
 
+    console.log(customerTag, notebookTag, questionTag)
+
     if (req.method == 'POST') {
       const tokenHeader = req.cookies.token
         ? req.cookies.token
