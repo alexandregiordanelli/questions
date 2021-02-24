@@ -24,10 +24,10 @@ const Controller: VercelApiHandler = async (req, res) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (req.method == 'POST') {
-      const tokenHeader = req.cookies.token
-        ? req.cookies.token
-        : req.headers.authorization?.substring('Bearer '.length)
-      const token = await admin.auth().verifyIdToken(tokenHeader)
+      // const tokenHeader = req.cookies.token
+      //   ? req.cookies.token
+      //   : req.headers.authorization?.substring('Bearer '.length)
+      // const token = await admin.auth().verifyIdToken(tokenHeader)
 
       if (tags.length > 0 && tags.length < 3) {
         const customer = await getCustomerByTag(customerTag)
@@ -35,9 +35,9 @@ const Controller: VercelApiHandler = async (req, res) => {
           throw new Error(`customer not exists`)
         }
 
-        if (customer.userId != token.uid) {
-          throw new Error(`user not authorized to use this endpoint`)
-        }
+        // if (customer.userId != token.uid) {
+        //   throw new Error(`user not authorized to use this endpoint`)
+        // }
 
         if (tags.length == 1) {
           const _notebook = req.body as NotebookWithTopicsAndSubTopics
@@ -53,9 +53,9 @@ const Controller: VercelApiHandler = async (req, res) => {
         }
       } else if (tags.length == 0) {
         const _customer = req.body as Customer
-        if (token.uid != 'admin' && _customer.userId != token.uid) {
-          throw new Error(`user not authorized to use this endpoint`)
-        }
+        // if (token.uid != 'admin' && _customer.userId != token.uid) {
+        //   throw new Error(`user not authorized to use this endpoint`)
+        // }
         const customer = await postCustomer(_customer)
         res.send(customer)
       } else {
