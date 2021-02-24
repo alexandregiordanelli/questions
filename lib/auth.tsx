@@ -20,7 +20,6 @@ const authContext = createContext<Auth>({
 const useProvideAuth = (): Auth => {
   const [customerLogged, setCustomerLogged] = useState<Customer>(null)
   const [user, setUser] = useState<firebase.User>(null)
-  const router = useRouter()
 
   useEffect(() => {
     return firebase.auth().onIdTokenChanged(async (user) => {
@@ -34,29 +33,8 @@ const useProvideAuth = (): Auth => {
         cookie.set('token', token)
         const customer = await getClient<Customer>('/api')
         if (customer) setCustomerLogged(customer)
-        else router.push('/add')
       }
     })
-  }, [])
-
-  useEffect(() => {
-    const cameFromEmail = firebase.auth().isSignInWithEmailLink(window.location.href)
-    if (cameFromEmail && !cookie.get('token')) {
-      let email = cookie.get('email')
-      if (!email) {
-        email = window.prompt('Please provide your email for confirmation')
-        email && cookie.set('email', email)
-      }
-      firebase
-        .auth()
-        .signInWithEmailLink(email, window.location.href)
-        .then(() => {
-          cookie.remove('email')
-          router.replace(window.location.href.split('?')[0])
-        })
-    } else if (cameFromEmail && cookie.get('token')) {
-      router.replace(window.location.href.split('?')[0])
-    }
   }, [])
 
   // force refresh the token every 10 minutes
