@@ -11,6 +11,7 @@ const url = require("url");
 const slugify = require('slugify')
 
 exports.helloWorld = functions.auth.user().onCreate(async (user) => {
+  const token = await admin.auth().createCustomToken('admin')
 
   const response = await fetch(`https://questionsof.vercel.app/api`, {
     method: 'POST',
@@ -31,10 +32,10 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
           tag: 'profile.jpg',
         },
       },
-      mediaId: 0,
     }),
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   })
 

@@ -53,7 +53,9 @@ const Controller: VercelApiHandler = async (req, res) => {
         }
       } else if (tags.length == 0) {
         const _customer = req.body as Customer
-        _customer.userId = token.uid
+        if (token.uid != 'admin' && _customer.userId != token.uid) {
+          throw new Error(`user not authorized to use this endpoint`)
+        }
         const customer = await postCustomer(_customer)
         res.send(customer)
       } else {
