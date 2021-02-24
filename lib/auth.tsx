@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
-import { useRouter } from 'next/router'
 import cookie from 'js-cookie'
 import { getClient } from 'services/client/get'
 import { Customer } from '@prisma/client'

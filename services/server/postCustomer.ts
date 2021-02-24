@@ -6,9 +6,22 @@ const postCustomer = async (_customer: Customer): Promise<Customer> => {
     create: {
       tag: _customer.tag,
       userId: _customer.userId,
+      name: _customer.name,
+      media: {
+        create: {
+          customerId: 0,
+          ext: 'jpg',
+          mime: 'image/jpeg',
+          name: 'profile.jpg',
+          size: 0,
+          tag: 'profile.jpg',
+        },
+      },
     },
     update: {
       tag: _customer.tag,
+      mediaId: _customer.mediaId,
+      name: _customer.name,
     },
     where: {
       id: _customer.id,

@@ -13,9 +13,11 @@ describe('API real', () => {
   let _customer: Customer = {
     id: 0,
     userId: '',
+    name: '',
     tag: _tag,
     createdAt: null,
     updatedAt: null,
+    mediaId: 0,
   }
 
   let _notebook: NotebookWithTopicsAndSubTopics = {

@@ -11,7 +11,7 @@ datasource db {
 model Customer {
   id        Int        @id @default(autoincrement())
   userId    String     @unique
-  name      String
+  name      String     @default("")
   tag       String     @unique
   mediaId   Int?     
   createdAt DateTime?  @default(now())

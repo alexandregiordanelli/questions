@@ -14,6 +14,8 @@ export const EditCustomer: React.FC<{
     tag: '',
     createdAt: null,
     updatedAt: null,
+    mediaId: 0,
+    name: '',
   }
 
   const [customer, setCustomer] = useState(props.customer ?? initCustomer)
