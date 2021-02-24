@@ -24,7 +24,7 @@ const postCustomer = async (_customer: Customer): Promise<Customer> => {
       name: _customer.name,
     },
     where: {
-      id: _customer.id,
+      id: _customer.id ?? 0,
     },
   })
 

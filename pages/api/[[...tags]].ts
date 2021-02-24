@@ -26,7 +26,7 @@ const Controller: VercelApiHandler = async (req, res) => {
     if (req.method == 'POST') {
       const tokenHeader = req.cookies.token
         ? req.cookies.token
-        : req.headers.authorization.substring('Bearer '.length)
+        : req.headers.authorization?.substring('Bearer '.length)
       const token = await admin.auth().verifyIdToken(tokenHeader)
 
       if (tags.length > 0 && tags.length < 3) {

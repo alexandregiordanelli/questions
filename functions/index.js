@@ -16,6 +16,7 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
   const response = await fetch(`https://questionsof.vercel.app/api`, {
     method: 'POST',
     body: JSON.stringify({
+      id: 0,
       tag: slugify(user.displayName, {
         lower: true,
         strict: true,
@@ -23,14 +24,12 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
       userId: user.uid,
       name: user.displayName,
       media: {
-        create: {
-          customerId: 0,
-          ext: 'jpg',
-          mime: 'image/jpeg',
-          name: 'profile.jpg',
-          size: 0,
-          tag: 'profile.jpg',
-        },
+        customerId: 0,
+        ext: 'jpg',
+        mime: 'image/jpeg',
+        name: 'profile.jpg',
+        size: 0,
+        tag: 'profile.jpg',
       },
     }),
     headers: {
