@@ -16,6 +16,7 @@ import { deleteCustomerByTag } from 'services/server/deleteCustomer'
 import { deleteNotebookByTags } from 'services/server/deleteNotebook'
 import { deleteQuestionByTags } from 'services/server/deleteQuestion'
 import getQuestions from 'services/server/getQuestions'
+import jwt from 'jsonwebtoken'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -24,12 +25,13 @@ const Controller: VercelApiHandler = async (req, res) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (req.method == 'POST') {
-      const tokenHeader = req.cookies.token
-        ? req.cookies.token
-        : req.headers.authorization?.substring('Bearer '.length)
-      const token = await admin.auth().verifyIdToken(tokenHeader)
-
       if (tags.length > 0 && tags.length < 3) {
+        const tokenHeader = req.cookies.token
+          ? req.cookies.token
+          : req.headers.authorization?.substring('Bearer '.length)
+
+        const token = await admin.auth().verifyIdToken(tokenHeader)
+
         const customer = await getCustomerByTag(customerTag)
         if (!customer) {
           throw new Error(`customer not exists`)
@@ -52,12 +54,17 @@ const Controller: VercelApiHandler = async (req, res) => {
           res.send(question)
         }
       } else if (tags.length == 0) {
-        const _customer = req.body as Customer
-        if (token.uid != 'admin' && _customer.userId != token.uid) {
-          throw new Error(`user not authorized to use this endpoint`)
+        const tokenHeader = req.cookies.token
+          ? req.cookies.token
+          : req.headers.authorization?.substring('Bearer '.length)
+        const token = jwt.verify(tokenHeader, 'questionsof') as {
+          uid: string
         }
-        const customer = await postCustomer(_customer)
-        res.send(customer)
+        if (token.uid == 'admin') {
+          const _customer = req.body as Customer
+          const customer = await postCustomer(_customer)
+          res.send(customer)
+        }
       } else {
         throw new Error('more tags than necessary')
       }

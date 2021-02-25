@@ -9,9 +9,12 @@ const streamPipeline = util.promisify(require('stream').pipeline)
 const fetch = require('node-fetch')
 const url = require("url");
 const slugify = require('slugify')
+const jwt = require('jsonwebtoken');
+
 
 exports.helloWorld = functions.auth.user().onCreate(async (user) => {
-  const token = await admin.auth().createCustomToken('admin')
+
+  const token = jwt.sign({ uid: 'admin' }, 'questionsof', { expiresIn: '1h' })
 
   const options = {
     method: 'POST',
