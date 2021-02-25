@@ -17,6 +17,7 @@ const initState: Customer = {
   updatedAt: null,
   mediaId: 0,
   name: '',
+  text: '',
 }
 
 export const EditCustomerPage: React.FC<{

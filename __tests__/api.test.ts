@@ -18,6 +18,7 @@ describe('API real', () => {
     createdAt: null,
     updatedAt: null,
     mediaId: 0,
+    text: '',
   }
 
   let _notebook: NotebookWithTopicsAndSubTopics = {

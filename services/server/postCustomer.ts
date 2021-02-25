@@ -7,11 +7,13 @@ const postCustomer = async (_customer: Customer): Promise<Customer & { media: Me
       tag: _customer.tag,
       userId: _customer.userId,
       name: _customer.name,
+      text: _customer.text,
     },
     update: {
       tag: _customer.tag,
       mediaId: _customer.mediaId,
       name: _customer.name,
+      text: _customer.text,
     },
     where: {
       id: _customer.id ?? 0,

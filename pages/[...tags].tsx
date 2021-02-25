@@ -10,7 +10,7 @@ import {
   MenuWithQuestions,
   Suggestions,
 } from 'lib/types'
-import { Customer } from '@prisma/client'
+import { Customer, Media } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
 import HeadHtml from 'components/HeadHtml'
@@ -30,7 +30,9 @@ type CustomerPageProps = {
 }
 
 type NotebookPageProps = {
-  customer: Customer
+  customer: Customer & {
+    media: Media
+  }
   notebook: NotebookWithTopicsAndSubTopics
   menu: MenuWithQuestions
 }
@@ -65,7 +67,11 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         <Header />
         <div className=" bg-white border-t border-b flex py-4 px-8">
           {customer.media && (
-            <img className="rounded-full" src={getURLMedia(customer.media)} alt={customer.name} />
+            <img
+              className="rounded-full w-24 h-24"
+              src={getURLMedia(customer.media)}
+              alt={customer.name}
+            />
           )}
           <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
         </div>
@@ -98,7 +104,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
             notebookTag={props.notebook.tag}
             customerTag={props.customer.tag}
           />
-          <IndexQuestionPage notebook={props.notebook} />
+          <IndexQuestionPage notebook={props.notebook} customer={props.customer} />
         </div>
       </div>
     </>

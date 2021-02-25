@@ -6,6 +6,7 @@ import { MediaWithUrl } from 'lib/types'
 import { getURLMedia } from 'lib/utils'
 import { Thumbs } from './Thumbs'
 import Modal from './Modal'
+import { Editor } from './Editor'
 
 export const EditCustomer: React.FC<{
   state: Customer
@@ -89,6 +90,21 @@ export const EditCustomer: React.FC<{
               <span className="text-xs font-medium text-right block">
                 {props.state.tag && `questionsof.com/${props.state.tag}`}
               </span>
+            </div>
+            <div className="col-span-6 sm:col-span-3">
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                Text
+              </label>
+              <Editor
+                className="h-48"
+                onChange={(x) =>
+                  props.setState({
+                    ...props.state,
+                    text: x,
+                  })
+                }
+                value={props.state.text}
+              />
             </div>
           </div>
         </div>
