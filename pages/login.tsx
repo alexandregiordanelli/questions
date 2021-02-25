@@ -23,7 +23,7 @@ const Page: NextPage = () => {
             // configured with GCIP or Firebase Auth.
             clientId: '872190920136-g962c5dhq2qctc3cj1hq8sdo3atqlpq5.apps.googleusercontent.com',
           },
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
           // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
           // firebase.auth.GithubAuthProvider.PROVIDER_ID,
           // firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -42,7 +42,7 @@ const Page: NextPage = () => {
       ui.start('#firebaseui-auth-container', config)
       //ui.disableAutoSignIn()
     })
-  }, [])
+  }, [signInSuccessUrl])
 
   return (
     <>

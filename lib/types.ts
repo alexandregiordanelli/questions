@@ -52,7 +52,7 @@ export type Path = {
 export type DataBaseHook<T> = {
   data: T
   isLoading: boolean
-  isError: any
+  isError: Record<string, unknown>
 }
 export type MediaWithUrl = {
   url: string
