@@ -23,6 +23,7 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
       tag: slugify(user.displayName, {
         lower: true,
         strict: true,
+        replacement: '',
       }),
       userId: user.uid,
       name: user.displayName,
