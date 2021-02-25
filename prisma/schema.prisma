@@ -12,12 +12,13 @@ model Customer {
   id        Int        @id @default(autoincrement())
   userId    String     @unique
   name      String     @default("")
-  tag       String     @unique
-  mediaId   Int?     
+  tag       String     @unique 
   createdAt DateTime?  @default(now())
   updatedAt DateTime?  @updatedAt
   notebooks Notebook[]
-  media     Media?     @relation(fields: [mediaId], references: [id])
+  medias    Media[]    @relation("medias")
+  avatarId  Int?
+  avatar    Media?     @relation(fields: [avatarId], references: [id])
 }
 
 model Notebook {
@@ -110,6 +111,6 @@ model Media {
   caption    String?
   width      Int?
   height     Int?
-
+  customer   Customer  @relation("medias", fields: [customerId], references: [id])
   @@unique([customerId, tag])
 }
