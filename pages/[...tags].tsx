@@ -64,7 +64,9 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
       >
         <Header />
         <div className=" bg-white border-t border-b flex py-4 px-8">
-          <img className="rounded-full" src={getURLMedia(customer.media)} alt={customer.name} />
+          {customer.media && (
+            <img className="rounded-full" src={getURLMedia(customer.media)} alt={customer.name} />
+          )}
           <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
         </div>
         <div className="flex flex-wrap">
