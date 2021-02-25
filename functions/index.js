@@ -13,7 +13,7 @@ const slugify = require('slugify')
 exports.helloWorld = functions.auth.user().onCreate(async (user) => {
   const token = await admin.auth().createCustomToken('admin')
 
-  const response = await fetch(`https://questionsof.vercel.app/api`, {
+  const options = {
     method: 'POST',
     body: JSON.stringify({
       id: 0,
@@ -36,7 +36,11 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  })
+  }
+
+  console.log(options)
+
+  const response = await fetch(`https://questionsof.vercel.app/api`, options)
 
   const res = await response.json()
 
