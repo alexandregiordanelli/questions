@@ -1,7 +1,7 @@
 import { prisma } from '../../prisma/prisma'
-import { Customer } from '@prisma/client'
+import { Customer, Media } from '@prisma/client'
 
-const postCustomer = async (_customer: Customer): Promise<Customer> => {
+const postCustomer = async (_customer: Customer): Promise<Customer & { media: Media }> => {
   let customer = await prisma.customer.upsert({
     create: {
       tag: _customer.tag,
@@ -15,6 +15,9 @@ const postCustomer = async (_customer: Customer): Promise<Customer> => {
     },
     where: {
       id: _customer.id ?? 0,
+    },
+    include: {
+      media: true,
     },
   })
 
@@ -36,6 +39,9 @@ const postCustomer = async (_customer: Customer): Promise<Customer> => {
       },
       where: {
         id: customer.id,
+      },
+      include: {
+        media: true,
       },
     })
   }

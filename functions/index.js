@@ -38,7 +38,7 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Apikey ${token}`,
     },
   }
 

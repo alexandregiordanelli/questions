@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import NProgress from 'nprogress'
 import { postClient } from 'services/client/post'
 import { mutate } from 'swr'
-import { HeaderAdmin } from 'pages/admin/notebooks'
+import { HeaderAdmin } from 'pages/admin/profile'
 import { Customer } from '@prisma/client'
 import { EditCustomer } from 'components/EditCustomer'
 
@@ -42,7 +42,7 @@ export const EditCustomerPage: React.FC<{
       NProgress.start()
       const customer = await postClient<Customer>(_customer, `/api`)
       mutate(`/api/${customer.tag}`, customer)
-      router.push(`/${customer.tag}`)
+      router.push(`/admin`)
     } catch (e) {
       NProgress.done()
       console.log(e)
@@ -51,7 +51,7 @@ export const EditCustomerPage: React.FC<{
 
   return (
     <>
-      <HeaderAdmin breadcrumb={<span>{customer?.tag ? customer.name : 'New'}</span>}>
+      <HeaderAdmin>
         <button
           onClick={async () => await postCustomer(state)}
           className="justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

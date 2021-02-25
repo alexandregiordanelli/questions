@@ -40,7 +40,7 @@ const Page: NextPage = () => {
       }
       const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
       ui.start('#firebaseui-auth-container', config)
-      ui.disableAutoSignIn()
+      //ui.disableAutoSignIn()
     })
   }, [])
 

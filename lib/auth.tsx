@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
 import cookie from 'js-cookie'
 import { getClient } from 'services/client/get'
-import { Customer } from '@prisma/client'
+import { Customer, Media } from '@prisma/client'
 
 type Auth = {
-  customerLogged: Customer
+  customerLogged: Customer & { media: Media }
   user: firebase.User
   logout: () => Promise<void>
 }
@@ -17,7 +17,7 @@ const authContext = createContext<Auth>({
 })
 
 const useProvideAuth = (): Auth => {
-  const [customerLogged, setCustomerLogged] = useState<Customer>(null)
+  const [customerLogged, setCustomerLogged] = useState<Customer & { media: Media }>(null)
   const [user, setUser] = useState<firebase.User>(null)
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const useProvideAuth = (): Auth => {
         setUser(user)
         const token = await user.getIdToken()
         cookie.set('token', token)
-        const customer = await getClient<Customer>('/api')
+        const customer = await getClient<Customer & { media: Media }>('/api')
         if (customer) setCustomerLogged(customer)
       }
     })
