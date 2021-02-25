@@ -1,20 +1,26 @@
 import { prisma } from '../../prisma/prisma'
-import { Customer } from '@prisma/client'
+import { Customer, Media } from '@prisma/client'
 import { CustomerWithNotebooks } from 'lib/types'
-export const getCustomerByUserId = async (userId: string): Promise<Customer> => {
+export const getCustomerByUserId = async (userId: string): Promise<Customer & { media: Media }> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,
+    },
+    include: {
+      media: true,
     },
   })
 
   return customer
 }
 
-export const getCustomerById = async (id: number): Promise<Customer> => {
+export const getCustomerById = async (id: number): Promise<Customer & { media: Media }> => {
   const customer = await prisma.customer.findUnique({
     where: {
       id,
+    },
+    include: {
+      media: true,
     },
   })
 
@@ -29,6 +35,7 @@ export const getCustomerNotebooksByTag = async (
       tag: customerTag,
     },
     include: {
+      media: true,
       notebooks: {
         include: {
           media: true,
@@ -40,10 +47,13 @@ export const getCustomerNotebooksByTag = async (
   return customer
 }
 
-export const getCustomerByTag = async (tag: string): Promise<Customer> => {
+export const getCustomerByTag = async (tag: string): Promise<Customer & { media: Media }> => {
   const customer = await prisma.customer.findUnique({
     where: {
       tag,
+    },
+    include: {
+      media: true,
     },
   })
 

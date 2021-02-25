@@ -30,7 +30,7 @@ export type Suggestions = {
   name: string
 }[]
 
-export type CustomerWithNotebooks = Customer & {
+export type CustomerWithNotebooks = Customer & { media: Media } & {
   notebooks: (Notebook & {
     media: Media
   })[]
