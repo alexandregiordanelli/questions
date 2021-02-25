@@ -2,9 +2,11 @@
 CREATE TABLE `Customer` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL DEFAULT '',
     `tag` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
+    `mediaId` INTEGER,
 UNIQUE INDEX `Customer.userId_unique`(`userId`),
 UNIQUE INDEX `Customer.tag_unique`(`tag`),
 
@@ -16,6 +18,7 @@ CREATE TABLE `Notebook` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `customerId` INTEGER NOT NULL,
     `tag` VARCHAR(191) NOT NULL,
+    `mediaId` INTEGER,
     `text` TEXT,
     `price` DOUBLE,
     `name` VARCHAR(191) NOT NULL,
@@ -109,7 +112,13 @@ UNIQUE INDEX `Media.customerId_tag_unique`(`customerId`, `tag`),
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `Customer` ADD FOREIGN KEY (`mediaId`) REFERENCES `Media`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Notebook` ADD FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Notebook` ADD FOREIGN KEY (`mediaId`) REFERENCES `Media`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Topic` ADD FOREIGN KEY (`notebookId`) REFERENCES `Notebook`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -131,3 +140,6 @@ ALTER TABLE `RightAlternative` ADD FOREIGN KEY (`alternativeId`) REFERENCES `Alt
 
 -- AddForeignKey
 ALTER TABLE `RightAlternative` ADD FOREIGN KEY (`questionId`) REFERENCES `Question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Media` ADD FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -17,8 +17,8 @@ model Customer {
   updatedAt DateTime?  @updatedAt
   notebooks Notebook[]
   medias    Media[]    @relation("medias")
-  avatarId  Int?
-  avatar    Media?     @relation(fields: [avatarId], references: [id])
+  mediaId   Int?
+  media     Media?     @relation(fields: [mediaId], references: [id])
 }
 
 model Notebook {

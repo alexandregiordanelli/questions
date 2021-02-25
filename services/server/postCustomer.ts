@@ -9,7 +9,6 @@ const postCustomer = async (_customer: Customer): Promise<Customer> => {
       name: _customer.name,
       media: {
         create: {
-          customerId: 0,
           ext: 'jpg',
           mime: 'image/jpeg',
           name: 'profile.jpg',

@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE `Customer` ADD COLUMN     `name` VARCHAR(191) NOT NULL DEFAULT '',
-    ADD COLUMN     `mediaId` INTEGER;
-
--- AddForeignKey
-ALTER TABLE `Customer` ADD FOREIGN KEY (`mediaId`) REFERENCES `Media`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
