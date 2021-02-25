@@ -1,5 +1,6 @@
 import { MediaWithUrl } from './types'
 import slugify from 'slugify'
+import { Media } from '@prisma/client'
 
 export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL
   ? process.env.NEXT_PUBLIC_VERCEL_URL != 'questionsof.com'
@@ -113,3 +114,5 @@ export const getMediafromFile = (file: File): Promise<MediaWithUrl> => {
     }
   })
 }
+export const getURLMedia = (media: Media): string =>
+  `https://assets.questionsof.com/${media.customerId}/${media.tag}`
