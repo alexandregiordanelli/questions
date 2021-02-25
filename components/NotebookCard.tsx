@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Img } from './Img'
 import { Notebook, Media } from '@prisma/client'
+import { getURLMedia } from 'lib/utils'
 
 export const NotebookCard: React.FC<{
   customerTag?: string
@@ -18,7 +19,7 @@ export const NotebookCard: React.FC<{
         <div className="flex">
           <Img
             className="rounded-t-sm"
-            src={`https://assets.questionsof.com/${props.notebook.media.customerId}/${props.notebook.media.tag}`}
+            src={getURLMedia(props.notebook.media)}
             height={props.notebook.media.height}
             width={props.notebook.media.width}
           />

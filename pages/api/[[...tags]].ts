@@ -25,13 +25,21 @@ const Controller: VercelApiHandler = async (req, res) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (req.method == 'POST') {
+      const isBearer = req.headers.authorization?.startsWith('Bearer')
+
+      const tokenHeader = req.cookies.token
+        ? req.cookies.token
+        : isBearer
+        ? req.headers.authorization.substring('Bearer '.length)
+        : req.headers.authorization.substring('Apikey '.length)
+
+      const token = isBearer
+        ? await admin.auth().verifyIdToken(tokenHeader)
+        : (jwt.verify(tokenHeader, 'questionsof') as {
+            uid: string
+          })
+
       if (tags.length > 0 && tags.length < 3) {
-        const tokenHeader = req.cookies.token
-          ? req.cookies.token
-          : req.headers.authorization?.substring('Bearer '.length)
-
-        const token = await admin.auth().verifyIdToken(tokenHeader)
-
         const customer = await getCustomerByTag(customerTag)
         if (!customer) {
           throw new Error(`customer not exists`)
@@ -54,12 +62,6 @@ const Controller: VercelApiHandler = async (req, res) => {
           res.send(question)
         }
       } else if (tags.length == 0) {
-        const tokenHeader = req.cookies.token
-          ? req.cookies.token
-          : req.headers.authorization?.substring('Bearer '.length)
-        const token = jwt.verify(tokenHeader, 'questionsof') as {
-          uid: string
-        }
         if (token.uid == 'admin') {
           const _customer = req.body as Customer
           const customer = await postCustomer(_customer)

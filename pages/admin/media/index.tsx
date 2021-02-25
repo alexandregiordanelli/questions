@@ -7,6 +7,7 @@ import { Media } from '@prisma/client'
 import { useData } from 'services/client/get'
 import { Thumbs } from 'components/Thumbs'
 import { MediaWithUrl } from 'lib/types'
+import { getURLMedia } from 'lib/utils'
 
 const Page: NextPage = () => {
   const route = useRouter()
@@ -16,7 +17,7 @@ const Page: NextPage = () => {
   const mediasWithURL: MediaWithUrl[] = medias?.map((x) => {
     return {
       ...x,
-      url: `https://assets.questionsof.com/${x.customerId}/${x.tag}`,
+      url: getURLMedia(x),
     }
   })
 

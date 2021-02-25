@@ -1,10 +1,11 @@
-import { PencilIcon, TrashIcon, CheckIcon, XIcon } from '@primer/octicons-react'
+import { PencilIcon, TrashIcon } from '@primer/octicons-react'
 import Link from 'next/link'
 import { QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
 import { useData } from 'services/client/get'
 import Modal from './Modal'
 import { useState } from 'react'
 import { deleteClient } from 'services/client/delete'
+import { getURLMedia } from 'lib/utils'
 
 export const Table: React.FC<{
   customerTag: string
@@ -84,12 +85,12 @@ export const Table: React.FC<{
                     >
                       Name
                     </th>
-                    <th
+                    {/* <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Options
-                    </th>
+                    </th> */}
                     <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -124,7 +125,7 @@ export const Table: React.FC<{
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
                           {question.alternatives.length ? <CheckIcon /> : <XIcon />}
                           <span className="ml-1 mr-4">alternatives</span>
@@ -135,7 +136,7 @@ export const Table: React.FC<{
                           {question.rightAlternative ? <CheckIcon /> : <XIcon />}
                           <span className="ml-1">right answer</span>
                         </div>
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {question.subTopic?.name}
                       </td>
@@ -288,7 +289,7 @@ export const TableNotebooks: React.FC<{
                         {notebook.media && (
                           <img
                             className="w-20"
-                            src={`https://assets.questionsof.com/${notebook.media.customerId}/${notebook.media.tag}`}
+                            src={getURLMedia(notebook.media)}
                             alt={notebook.media.text}
                           />
                         )}

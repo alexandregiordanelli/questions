@@ -1,42 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import NProgress from 'nprogress'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Customer } from '@prisma/client'
-import { postClient } from 'services/client/post'
-import { mutate } from 'swr'
 
 export const EditCustomer: React.FC<{
-  customer?: Customer
+  state: Customer
+  setState: Dispatch<SetStateAction<Customer>>
 }> = (props) => {
-  const initCustomer: Customer = {
-    id: 0,
-    userId: '',
-    tag: '',
-    createdAt: null,
-    updatedAt: null,
-    mediaId: 0,
-    name: '',
-  }
-
-  const [customer, setCustomer] = useState(props.customer ?? initCustomer)
-  const router = useRouter()
-
-  useEffect(() => {
-    if (props.customer) setCustomer(props.customer)
-  }, [props.customer])
-
-  const postCustomer = async (_customer: Customer): Promise<void> => {
-    try {
-      NProgress.start()
-      const customer = await postClient<Customer>(_customer, `/api`)
-      mutate(`/api/${customer.tag}`, customer)
-      router.push(`/${customer.tag}`)
-    } catch (e) {
-      NProgress.done()
-      console.log(e)
-    }
-  }
-
   return (
     <div className="bg-gray-100">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -70,27 +38,18 @@ export const EditCustomer: React.FC<{
                         autoComplete="family-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         onChange={(x) =>
-                          setCustomer({
-                            ...customer,
+                          props.setState({
+                            ...props.state,
                             tag: x.target.value,
                           })
                         }
-                        value={customer?.tag}
+                        value={props.state.tag}
                       />
                       <span className="text-xs font-medium text-right block">
-                        {customer?.tag && `questionsof.com/${customer?.tag}`}
+                        {props.state.tag && `questionsof.com/${props.state.tag}`}
                       </span>
                     </div>
                   </div>
-                </div>
-
-                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <button
-                    onClick={async () => await postCustomer(customer)}
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ml-3"
-                  >
-                    Save
-                  </button>
                 </div>
               </div>
             </div>

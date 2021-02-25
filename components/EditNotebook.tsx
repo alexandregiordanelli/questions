@@ -9,6 +9,7 @@ import { useData } from 'services/client/get'
 import { Thumbs } from './Thumbs'
 import Modal from './Modal'
 import { Thumb } from './Thumb'
+import { getURLMedia } from 'lib/utils'
 
 type SelectOption = {
   label: string
@@ -45,7 +46,7 @@ export const EditNotebook: React.FC<{
   const mediasWithURL: MediaWithUrl[] = medias?.map((x) => {
     return {
       ...x,
-      url: `https://assets.questionsof.com/${x.customerId}/${x.tag}`,
+      url: getURLMedia(x),
     }
   })
 
