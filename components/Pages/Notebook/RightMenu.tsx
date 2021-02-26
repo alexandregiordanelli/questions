@@ -34,14 +34,23 @@ const RightMenu: React.FC<{
           checked={toggleMenu}
         />
         <ul className="hidden lg:block text-sm text-gray-700">
-          {props.suggestions?.map((x, i) => (
-            <li key={i}>
-              {/* activeClassName="ativo" */}
-              <Link href={`/${props.customerTag}/${props.notebookTag}/${x.tag}`}>
-                <a className="py-1 inline-block hover:underline">{x.name}</a>
-              </Link>
-            </li>
-          ))}
+          {props.suggestions?.map((x, i) => {
+            const url = `/${props.customerTag}/${props.notebookTag}/${x.tag}`
+            const active = router.asPath == url
+            return (
+              <li key={i}>
+                <Link href={url}>
+                  <a
+                    className={`py-1 inline-block ${
+                      active ? 'font-medium text-gray-900' : 'hover:underline'
+                    }`}
+                  >
+                    {x.name}
+                  </a>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
       </div>
     </>

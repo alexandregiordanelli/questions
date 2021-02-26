@@ -2,12 +2,14 @@ import React from 'react'
 import { MenuWithQuestions } from '../../../lib/types'
 import { MenuItem } from './MenuItem'
 import { MenuSubItem } from './MenuSubItem'
+import { useRouter } from 'next/router'
 
 export const MenuCore: React.FC<{
   menu: MenuWithQuestions
   notebookTag: string
   customerTag: string
 }> = (props) => {
+  const router = useRouter()
   return (
     <>
       <ul
@@ -31,16 +33,18 @@ export const MenuCore: React.FC<{
               <ul className="hidden mt-4">
                 {x.subtopics.map((y, j) => {
                   const anotherSubtopicQuestion = y.questions[0]
+                  const url = anotherSubtopicQuestion
+                    ? `/${props.customerTag}/${props.notebookTag}/${anotherSubtopicQuestion.tag}`
+                    : null
+                  const active = router.asPath == url
                   return (
                     <li key={`${i}.${j}`} className="text-sm py-1 mt-2">
                       <MenuSubItem
                         title={y.name}
-                        className="text-blue-600 hover:underline"
-                        url={
-                          anotherSubtopicQuestion
-                            ? `/${props.customerTag}/${props.notebookTag}/${anotherSubtopicQuestion.tag}`
-                            : null
-                        }
+                        className={`${
+                          active ? 'font-medium text-gray-900' : 'text-blue-600 hover:underline'
+                        }`}
+                        url={url}
                       />
                     </li>
                   )
