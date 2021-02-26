@@ -26,7 +26,7 @@ export const MarkdownText: React.FC<{
         // if (new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*').test(url)) {
         //   node.properties.src = absolute(filePath, url)
         // }
-        node.properties.src = `http://assets.questionsof.com/${url}`
+        node.properties.src = `https://assets.questionsof.com/${url}`
       },
       selectors: ['img[src]'],
     })
