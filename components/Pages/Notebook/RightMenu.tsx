@@ -19,20 +19,21 @@ const RightMenu: React.FC<{
 
   return (
     <>
-      <div>
-        <label className="title-menu-right" htmlFor="title-menu-right-check">
-          <span>+ Questões de Citologia</span>
-          <span className="icon">
+      <div className="overflow-auto static top-24 bg-gray-100 p-4 border rounded mb-12 lg:ml-12 lg:max-w-xs w-full lg:border-0 lg:bg-transparent lg:p-0">
+        <label className="flex align-middle justify-between cursor-pointer" htmlFor="rightMenu">
+          <span>+ Questões</span>
+          <span className="lg:hidden">
             <ChevronDownIcon verticalAlign="middle" />
           </span>
         </label>
         <input
-          id="title-menu-right-check"
+          id="rightMenu"
           type="checkbox"
+          className="toggleVisibilityUL"
           onChange={(x) => setToggleMenu(x.target.checked)}
           checked={toggleMenu}
         />
-        <ul>
+        <ul className="hidden lg:block">
           {props.suggestions?.map((x, i) => (
             <li key={i}>
               {/* activeClassName="ativo" */}
@@ -45,89 +46,10 @@ const RightMenu: React.FC<{
       </div>
 
       <style jsx>{`
-        div {
+        {/* div {
           max-height: calc(100vh - 110px - 24px);
-          overflow: auto;
-          position: sticky;
-          top: 90px;
           grid-area: table-of-contents / table-of-contents / table-of-contents / table-of-contents;
-        }
-        label {
-          font-weight: 600;
-          line-height: 1.5;
-          display: inline-block;
-          font-size: 16px;
-          margin-bottom: 4px;
-        }
-        #title-menu-right-check {
-          display: none;
-        }
-        ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
-
-        a {
-          text-decoration: none;
-          font-size: 14px;
-          display: inline-block;
-          padding-top: 4px;
-          padding-bottom: 4px;
-          color: rgb(88, 96, 105);
-        }
-
-        a:hover:not(.ativo) {
-          text-decoration: underline;
-          outline: 0;
-        }
-
-        a.ativo {
-          font-weight: 600;
-          color: #24292e;
-        }
-
-        .icon {
-          display: none;
-          color: rgb(88, 96, 105);
-        }
-
-        @media screen and (max-width: 768px) {
-          label {
-            margin-bottom: 0;
-          }
-          .title-menu-right {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            display: flex;
-            padding: 16px;
-            cursor: pointer;
-          }
-          .icon {
-            display: block;
-          }
-
-          div {
-            position: inherit;
-            background: rgb(250, 251, 252);
-            border: solid 1px rgb(225, 228, 232);
-            max-height: inherit;
-            margin: 24px;
-            border-radius: 6px;
-          }
-          a {
-            font-size: 16px;
-          }
-          ul {
-            display: none;
-            border-top: 1px solid rgb(225, 228, 232);
-            padding: 16px;
-          }
-          #title-menu-right-check:checked + ul {
-            display: block;
-          }
-        }
+        } */}
       `}</style>
     </>
   )

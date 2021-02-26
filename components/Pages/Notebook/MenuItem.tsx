@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from '@primer/octicons-react'
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { MenuSubItem } from './MenuSubItem'
 
 export const MenuItem: React.FC<{
   hasExpanded: boolean
@@ -26,28 +26,13 @@ export const MenuItem: React.FC<{
 
       <input
         id={encodeURIComponent(props.title)}
-        className="menuItemLabel"
+        className="toggleVisibilityUL"
         type="checkbox"
         onChange={(x) => toggleOpened(x.target.checked)}
         checked={opened}
       />
-
-      <style jsx>{`
-        :global(.menuItemLabel) {
-          display: none;
-        }
-        :global(.menuItemLabel:checked ~ ul) {
-          display: block;
-        }
-      `}</style>
-    </>
-  ) : props.url ? (
-    <>
-      <Link href={`/${props.url}`}>
-        <a>{props.title}</a>
-      </Link>
     </>
   ) : (
-    <>{props.title}</>
+    <MenuSubItem title={props.title} url={props.url} />
   )
 }

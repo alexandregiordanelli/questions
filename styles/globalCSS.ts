@@ -1,6 +1,13 @@
 import css from 'styled-jsx/css'
 
 export const globalCSS = css.global`
+  .toggleVisibilityUL {
+    display: none;
+  }
+  .toggleVisibilityUL:checked ~ ul {
+    display: block;
+  }
+
   .CodeMirror {
     height: 100%;
     /* min-height: 70px; */
@@ -12,29 +19,6 @@ export const globalCSS = css.global`
     /* background-color: white; */
   }
 
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    line-height: 1.5;
-    color: #24292e;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
-      Apple Color Emoji, Segoe UI Emoji;
-    font-size: 16px;
-    line-height: 1.5;
-    word-wrap: break-word;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
   amp-img.contain img {
     object-fit: contain;
   }
@@ -48,9 +32,6 @@ export const globalCSS = css.global`
     max-width: calc(100vw - 60px);
 } */
 
-  input[type='checkbox'] {
-    outline: none;
-  }
   #right-answer {
     display: none;
   }

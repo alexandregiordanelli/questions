@@ -51,52 +51,20 @@ export const QuestionFormWithRightMenu: React.FC<{
           background-color: rgb(220, 255, 228);
           border-color: rgba(23, 111, 44, 0.2);
         }
-        .icon-menu-right {
-          color: rgb(88, 96, 105);
-          margin: 0 6px;
-        }
       `}</style>
-      <style jsx>{`
-        @media (max-width: 767px) {
-          .grid > div {
-            padding: 0 24px;
-          }
-        }
 
-        @media screen and (min-width: 768px) {
-          .grid {
-            display: grid;
-            grid-template-columns: minmax(0px, 960px) 220px;
-            margin: 0 auto;
-            column-gap: 48px;
-            padding: 48px;
-            grid-template-areas: 'content table-of-contents';
-          }
-        }
-        .grid div {
-          grid-area: content / content / content / content;
-        }
-
-        div > h2 {
-          padding-bottom: 0.3em;
-          border-bottom: 1px solid #eaecef;
-          margin: 0;
-          margin-bottom: 16px;
-          font-weight: 600;
-          line-height: 1.25;
-        }
-      `}</style>
-      <div className="grid">
-        <RightMenu
-          // title={title}
-          customerTag={props.customerTag}
-          notebookTag={props.notebookTag}
-          suggestions={props.suggestions}
-        />
-        <div>
-          <h2>{props.question.name}</h2>
-          {/* <h2>Question {questions.findIndex(x => x.url == question.url) + 1} of {questions.length}</h2> */}
-          <QuestionForm question={props.question} />
+      <div className="flex-grow">
+        <div className="flex flex-col lg:flex-row-reverse max-w-screen-xl mx-auto p-12">
+          <RightMenu
+            // title={title}
+            customerTag={props.customerTag}
+            notebookTag={props.notebookTag}
+            suggestions={props.suggestions}
+          />
+          <div className="flex-grow">
+            <h2>{props.question.name}</h2>
+            <QuestionForm question={props.question} />
+          </div>
         </div>
       </div>
     </>
