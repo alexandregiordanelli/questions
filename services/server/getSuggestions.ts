@@ -20,6 +20,9 @@ const getSuggestions = async (notebookTag: string, subTopicId: number): Promise<
         id: subTopicId,
       },
     },
+    orderBy: {
+      order: 'asc',
+    },
   })
 
   return questionsOfSubTopic

@@ -158,10 +158,18 @@ export const Table: React.FC<{
                         </span>
                       </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-indigo-600 hover:text-indigo-900"
+                          href={`/${props.customerTag}/${question.notebook.tag}/${question.tag}`}
+                        >
+                          <EyeIcon />
+                        </a>
                         <Link
                           href={`/admin/questions/edit?tags=/${props.customerTag}/${question.notebook.tag}/${question.tag}`}
                         >
-                          <a className="text-indigo-600 hover:text-indigo-900">
+                          <a className="text-indigo-600 hover:text-indigo-900 ml-1">
                             <PencilIcon />
                           </a>
                         </Link>
@@ -320,15 +328,18 @@ export const TableNotebooks: React.FC<{
                         </span>
                       </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link href={`/${props.customerTag}/${notebook.tag}`}>
-                          <a className="text-indigo-600 hover:text-indigo-900">
-                            <EyeIcon />
-                          </a>
-                        </Link>
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-indigo-600 hover:text-indigo-900"
+                          href={`/${props.customerTag}/${notebook.tag}`}
+                        >
+                          <EyeIcon />
+                        </a>
                         <Link
                           href={`/admin/notebooks/edit?tags=/${props.customerTag}/${notebook.tag}`}
                         >
-                          <a className="text-indigo-600 hover:text-indigo-900">
+                          <a className="text-indigo-600 hover:text-indigo-900 ml-1">
                             <PencilIcon />
                           </a>
                         </Link>
