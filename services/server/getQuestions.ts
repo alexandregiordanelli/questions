@@ -21,6 +21,15 @@ const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => 
         },
       },
     },
+    orderBy: {
+      notebook: {
+        name: 'asc',
+      },
+      subTopic: {
+        order: 'asc',
+      },
+      order: 'asc',
+    },
   })
 
   return questions
