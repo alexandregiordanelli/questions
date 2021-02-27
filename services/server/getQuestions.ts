@@ -29,6 +29,9 @@ const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => 
       },
       {
         subTopic: {
+          topic: {
+            order: 'asc',
+          },
           order: 'asc',
         },
       },
