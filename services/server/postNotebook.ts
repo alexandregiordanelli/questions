@@ -97,6 +97,7 @@ const postNotebook = async (
 
     const createTopic = prisma.topic.create({
       data: {
+        order: topicWillAdded.order,
         name: topicWillAdded.name,
         subtopics: createSubTopics,
         notebook: {
@@ -171,6 +172,7 @@ const postNotebook = async (
     const updateTopic = prisma.topic.update({
       data: {
         name: topic.name,
+        order: topic.order,
       },
       where: {
         id: topic.id,

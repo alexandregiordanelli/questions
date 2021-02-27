@@ -14,6 +14,7 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
     solution: questionOnRepo.solution,
     tag: questionOnRepo.tag,
     name: questionOnRepo.name,
+    order: questionOnRepo.order,
     notebook: {
       connect: {
         id: questionOnRepo.notebookId,

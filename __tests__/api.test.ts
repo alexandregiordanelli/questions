@@ -39,6 +39,7 @@ describe('API real', () => {
         name: 'topic',
         createdAt: null,
         updatedAt: null,
+        order: null,
         subtopics: [
           {
             id: 0,
@@ -46,6 +47,7 @@ describe('API real', () => {
             name: 'subtopic 1',
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
           {
             id: 0,
@@ -53,6 +55,7 @@ describe('API real', () => {
             name: 'subtopic 2',
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
         ],
       },
@@ -66,12 +69,14 @@ describe('API real', () => {
     notebookId: 0,
     createdAt: null,
     updatedAt: null,
+    order: null,
     subTopic: {
       id: 0,
       name: '',
       topicId: 0,
       createdAt: null,
       updatedAt: null,
+      order: null,
     },
     subTopicId: 0,
     solution: 'solution',
@@ -197,6 +202,7 @@ describe('API real', () => {
         notebookId: 0,
         createdAt: null,
         updatedAt: null,
+        order: null,
         subtopics: [
           {
             id: 0,
@@ -204,6 +210,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
         ],
       },
@@ -213,6 +220,7 @@ describe('API real', () => {
         notebookId: 0,
         createdAt: null,
         updatedAt: null,
+        order: null,
         subtopics: [
           {
             id: 0,
@@ -220,6 +228,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
           {
             id: 0,
@@ -227,6 +236,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
           {
             id: 0,
@@ -234,6 +244,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
+            order: null,
           },
         ],
       },

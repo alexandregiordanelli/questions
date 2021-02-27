@@ -23,6 +23,8 @@ export const EditCustomer: React.FC<{
     }
   })
 
+  const avatarProfile = mediasWithURL?.find((x) => x.id == props.state.mediaId)
+
   return (
     <>
       {isOpened && (
@@ -46,7 +48,7 @@ export const EditCustomer: React.FC<{
               <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
                 Image
               </label>
-              {!props.state.mediaId ? (
+              {!avatarProfile ? (
                 <button
                   className="bg-gray-200 px-2 py-1 rounded-md"
                   onClick={() => setIsOpened(true)}
@@ -55,7 +57,7 @@ export const EditCustomer: React.FC<{
                 </button>
               ) : (
                 <Thumb
-                  media={mediasWithURL?.find((x) => x.id == props.state.mediaId)}
+                  media={avatarProfile}
                   onClick={() => {
                     setIsOpened(true)
                   }}
