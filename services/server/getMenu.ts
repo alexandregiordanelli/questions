@@ -10,6 +10,9 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
             select: {
               tag: true,
             },
+            orderBy: {
+              order: 'asc',
+            },
           },
         },
         orderBy: {
