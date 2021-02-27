@@ -16,7 +16,14 @@ export const getNotebook = async (
     include: {
       topics: {
         include: {
-          subtopics: true,
+          subtopics: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
       media: true,
@@ -42,7 +49,14 @@ export const getNotebookByTags = async (
     include: {
       topics: {
         include: {
-          subtopics: true,
+          subtopics: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
       media: true,

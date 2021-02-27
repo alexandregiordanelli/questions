@@ -12,6 +12,9 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
             },
           },
         },
+        orderBy: {
+          order: 'asc',
+        },
       },
       notebook: {
         select: {
@@ -23,6 +26,9 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
       notebook: {
         tag: notebookTag,
       },
+    },
+    orderBy: {
+      order: 'asc',
     },
   })
 
