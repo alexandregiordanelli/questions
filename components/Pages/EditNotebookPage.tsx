@@ -150,13 +150,13 @@ export const EditNotebookPage: React.FC<{
     _notebook.customerId = customer.id
 
     try {
-      // NProgress.start()
+      NProgress.start()
       const notebook = await postClient<NotebookWithTopicsAndSubTopics>(
         _notebook,
         `/api/${props.customerTag}`
       )
       mutate(`/api/${props.customerTag}/${notebook.tag}`, notebook)
-      //router.push(`/admin/notebooks`)
+      router.push(`/admin/notebooks`)
     } catch (e) {
       NProgress.done()
       console.log(e)
