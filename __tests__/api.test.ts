@@ -39,7 +39,7 @@ describe('API real', () => {
         name: 'topic',
         createdAt: null,
         updatedAt: null,
-        order: null,
+        order: 0,
         subtopics: [
           {
             id: 0,
@@ -47,7 +47,7 @@ describe('API real', () => {
             name: 'subtopic 1',
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
           {
             id: 0,
@@ -55,7 +55,7 @@ describe('API real', () => {
             name: 'subtopic 2',
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
         ],
       },
@@ -69,14 +69,14 @@ describe('API real', () => {
     notebookId: 0,
     createdAt: null,
     updatedAt: null,
-    order: null,
+    order: 0,
     subTopic: {
       id: 0,
       name: '',
       topicId: 0,
       createdAt: null,
       updatedAt: null,
-      order: null,
+      order: 0,
     },
     subTopicId: 0,
     solution: 'solution',
@@ -202,7 +202,7 @@ describe('API real', () => {
         notebookId: 0,
         createdAt: null,
         updatedAt: null,
-        order: null,
+        order: 0,
         subtopics: [
           {
             id: 0,
@@ -210,7 +210,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
         ],
       },
@@ -220,7 +220,7 @@ describe('API real', () => {
         notebookId: 0,
         createdAt: null,
         updatedAt: null,
-        order: null,
+        order: 0,
         subtopics: [
           {
             id: 0,
@@ -228,7 +228,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
           {
             id: 0,
@@ -236,7 +236,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
           {
             id: 0,
@@ -244,7 +244,7 @@ describe('API real', () => {
             topicId: 0,
             createdAt: null,
             updatedAt: null,
-            order: null,
+            order: 0,
           },
         ],
       },

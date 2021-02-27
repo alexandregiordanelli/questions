@@ -72,14 +72,14 @@ export type Action =
 const initState: QuestionWithAll = {
   id: 0,
   tag: '',
-  order: null,
+  order: 0,
   subTopic: {
     id: 0,
     name: '',
     topicId: 0,
     createdAt: null,
     updatedAt: null,
-    order: null,
+    order: 0,
   },
   notebook: {
     name: '',
