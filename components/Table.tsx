@@ -1,4 +1,4 @@
-import { PencilIcon, TrashIcon } from '@primer/octicons-react'
+import { PencilIcon, TrashIcon, EyeIcon } from '@primer/octicons-react'
 import Link from 'next/link'
 import { QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
 import { useData } from 'services/client/get'
@@ -83,6 +83,12 @@ export const Table: React.FC<{
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
+                      Order
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                       Name
                     </th>
                     {/* <th
@@ -103,12 +109,12 @@ export const Table: React.FC<{
                     >
                       Notebook
                     </th>
-                    <th
+                    {/* <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Status
-                    </th>
+                    </th> */}
                     <th scope="col" className="relative px-6 py-3">
                       <span className="sr-only">Edit</span>
                     </th>
@@ -117,6 +123,9 @@ export const Table: React.FC<{
                 <tbody className="bg-white divide-y divide-gray-200">
                   {questions?.map((question, i) => (
                     <tr key={i}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {question.order}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="ml-4">
@@ -143,11 +152,11 @@ export const Table: React.FC<{
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {question.notebook.name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                           Active
                         </span>
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <Link
                           href={`/admin/questions/edit?tags=/${props.customerTag}/${question.notebook.tag}/${question.tag}`}
@@ -271,12 +280,12 @@ export const TableNotebooks: React.FC<{
                     >
                       Price
                     </th>
-                    <th
+                    {/* <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Status
-                    </th>
+                    </th> */}
                     <th scope="col" className="relative px-6 py-3">
                       <span className="sr-only">Edit</span>
                     </th>
@@ -305,12 +314,17 @@ export const TableNotebooks: React.FC<{
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {notebook.price}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                           Active
                         </span>
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <Link href={`/${props.customerTag}/${notebook.tag}`}>
+                          <a className="text-indigo-600 hover:text-indigo-900">
+                            <EyeIcon />
+                          </a>
+                        </Link>
                         <Link
                           href={`/admin/notebooks/edit?tags=/${props.customerTag}/${notebook.tag}`}
                         >

@@ -22,6 +22,7 @@ export enum ActionType {
   UPDATE_TAG,
   UPDATE_TEXT,
   UPDATE_SUBTOPIC,
+  UPDATE_ORDER,
 }
 
 export type Action =
@@ -67,6 +68,10 @@ export type Action =
   | {
       type: ActionType.UPDATE_SUBTOPIC
       subTopicId: number
+    }
+  | {
+      type: ActionType.UPDATE_ORDER
+      order: number
     }
 
 const initState: QuestionWithAll = {
@@ -126,6 +131,11 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
     case ActionType.UPDATE_TAG: {
       const newState = _.cloneDeep(state)
       newState.tag = action.tag
+      return newState
+    }
+    case ActionType.UPDATE_ORDER: {
+      const newState = _.cloneDeep(state)
+      newState.order = action.order
       return newState
     }
     case ActionType.UPDATE_QUESTION: {

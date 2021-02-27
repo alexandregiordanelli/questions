@@ -58,29 +58,6 @@ export const EditQuestion: React.FC<{
       <div className="shadow overflow-hidden sm:rounded-md">
         <div className="px-4 py-5 bg-white sm:p-6">
           <div className="grid grid-cols-4 gap-4">
-            <div className="col-span-6 sm:col-span-2 ">
-              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
-                Question&apos;s name
-              </label>
-              <input
-                type="text"
-                name="last_name"
-                id="last_name"
-                autoComplete="family-name"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={(x) => {
-                  props.dispatch({ type: ActionType.UPDATE_TITLE, name: x.target.value })
-                  props.dispatch({
-                    type: ActionType.UPDATE_TAG,
-                    tag: slugify(x.target.value, {
-                      lower: true,
-                      strict: true,
-                    }),
-                  })
-                }}
-                value={props.question?.name}
-              />
-            </div>
             <div className="col-span-6 sm:col-span-1 ">
               <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
                 Notebook
@@ -137,6 +114,48 @@ export const EditQuestion: React.FC<{
                   options={topics}
                 />
               </div>
+            </div>
+            <div className="col-span-6 sm:col-span-1 ">
+              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+                Order on Subject
+              </label>
+              <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                autoComplete="family-name"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={(x) => {
+                  props.dispatch({
+                    type: ActionType.UPDATE_ORDER,
+                    order: Number(x.target.value),
+                  })
+                }}
+                value={props.question?.order}
+              />
+            </div>
+            <div className="col-span-6 sm:col-span-2 ">
+              <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+                Question&apos;s name
+              </label>
+              <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                autoComplete="family-name"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={(x) => {
+                  props.dispatch({ type: ActionType.UPDATE_TITLE, name: x.target.value })
+                  props.dispatch({
+                    type: ActionType.UPDATE_TAG,
+                    tag: slugify(x.target.value, {
+                      lower: true,
+                      strict: true,
+                    }),
+                  })
+                }}
+                value={props.question?.name}
+              />
             </div>
 
             <div className="col-span-6 sm:col-span-4">
