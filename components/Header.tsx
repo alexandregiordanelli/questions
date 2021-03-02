@@ -30,38 +30,40 @@ export const Header: React.FC = () => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {!router.pathname.startsWith('/admin') && customerTag && (
-            <>
-              {!notebookTag && (
-                <>
-                  <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
-                </>
-              )}
-              {notebookTag && (
-                <>
-                  <Link href={`/${customerTag}`}>
-                    <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
-                  </Link>
-                  {!questionTag && (
-                    <>
-                      <ChevronRightIcon className="text-gray-700" />
-                      <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
-                    </>
-                  )}
-                  {questionTag && (
-                    <>
-                      <ChevronRightIcon className="text-gray-700" />
-                      <Link href={`/${customerTag}/${notebookTag}`}>
-                        <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
-                      </Link>
-                      <ChevronRightIcon className="text-gray-700" />
-                      <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
+          {!router.pathname.startsWith('/admin') &&
+            !router.pathname.startsWith('/docs') &&
+            customerTag && (
+              <>
+                {!notebookTag && (
+                  <>
+                    <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
+                  </>
+                )}
+                {notebookTag && (
+                  <>
+                    <Link href={`/${customerTag}`}>
+                      <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
+                    </Link>
+                    {!questionTag && (
+                      <>
+                        <ChevronRightIcon className="text-gray-700" />
+                        <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
+                      </>
+                    )}
+                    {questionTag && (
+                      <>
+                        <ChevronRightIcon className="text-gray-700" />
+                        <Link href={`/${customerTag}/${notebookTag}`}>
+                          <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
+                        </Link>
+                        <ChevronRightIcon className="text-gray-700" />
+                        <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            )}
           {router.pathname.startsWith('/admin') && (
             <Link href={`/admin`}>
               <a className="text-white px-2 py-2 text-sm">Admin</a>
