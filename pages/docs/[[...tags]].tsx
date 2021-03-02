@@ -10,7 +10,8 @@ import { Menu } from 'lib/types'
 import { join } from 'path'
 import { readFileSync } from 'fs'
 import { MarkdownText } from 'components/MarkdownText'
-
+import getConfig from 'next/config'
+const { serverRuntimeConfig } = getConfig()
 export const Page: NextPage<{
   menu: Menu
   markdown: string
@@ -48,7 +49,7 @@ export const getStaticProps: GetStaticProps<{
   markdown: string
 }> = async (context) => {
   const tags = context.params.tags as string[]
-  const docsDirectory = join(__dirname, 'docs')
+  const docsDirectory = join(serverRuntimeConfig.PROJECT_ROOT, 'docs')
   const fullPath = join(docsDirectory, `${tags?.join('/') ?? 'index'}.md`)
   const markdown: string = readFileSync(fullPath, 'utf8')
 
