@@ -9,6 +9,17 @@ import {
   Media,
 } from '@prisma/client'
 
+export type Menu = {
+  items: {
+    name: string
+    url?: string
+    subItems?: {
+      name: string
+      url: string
+    }[]
+  }[]
+}
+
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {
     questions: {

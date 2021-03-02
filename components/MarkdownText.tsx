@@ -9,6 +9,7 @@ import gfm from 'remark-gfm'
 import 'katex/dist/contrib/mhchem.js'
 import { useAmp } from 'next/amp'
 import inspectUrls from '@jsdevtools/rehype-url-inspector'
+import highlight from 'rehype-highlight'
 export const MarkdownText: React.FC<{
   md: string
 }> = (props) => {
@@ -18,6 +19,7 @@ export const MarkdownText: React.FC<{
     .use(math)
     .use(gfm)
     .use(remark2rehype)
+    .use(highlight)
     .use(katex, {
       output: isAmp ? 'html' : 'htmlAndMathml',
     })

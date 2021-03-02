@@ -67,6 +67,11 @@ export const Header: React.FC = () => {
               <a className="text-white px-2 py-2 text-sm">Admin</a>
             </Link>
           )}
+          {router.pathname.startsWith('/docs') && (
+            <Link href={`/docs`}>
+              <a className="text-white px-2 py-2 text-sm">Docs</a>
+            </Link>
+          )}
         </div>
         <NoSSR>
           {!user && (
