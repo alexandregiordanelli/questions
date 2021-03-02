@@ -70,6 +70,7 @@ export const EditQuestion: React.FC<{
                       notebook: {
                         name: x.label,
                         tag: x.value,
+                        customerId: props.customer.id,
                       },
                     })
                     props.dispatch({

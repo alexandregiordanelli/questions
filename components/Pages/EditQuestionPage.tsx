@@ -35,6 +35,7 @@ export type Action =
       notebook: {
         name: string
         tag: string
+        customerId: number
       }
     }
   | {
@@ -89,6 +90,7 @@ const initState: QuestionWithAll = {
   notebook: {
     name: '',
     tag: '',
+    customerId: 0,
   },
   text: '',
   notebookId: 0,

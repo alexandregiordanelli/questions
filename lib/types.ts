@@ -34,6 +34,7 @@ export type QuestionWithAll = Question & {
   notebook?: {
     name: string
     tag: string
+    customerId: number
   }
 }
 export type Suggestions = {

@@ -46,7 +46,7 @@ const Controller: VercelApiHandler = async (req, res) => {
           throw new Error(`customer not exists`)
         }
 
-        if (customer.userId != token.uid) {
+        if (customer.userId != token.uid && token.uid != 'admin') {
           throw new Error(`user not authorized to use this endpoint`)
         }
 

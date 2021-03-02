@@ -100,6 +100,20 @@ model RightAlternative {
   question      Question    @relation(fields: [questionId], references: [id])
 }
 
+model ChosenAlternative {
+  id            Int         @id @default(autoincrement())
+  customerId    Int
+  alternativeId Int      
+  questionId    Int
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?   @updatedAt
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  alternative   Alternative @relation(fields: [alternativeId], references: [id])
+  question      Question    @relation(fields: [questionId], references: [id])
+
+  @@unique([customerId, questionId])
+}
+
 model Media {
   id         Int       @id @default(autoincrement())
   customerId Int

@@ -18,6 +18,7 @@ const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => 
         select: {
           name: true,
           tag: true,
+          customerId: true,
         },
       },
     },

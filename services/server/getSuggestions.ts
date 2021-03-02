@@ -17,7 +17,7 @@ const getSuggestions = async (notebookTag: string, subTopicId: number): Promise<
         tag: notebookTag,
       },
       subTopic: {
-        id: subTopicId,
+        id: subTopicId ?? 0,
       },
     },
     orderBy: {

@@ -22,7 +22,7 @@ export const IndexQuestionPage: React.FC<{
         </div>
         <div className="flex max-w-screen-lg mx-auto">
           <div className="py-8 pr-8 qmd flex flex-col flex-grow">
-            <MarkdownText md={props.notebook.text} />
+            <MarkdownText md={props.notebook.text} customerId={props.customer.id} />
             <div className=" bg-white border-t border-b flex py-4 px-8">
               <div className="flex flex-col">
                 {props.customer.media && (

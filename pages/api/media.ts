@@ -1,9 +1,9 @@
 import { VercelApiHandler } from '@vercel/node'
 import admin from 'lib/firebase-server'
 import { getCustomerByUserId } from 'services/server/getCustomer'
-import { Media } from '@prisma/client'
 import postMedias from 'services/server/postMedias'
 import { getMedias } from 'services/server/getMedias'
+import { MediaWithUrl } from 'lib/types'
 
 const MediaController: VercelApiHandler = async (req, res) => {
   const tokenHeader = req.cookies.token
@@ -14,7 +14,7 @@ const MediaController: VercelApiHandler = async (req, res) => {
   const customer = await getCustomerByUserId(token.uid)
 
   if (req.method == 'POST') {
-    const medias = req.body as Media[]
+    const medias = req.body as MediaWithUrl[]
 
     if (medias[0].customerId != customer.id) {
       throw new Error(`customerId is different of others customerId from list.`)

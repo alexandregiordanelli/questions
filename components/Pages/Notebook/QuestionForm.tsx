@@ -29,7 +29,7 @@ export const QuestionForm: React.FC<{
       Right Answer
     </label>,
     <div key={2} className="q">
-      <MarkdownText md={props.question.text} />
+      <MarkdownText md={props.question.text} customerId={props.question.notebook.customerId} />
     </div>,
   ]
 
@@ -46,7 +46,7 @@ export const QuestionForm: React.FC<{
           onChange={(x) => setLetterChosen(x.target.value)}
         />
         <label htmlFor={letter}>
-          <MarkdownText md={x.text} />
+          <MarkdownText md={x.text} customerId={props.question.notebook.customerId} />
         </label>
       </Fragment>
     )
@@ -65,7 +65,10 @@ export const QuestionForm: React.FC<{
         Solution
       </label>,
       <div key={7} className="s">
-        <MarkdownText md={props.question.solution} />
+        <MarkdownText
+          md={props.question.solution}
+          customerId={props.question.notebook.customerId}
+        />
       </div>,
     ]
   )

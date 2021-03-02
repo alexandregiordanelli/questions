@@ -17,6 +17,7 @@ export const getQuestion = async (notebookId: number, tag: string): Promise<Ques
         select: {
           name: true,
           tag: true,
+          customerId: true,
         },
       },
     },
@@ -47,6 +48,7 @@ export const getQuestionByTags = async (
         select: {
           name: true,
           tag: true,
+          customerId: true,
         },
       },
     },

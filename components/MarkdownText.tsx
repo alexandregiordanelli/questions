@@ -12,6 +12,7 @@ import inspectUrls from '@jsdevtools/rehype-url-inspector'
 import highlight from 'rehype-highlight'
 export const MarkdownText: React.FC<{
   md: string
+  customerId: number
 }> = (props) => {
   const isAmp = useAmp()
   return unified()
@@ -28,7 +29,7 @@ export const MarkdownText: React.FC<{
         // if (new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*').test(url)) {
         //   node.properties.src = absolute(filePath, url)
         // }
-        node.properties.src = `https://assets.questionsof.com/${url}`
+        node.properties.src = `https://assets.questionsof.com/${props.customerId}/${url}`
       },
       selectors: ['img[src]'],
     })
