@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps<{
   markdown: string
 }> = async (context) => {
   const tags = context.params.tags as string[]
-  const docsDirectory = resolve('./docs')
+  const docsDirectory = resolve(process.cwd(), 'docs')
   const fullPath = join(docsDirectory, `${tags?.join('/') ?? 'index'}.md`)
   const markdown: string = readFileSync(fullPath, 'utf8')
 
