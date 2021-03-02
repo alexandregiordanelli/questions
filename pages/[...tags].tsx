@@ -21,9 +21,9 @@ import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 import getSuggestions from 'services/server/getSuggestions'
 import { useData } from 'services/client/get'
-import { NotebookCard } from 'components/NotebookCard'
 import React from 'react'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
+import { NotebookCard2 } from 'components/NotebookCard2'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -61,11 +61,11 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
       </HeadHtml>
 
       <div
-        className="flex min-h-screen bg-gray-100 flex-col"
+        className="flex min-h-screen flex-col"
         // style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
         <Header />
-        <div className=" bg-white border-t border-b flex py-4 px-8">
+        <div className=" bg-gray-100 border-t border-b flex py-4 px-8">
           {customer.media && (
             <img
               className="rounded-full w-24 h-24"
@@ -77,7 +77,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         </div>
         <div className="flex flex-wrap">
           {props.customer.notebooks.map((x, i) => (
-            <NotebookCard notebook={x} key={i} customerTag={props.customer.tag} className="m-8" />
+            <NotebookCard2 notebook={x} customerTag={props.customer.tag} key={i} className="m-8" />
           ))}
         </div>
       </div>
