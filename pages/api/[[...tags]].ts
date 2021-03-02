@@ -17,6 +17,7 @@ import { deleteNotebookByTags } from 'services/server/deleteNotebook'
 import { deleteQuestionByTags } from 'services/server/deleteQuestion'
 import getQuestions from 'services/server/getQuestions'
 import jwt from 'jsonwebtoken'
+import { getNotebooks } from 'services/server/getNotebooks'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -81,9 +82,14 @@ const Controller: VercelApiHandler = async (req, res) => {
         res.send(customer)
       } else if (tags.length == 1) {
         if (req.query.notebooks) {
-          const customer = await getCustomerNotebooksByTag(customerTag)
-          if (customer) res.send(customer)
-          else throw new Error('not found')
+          if (customerTag == 'admin') {
+            const notebooks = await getNotebooks()
+            res.send(notebooks)
+          } else {
+            const customer = await getCustomerNotebooksByTag(customerTag)
+            if (customer) res.send(customer)
+            else throw new Error('not found')
+          }
         } else if (req.query.questions) {
           const questions = await getQuestions(customerTag)
           if (questions) res.send(questions)

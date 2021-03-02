@@ -1,14 +1,17 @@
 import { GetStaticProps } from 'next'
 import React from 'react'
 import HeadHtml from '../components/HeadHtml'
-import { getCustomers } from '../services/server/getCustomers'
 import { Header } from '../components/Header'
-import { NotebookListComponent } from '../components/NotebookListComponent'
-import { CustomerWithNotebooks } from 'lib/types'
-import Link from 'next/link'
-
+import { getNotebooks } from 'services/server/getNotebooks'
+import { Notebook, Media } from '@prisma/client'
+import { NotebookCard2 } from 'components/NotebookCard2'
 type PageProps = {
-  customers: CustomerWithNotebooks[]
+  notebooks: (Notebook & {
+    media: Media
+    customer: {
+      tag: string
+    }
+  })[]
 }
 
 const Index: React.FC<PageProps> = (props) => {
@@ -53,30 +56,21 @@ const Index: React.FC<PageProps> = (props) => {
           </div>
         </div>
       </div> */}
-
-      {props.customers.map((x, i) => {
-        return (
-          <div key={i}>
-            <div className=" border-t border-b p-6 pt-16">
-              <Link href={`/${x.tag}`}>
-                <a className="text-xl font-medium text-black my-8">{x.tag}</a>
-              </Link>
-            </div>
-
-            <NotebookListComponent customer={x} />
-          </div>
-        )
-      })}
+      <div className="flex flex-wrap">
+        {props.notebooks.map((x, i) => {
+          return <NotebookCard2 notebook={x} customerTag={x.customer.tag} key={i} className="m-8" />
+        })}
+      </div>
     </>
   )
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const customers = await getCustomers()
+  const notebooks = await getNotebooks()
 
   return {
     props: {
-      customers,
+      notebooks,
     },
     revalidate: 1,
   }
