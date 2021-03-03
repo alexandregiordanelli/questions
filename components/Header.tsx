@@ -6,6 +6,7 @@ import { useAuth } from 'lib/auth'
 import firebase from 'lib/firebase-client'
 import { ChevronRightIcon } from '@primer/octicons-react'
 import NoSSR from 'react-no-ssr'
+import { Login } from './Login'
 
 export const Header: React.FC = () => {
   const { user } = useAuth()
@@ -30,59 +31,46 @@ export const Header: React.FC = () => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {!router.pathname.startsWith('/admin') &&
-            !router.pathname.startsWith('/docs') &&
-            customerTag && (
-              <>
-                {!notebookTag && (
-                  <>
-                    <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
-                  </>
-                )}
-                {notebookTag && (
-                  <>
-                    <Link href={`/${customerTag}`}>
-                      <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
-                    </Link>
-                    {!questionTag && (
-                      <>
-                        <ChevronRightIcon className="text-gray-700" />
-                        <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
-                      </>
-                    )}
-                    {questionTag && (
-                      <>
-                        <ChevronRightIcon className="text-gray-700" />
-                        <Link href={`/${customerTag}/${notebookTag}`}>
-                          <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
-                        </Link>
-                        <ChevronRightIcon className="text-gray-700" />
-                        <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
-                      </>
-                    )}
-                  </>
-                )}
-              </>
-            )}
+          {!router.pathname.startsWith('/admin') && customerTag && (
+            <>
+              {!notebookTag && (
+                <>
+                  <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
+                </>
+              )}
+              {notebookTag && (
+                <>
+                  <Link href={`/${customerTag}`}>
+                    <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
+                  </Link>
+                  {!questionTag && (
+                    <>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
+                    </>
+                  )}
+                  {questionTag && (
+                    <>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <Link href={`/${customerTag}/${notebookTag}`}>
+                        <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
+                      </Link>
+                      <ChevronRightIcon className="text-gray-700" />
+                      <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
           {router.pathname.startsWith('/admin') && (
             <Link href={`/admin`}>
               <a className="text-white px-2 py-2 text-sm">Admin</a>
             </Link>
           )}
-          {router.pathname.startsWith('/docs') && (
-            <Link href={`/docs`}>
-              <a className="text-white px-2 py-2 text-sm">Docs</a>
-            </Link>
-          )}
         </div>
         <NoSSR>
-          {!user && (
-            <Link href="/login">
-              <a className="bg-gray-700 text-white text-sm rounded-md px-4 py-2 mr-2 shadow-md">
-                Login
-              </a>
-            </Link>
-          )}
+          {!user && <Login className="mr-2" />}
           {user && (
             <div className="flex">
               {!router.pathname.startsWith('/admin') && (
