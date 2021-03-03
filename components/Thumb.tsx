@@ -17,7 +17,7 @@ export const Thumb: React.FC<{
         {props.getLink && (
           <button
             className="bg-gray-200 text-gray-700 p-1 text-xs rounded-sm"
-            onClick={() => props.getLink(`${props.media.customerId}/${props.media.tag}`)}
+            onClick={() => props.getLink(`${props.media.tag}`)}
           >
             <LinkIcon />
           </button>
