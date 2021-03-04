@@ -4,6 +4,7 @@ export const Login: React.FC<{
   className?: string
 }> = (props) => {
   useEffect(() => {
+    let ui: firebaseui.auth.AuthUI = null
     import('firebaseui').then((firebaseui) => {
       const config = {
         callbacks: {
@@ -20,10 +21,14 @@ export const Login: React.FC<{
         tosUrl: '',
         privacyPolicyUrl: '',
       }
-      const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
+      ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
       ui.start('#firebaseui-auth-container', config)
       ui.disableAutoSignIn()
     })
+
+    return () => {
+      ui && ui.delete()
+    }
   }, [])
 
   return (
