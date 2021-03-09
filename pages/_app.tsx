@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import 'tailwindcss/tailwind.css'
 import { katexCSS } from '../styles/katexCSS'
-import { globalCSS } from '../styles/globalCSS'
+import { essentialCSS } from '../styles/globalCSS'
 import { AppProps } from 'next/app'
 import { AuthProvider } from 'lib/auth'
 
@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         {katexCSS}
       </style>
       <style jsx global>
-        {globalCSS}
+        {essentialCSS}
       </style>
       <style jsx global>{`
         #nprogress .bar {

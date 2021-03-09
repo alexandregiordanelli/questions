@@ -74,7 +74,7 @@ export const QuestionForm: React.FC<{
   )
 
   return (
-    <form className="qmd" action="/api/hello" target="_blank">
+    <form id="main-form" action="/api/hello" target="_blank">
       {html}
     </form>
   )

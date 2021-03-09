@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
               {notebookTag && (
                 <>
                   <Link href={`/${customerTag}`}>
-                    <a className="text-gray-400 px-2 py-2 text-sm">{`${customerTag}`}</a>
+                    <a className="text-gray-400 px-2 py-2 text-sm hidden xl:block">{`${customerTag}`}</a>
                   </Link>
                   {!questionTag && (
                     <>
@@ -51,12 +51,16 @@ export const Header: React.FC = () => {
                   )}
                   {questionTag && (
                     <>
-                      <ChevronRightIcon className="text-gray-700" />
+                      <div className="text-gray-700 hidden xl:block">
+                        <ChevronRightIcon />
+                      </div>
                       <Link href={`/${customerTag}/${notebookTag}`}>
-                        <a className="text-gray-400 px-2 py-2 text-sm">{`${notebookTag}`}</a>
+                        <a className="text-white px-2 py-2 text-sm lg:text-gray-400">{`${notebookTag}`}</a>
                       </Link>
-                      <ChevronRightIcon className="text-gray-700" />
-                      <h2 className="text-white px-2 py-2 text-sm">{`${questionTag}`}</h2>
+                      <div className="text-gray-700 hidden lg:block">
+                        <ChevronRightIcon />
+                      </div>
+                      <h2 className="text-white px-2 py-2 text-sm hidden lg:block">{`${questionTag}`}</h2>
                     </>
                   )}
                 </>
@@ -65,7 +69,7 @@ export const Header: React.FC = () => {
           )}
           {router.pathname.startsWith('/admin') && (
             <Link href={`/admin`}>
-              <a className="text-white px-2 py-2 text-sm">Admin</a>
+              <a className="text-white px-2 py-2 text-sm hidden md:block">Admin</a>
             </Link>
           )}
         </div>
@@ -75,7 +79,7 @@ export const Header: React.FC = () => {
             <div className="flex">
               {!router.pathname.startsWith('/admin') && (
                 <button
-                  className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border"
+                  className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border hidden md:block"
                   onClick={() => router.push(`/admin`)}
                 >
                   Admin

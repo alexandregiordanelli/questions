@@ -1,13 +1,66 @@
 import css from 'styled-jsx/css'
 
-export const globalCSS = css.global`
+export const essentialCSS = css.global`
   .toggleVisibilityUL {
-    display: none;
+    @apply hidden;
   }
   .toggleVisibilityUL:checked ~ ul {
-    display: block;
+    @apply block;
   }
+  #main-form {
+    @apply flex flex-wrap items-center;
+  }
+  #main-form input[type='radio'] {
+    @apply mr-2 focus:ring-0;
+  }
+  #main-form #right-answer {
+    @apply hidden;
+  }
+  #main-form #right-answer + label {
+    @apply bg-green-400 rounded order-1;
+  }
+  #main-form #right-answer:checked + label {
+    @apply bg-green-200 border-green-300;
+  }
+  #main-form #right-answer:checked ~ input[type='radio'] {
+    @apply text-red-500;
+  }
+  #main-form #right-answer:checked ~ input[type='radio']:checked {
+    @apply text-red-500 ring-red-500;
+  }
+  #main-form #right-answer:checked ~ input[type='radio']:checked + label {
+    @apply bg-red-200 border-red-300;
+  }
+  #main-form input[type='radio']:checked + label {
+    @apply bg-blue-200 border-blue-300;
+  }
+  #main-form label {
+    flex: 0 calc(100% - 30px);
+    @apply p-2 border border-white rounded;
+  }
+  #main-form #solution {
+    @apply hidden order-3;
+  }
+  #main-form #solution + label {
+    @apply bg-gray-400 rounded order-2;
+  }
+  #main-form #solution:checked + label {
+    @apply bg-gray-200;
+  }
+  #main-form .q {
+    flex-basis: 100%;
+  }
+  #main-form .r,
+  .s {
+    @apply hidden;
+  }
+  #main-form #solution:checked ~ .s {
+    @apply block order-4;
+    flex-basis: 100%;
+  }
+`
 
+export const globalCSS = css.global`
   .CodeMirror {
     height: 100%;
     /* min-height: 70px; */
@@ -31,105 +84,6 @@ export const globalCSS = css.global`
     overflow: auto;
     max-width: calc(100vw - 60px);
 } */
-
-  #right-answer {
-    display: none;
-  }
-  #right-answer + label {
-    flex: inherit;
-    margin: 20px 0;
-    margin-right: 8px;
-    order: 100;
-    text-align: right;
-    position: relative;
-    display: inline-block;
-    padding: 6px 16px;
-    font-family: inherit;
-    font-weight: 600;
-    line-height: 20px;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 6px;
-    appearance: none;
-    text-decoration: none;
-    text-align: center;
-    font-size: 14px;
-    color: rgb(255, 255, 255);
-    background-color: rgb(46, 164, 79);
-    border: 1px solid rgb(34, 134, 58);
-    box-shadow: rgba(20, 70, 32, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.03) 0px 2px 0px;
-  }
-  #right-answer + label:hover {
-    background-color: rgb(44, 151, 75);
-    border-color: rgba(27, 31, 35, 0.15);
-  }
-  #right-answer:checked + label {
-    color: rgb(255 255 255 / 80%);
-    background-color: #94d3a2;
-    border-color: rgba(27, 31, 35, 0.1);
-  }
-  #right-answer:checked ~ input[type='radio']:checked + label {
-    background-color: rgb(255, 227, 230);
-    border-color: rgba(158, 28, 35, 0.2);
-  }
-  input[type='radio']:checked + label {
-    background-color: rgb(219, 237, 255);
-    border-color: rgba(4, 66, 137, 0.2);
-  }
-  .qmd label {
-    flex: 0 calc(100% - 30px);
-    padding: 16px;
-    border-radius: 6px;
-    border: solid 1px #fff;
-  }
-  #solution {
-    margin-left: 16px;
-    order: 103;
-    display: none;
-  }
-  #solution + label {
-    flex: inherit;
-    text-align: right;
-    order: 102;
-    position: relative;
-    display: inline-block;
-    padding: 6px 16px;
-    font-family: inherit;
-    font-weight: 600;
-    line-height: 20px;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 6px;
-    appearance: none;
-    text-decoration: none;
-    text-align: center;
-    font-size: 14px;
-    color: rgb(36, 41, 46);
-    background-color: rgb(250, 251, 252);
-    border: 1px solid rgba(27, 31, 35, 0.12);
-    box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 2px 0px;
-  }
-  #solution:checked + label {
-    color: rgb(149, 157, 165);
-    background-color: rgb(250, 251, 252);
-    border-color: rgb(234, 236, 239);
-  }
-  .q {
-    flex-basis: 100%;
-  }
-  .r,
-  .s {
-    display: none;
-  }
-  #solution:checked ~ .s {
-    display: block;
-    order: 104;
-    flex-basis: 100%;
-  }
 
   /* .qmd {
     box-sizing: border-box;

@@ -47,22 +47,27 @@ export const QuestionFormWithRightMenu: React.FC<{
         )}
       </Head>
       <style jsx global>{`
-        #right-answer:checked ~ #${letters[relativeAlternativeIndex]} + label {
-          background-color: rgb(220, 255, 228);
-          border-color: rgba(23, 111, 44, 0.2);
+        #main-form #right-answer:checked ~ #${letters[relativeAlternativeIndex]} {
+          @apply border-green-500;
+        }
+        #main-form #right-answer:checked ~ #${letters[relativeAlternativeIndex]}:checked {
+          @apply bg-green-500 ring-green-500;
+        }
+        #main-form #right-answer:checked ~ #${letters[relativeAlternativeIndex]} + label {
+          @apply bg-green-200 border-green-300;
         }
       `}</style>
 
       <div className="flex-grow">
-        <div className="flex flex-col lg:flex-row-reverse max-w-screen-xl mx-auto p-12">
+        <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
           <RightMenu
             // title={title}
             customerTag={props.customerTag}
             notebookTag={props.notebookTag}
             suggestions={props.suggestions}
           />
-          <div className="flex-grow">
-            <h2>{props.question.name}</h2>
+          <div className="flex-grow p-6 md:p-0">
+            <h2 className="text-lg font-medium mb-2">{props.question.name}</h2>
             <QuestionForm question={props.question} />
           </div>
         </div>

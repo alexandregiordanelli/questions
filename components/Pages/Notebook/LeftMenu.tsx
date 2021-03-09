@@ -17,27 +17,21 @@ export const LeftMenu: React.FC<{
   }, [router.asPath])
 
   return (
-    <>
-      <div>
-        <label
-          htmlFor="leftMenu"
-          className="z-50 fixed lg:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"
-        >
-          <ThreeBarsIcon />
-        </label>
-        <input
-          id="leftMenu"
-          className="toggleVisibilityUL"
-          type="checkbox"
-          onChange={(x) => setToggleMenu(x.target.checked)}
-          checked={toggleMenu}
-        />
-        <MenuCore
-          menu={props.menu}
-          notebookTag={props.notebookTag}
-          customerTag={props.customerTag}
-        />
-      </div>
-    </>
+    <div className="z-10">
+      <label
+        htmlFor="leftMenu"
+        className="fixed lg:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"
+      >
+        <ThreeBarsIcon />
+      </label>
+      <input
+        id="leftMenu"
+        className="toggleVisibilityUL"
+        type="checkbox"
+        onChange={(x) => setToggleMenu(x.target.checked)}
+        checked={toggleMenu}
+      />
+      <MenuCore menu={props.menu} notebookTag={props.notebookTag} customerTag={props.customerTag} />
+    </div>
   )
 }

@@ -19,10 +19,20 @@ const RightMenu: React.FC<{
 
   return (
     <>
-      <div className="overflow-auto static top-24 bg-gray-100 p-4 border rounded mb-12 lg:ml-12 lg:max-w-xs w-full lg:border-0 lg:bg-transparent lg:p-0">
+      <style jsx>{`
+        .right-menu {
+          max-height: calc(100vh - theme('spacing.16') - theme('spacing.12'));
+        }
+        @screen xl {
+          .right-menu {
+            max-height: calc(100vh - theme('spacing.16') - 2 * theme('spacing.12'));
+          }
+        }
+      `}</style>
+      <div className="right-menu overflow-auto sticky md:static xl:sticky xl:self-start top-16 md:top-24 bg-gray-100 p-4 border rounded md:mb-12 xl:mb-0 xl:ml-12 xl:w-80 flex-shrink-0 xl:border-0 xl:bg-transparent xl:p-0">
         <label className="flex align-middle justify-between cursor-pointer" htmlFor="rightMenu">
           <span className="mb-1 font-medium">+ Questões</span>
-          <span className="lg:hidden">
+          <span className="xl:hidden">
             <ChevronDownIcon verticalAlign="middle" />
           </span>
         </label>
@@ -33,7 +43,7 @@ const RightMenu: React.FC<{
           onChange={(x) => setToggleMenu(x.target.checked)}
           checked={toggleMenu}
         />
-        <ul className="hidden lg:block text-sm text-gray-700">
+        <ul className="hidden xl:block text-sm text-gray-700">
           {props.suggestions?.map((x, i) => {
             const url = `/${props.customerTag}/${props.notebookTag}/${x.tag}`
             const active = router.asPath == url
