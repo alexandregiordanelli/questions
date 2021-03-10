@@ -26,7 +26,7 @@ export const IndexQuestionPage: React.FC<{
           </div>
         </div>
         <div className="flex flex-col-reverse lg:flex-row lg:w-full lg:max-w-screen-lg mx-auto">
-          <div className="py-8 lg:p-8 lg:pl-0 flex flex-col flex-grow">
+          <div className="p-8 lg:pl-0 flex flex-col flex-grow">
             {props.notebook.text && (
               <>
                 <h2 className="text-xl font-medium mb-5 mt-10">Description</h2>
