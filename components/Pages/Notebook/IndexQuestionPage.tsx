@@ -20,15 +20,20 @@ export const IndexQuestionPage: React.FC<{
       <div className="flex flex-col flex-grow">
         <div className=" bg-gray-800">
           <div className="max-w-screen-lg mx-auto">
-            <h1 className="text-xl font-medium text-white mb-16 my-8 text-center md:text-left">
+            <h1 className="text-xl font-medium text-white mb-16 my-8 text-center lg:text-left">
               {props.notebook.name}
             </h1>
           </div>
         </div>
-        <div className="flex flex-col-reverse md:flex-row max-w-screen-lg mx-auto">
-          <div className="p-8 flex flex-col flex-grow">
-            <h2 className="text-xl font-medium mb-5">Description</h2>
-            <MarkdownText md={props.notebook.text} customerId={props.customer.id} />
+        <div className="flex flex-col-reverse lg:flex-row lg:w-full lg:max-w-screen-lg mx-auto">
+          <div className="py-8 lg:p-8 lg:pl-0 flex flex-col flex-grow">
+            {props.notebook.text && (
+              <>
+                <h2 className="text-xl font-medium mb-5 mt-10">Description</h2>
+                <MarkdownText md={props.notebook.text} customerId={props.customer.id} />
+              </>
+            )}
+
             <h2 className="text-xl font-medium mb-5 mt-10">Content</h2>
             <MenuCore2 menu={props.menu} customerTag={props.customer.tag} />
             <h2 className="text-xl font-medium mb-5 mt-10">Productor</h2>
@@ -42,7 +47,7 @@ export const IndexQuestionPage: React.FC<{
             )}
             <MarkdownText md={props.customer.text} customerId={props.customer.id} />
           </div>
-          <div className="static md:sticky top-24 transform -translate-y-8 mx-auto -mb-8">
+          <div className="static lg:sticky top-24 transform -translate-y-8 mx-auto -mb-8">
             <NotebookCard notebook={props.notebook} className="shadow-2xl" />
           </div>
         </div>

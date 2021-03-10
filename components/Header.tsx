@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
 
   const [customerTag, notebookTag, questionTag] = tags
 
-  const offsetPaddingLeft = questionTag || notebookTag
+  const offsetPaddingLeft = !!questionTag
 
   return (
     <>
@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
             <>
               {!notebookTag && (
                 <>
-                  <h2 className="text-white px-2 py-2 text-sm">{`${customerTag}`}</h2>
+                  <h2 className=" text-white px-2 py-2 text-sm md:block">{`${customerTag}`}</h2>
                 </>
               )}
               {notebookTag && (
@@ -45,8 +45,10 @@ export const Header: React.FC = () => {
                   </Link>
                   {!questionTag && (
                     <>
-                      <ChevronRightIcon className="text-gray-700" />
-                      <h2 className="text-white px-2 py-2 text-sm">{`${notebookTag}`}</h2>
+                      <div className="text-gray-700 hidden md:block">
+                        <ChevronRightIcon />
+                      </div>
+                      <h2 className="text-white px-2 py-2 text-sm hidden md:block">{`${notebookTag}`}</h2>
                     </>
                   )}
                   {questionTag && (
