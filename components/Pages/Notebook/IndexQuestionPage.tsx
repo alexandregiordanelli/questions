@@ -47,7 +47,7 @@ export const IndexQuestionPage: React.FC<{
             )}
             <MarkdownText md={props.customer.text} customerId={props.customer.id} />
           </div>
-          <div className="static lg:sticky top-24 transform -translate-y-8 mx-auto -mb-8">
+          <div className="static lg:sticky lg:self-start  top-24 transform -translate-y-8 mx-auto -mb-8">
             <NotebookCard notebook={props.notebook} className="shadow-2xl" />
           </div>
         </div>
