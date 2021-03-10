@@ -22,12 +22,12 @@ export const Login: React.FC<{
         privacyPolicyUrl: '',
       }
       ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
-      ui.start('#firebaseui-auth-container', config)
-      ui.disableAutoSignIn()
+      ui?.start('#firebaseui-auth-container', config)
+      ui?.disableAutoSignIn()
     })
 
     return () => {
-      ui && ui.delete()
+      ui?.delete()
     }
   }, [])
 

@@ -26,6 +26,9 @@ export type MenuWithQuestions = (Topic & {
       tag: string
     }[]
   })[]
+  notebook: {
+    tag: string
+  }
 })[]
 export type QuestionWithAll = Question & {
   alternatives: Alternative[]

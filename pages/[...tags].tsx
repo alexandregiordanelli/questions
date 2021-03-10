@@ -99,11 +99,11 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       <div className="flex min-h-screen flex-col">
         <Header />
         <div className="flex">
-          <LeftMenu
+          {/* <LeftMenu
             menu={props.menu}
             notebookTag={props.notebook.tag}
             customerTag={props.customer.tag}
-          />
+          /> */}
           <IndexQuestionPage notebook={props.notebook} customer={props.customer} />
         </div>
       </div>
@@ -135,7 +135,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
       <div className="flex min-h-screen flex-col">
         <Header />
         <div className="flex">
-          <LeftMenu menu={props.menu} notebookTag={notebook.tag} customerTag={customer.tag} />
+          <LeftMenu menu={props.menu} customerTag={customer.tag} />
           <QuestionFormWithRightMenu
             question={question}
             suggestions={props.suggestions}

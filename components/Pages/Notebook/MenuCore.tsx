@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 
 export const MenuCore: React.FC<{
   menu: MenuWithQuestions
-  notebookTag: string
   customerTag: string
 }> = (props) => {
   const router = useRouter()
@@ -24,7 +23,7 @@ export const MenuCore: React.FC<{
               <MenuItem
                 url={
                   firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? `/${props.customerTag}/${props.notebookTag}/${firstSubtopicQuestion[0].tag}`
+                    ? `/${props.customerTag}/${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
                     : null
                 }
                 title={x.name}
@@ -34,7 +33,7 @@ export const MenuCore: React.FC<{
                 {x.subtopics.map((y, j) => {
                   const anotherSubtopicQuestion = y.questions[0]
                   const url = anotherSubtopicQuestion
-                    ? `/${props.customerTag}/${props.notebookTag}/${anotherSubtopicQuestion.tag}`
+                    ? `/${props.customerTag}/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
                     : null
                   const active = router.asPath == url
                   return (
