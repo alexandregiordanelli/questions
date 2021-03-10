@@ -104,7 +104,11 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
             notebookTag={props.notebook.tag}
             customerTag={props.customer.tag}
           /> */}
-          <IndexQuestionPage notebook={props.notebook} customer={props.customer} />
+          <IndexQuestionPage
+            notebook={props.notebook}
+            customer={props.customer}
+            menu={props.menu}
+          />
         </div>
       </div>
     </>
