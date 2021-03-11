@@ -1,4 +1,5 @@
 import { prisma } from '../../prisma/prisma'
+import { PrismaPromise } from '@prisma/client'
 import path from 'path'
 import os from 'os'
 import util from 'util'
@@ -13,7 +14,7 @@ import sizeOf from 'image-size'
 const streamPipeline = util.promisify(pipeline)
 
 const postMedias = async (medias: MediaWithUrl[]): Promise<boolean> => {
-  const batch: unknown[] = []
+  const batch: PrismaPromise<any>[] = []
 
   const customerId = medias[0].customerId
 

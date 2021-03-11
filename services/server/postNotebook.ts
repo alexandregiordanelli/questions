@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma, PrismaPromise } from '@prisma/client'
 import { NotebookWithTopicsAndSubTopics } from '../../lib/types'
 import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
@@ -51,7 +51,7 @@ const postNotebook = async (
 
   const topicsWithSubtopicsSent = notebookOnRepo.topics
 
-  const batch: unknown[] = []
+  const batch: PrismaPromise<any>[] = []
 
   const topicsWillAdded = _.clone(topicsWithSubtopicsSent)?.filter(
     (x) => !topicsWithSubtopicsOriginal?.some((y) => y.id == x.id)
