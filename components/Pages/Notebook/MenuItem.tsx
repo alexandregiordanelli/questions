@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { MenuSubItem } from './MenuSubItem'
 
 export const MenuItem: React.FC<{
-  hasExpanded: boolean
+  count: number
   title: string
   url?: string
 }> = (props) => {
@@ -14,14 +14,15 @@ export const MenuItem: React.FC<{
   //     toggleOpened(false);
   // }, [router.asPath]);
 
-  return props.hasExpanded ? (
+  return props.count ? (
     <>
       <label
         htmlFor={encodeURIComponent(props.title)}
-        className="flex justify-between cursor-pointer items-center"
+        className="flex justify-start cursor-pointer items-center"
       >
-        {props.title}
-        <ChevronDownIcon />
+        <ChevronDownIcon className="mr-2" />
+        <span className=" ">{props.title}</span>
+        <span className="ml-auto justify-self-end text-xs font-light">{props.count}</span>
       </label>
 
       <input

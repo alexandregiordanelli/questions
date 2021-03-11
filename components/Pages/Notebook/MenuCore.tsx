@@ -27,7 +27,7 @@ export const MenuCore: React.FC<{
                     : null
                 }
                 title={x.name}
-                hasExpanded={x.subtopics.length > 0}
+                count={x.subtopics.reduce((a, b) => a + b.questions.length, 0)}
               />
               <ul className="hidden mt-4">
                 {x.subtopics.map((y, j) => {
@@ -37,7 +37,10 @@ export const MenuCore: React.FC<{
                     : null
                   const active = router.asPath == url
                   return (
-                    <li key={`${i}.${j}`} className="text-sm py-1 mt-2">
+                    <li
+                      key={`${i}.${j}`}
+                      className="text-sm py-1 mt-2 flex justify-between items-start"
+                    >
                       <MenuSubItem
                         title={y.name}
                         className={`${
@@ -45,6 +48,7 @@ export const MenuCore: React.FC<{
                         }`}
                         url={url}
                       />
+                      <span className="text-xs font-thin">{y.questions.length}</span>
                     </li>
                   )
                 })}
@@ -55,7 +59,7 @@ export const MenuCore: React.FC<{
       </ul>
       <style jsx>{`
         .menu {
-          height: calc(100vh - 64px);
+          height: calc(100vh - theme('spacing.16'));
         }
       `}</style>
     </>
