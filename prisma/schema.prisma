@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["nativeTypes"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["groupBy"]
 }
 
 datasource db {
@@ -9,17 +9,18 @@ datasource db {
 }
 
 model Customer {
-  id        Int        @id @default(autoincrement())
-  userId    String     @unique
-  name      String     @default("")
-  tag       String     @unique 
-  text      String     @db.Text @default("")
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  notebooks Notebook[]
-  medias    Media[]    @relation("medias")
-  mediaId   Int?
-  media     Media?     @relation(fields: [mediaId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  userId            String              @unique
+  name              String              @default("")
+  tag               String              @unique
+  text              String              @default("") @db.Text
+  createdAt         DateTime?           @default(now())
+  updatedAt         DateTime?           @updatedAt
+  notebooks         Notebook[]
+  medias            Media[]             @relation("medias")
+  mediaId           Int?
+  media             Media?              @relation(fields: [mediaId], references: [id])
+  ChosenAlternative ChosenAlternative[]
 }
 
 model Notebook {
@@ -77,17 +78,20 @@ model Question {
   subTopic         SubTopic?         @relation(fields: [subTopicId], references: [id])
   alternatives     Alternative[]
   rightAlternative RightAlternative?
+
   @@unique([notebookId, tag])
+  ChosenAlternative ChosenAlternative[]
 }
 
 model Alternative {
-  id               Int               @id @default(autoincrement())
-  text             String            @db.Text
-  questionId       Int
-  createdAt        DateTime?         @default(now())
-  updatedAt        DateTime?         @updatedAt
-  question         Question          @relation(fields: [questionId], references: [id])
-  RightAlternative RightAlternative?
+  id                Int                 @id @default(autoincrement())
+  text              String              @db.Text
+  questionId        Int
+  createdAt         DateTime?           @default(now())
+  updatedAt         DateTime?           @updatedAt
+  question          Question            @relation(fields: [questionId], references: [id])
+  RightAlternative  RightAlternative?
+  ChosenAlternative ChosenAlternative[]
 }
 
 model RightAlternative {
@@ -103,7 +107,7 @@ model RightAlternative {
 model ChosenAlternative {
   id            Int         @id @default(autoincrement())
   customerId    Int
-  alternativeId Int      
+  alternativeId Int
   questionId    Int
   createdAt     DateTime?   @default(now())
   updatedAt     DateTime?   @updatedAt
@@ -129,5 +133,7 @@ model Media {
   width      Int?
   height     Int?
   customer   Customer  @relation("medias", fields: [customerId], references: [id])
+  Customer   Customer[]
+  Notebook   Notebook[]
   @@unique([customerId, tag])
 }
