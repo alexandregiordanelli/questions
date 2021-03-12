@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ChevronDownIcon } from '@primer/octicons-react'
 import { Suggestions } from '../../../lib/types'
 import Link from 'next/link'
+import { useAuth } from 'lib/auth'
 
 export const RightMenu: React.FC<{
   // title: JSX.Element,
@@ -12,6 +13,7 @@ export const RightMenu: React.FC<{
 }> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)
+  const auth = useAuth()
 
   useEffect(() => {
     setToggleMenu(false)
@@ -45,13 +47,14 @@ export const RightMenu: React.FC<{
         />
         <ul className="hidden xl:block text-sm text-gray-700">
           {props.suggestions?.map((x, i) => {
+            const solved = auth.stats?.some((y) => y.questionId == x.id)
             const url = `/${props.customerTag}/${props.notebookTag}/${x.tag}`
             const active = router.asPath == url
             return (
               <li key={i}>
                 <Link href={url}>
                   <a
-                    className={`py-1 inline-block ${
+                    className={`py-1 inline-block ${solved && 'line-through'} ${
                       active ? 'font-medium text-gray-900' : 'hover:underline'
                     }`}
                   >

@@ -41,6 +41,7 @@ export type QuestionWithAll = Question & {
   }
 }
 export type Suggestions = {
+  id: number
   tag: string
   name: string
 }[]

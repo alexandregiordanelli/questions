@@ -9,6 +9,7 @@ export const getSuggestions = async (
     select: {
       name: true,
       tag: true,
+      id: true,
       notebook: {
         select: {
           tag: true,
