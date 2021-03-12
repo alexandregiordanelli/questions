@@ -76,10 +76,14 @@ const Controller: VercelApiHandler = async (req, res) => {
       if (tags.length == 0) {
         const tokenHeader = req.cookies.token
           ? req.cookies.token
-          : req.headers.authorization.substring('Bearer '.length)
-        const token = await admin.auth().verifyIdToken(tokenHeader)
-        const customer = await getCustomerByUserId(token.uid)
-        res.send(customer)
+          : req.headers.authorization?.substring('Bearer '.length) ?? null
+        if (tokenHeader) {
+          const token = await admin.auth().verifyIdToken(tokenHeader)
+          const customer = await getCustomerByUserId(token.uid)
+          res.send(customer)
+        } else {
+          res.send(null)
+        }
       } else if (tags.length == 1) {
         if (req.query.notebooks) {
           if (customerTag == 'admin') {

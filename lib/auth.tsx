@@ -29,13 +29,15 @@ const useProvideAuth = (): Auth => {
       if (!user) {
         setUser(null)
         cookie.remove('token')
+        mutate('/api', null, false)
+        mutate('/api/stats', null, false)
       } else {
         setUser(user)
+        mutate('/api')
+        mutate('/api/stats')
         const token = await user.getIdToken()
         cookie.set('token', token)
       }
-      mutate('/api')
-      mutate('/api/stats')
     })
   }, [])
 

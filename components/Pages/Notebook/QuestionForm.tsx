@@ -11,7 +11,6 @@ import { useAuth } from 'lib/auth'
 export const QuestionForm: React.FC<{
   question: QuestionWithAll
 }> = (props) => {
-
   const auth = useAuth()
   const stats = auth.stats?.find((x) => x.questionId == props.question.id)
   const [alternativeIdChosen, setAlternativeIdChosen] = useState(stats?.alternativeId ?? 0)
