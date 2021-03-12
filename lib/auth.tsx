@@ -22,7 +22,7 @@ const authContext = createContext<Auth>({
 const useProvideAuth = (): Auth => {
   const [user, setUser] = useState<firebase.User>(null)
   const { data: customer } = useData<Customer & { media: Media }>(`/api`)
-  const { data: stats } = useData<ChosenAlternative[]>(`/api/stats`)
+  const { data: stats } = useData<ChosenAlternative[]>(customer ? `/api/stats` : null)
 
   useEffect(() => {
     return firebase.auth().onIdTokenChanged(async (user) => {
