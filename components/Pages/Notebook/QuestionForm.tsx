@@ -45,7 +45,7 @@ export const QuestionForm: React.FC<{
           postChosenAlternative({
             alternativeId: alternativeIdChosen,
             questionId: props.question.id,
-            customerId: props.question.notebook.customerId,
+            customerId: auth.customer.id,
             id: stats?.id ?? 0,
             createdAt: null,
             updatedAt: null,
