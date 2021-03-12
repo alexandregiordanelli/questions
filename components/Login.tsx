@@ -21,13 +21,15 @@ export const Login: React.FC<{
         tosUrl: '',
         privacyPolicyUrl: '',
       }
-      ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
-      ui && ui.start('#firebaseui-auth-container', config)
-      ui && ui.disableAutoSignIn()
+      if (document.querySelector('#firebaseui-auth-container')) {
+        ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
+        ui?.start('#firebaseui-auth-container', config)
+        ui?.disableAutoSignIn()
+      }
     })
 
     return () => {
-      ui && ui.delete()
+      ui?.delete()
     }
   }, [])
 

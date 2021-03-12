@@ -41,14 +41,16 @@ export const QuestionForm: React.FC<{
       checked={!!stats}
       disabled={!!stats}
       onChange={() => {
-        postChosenAlternative({
-          alternativeId: alternativeIdChosen,
-          questionId: props.question.id,
-          customerId: props.question.notebook.customerId,
-          id: stats?.id ?? 0,
-          createdAt: null,
-          updatedAt: null,
-        })
+        if (auth.customer) {
+          postChosenAlternative({
+            alternativeId: alternativeIdChosen,
+            questionId: props.question.id,
+            customerId: props.question.notebook.customerId,
+            id: stats?.id ?? 0,
+            createdAt: null,
+            updatedAt: null,
+          })
+        }
       }}
     />,
     <label key={1} htmlFor="right-answer">
