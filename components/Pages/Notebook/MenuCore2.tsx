@@ -23,7 +23,9 @@ export const MenuCore2: React.FC<{
                     : null
                 }
                 title={x.name}
-                count={x.subtopics.reduce((a, b) => a + b.questions.length, 0)}
+                countGreen={0}
+                countRed={0}
+                countTotal={x.subtopics.reduce((a, b) => a + b.questions.length, 0)}
               />
               <ul className="hidden mt-4 bg-white -mx-5 -mb-5 p-5 border-t border-gray-200">
                 {x.subtopics.map((y, j) => {

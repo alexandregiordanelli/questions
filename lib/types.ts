@@ -23,7 +23,11 @@ export type Menu = {
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {
     questions: {
+      id: number
       tag: string
+      rightAlternative: {
+        alternativeId: number
+      }
     }[]
   })[]
   notebook: {

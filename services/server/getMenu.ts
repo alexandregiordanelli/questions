@@ -9,6 +9,12 @@ export const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> =
           questions: {
             select: {
               tag: true,
+              id: true,
+              rightAlternative: {
+                select: {
+                  alternativeId: true,
+                },
+              },
             },
             orderBy: {
               order: 'asc',
