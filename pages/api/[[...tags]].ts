@@ -1,21 +1,21 @@
 import { VercelApiHandler } from '@vercel/node'
-import postCustomer from 'services/server/postCustomer'
+import { postCustomer } from 'services/server/postCustomer'
 import { Customer } from '@prisma/client'
 import {
   getCustomerByTag,
   getCustomerNotebooksByTag,
   getCustomerByUserId,
 } from 'services/server/getCustomer'
-import postNotebook from 'services/server/postNotebook'
+import { postNotebook } from 'services/server/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
-import postQuestion from 'services/server/postQuestion'
+import { postQuestion } from 'services/server/postQuestion'
 import { getNotebookByTags } from 'services/server/getNotebook'
 import { getQuestionByTags } from 'services/server/getQuestion'
 import admin from 'lib/firebase-server'
 import { deleteCustomerByTag } from 'services/server/deleteCustomer'
 import { deleteNotebookByTags } from 'services/server/deleteNotebook'
 import { deleteQuestionByTags } from 'services/server/deleteQuestion'
-import getQuestions from 'services/server/getQuestions'
+import { getQuestions } from 'services/server/getQuestions'
 import jwt from 'jsonwebtoken'
 import { getNotebooks } from 'services/server/getNotebooks'
 

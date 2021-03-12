@@ -4,7 +4,7 @@ import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
 import { getNotebook } from './getNotebook'
 
-const postNotebook = async (
+export const postNotebook = async (
   notebookOnRepo: NotebookWithTopicsAndSubTopics
 ): Promise<NotebookWithTopicsAndSubTopics> => {
   if (!notebookOnRepo.tag || !notebookOnRepo.name) {
@@ -51,7 +51,7 @@ const postNotebook = async (
 
   const topicsWithSubtopicsSent = notebookOnRepo.topics
 
-  const batch: PrismaPromise<any>[] = []
+  const batch: PrismaPromise<unknown>[] = []
 
   const topicsWillAdded = _.clone(topicsWithSubtopicsSent)?.filter(
     (x) => !topicsWithSubtopicsOriginal?.some((y) => y.id == x.id)
@@ -188,4 +188,3 @@ const postNotebook = async (
 
   return _notebook
 }
-export default postNotebook

@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react'
 
-const Modal: React.FC<{
+export const Modal: React.FC<{
   showModal: (value: SetStateAction<boolean>) => void
 }> = (props) => {
   return (
@@ -30,5 +30,3 @@ const Modal: React.FC<{
     </div>
   )
 }
-
-export default Modal

@@ -5,7 +5,7 @@ import { useData } from 'services/client/get'
 import { MediaWithUrl } from 'lib/types'
 import { getURLMedia } from 'lib/utils'
 import { Thumbs } from './Thumbs'
-import Modal from './Modal'
+import { Modal } from './Modal'
 import { Editor } from './Editor'
 
 export const EditCustomer: React.FC<{

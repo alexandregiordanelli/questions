@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 
-const HeadHtml: React.FC = (props) => {
+export const HeadHtml: React.FC = (props) => {
   return (
     <>
       <Head>
@@ -36,4 +36,3 @@ const HeadHtml: React.FC = (props) => {
     </>
   )
 }
-export default HeadHtml

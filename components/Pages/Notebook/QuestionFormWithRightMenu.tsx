@@ -2,7 +2,7 @@ import React from 'react'
 import { QuestionForm } from './QuestionForm'
 import { letters } from '../../../lib/utils'
 import Head from 'next/head'
-import RightMenu from './RightMenu'
+import { RightMenu } from './RightMenu'
 import { QuestionWithAll, Suggestions } from '../../../lib/types'
 
 export const QuestionFormWithRightMenu: React.FC<{

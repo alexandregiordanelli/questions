@@ -1,7 +1,7 @@
 import { VercelApiHandler } from '@vercel/node'
 import admin from 'lib/firebase-server'
 import { getCustomerByUserId } from 'services/server/getCustomer'
-import postMedias from 'services/server/postMedias'
+import { postMedias } from 'services/server/postMedias'
 import { getMedias } from 'services/server/getMedias'
 import { MediaWithUrl } from 'lib/types'
 

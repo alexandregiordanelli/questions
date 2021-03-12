@@ -56,4 +56,3 @@ export const getQuestionByTags = async (
 
   return question
 }
-export default getQuestion

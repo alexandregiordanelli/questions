@@ -21,7 +21,7 @@ const Page: NextPage = () => {
           </Link>
         </HeaderAdmin>
         <div className="p-20">
-          <Table customerTag={auth.customerLogged?.tag} />
+          <Table customerTag={auth.customer?.tag} />
         </div>
       </>
     </TemplateAdmin>

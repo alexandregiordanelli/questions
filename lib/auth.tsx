@@ -1,38 +1,41 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
 import cookie from 'js-cookie'
-import { getClient } from 'services/client/get'
-import { Customer, Media } from '@prisma/client'
+import { useData } from 'services/client/get'
+import { ChosenAlternative, Customer, Media } from '@prisma/client'
+import { mutate } from 'swr'
 
 type Auth = {
-  customerLogged: Customer & { media: Media }
+  customer: Customer & { media: Media }
+  stats: ChosenAlternative[]
   user: firebase.User
   logout: () => Promise<void>
 }
 
 const authContext = createContext<Auth>({
-  customerLogged: null,
+  customer: null,
+  stats: null,
   user: null,
   logout: firebase.auth().signOut,
 })
 
 const useProvideAuth = (): Auth => {
-  const [customerLogged, setCustomerLogged] = useState<Customer & { media: Media }>(null)
   const [user, setUser] = useState<firebase.User>(null)
+  const { data: customer } = useData<Customer & { media: Media }>(`/api`)
+  const { data: stats } = useData<ChosenAlternative[]>(`/api/stats`)
 
   useEffect(() => {
     return firebase.auth().onIdTokenChanged(async (user) => {
       if (!user) {
         setUser(null)
-        setCustomerLogged(null)
         cookie.remove('token')
       } else {
         setUser(user)
         const token = await user.getIdToken()
         cookie.set('token', token)
-        const customer = await getClient<Customer & { media: Media }>('/api')
-        if (customer) setCustomerLogged(customer)
       }
+      mutate('/api')
+      mutate('/api/stats')
     })
   }, [])
 
@@ -47,7 +50,8 @@ const useProvideAuth = (): Auth => {
   }, [])
 
   return {
-    customerLogged,
+    customer,
+    stats,
     user,
     logout: firebase.auth().signOut,
   }

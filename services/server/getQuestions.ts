@@ -1,7 +1,7 @@
 import { prisma } from '../../prisma/prisma'
 import { QuestionWithAll } from '../../lib/types'
 
-const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => {
+export const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => {
   const questions = await prisma.question.findMany({
     where: {
       notebook: {
@@ -48,4 +48,3 @@ const getQuestions = async (customerTag: string): Promise<QuestionWithAll[]> => 
 
   return questions
 }
-export default getQuestions

@@ -3,27 +3,54 @@ import 'katex/dist/contrib/mhchem.js'
 import { QuestionWithAll } from '../../../lib/types'
 import { letters } from '../../../lib/utils'
 import { MarkdownText } from '../../MarkdownText'
+import { ChosenAlternative } from '@prisma/client'
+import { mutate } from 'swr'
+import { postClientArray } from 'services/client/post'
+import { useAuth } from 'lib/auth'
 
 export const QuestionForm: React.FC<{
   question: QuestionWithAll
 }> = (props) => {
-  const [letterChosen, setLetterChosen] = useState('')
+
+  const auth = useAuth()
+  const stats = auth.stats?.find((x) => x.questionId == props.question.id)
+  const [alternativeIdChosen, setAlternativeIdChosen] = useState(stats?.alternativeId ?? 0)
   const [showSolution, setShowSolution] = useState(false)
-  const [showRightAnswer, setRightAnswer] = useState(false)
+
+  const postChosenAlternative = async (_chosenAlternative: ChosenAlternative): Promise<void> => {
+    try {
+      const chosenAlternatives = await postClientArray<ChosenAlternative>(
+        _chosenAlternative,
+        `/api/stats`
+      )
+      mutate(`/api/stats`, chosenAlternatives, false)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   useEffect(() => {
-    setLetterChosen('')
+    setAlternativeIdChosen(stats?.alternativeId ?? 0)
     setShowSolution(false)
-    setRightAnswer(false)
-  }, [props.question])
+  }, [props.question, stats])
 
   const html = [
     <input
       key={0}
       type="checkbox"
       id="right-answer"
-      checked={showRightAnswer}
-      onChange={(x) => setRightAnswer(x.target.checked)}
+      checked={!!stats}
+      disabled={!!stats}
+      onChange={() => {
+        postChosenAlternative({
+          alternativeId: alternativeIdChosen,
+          questionId: props.question.id,
+          customerId: props.question.notebook.customerId,
+          id: stats?.id ?? 0,
+          createdAt: null,
+          updatedAt: null,
+        })
+      }}
     />,
     <label key={1} htmlFor="right-answer">
       Right Answer
@@ -41,9 +68,9 @@ export const QuestionForm: React.FC<{
           type="radio"
           id={letter}
           name="qmd"
-          checked={letter == letterChosen}
-          value={letter}
-          onChange={(x) => setLetterChosen(x.target.value)}
+          checked={x.id == alternativeIdChosen}
+          value={x.id}
+          onChange={(y) => setAlternativeIdChosen(Number(y.target.value))}
         />
         <label htmlFor={letter}>
           <MarkdownText md={x.text} customerId={props.question.notebook.customerId} />

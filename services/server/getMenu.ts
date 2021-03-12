@@ -1,7 +1,7 @@
 import { prisma } from '../../prisma/prisma'
 import { MenuWithQuestions } from '../../lib/types'
 
-const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
+export const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
   const topicsOfNotebook = await prisma.topic.findMany({
     include: {
       subtopics: {
@@ -43,4 +43,3 @@ const getMenu = async (notebookTag: string): Promise<MenuWithQuestions> => {
 
   return topicsOfNotebook
 }
-export default getMenu

@@ -4,7 +4,7 @@ import { ChevronDownIcon } from '@primer/octicons-react'
 import { Suggestions } from '../../../lib/types'
 import Link from 'next/link'
 
-const RightMenu: React.FC<{
+export const RightMenu: React.FC<{
   // title: JSX.Element,
   suggestions: Suggestions
   notebookTag: string
@@ -66,5 +66,3 @@ const RightMenu: React.FC<{
     </>
   )
 }
-
-export default RightMenu

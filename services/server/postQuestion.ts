@@ -2,9 +2,9 @@ import { Alternative } from '@prisma/client'
 import { QuestionWithAll } from '../../lib/types'
 import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
-import getQuestion from './getQuestion'
+import { getQuestion } from './getQuestion'
 
-const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWithAll> => {
+export const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWithAll> => {
   const index = questionOnRepo.alternatives.findIndex(
     (x) => x.id == questionOnRepo.rightAlternative?.alternativeId
   )
@@ -152,4 +152,3 @@ const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<QuestionWi
 
   return questionNew
 }
-export default postQuestion

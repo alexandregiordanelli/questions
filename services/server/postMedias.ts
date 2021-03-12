@@ -13,8 +13,8 @@ import sizeOf from 'image-size'
 
 const streamPipeline = util.promisify(pipeline)
 
-const postMedias = async (medias: MediaWithUrl[]): Promise<boolean> => {
-  const batch: PrismaPromise<any>[] = []
+export const postMedias = async (medias: MediaWithUrl[]): Promise<boolean> => {
+  const batch: PrismaPromise<unknown>[] = []
 
   const customerId = medias[0].customerId
 
@@ -60,4 +60,3 @@ const postMedias = async (medias: MediaWithUrl[]): Promise<boolean> => {
 
   return !!media
 }
-export default postMedias

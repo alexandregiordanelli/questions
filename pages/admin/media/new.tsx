@@ -27,7 +27,7 @@ const Page: NextPage = () => {
                 delete x.url
                 return {
                   ...x,
-                  customerId: auth.customerLogged.id,
+                  customerId: auth.customer.id,
                 }
               })
 

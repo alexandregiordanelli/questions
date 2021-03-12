@@ -1,7 +1,7 @@
 import { prisma } from '../../prisma/prisma'
 import { Customer, Media } from '@prisma/client'
 
-const postCustomer = async (_customer: Customer): Promise<Customer & { media: Media }> => {
+export const postCustomer = async (_customer: Customer): Promise<Customer & { media: Media }> => {
   let customer = await prisma.customer.upsert({
     create: {
       tag: _customer.tag,
@@ -50,4 +50,3 @@ const postCustomer = async (_customer: Customer): Promise<Customer & { media: Me
 
   return customer
 }
-export default postCustomer

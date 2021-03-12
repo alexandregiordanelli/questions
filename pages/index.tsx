@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next'
 import React from 'react'
-import HeadHtml from '../components/HeadHtml'
+import { HeadHtml } from '../components/HeadHtml'
 import { Header } from '../components/Header'
 import { getNotebooks } from 'services/server/getNotebooks'
 import { Notebook, Media } from '@prisma/client'

@@ -1,6 +1,6 @@
 import { prisma } from '../../prisma/prisma'
 
-const getUsernames = async (): Promise<string[]> => {
+export const getUsernames = async (): Promise<string[]> => {
   const customer = await prisma.customer.findMany({
     select: {
       tag: true,
@@ -9,4 +9,3 @@ const getUsernames = async (): Promise<string[]> => {
 
   return customer.map((x) => x.tag)
 }
-export default getUsernames

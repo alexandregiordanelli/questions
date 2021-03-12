@@ -20,7 +20,7 @@ const Page: NextPage = () => {
         </Link>
       </HeaderAdmin>
       <div className="p-20">
-        <TableNotebooks customerTag={auth.customerLogged?.tag} />
+        <TableNotebooks customerTag={auth.customer?.tag} />
       </div>
     </TemplateAdmin>
   )
