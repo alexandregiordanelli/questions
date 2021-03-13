@@ -103,7 +103,11 @@ const DropDownMenu: React.FC = () => {
   return (
     <div className="relative inline-block text-left">
       <label htmlFor="dropDownMenu" className="flex items-center text-gray-700 cursor-pointer">
-        <img className="h-8 w-8 mr-1 rounded-full" src={getURLMedia(customer.media)} alt="avatar" />
+        <img
+          className="h-8 w-8 mr-1 rounded-full"
+          src={getURLMedia(customer?.media)}
+          alt="avatar"
+        />
         <ChevronDownIcon />
       </label>
       <input
