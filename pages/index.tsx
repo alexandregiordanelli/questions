@@ -20,7 +20,7 @@ const Index: React.FC<PageProps> = (props) => {
       <HeadHtml />
       <Header />
       <div className="max-w-screen-xl mx-auto px-6">
-        <div className="bg-blue-50 mt-6 rounded-lg py-6 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-12 flex items-center relative">
+        <div className="bg-blue-50 mt-6 rounded-lg py-6 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-12 sm:flex items-center relative">
           <div className="sm:w-1/2">
             <h1 className="text-center sm:text-left text-2xl sm:text-3xl mb-2 ">
               A <strong className="underline">repository </strong> for community{' '}
@@ -30,7 +30,7 @@ const Index: React.FC<PageProps> = (props) => {
               Questions help you answer your questions
             </p>{' '}
           </div>{' '}
-          <div className="hidden sm:block absolute bottom-0 right-0 md:right-12 lg:right-28 w-56">
+          <div className="hidden sm:block absolute bottom-0 right-0 md:right-12 lg:right-28 w-56 md:w-44 lg:w-56">
             <img className="object-cover w-full h-full" src="man.png" alt="oi" />
           </div>
         </div>
