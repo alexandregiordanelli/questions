@@ -10,7 +10,7 @@ import {
   MenuWithQuestions,
   Suggestions,
 } from 'lib/types'
-import { Customer, Media } from '@prisma/client'
+import { Customer, Media, Notebook } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
 import { HeadHtml } from 'components/HeadHtml'
@@ -23,7 +23,7 @@ import { getSuggestions } from 'services/server/getSuggestions'
 import { useData } from 'services/client/get'
 import React from 'react'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
-import { NotebookCard2 } from 'components/NotebookCard2'
+import Link from 'next/link'
 
 type CustomerPageProps = {
   customer: CustomerWithNotebooks
@@ -51,6 +51,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
     `/api/${props.customer.tag}?notebooks=true`,
     props.customer
   )
+
   return (
     <>
       <HeadHtml>
@@ -65,23 +66,69 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
         // style={{ backgroundImage: `url("/graph-paper.svg")` }}
       >
         <Header />
-        <div className=" bg-gray-100 border-t border-b flex py-4 px-8">
-          {customer.media && (
-            <img
-              className="rounded-full w-24 h-24"
-              src={getURLMedia(customer.media)}
-              alt={customer.name}
-            />
-          )}
-          <h1 className="text-xl font-medium text-black my-8 ml-8">{customer.tag}</h1>
+
+        <div className="flex items-end justify-center py-4 bg-gray-100 border-b border-gray-200">
+          <h1 className="relative flex flex-col items-center w-1/2 text-center">
+            <span className="relative w-16 h-16 mb-4 overflow-hidden rounded-full sm:h-20 sm:w-20">
+              <img src={getURLMedia(customer.media)} alt={customer.name} />
+            </span>
+            <div className="flex flex-col leading-none">
+              <div className="mb-2 text-2xl font-bold text-secondary">{customer.name}</div>
+              <div className="text-gray-600">{props.customer.notebooks.length} notebooks</div>
+            </div>
+          </h1>
         </div>
-        <div className="flex flex-wrap">
-          {props.customer.notebooks.map((x, i) => (
-            <NotebookCard2 notebook={x} customerTag={props.customer.tag} key={i} className="m-8" />
-          ))}
+
+        <div className="max-w-screen-xl flex flex-col flex-grow h-full px-6 py-12 mx-auto">
+          <div>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {customer.notebooks.map((x, i) => {
+                return <NotebookCardNew key={i} notebook={x} customer={customer} />
+              })}
+            </div>
+          </div>
+          <div className="py-8 mt-auto"></div>
         </div>
       </div>
     </>
+  )
+}
+
+export const NotebookCardNew: React.FC<{
+  notebook: Notebook & {
+    media: Media
+  }
+  customer: Customer & { media: Media }
+}> = (props) => {
+  return (
+    <Link href={`/${props.customer.tag}/${props.notebook.tag}`}>
+      <a title="TailwindCSS fintess gym" className="flex flex-col overflow-hidden rounded">
+        <div className="relative h-48 overflow-hidden rounded-lg xl:h-64">
+          <img
+            src={getURLMedia(props.notebook.media)}
+            alt={props.notebook.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="mt-3">
+          <div className="flex">
+            <div className="relative flex-shrink-0 w-8 h-8 mt-1 mr-3 overflow-hidden rounded-full shadow-inner">
+              <img
+                src={getURLMedia(props.customer.media)}
+                alt={props.customer.name}
+                className="absolute inset-0 w-full h-full z-negative"
+              />
+            </div>
+            <div className="flex-1 w-0 leading-snug">
+              <h4 className="font-bold truncate whitespace-nowrap text-secondary hover:text-primary">
+                {props.notebook.name}
+              </h4>
+              <p className="text-sm text-gray-600">{props.customer.name}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </Link>
   )
 }
 

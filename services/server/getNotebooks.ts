@@ -1,11 +1,11 @@
 import { prisma } from '../../prisma/prisma'
-import { Media, Notebook } from '@prisma/client'
+import { Customer, Media, Notebook } from '@prisma/client'
 
 export const getNotebooks = async (): Promise<
   (Notebook & {
     media: Media
-    customer: {
-      tag: string
+    customer: Customer & {
+      media: Media
     }
   })[]
 > => {
@@ -13,8 +13,8 @@ export const getNotebooks = async (): Promise<
     include: {
       media: true,
       customer: {
-        select: {
-          tag: true,
+        include: {
+          media: true,
         },
       },
     },

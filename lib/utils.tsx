@@ -114,5 +114,5 @@ export const getMediafromFile = (file: File): Promise<MediaWithUrl> => {
     }
   })
 }
-export const getURLMedia = (media: Media): string =>
-  `https://assets.questionsof.com/${media.customerId}/${media.tag}`
+export const getURLMedia = (media?: Media): string =>
+  media ? `https://assets.questionsof.com/${media.customerId}/${media.tag}` : ''
