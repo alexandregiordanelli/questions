@@ -1,6 +1,6 @@
 import { prisma } from '../../prisma/prisma'
 import { QuestionWithAll } from '../../lib/types'
-import { getNotebookByTags } from './getNotebook'
+import { getNotebookByTag } from './getNotebook'
 export const getQuestion = async (notebookId: number, tag: string): Promise<QuestionWithAll> => {
   const question = await prisma.question.findUnique({
     where: {
@@ -27,11 +27,10 @@ export const getQuestion = async (notebookId: number, tag: string): Promise<Ques
 }
 
 export const getQuestionByTags = async (
-  customerTag: string,
   notebookTag: string,
   questionTag: string
 ): Promise<QuestionWithAll> => {
-  const notebook = await getNotebookByTags(customerTag, notebookTag)
+  const notebook = await getNotebookByTag(notebookTag)
 
   const question = await prisma.question.findUnique({
     where: {

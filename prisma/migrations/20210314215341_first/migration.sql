@@ -7,8 +7,10 @@ CREATE TABLE `Customer` (
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
     `mediaId` INTEGER,
+    `text` TEXT NOT NULL,
 UNIQUE INDEX `Customer.userId_unique`(`userId`),
 UNIQUE INDEX `Customer.tag_unique`(`tag`),
+INDEX `mediaId`(`mediaId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -24,7 +26,7 @@ CREATE TABLE `Notebook` (
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
-UNIQUE INDEX `Notebook.customerId_tag_unique`(`customerId`, `tag`),
+INDEX `mediaId`(`mediaId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -36,6 +38,8 @@ CREATE TABLE `Topic` (
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
+    `order` INTEGER NOT NULL,
+INDEX `notebookId`(`notebookId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -47,6 +51,8 @@ CREATE TABLE `SubTopic` (
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
+    `order` INTEGER NOT NULL,
+INDEX `topicId`(`topicId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -62,7 +68,9 @@ CREATE TABLE `Question` (
     `subTopicId` INTEGER,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
+    `order` INTEGER NOT NULL,
 UNIQUE INDEX `Question.notebookId_tag_unique`(`notebookId`, `tag`),
+INDEX `subTopicId`(`subTopicId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -74,6 +82,7 @@ CREATE TABLE `Alternative` (
     `questionId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
+INDEX `questionId`(`questionId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -87,6 +96,21 @@ CREATE TABLE `RightAlternative` (
     `updatedAt` DATETIME(3),
 UNIQUE INDEX `RightAlternative.alternativeId_unique`(`alternativeId`),
 UNIQUE INDEX `RightAlternative.questionId_unique`(`questionId`),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChosenAlternative` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `customerId` INTEGER NOT NULL,
+    `alternativeId` INTEGER NOT NULL,
+    `questionId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3),
+UNIQUE INDEX `ChosenAlternative.customerId_questionId_unique`(`customerId`, `questionId`),
+INDEX `alternativeId`(`alternativeId`),
+INDEX `questionId`(`questionId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -140,6 +164,15 @@ ALTER TABLE `RightAlternative` ADD FOREIGN KEY (`alternativeId`) REFERENCES `Alt
 
 -- AddForeignKey
 ALTER TABLE `RightAlternative` ADD FOREIGN KEY (`questionId`) REFERENCES `Question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChosenAlternative` ADD FOREIGN KEY (`alternativeId`) REFERENCES `Alternative`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChosenAlternative` ADD FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChosenAlternative` ADD FOREIGN KEY (`questionId`) REFERENCES `Question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Media` ADD FOREIGN KEY (`customerId`) REFERENCES `Customer`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -2,7 +2,7 @@ import { Prisma, PrismaPromise } from '@prisma/client'
 import { NotebookWithTopicsAndSubTopics } from '../../lib/types'
 import { prisma } from '../../prisma/prisma'
 import _ from 'lodash'
-import { getNotebook } from './getNotebook'
+import { getNotebookByTag } from './getNotebook'
 
 export const postNotebook = async (
   notebookOnRepo: NotebookWithTopicsAndSubTopics
@@ -184,7 +184,7 @@ export const postNotebook = async (
 
   await prisma.$transaction(batch)
 
-  const _notebook = await getNotebook(notebook.customerId, notebook.tag)
+  const _notebook = await getNotebookByTag(notebook.tag)
 
   return _notebook
 }

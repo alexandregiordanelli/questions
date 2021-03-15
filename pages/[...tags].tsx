@@ -1,6 +1,6 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerByTag, getCustomerNotebooksByTag } from 'services/server/getCustomer'
-import { getNotebookByTags } from 'services/server/getNotebook'
+import { getCustomerByTag } from 'services/server/getCustomer'
+import { getNotebookByTag } from 'services/server/getNotebook'
 import { getQuestionByTags } from 'services/server/getQuestion'
 
 import {
@@ -224,19 +224,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     const [customerTag, notebookTag, questionTag] = tags
 
     if (tags.length == 1) {
-      const customer = await getCustomerNotebooksByTag(customerTag)
-
-      if (customer) {
-        return {
-          props: {
-            customer,
-          },
-          revalidate: 1,
-        }
-      }
-    } else if (tags.length == 2) {
       const customer = await getCustomerByTag(customerTag)
-      const notebook = await getNotebookByTags(customerTag, notebookTag)
+      const notebook = await getNotebookByTag(notebookTag)
       const menu = await getMenu(notebookTag)
 
       if (customer && notebook) {
@@ -249,10 +238,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
           revalidate: 1,
         }
       }
-    } else if (tags.length == 3) {
+    } else if (tags.length == 2) {
       const customer = await getCustomerByTag(customerTag)
-      const notebook = await getNotebookByTags(customerTag, notebookTag)
-      const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
+      const notebook = await getNotebookByTag(notebookTag)
+      const question = await getQuestionByTags(notebookTag, questionTag)
 
       if (customer && notebook && question) {
         const menu = await getMenu(notebookTag)

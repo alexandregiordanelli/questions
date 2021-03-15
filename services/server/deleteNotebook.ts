@@ -1,5 +1,4 @@
 import { prisma } from '../../prisma/prisma'
-import { getCustomerByTag } from './getCustomer'
 
 export const deleteNotebookById = async (notebookId: number): Promise<number> => {
   //https://github.com/prisma/prisma/issues/4650
@@ -7,13 +6,9 @@ export const deleteNotebookById = async (notebookId: number): Promise<number> =>
 
   return nRowsUpdated
 }
-export const deleteNotebookByTags = async (
-  customerTag: string,
-  notebookTag: string
-): Promise<number> => {
-  const customer = await getCustomerByTag(customerTag)
+export const deleteNotebookByTag = async (notebookTag: string): Promise<number> => {
   //https://github.com/prisma/prisma/issues/4650
-  const nRowsUpdated = await prisma.$executeRaw`DELETE FROM Notebook WHERE tag = ${notebookTag} AND customerId = ${customer.id};`
+  const nRowsUpdated = await prisma.$executeRaw`DELETE FROM Notebook WHERE tag = ${notebookTag};`
 
   return nRowsUpdated
 }

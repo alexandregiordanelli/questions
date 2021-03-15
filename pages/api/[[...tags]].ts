@@ -9,15 +9,15 @@ import {
 import { postNotebook } from 'services/server/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 import { postQuestion } from 'services/server/postQuestion'
-import { getNotebookByTags } from 'services/server/getNotebook'
+import { getNotebookByTag } from 'services/server/getNotebook'
 import { getQuestionByTags } from 'services/server/getQuestion'
 import admin from 'lib/firebase-server'
 import { deleteCustomerByTag } from 'services/server/deleteCustomer'
-import { deleteNotebookByTags } from 'services/server/deleteNotebook'
 import { deleteQuestionByTags } from 'services/server/deleteQuestion'
 import { getQuestions } from 'services/server/getQuestions'
 import jwt from 'jsonwebtoken'
 import { getNotebooks } from 'services/server/getNotebooks'
+import { deleteNotebookByTag } from 'services/server/deleteNotebook'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -56,7 +56,7 @@ const Controller: VercelApiHandler = async (req, res) => {
           const notebook = await postNotebook(_notebook)
           res.send(notebook)
         } else if (tags.length == 2) {
-          const _notebook = await getNotebookByTags(customerTag, notebookTag)
+          const _notebook = await getNotebookByTag(notebookTag)
           const _question = req.body as QuestionWithAll
           _question.notebookId = _notebook.id
           const question = await postQuestion(_question)
@@ -104,11 +104,11 @@ const Controller: VercelApiHandler = async (req, res) => {
           else throw new Error('not found')
         }
       } else if (tags.length == 2) {
-        const notebook = await getNotebookByTags(customerTag, notebookTag)
+        const notebook = await getNotebookByTag(notebookTag)
         if (notebook) res.send(notebook)
         else throw new Error('not found')
       } else if (tags.length == 3) {
-        const question = await getQuestionByTags(customerTag, notebookTag, questionTag)
+        const question = await getQuestionByTags(notebookTag, questionTag)
         if (question) res.send(question)
         else throw new Error('not found')
       } else {
@@ -134,10 +134,10 @@ const Controller: VercelApiHandler = async (req, res) => {
           const nRowsUpdated = await deleteCustomerByTag(customerTag)
           res.send(nRowsUpdated)
         } else if (tags.length == 2) {
-          const nRowsUpdated = await deleteNotebookByTags(customerTag, notebookTag)
+          const nRowsUpdated = await deleteNotebookByTag(notebookTag)
           res.send(nRowsUpdated)
         } else if (tags.length == 3) {
-          const nRowsUpdated = await deleteQuestionByTags(customerTag, notebookTag, questionTag)
+          const nRowsUpdated = await deleteQuestionByTags(notebookTag, questionTag)
           res.send(nRowsUpdated)
         }
       } else {
