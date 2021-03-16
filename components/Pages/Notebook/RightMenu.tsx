@@ -48,7 +48,7 @@ export const RightMenu: React.FC<{
         <ul className="hidden xl:block text-sm text-gray-700">
           {props.suggestions?.map((x, i) => {
             const solved = auth.stats?.some((y) => y.questionId == x.id)
-            const url = `/${props.customerTag}/${props.notebookTag}/${x.tag}`
+            const url = `/${props.notebookTag}/${x.tag}`
             const active = router.asPath == url
             return (
               <li key={i}>

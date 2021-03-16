@@ -66,20 +66,16 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps<CustomerPageProps> = async (context) => {
   try {
-    const tags = context.params.tags as string[]
+    const customerTag = context.params.customerTag as string
 
-    const [customerTag] = tags
+    const customer = await getCustomerNotebooksByTag(customerTag)
 
-    if (tags.length == 1) {
-      const customer = await getCustomerNotebooksByTag(customerTag)
-
-      if (customer) {
-        return {
-          props: {
-            customer,
-          },
-          revalidate: 1,
-        }
+    if (customer) {
+      return {
+        props: {
+          customer,
+        },
+        revalidate: 1,
       }
     }
 

@@ -10,7 +10,6 @@ CREATE TABLE `Customer` (
     `text` TEXT NOT NULL,
 UNIQUE INDEX `Customer.userId_unique`(`userId`),
 UNIQUE INDEX `Customer.tag_unique`(`tag`),
-INDEX `mediaId`(`mediaId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -26,7 +25,7 @@ CREATE TABLE `Notebook` (
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
-INDEX `mediaId`(`mediaId`),
+UNIQUE INDEX `Notebook.tag_unique`(`tag`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -39,7 +38,6 @@ CREATE TABLE `Topic` (
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
     `order` INTEGER NOT NULL,
-INDEX `notebookId`(`notebookId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -52,7 +50,6 @@ CREATE TABLE `SubTopic` (
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
     `order` INTEGER NOT NULL,
-INDEX `topicId`(`topicId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -70,7 +67,6 @@ CREATE TABLE `Question` (
     `updatedAt` DATETIME(3),
     `order` INTEGER NOT NULL,
 UNIQUE INDEX `Question.notebookId_tag_unique`(`notebookId`, `tag`),
-INDEX `subTopicId`(`subTopicId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -82,7 +78,6 @@ CREATE TABLE `Alternative` (
     `questionId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
-INDEX `questionId`(`questionId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -109,8 +104,6 @@ CREATE TABLE `ChosenAlternative` (
     `createdAt` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3),
 UNIQUE INDEX `ChosenAlternative.customerId_questionId_unique`(`customerId`, `questionId`),
-INDEX `alternativeId`(`alternativeId`),
-INDEX `questionId`(`questionId`),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

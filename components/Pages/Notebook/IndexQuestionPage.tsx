@@ -5,6 +5,7 @@ import { NotebookCard } from 'components/NotebookCard'
 import { getURLMedia } from 'lib/utils'
 import { MenuWithQuestions } from 'lib/types'
 import { MenuCore2 } from './MenuCore2'
+import Link from 'next/link'
 
 export const IndexQuestionPage: React.FC<{
   notebook: Notebook & {
@@ -37,7 +38,11 @@ export const IndexQuestionPage: React.FC<{
             <h2 className="text-xl font-medium mb-5 mt-10">Content</h2>
             <MenuCore2 menu={props.menu} customerTag={props.customer.tag} />
             <h2 className="text-xl font-medium mb-5 mt-10">Productor</h2>
-            <h1 className="font-medium text-black">{props.customer.name}</h1>
+            <Link href={`/u/${props.customer.tag}`}>
+              <a>
+                <h1 className="font-medium text-black">{props.customer.name}</h1>
+              </a>
+            </Link>
             {props.customer.media && (
               <img
                 className="rounded-full w-24 h-24 my-5"

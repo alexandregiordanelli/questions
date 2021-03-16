@@ -9,18 +9,18 @@ datasource db {
 }
 
 model Customer {
-  id                Int                 @id @default(autoincrement())
-  userId            String              @unique
-  name              String              @default("")
-  tag               String              @unique
-  createdAt         DateTime?           @default(now())
-  updatedAt         DateTime?           @updatedAt
-  mediaId           Int?
-  text              String              @db.Text
-  media             Media?              @relation(fields: [mediaId], references: [id])
+  id                 Int                 @id @default(autoincrement())
+  userId             String              @unique
+  name               String              @default("")
+  tag                String              @unique
+  createdAt          DateTime?           @default(now())
+  updatedAt          DateTime?           @updatedAt
+  mediaId            Int?
+  text               String              @db.Text
+  media              Media?              @relation(fields: [mediaId], references: [id])
   chosenAlternatives ChosenAlternative[]
-  medias            Media[]             @relation("medias")
-  notebooks Notebook[]
+  medias             Media[]             @relation("medias")
+  notebooks          Notebook[]
 }
 
 model Notebook {
@@ -62,34 +62,35 @@ model SubTopic {
 }
 
 model Question {
-  id                Int                 @id @default(autoincrement())
-  tag               String
-  text              String              @db.Text
-  notebookId        Int
-  solution          String?             @db.Text
-  name              String?
-  subTopicId        Int?
-  createdAt         DateTime?           @default(now())
-  updatedAt         DateTime?           @updatedAt
-  order             Int
-  notebook          Notebook            @relation(fields: [notebookId], references: [id])
-  subTopic          SubTopic?           @relation(fields: [subTopicId], references: [id])
-  alternatives      Alternative[]
+  id                 Int                 @id @default(autoincrement())
+  tag                String
+  text               String              @db.Text
+  notebookId         Int
+  solution           String?             @db.Text
+  name               String?
+  subTopicId         Int?
+  createdAt          DateTime?           @default(now())
+  updatedAt          DateTime?           @updatedAt
+  order              Int
+  notebook           Notebook            @relation(fields: [notebookId], references: [id])
+  subTopic           SubTopic?           @relation(fields: [subTopicId], references: [id])
+  alternatives       Alternative[]
   chosenAlternatives ChosenAlternative[]
-  rightAlternative  RightAlternative?
+  rightAlternative   RightAlternative?
 
   @@unique([notebookId, tag])
 }
 
 model Alternative {
-  id                Int                 @id @default(autoincrement())
-  text              String              @db.Text
-  questionId        Int
-  createdAt         DateTime?           @default(now())
-  updatedAt         DateTime?           @updatedAt
-  question          Question            @relation(fields: [questionId], references: [id])
+  id                 Int                 @id @default(autoincrement())
+  text               String              @db.Text
+  questionId         Int
+  createdAt          DateTime?           @default(now())
+  updatedAt          DateTime?           @updatedAt
+  question           Question            @relation(fields: [questionId], references: [id])
   chosenAlternatives ChosenAlternative[]
-  tightAlternative  RightAlternative?
+  rightAlternative   RightAlternative?
+
 }
 
 model RightAlternative {
@@ -131,8 +132,8 @@ model Media {
   width      Int?
   height     Int?
   customer   Customer   @relation("medias", fields: [customerId], references: [id])
-  customers   Customer[]
-  notebooks   Notebook[]
+  customers  Customer[]
+  notebooks  Notebook[]
 
   @@unique([customerId, tag])
 }

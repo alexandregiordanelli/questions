@@ -1,10 +1,9 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerByTag } from 'services/server/getCustomer'
+import { getCustomerById } from 'services/server/getCustomer'
 import { getNotebookByTag } from 'services/server/getNotebook'
 import { getQuestionByTags } from 'services/server/getQuestion'
 
 import {
-  CustomerWithNotebooks,
   NotebookWithTopicsAndSubTopics,
   QuestionWithAll,
   MenuWithQuestions,
@@ -25,10 +24,6 @@ import React from 'react'
 import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
 import Link from 'next/link'
 
-type CustomerPageProps = {
-  customer: CustomerWithNotebooks
-}
-
 type NotebookPageProps = {
   customer: Customer & {
     media: Media
@@ -42,57 +37,7 @@ type QuestionPageProps = {
   question: QuestionWithAll
 } & NotebookPageProps
 
-type PageProps = CustomerPageProps | NotebookPageProps | QuestionPageProps
-
-const CustomerPage: React.FC<CustomerPageProps> = (props) => {
-  const router = useRouter()
-  const isAmp = useAmp()
-  const { data: customer } = useData<CustomerWithNotebooks>(
-    `/api/${props.customer.tag}?notebooks=true`,
-    props.customer
-  )
-
-  return (
-    <>
-      <HeadHtml>
-        <link
-          rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
-        />
-      </HeadHtml>
-
-      <div
-        className="flex min-h-screen flex-col"
-        // style={{ backgroundImage: `url("/graph-paper.svg")` }}
-      >
-        <Header />
-
-        <div className="flex items-end justify-center py-4 bg-gray-100 border-b border-gray-200">
-          <h1 className="relative flex flex-col items-center w-1/2 text-center">
-            <span className="relative w-16 h-16 mb-4 overflow-hidden rounded-full sm:h-20 sm:w-20">
-              <img src={getURLMedia(customer.media)} alt={customer.name} />
-            </span>
-            <div className="flex flex-col leading-none">
-              <div className="mb-2 text-2xl font-bold text-secondary">{customer.name}</div>
-              <div className="text-gray-600">{props.customer.notebooks.length} notebooks</div>
-            </div>
-          </h1>
-        </div>
-
-        <div className="max-w-screen-xl flex flex-col flex-grow h-full px-6 py-12 mx-auto">
-          <div>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {customer.notebooks.map((x, i) => {
-                return <NotebookCardNew key={i} notebook={x} customer={customer} />
-              })}
-            </div>
-          </div>
-          <div className="py-8 mt-auto"></div>
-        </div>
-      </div>
-    </>
-  )
-}
+type PageProps = NotebookPageProps | QuestionPageProps
 
 export const NotebookCardNew: React.FC<{
   notebook: Notebook & {
@@ -101,7 +46,7 @@ export const NotebookCardNew: React.FC<{
   customer: Customer & { media: Media }
 }> = (props) => {
   return (
-    <Link href={`/${props.customer.tag}/${props.notebook.tag}`}>
+    <Link href={`/${props.notebook.tag}`}>
       <a title="TailwindCSS fintess gym" className="flex flex-col overflow-hidden rounded">
         <div className="relative h-48 overflow-hidden rounded-lg xl:h-64">
           <img
@@ -212,8 +157,6 @@ export const Page: NextPage<PageProps> = (props) => {
     )
   } else if ('notebook' in props) {
     return <NotebookPage customer={props.customer} notebook={props.notebook} menu={props.menu} />
-  } else if ('customer' in props) {
-    return <CustomerPage customer={props.customer} />
   } else return null
 }
 
@@ -221,11 +164,11 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   try {
     const tags = context.params.tags as string[]
 
-    const [customerTag, notebookTag, questionTag] = tags
+    const [notebookTag, questionTag] = tags
 
     if (tags.length == 1) {
-      const customer = await getCustomerByTag(customerTag)
       const notebook = await getNotebookByTag(notebookTag)
+      const customer = await getCustomerById(notebook.customerId)
       const menu = await getMenu(notebookTag)
 
       if (customer && notebook) {
@@ -239,8 +182,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         }
       }
     } else if (tags.length == 2) {
-      const customer = await getCustomerByTag(customerTag)
       const notebook = await getNotebookByTag(notebookTag)
+      const customer = await getCustomerById(notebook.customerId)
       const question = await getQuestionByTags(notebookTag, questionTag)
 
       if (customer && notebook && question) {

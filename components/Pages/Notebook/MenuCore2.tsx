@@ -19,7 +19,7 @@ export const MenuCore2: React.FC<{
               <MenuItem
                 url={
                   firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? `/${props.customerTag}/${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
+                    ? `/${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
                     : null
                 }
                 title={x.name}
@@ -31,7 +31,7 @@ export const MenuCore2: React.FC<{
                 {x.subtopics.map((y, j) => {
                   const anotherSubtopicQuestion = y.questions[0]
                   const url = anotherSubtopicQuestion
-                    ? `/${props.customerTag}/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
+                    ? `/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
                     : null
                   const active = router.asPath == url
                   return (
