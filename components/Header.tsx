@@ -21,9 +21,8 @@ export const Header: React.FC = () => {
   return (
     <>
       <div
-        className={`bg-gray-800 shadow-lg top-0 sticky h-16 items-center justify-between flex p-1 z-10 ${
-          offsetPaddingLeft ? 'pl-8 lg:px-4' : 'px-4'
-        }`}
+        className={`bg-yellow-700 shadow-lg top-0 sticky h-16 items-center justify-between flex p-1 z-10 ${offsetPaddingLeft ? 'pl-8 lg:px-4' : 'px-4'
+          }`}
       >
         <div className="items-center flex">
           <Link href="/">
@@ -114,8 +113,8 @@ const DropDownMenu: React.FC = () => {
         id="dropDownMenu"
         className="toggleVisibilityUL"
         type="checkbox"
-        // onChange={(x) => setToggleMenu(x.target.checked)}
-        // checked={toggleMenu}
+      // onChange={(x) => setToggleMenu(x.target.checked)}
+      // checked={toggleMenu}
       />
 
       <ul className="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
