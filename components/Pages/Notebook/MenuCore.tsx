@@ -7,7 +7,6 @@ import { useAuth } from 'lib/auth'
 
 export const MenuCore: React.FC<{
   menu: MenuWithQuestions
-  customerTag: string
 }> = (props) => {
   const router = useRouter()
   const auth = useAuth()

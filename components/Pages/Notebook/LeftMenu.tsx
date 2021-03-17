@@ -6,7 +6,6 @@ import { MenuCore } from './MenuCore'
 
 export const LeftMenu: React.FC<{
   menu: MenuWithQuestions
-  customerTag: string
 }> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)
@@ -30,7 +29,7 @@ export const LeftMenu: React.FC<{
         onChange={(x) => setToggleMenu(x.target.checked)}
         checked={toggleMenu}
       />
-      <MenuCore menu={props.menu} customerTag={props.customerTag} />
+      <MenuCore menu={props.menu} />
     </div>
   )
 }

@@ -5,28 +5,32 @@ export const Login: React.FC<{
 }> = (props) => {
   useEffect(() => {
     let ui: firebaseui.auth.AuthUI = null
-    import('firebaseui').then((firebaseui) => {
-      const config = {
-        callbacks: {
-          signInSuccessWithAuthResult: () => false,
-        },
-        signInFlow: 'popup',
-        signInOptions: [
-          {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            clientId: '872190920136-g962c5dhq2qctc3cj1hq8sdo3atqlpq5.apps.googleusercontent.com',
+    import('firebaseui')
+      .then((firebaseui) => {
+        const config = {
+          callbacks: {
+            signInSuccessWithAuthResult: () => false,
           },
-        ],
-        credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
-        tosUrl: '',
-        privacyPolicyUrl: '',
-      }
-      if (document.querySelector('#firebaseui-auth-container')) {
-        ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
-        ui?.start('#firebaseui-auth-container', config)
-        ui?.disableAutoSignIn()
-      }
-    })
+          signInFlow: 'popup',
+          signInOptions: [
+            {
+              provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+              clientId: '872190920136-g962c5dhq2qctc3cj1hq8sdo3atqlpq5.apps.googleusercontent.com',
+            },
+          ],
+          credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
+          tosUrl: '',
+          privacyPolicyUrl: '',
+        }
+        if (document.querySelector('#firebaseui-auth-container')) {
+          ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth())
+          ui?.start('#firebaseui-auth-container', config)
+          ui?.disableAutoSignIn()
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
 
     return () => {
       ui?.delete()

@@ -36,7 +36,7 @@ export const IndexQuestionPage: React.FC<{
             )}
 
             <h2 className="text-xl font-medium mb-5 mt-10">Content</h2>
-            <MenuCore2 menu={props.menu} customerTag={props.customer.tag} />
+            <MenuCore2 menu={props.menu} />
             <h2 className="text-xl font-medium mb-5 mt-10">Productor</h2>
             <Link href={`/u/${props.customer.tag}`}>
               <a>

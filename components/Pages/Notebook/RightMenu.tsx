@@ -9,7 +9,6 @@ export const RightMenu: React.FC<{
   // title: JSX.Element,
   suggestions: Suggestions
   notebookTag: string
-  customerTag: string
 }> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)

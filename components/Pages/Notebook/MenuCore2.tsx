@@ -3,11 +3,12 @@ import { MenuWithQuestions } from '../../../lib/types'
 import { MenuItem } from './MenuItem'
 import { MenuSubItem } from './MenuSubItem'
 import { useRouter } from 'next/router'
+import { useAuth } from 'lib/auth'
 
 export const MenuCore2: React.FC<{
   menu: MenuWithQuestions
-  customerTag: string
 }> = (props) => {
+  const auth = useAuth()
   const router = useRouter()
   return (
     <>
@@ -23,8 +24,40 @@ export const MenuCore2: React.FC<{
                     : null
                 }
                 title={x.name}
-                countGreen={0}
-                countRed={0}
+                countGreen={x.subtopics.reduce((a1, b1) => {
+                  return (
+                    a1 +
+                    b1.questions.reduce((a2, b2) => {
+                      return (
+                        a2 +
+                        (auth.stats?.some(
+                          (x) =>
+                            b2.rightAlternative?.alternativeId == x.alternativeId &&
+                            b2.id == x.questionId
+                        )
+                          ? 1
+                          : 0)
+                      )
+                    }, 0)
+                  )
+                }, 0)}
+                countRed={x.subtopics.reduce((a1, b1) => {
+                  return (
+                    a1 +
+                    b1.questions.reduce((a2, b2) => {
+                      return (
+                        a2 +
+                        (auth.stats?.some(
+                          (x) =>
+                            b2.rightAlternative?.alternativeId != x.alternativeId &&
+                            b2.id == x.questionId
+                        )
+                          ? 1
+                          : 0)
+                      )
+                    }, 0)
+                  )
+                }, 0)}
                 countTotal={x.subtopics.reduce((a, b) => a + b.questions.length, 0)}
               />
               <ul className="hidden mt-4 bg-white -mx-5 -mb-5 p-5 border-t border-gray-200">
