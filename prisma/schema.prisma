@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["groupBy"]
+  previewFeatures = ["groupBy", "orderByRelation"]
 }
 
 datasource db {
@@ -21,22 +21,24 @@ model Customer {
   chosenAlternatives ChosenAlternative[]
   medias             Media[]             @relation("medias")
   notebooks          Notebook[]
+  subscribers        Subscriber[]
 }
 
 model Notebook {
-  id         Int        @id @default(autoincrement())
-  customerId Int
-  tag        String     @unique
-  mediaId    Int?
-  text       String?    @db.Text
-  price      Float?
-  name       String
-  createdAt  DateTime?  @default(now())
-  updatedAt  DateTime?  @updatedAt
-  customer   Customer   @relation(fields: [customerId], references: [id])
-  media      Media?     @relation(fields: [mediaId], references: [id])
-  questions  Question[]
-  topics     Topic[]
+  id                  Int       @id @default(autoincrement())
+  customerId         Int
+  tag                String     @unique
+  mediaId            Int?
+  text               String?    @db.Text
+  price              Float?
+  name               String
+  createdAt          DateTime?  @default(now())
+  updatedAt          DateTime?  @updatedAt
+  customer           Customer   @relation(fields: [customerId], references: [id])
+  media              Media?     @relation(fields: [mediaId], references: [id])
+  questions          Question[]
+  topics             Topic[]
+  subscribers        Subscriber[]
 }
 
 model Topic {
@@ -115,6 +117,16 @@ model ChosenAlternative {
   question      Question    @relation(fields: [questionId], references: [id])
 
   @@unique([customerId, questionId])
+}
+
+model Subscriber {
+  id            Int         @id @default(autoincrement())
+  customerId    Int
+  notebookId    Int
+  customer      Customer    @relation(fields: [customerId], references: [id])
+  notebook      Notebook    @relation(fields: [notebookId], references: [id])
+
+  @@unique([customerId, notebookId])
 }
 
 model Media {
