@@ -30,17 +30,17 @@ export const LandingPage: React.FC<{
           <div className="p-8 lg:pl-0 flex flex-col flex-grow">
             {props.notebook.text && (
               <>
-                <h2 className="text-xl font-medium mb-5 mt-10">Description</h2>
+                <span className="text-xl font-medium mb-5 mt-10">Description</span>
                 <MarkdownText md={props.notebook.text} customerId={props.customer.id} />
               </>
             )}
 
-            <h2 className="text-xl font-medium mb-5 mt-10">Content</h2>
+            <span className="text-xl font-medium mb-5 mt-10">Content</span>
             <MenuCore2 menu={props.menu} />
-            <h2 className="text-xl font-medium mb-5 mt-10">Productor</h2>
+            <span className="text-xl font-medium mb-5 mt-10">Productor</span>
             <Link href={`/u/${props.customer.tag}`}>
               <a>
-                <h1 className="font-medium text-black">{props.customer.name}</h1>
+                <h2 className="font-medium text-black">{props.customer.name}</h2>
               </a>
             </Link>
             {props.customer.media && (

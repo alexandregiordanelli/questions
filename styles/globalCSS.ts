@@ -17,10 +17,10 @@ export const essentialCSS = css.global`
     @apply hidden;
   }
   #main-form #right-answer + label {
-    @apply bg-green-400 rounded order-1;
+    @apply text-white text-sm my-4 mr-2 inline-block font-bold flex-none bg-green-500 hover:bg-green-400 rounded order-1 cursor-pointer;
   }
   #main-form #right-answer:checked + label {
-    @apply bg-green-200 border-green-300;
+    @apply bg-green-700;
   }
   #main-form #right-answer:checked ~ input[type='radio'] {
     @apply text-red-500;
@@ -42,10 +42,10 @@ export const essentialCSS = css.global`
     @apply hidden order-3;
   }
   #main-form #solution + label {
-    @apply bg-gray-400 rounded order-2;
+    @apply text-white text-sm my-4 mr-2 inline-block font-bold flex-none bg-yellow-500 hover:bg-yellow-400 rounded order-2 cursor-pointer;
   }
   #main-form #solution:checked + label {
-    @apply bg-gray-200;
+    @apply bg-yellow-700;
   }
   #main-form .q {
     flex-basis: 100%;

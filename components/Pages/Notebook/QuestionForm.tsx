@@ -1,14 +1,15 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import 'katex/dist/contrib/mhchem.js'
 import { QuestionWithAll } from '../../../lib/types'
-import { letters } from '../../../lib/utils'
+import { getURLMedia, letters } from '../../../lib/utils'
 import { MarkdownText } from '../../MarkdownText'
-import { ChosenAlternative } from '@prisma/client'
+import { ChosenAlternative, Customer, Media } from '@prisma/client'
 import { mutate } from 'swr'
 import { postClientArray } from 'services/client/post'
 import { useAuth } from 'lib/auth'
 
 export const QuestionForm: React.FC<{
+  customer: Customer & { media: Media }
   question: QuestionWithAll
 }> = (props) => {
   const auth = useAuth()
@@ -94,7 +95,13 @@ export const QuestionForm: React.FC<{
       <label key={6} htmlFor="solution">
         Solution
       </label>,
-      <div key={7} className="s">
+      <div key={7} className="s my-4">
+        <img
+          className="rounded-full mr-4 mb-3 float-left"
+          src={getURLMedia(props.customer.media)}
+          alt="avatar"
+        />
+        <p className="font-medium mb-2">{props.customer.name} says:</p>
         <MarkdownText
           md={props.question.solution}
           customerId={props.question.notebook.customerId}

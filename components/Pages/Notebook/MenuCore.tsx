@@ -14,7 +14,7 @@ export const MenuCore: React.FC<{
     <>
       <ul
         className={
-          'menu bg-gray-50 fixed hidden lg:block lg:sticky top-16 w-64 overflow-auto border-r border-gray-200'
+          'menu bg-gray-50 fixed hidden lg:block lg:sticky top-16 w-64 overflow-auto border-r border-gray-200 z-10 lg:z-0'
         }
       >
         {props.menu.map((x, i) => {

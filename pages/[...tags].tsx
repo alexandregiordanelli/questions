@@ -91,11 +91,6 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       <div className="flex min-h-screen flex-col">
         <Header />
         <div className="flex">
-          {/* <LeftMenu
-            menu={props.menu}
-            notebookTag={props.notebook.tag}
-            customerTag={props.customer.tag}
-          /> */}
           <LandingPage notebook={props.notebook} customer={props.customer} menu={props.menu} />
         </div>
       </div>
@@ -106,14 +101,11 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { data: notebook } = useData<NotebookWithTopicsAndSubTopics>(
-    `/api/${props.customer.tag}/${props.notebook.tag}`,
-    props.notebook
-  )
   const { data: question } = useData<QuestionWithAll>(
     `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
     props.question
   )
+
   return (
     <>
       <HeadHtml>
@@ -130,7 +122,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
           <QuestionFormWithRightMenu
             question={question}
             suggestions={props.suggestions}
-            notebookTag={notebook.tag}
+            customer={props.customer}
           />
         </div>
       </div>

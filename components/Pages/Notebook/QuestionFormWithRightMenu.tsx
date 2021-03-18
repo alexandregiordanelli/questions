@@ -4,11 +4,12 @@ import { letters } from '../../../lib/utils'
 import Head from 'next/head'
 import { RightMenu } from './RightMenu'
 import { QuestionWithAll, Suggestions } from '../../../lib/types'
+import { Customer, Media } from '@prisma/client'
 
 export const QuestionFormWithRightMenu: React.FC<{
+  customer: Customer & { media: Media }
   question: QuestionWithAll
   suggestions: Suggestions
-  notebookTag: string
 }> = (props) => {
   //const menuFiltered = props.menu.find(x => x.topics.some(y => y.topic == props.question.topic))
 
@@ -61,11 +62,11 @@ export const QuestionFormWithRightMenu: React.FC<{
         <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
           <RightMenu
             title={props.question.subTopic.name}
-            notebookTag={props.notebookTag}
+            notebookTag={props.question.notebook.tag}
             suggestions={props.suggestions}
           />
           <div className="flex-grow p-6 md:p-0">
-            <QuestionForm question={props.question} />
+            <QuestionForm question={props.question} customer={props.customer} />
           </div>
         </div>
       </div>

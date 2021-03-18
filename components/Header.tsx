@@ -24,7 +24,7 @@ export const Header: React.FC<{
     <>
       <div
         className={`bg-gray-800 shadow-lg top-0 sticky h-16 items-center justify-between flex p-1 z-10 ${
-          offsetPaddingLeft ? 'pl-8 lg:px-4' : 'px-4'
+          offsetPaddingLeft ? 'pl-12 lg:px-4' : 'px-4'
         }`}
       >
         <div className="items-center flex">
@@ -36,7 +36,7 @@ export const Header: React.FC<{
           </Link>
           {!router.pathname.startsWith('/admin') && props.question && (
             <>
-              <div className="text-gray-700 hidden lg:block">
+              <div className="text-gray-700 block">
                 <ChevronRightIcon />
               </div>
               <Link href={`/${props.question.notebook.tag}`}>
@@ -45,7 +45,7 @@ export const Header: React.FC<{
               <div className="text-gray-700 hidden lg:block">
                 <ChevronRightIcon />
               </div>
-              <h2 className="text-white px-2 py-2 text-sm hidden lg:block">{`${props.question.name}`}</h2>
+              <h1 className="text-white px-2 py-2 text-sm hidden lg:block">{`${props.question.name}`}</h1>
             </>
           )}
           {router.pathname.startsWith('/admin') && (
