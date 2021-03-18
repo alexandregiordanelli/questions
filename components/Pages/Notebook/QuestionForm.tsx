@@ -24,6 +24,7 @@ export const QuestionForm: React.FC<{
         `/api/stats`
       )
       mutate(`/api/stats`, chosenAlternatives, false)
+      setShowSolution(true)
     } catch (e) {
       console.log(e)
     }
@@ -31,8 +32,11 @@ export const QuestionForm: React.FC<{
 
   useEffect(() => {
     setAlternativeIdChosen(stats?.alternativeId ?? 0)
+  }, [stats])
+
+  useEffect(() => {
     setShowSolution(false)
-  }, [props.question, stats])
+  }, [props.question])
 
   const html = [
     <input
@@ -59,7 +63,7 @@ export const QuestionForm: React.FC<{
     <label key={1} htmlFor="right-answer">
       Right Answer
     </label>,
-    <div key={2} className="q">
+    <div key={2} className="q mb-4">
       <MarkdownText md={props.question.text} customerId={props.question.notebook.customerId} />
     </div>,
   ]
@@ -74,7 +78,7 @@ export const QuestionForm: React.FC<{
           name="qmd"
           checked={x.id == alternativeIdChosen}
           value={x.id}
-          onChange={(y) => setAlternativeIdChosen(Number(y.target.value))}
+          onChange={(y) => !stats?.alternativeId && setAlternativeIdChosen(Number(y.target.value))}
         />
         <label htmlFor={letter}>
           <MarkdownText md={x.text} customerId={props.question.notebook.customerId} />

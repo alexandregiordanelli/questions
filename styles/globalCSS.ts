@@ -17,10 +17,10 @@ export const essentialCSS = css.global`
     @apply hidden;
   }
   #main-form #right-answer + label {
-    @apply text-white text-sm my-4 mr-2 inline-block font-bold flex-none bg-green-500 hover:bg-green-400 rounded order-1 cursor-pointer;
+    @apply text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-green-600 bg-green-500 hover:bg-green-600 rounded order-1 cursor-pointer;
   }
   #main-form #right-answer:checked + label {
-    @apply bg-green-700;
+    @apply bg-green-600 opacity-75 text-opacity-80 cursor-not-allowed;
   }
   #main-form #right-answer:checked ~ input[type='radio'] {
     @apply text-red-500;
@@ -42,10 +42,10 @@ export const essentialCSS = css.global`
     @apply hidden order-3;
   }
   #main-form #solution + label {
-    @apply text-white text-sm my-4 mr-2 inline-block font-bold flex-none bg-yellow-500 hover:bg-yellow-400 rounded order-2 cursor-pointer;
+    @apply text-gray-500 text-sm my-4 mr-2 inline-block font-semibold border border-gray-200 flex-none bg-gray-100 hover:bg-gray-200 rounded order-2 cursor-pointer;
   }
   #main-form #solution:checked + label {
-    @apply bg-yellow-700;
+    @apply bg-gray-100 opacity-75 text-opacity-80;
   }
   #main-form .q {
     flex-basis: 100%;
