@@ -14,10 +14,8 @@ export const getQuestion = async (notebookId: number, tag: string): Promise<Ques
       rightAlternative: true,
       subTopic: true,
       notebook: {
-        select: {
-          name: true,
-          tag: true,
-          customerId: true,
+        include: {
+          media: true,
         },
       },
     },
@@ -44,10 +42,8 @@ export const getQuestionByTags = async (
       rightAlternative: true,
       subTopic: true,
       notebook: {
-        select: {
-          name: true,
-          tag: true,
-          customerId: true,
+        include: {
+          media: true,
         },
       },
     },

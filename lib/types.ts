@@ -38,10 +38,8 @@ export type QuestionWithAll = Question & {
   alternatives: Alternative[]
   rightAlternative: RightAlternative
   subTopic: SubTopic
-  notebook?: {
-    name: string
-    tag: string
-    customerId: number
+  notebook?: Notebook & {
+    media: Media
   }
 }
 export type Suggestions = {

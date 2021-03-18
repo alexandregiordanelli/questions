@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
 import { useRouter } from 'next/router'
@@ -8,15 +8,17 @@ import { ChevronDownIcon, ChevronRightIcon } from '@primer/octicons-react'
 import NoSSR from 'react-no-ssr'
 import { Login } from './Login'
 import { getURLMedia } from 'lib/utils'
+import { Modal } from './Modal'
+import { NotebookCard } from './NotebookCard'
+import { QuestionWithAll } from 'lib/types'
 
-export const Header: React.FC = () => {
-  const { user } = useAuth()
+export const Header: React.FC<{
+  question?: QuestionWithAll
+}> = (props) => {
+  const { user, showFocusOnLogin, showNotebookCard, setShowNotebookCard } = useAuth()
   const router = useRouter()
-  const tags = (router.query.tags as string[]) ?? []
 
-  const [customerTag, notebookTag, questionTag] = tags
-
-  const offsetPaddingLeft = !!questionTag
+  const offsetPaddingLeft = !!props.question
 
   return (
     <>
@@ -32,42 +34,18 @@ export const Header: React.FC = () => {
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          {!router.pathname.startsWith('/admin') && customerTag && (
+          {!router.pathname.startsWith('/admin') && props.question && (
             <>
-              {!notebookTag && (
-                <>
-                  <h2 className=" text-white px-2 py-2 text-sm md:block">{`${customerTag}`}</h2>
-                </>
-              )}
-              {notebookTag && (
-                <>
-                  <Link href={`/${customerTag}`}>
-                    <a className="text-gray-400 px-2 py-2 text-sm hidden xl:block">{`${customerTag}`}</a>
-                  </Link>
-                  {!questionTag && (
-                    <>
-                      <div className="text-gray-700 hidden md:block">
-                        <ChevronRightIcon />
-                      </div>
-                      <h2 className="text-white px-2 py-2 text-sm hidden md:block">{`${notebookTag}`}</h2>
-                    </>
-                  )}
-                  {questionTag && (
-                    <>
-                      <div className="text-gray-700 hidden xl:block">
-                        <ChevronRightIcon />
-                      </div>
-                      <Link href={`/${customerTag}/${notebookTag}`}>
-                        <a className="text-white px-2 py-2 text-sm lg:text-gray-400">{`${notebookTag}`}</a>
-                      </Link>
-                      <div className="text-gray-700 hidden lg:block">
-                        <ChevronRightIcon />
-                      </div>
-                      <h2 className="text-white px-2 py-2 text-sm hidden lg:block">{`${questionTag}`}</h2>
-                    </>
-                  )}
-                </>
-              )}
+              <div className="text-gray-700 hidden lg:block">
+                <ChevronRightIcon />
+              </div>
+              <Link href={`/${props.question.notebook.tag}`}>
+                <a className="text-white px-2 py-2 text-sm lg:text-gray-400">{`${props.question.notebook.name}`}</a>
+              </Link>
+              <div className="text-gray-700 hidden lg:block">
+                <ChevronRightIcon />
+              </div>
+              <h2 className="text-white px-2 py-2 text-sm hidden lg:block">{`${props.question.name}`}</h2>
             </>
           )}
           {router.pathname.startsWith('/admin') && (
@@ -77,23 +55,42 @@ export const Header: React.FC = () => {
           )}
         </div>
         <NoSSR>
-          {!user && <Login className="mr-2" />}
-          {user && (
-            <div className="flex items-center">
-              {!router.pathname.startsWith('/admin') && (
-                <button
-                  className="bg-gray-800 text-white text-sm rounded-md px-4 py-2 mr-2 border-gray-700 border hidden md:block"
-                  onClick={() => router.push(`/admin`)}
-                >
-                  Admin
-                </button>
-              )}
-              <DropDownMenu />
-            </div>
+          {showNotebookCard && (
+            <Modal showModal={setShowNotebookCard}>
+              <NotebookCard notebook={props.question.notebook} />
+            </Modal>
           )}
+          {!user && showFocusOnLogin && <FocusOnLogin />}
+          {!user && (
+            <Login className={`mr-2 z-30 ${showFocusOnLogin && 'border-red-500 border-2'}`} />
+          )}
+          {user && <DropDownMenu />}
         </NoSSR>
       </div>
     </>
+  )
+}
+
+const FocusOnLogin: React.FC = () => {
+  const { setShowFocusOnLogin } = useAuth()
+  useEffect(() => {
+    const close = (e): void => {
+      if (e.keyCode === 27) {
+        setShowFocusOnLogin(false)
+      }
+    }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [setShowFocusOnLogin])
+
+  return (
+    <div
+      tabIndex={0}
+      role="button"
+      className="fixed z-20 inset-0 bg-black opacity-90"
+      onClick={() => setShowFocusOnLogin(false)}
+      onKeyDown={() => setShowFocusOnLogin(false)}
+    />
   )
 }
 
@@ -127,45 +124,14 @@ const DropDownMenu: React.FC = () => {
           >
             Edit
           </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Duplicate
-          </a>
-        </li>
-        <li className="py-1">
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Archive
-          </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Move
-          </a>
-        </li>
-        <li className="py-1">
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Share
-          </a>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Add to favorites
-          </a>
+          <Link href="/admin">
+            <a
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              role="menuitem"
+            >
+              Admin
+            </a>
+          </Link>
         </li>
         <li className="py-1 flex">
           <button

@@ -21,7 +21,7 @@ import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFor
 import { getSuggestions } from 'services/server/getSuggestions'
 import { useData } from 'services/client/get'
 import React from 'react'
-import { IndexQuestionPage } from 'components/Pages/Notebook/IndexQuestionPage'
+import { LandingPage } from 'components/Pages/Notebook/LandingPage'
 import Link from 'next/link'
 
 type NotebookPageProps = {
@@ -96,11 +96,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
             notebookTag={props.notebook.tag}
             customerTag={props.customer.tag}
           /> */}
-          <IndexQuestionPage
-            notebook={props.notebook}
-            customer={props.customer}
-            menu={props.menu}
-          />
+          <LandingPage notebook={props.notebook} customer={props.customer} menu={props.menu} />
         </div>
       </div>
     </>
@@ -128,7 +124,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
       </HeadHtml>
 
       <div className="flex min-h-screen flex-col">
-        <Header />
+        <Header question={question} />
         <div className="flex">
           <LeftMenu menu={props.menu} />
           <QuestionFormWithRightMenu

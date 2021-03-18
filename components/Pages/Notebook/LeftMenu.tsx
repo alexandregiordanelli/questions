@@ -15,10 +15,10 @@ export const LeftMenu: React.FC<{
   }, [router.asPath])
 
   return (
-    <div className="z-10">
+    <div className="">
       <label
         htmlFor="leftMenu"
-        className="fixed lg:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white"
+        className="fixed lg:hidden cursor-pointer leading-5 rounded-md text-sm left-3 top-5 text-white z-10"
       >
         <ThreeBarsIcon />
       </label>

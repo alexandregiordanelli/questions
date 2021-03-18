@@ -15,10 +15,8 @@ export const getQuestions = async (customerTag: string): Promise<QuestionWithAll
       rightAlternative: true,
       subTopic: true,
       notebook: {
-        select: {
-          name: true,
-          tag: true,
-          customerId: true,
+        include: {
+          media: true,
         },
       },
     },

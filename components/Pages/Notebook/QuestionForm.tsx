@@ -50,6 +50,8 @@ export const QuestionForm: React.FC<{
             createdAt: null,
             updatedAt: null,
           })
+        } else {
+          auth.setShowNotebookCard(true)
         }
       }}
     />,

@@ -67,11 +67,7 @@ export const EditQuestion: React.FC<{
                   onChange={(x) => {
                     props.dispatch({
                       type: ActionType.UPDATE_NOTEBOOK,
-                      notebook: {
-                        name: x.label,
-                        tag: x.value,
-                        customerId: props.customer.id,
-                      },
+                      notebook: props.customer?.notebooks.find((y) => y.tag == x.value),
                     })
                     props.dispatch({
                       type: ActionType.UPDATE_NOTEBOOK_ID,

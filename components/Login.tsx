@@ -41,13 +41,13 @@ export const Login: React.FC<{
     <>
       <style jsx global>{`
         .firebaseui-idp-button {
-          @apply flex px-2 py-1 shadow items-center;
+          @apply flex px-2 py-1 shadow items-center text-sm text-gray-900 font-medium;
         }
         .firebaseui-idp-text-short {
-          @apply hidden;
+          @apply block sm:hidden;
         }
         .firebaseui-idp-text-long {
-          @apply text-sm text-gray-900 font-medium;
+          @apply hidden sm:block;
         }
         .firebaseui-idp-icon {
           @apply h-4 mr-2;

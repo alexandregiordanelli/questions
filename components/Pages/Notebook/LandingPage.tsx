@@ -7,7 +7,7 @@ import { MenuWithQuestions } from 'lib/types'
 import { MenuCore2 } from './MenuCore2'
 import Link from 'next/link'
 
-export const IndexQuestionPage: React.FC<{
+export const LandingPage: React.FC<{
   notebook: Notebook & {
     media: Media
   }

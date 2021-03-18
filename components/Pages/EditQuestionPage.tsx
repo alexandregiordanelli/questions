@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { QuestionWithAll, CustomerWithNotebooks } from 'lib/types'
 import { useData } from 'services/client/get'
-import { Alternative, RightAlternative } from '@prisma/client'
+import { Alternative, Media, Notebook, RightAlternative } from '@prisma/client'
 import { EditQuestion } from 'components/EditQuestion'
 import _ from 'lodash'
 import { useReducer, useEffect } from 'react'
@@ -32,11 +32,7 @@ export type Action =
     }
   | {
       type: ActionType.UPDATE_NOTEBOOK
-      notebook: {
-        name: string
-        tag: string
-        customerId: number
-      }
+      notebook: Notebook & { media: Media }
     }
   | {
       type: ActionType.UPDATE_ALTERNATIVES
@@ -90,7 +86,14 @@ const initState: QuestionWithAll = {
   notebook: {
     name: '',
     tag: '',
+    id: 0,
     customerId: 0,
+    text: '',
+    price: 0,
+    createdAt: null,
+    updatedAt: null,
+    mediaId: 0,
+    media: null,
   },
   text: '',
   notebookId: 0,

@@ -2,27 +2,40 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
 import cookie from 'js-cookie'
 import { useData } from 'services/client/get'
-import { ChosenAlternative, Customer, Media } from '@prisma/client'
+import { ChosenAlternative, Customer, Media, Subscriber } from '@prisma/client'
 import { mutate } from 'swr'
 
 type Auth = {
+  showNotebookCard: boolean
+  setShowNotebookCard: React.Dispatch<React.SetStateAction<boolean>>
+  showFocusOnLogin: boolean
+  setShowFocusOnLogin: React.Dispatch<React.SetStateAction<boolean>>
   customer: Customer & { media: Media }
   stats: ChosenAlternative[]
+  subscribers: Subscriber[]
   user: firebase.User
   logout: () => Promise<void>
 }
 
 const authContext = createContext<Auth>({
+  showNotebookCard: false,
+  setShowNotebookCard: null,
+  showFocusOnLogin: false,
+  setShowFocusOnLogin: null,
   customer: null,
   stats: null,
+  subscribers: null,
   user: null,
-  logout: firebase.auth().signOut,
+  logout: null,
 })
 
 const useProvideAuth = (): Auth => {
   const [user, setUser] = useState<firebase.User>(null)
   const { data: customer } = useData<Customer & { media: Media }>(`/api`)
   const { data: stats } = useData<ChosenAlternative[]>(customer ? `/api/stats` : null)
+  const { data: subscribers } = useData<Subscriber[]>(customer ? `/api/subscribers` : null)
+  const [showFocusOnLogin, setShowFocusOnLogin] = useState(false)
+  const [showNotebookCard, setShowNotebookCard] = useState(false)
 
   useEffect(() => {
     return firebase.auth().onIdTokenChanged(async (user) => {
@@ -31,10 +44,12 @@ const useProvideAuth = (): Auth => {
         cookie.remove('token')
         mutate('/api', null, false)
         mutate('/api/stats', null, false)
+        mutate('/api/subscribers', null, false)
       } else {
         setUser(user)
         mutate('/api')
         mutate('/api/stats')
+        mutate('/api/subscribers')
         const token = await user.getIdToken()
         cookie.set('token', token)
       }
@@ -52,8 +67,13 @@ const useProvideAuth = (): Auth => {
   }, [])
 
   return {
+    showNotebookCard,
+    setShowNotebookCard,
+    showFocusOnLogin,
+    setShowFocusOnLogin,
     customer,
     stats,
+    subscribers,
     user,
     logout: firebase.auth().signOut,
   }
