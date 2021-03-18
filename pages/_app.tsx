@@ -6,11 +6,15 @@ import { katexCSS } from '../styles/katexCSS'
 import { essentialCSS } from '../styles/globalCSS'
 import { AppProps } from 'next/app'
 import { AuthProvider } from 'lib/auth'
+import * as gtag from '../lib/gtag'
 
 NProgress.configure({ showSpinner: false })
 
 Router.events.on('routeChangeStart', () => NProgress.start())
-Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeComplete', (url: string) => {
+  gtag.pageview(url)
+  NProgress.done()
+})
 Router.events.on('routeChangeError', () => NProgress.done())
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {

@@ -5,7 +5,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // @ts-ignore
 import bundleCss from '!raw-loader!../styles/tailwindSSR.css'
-import Document from 'next/document'
+import { GA_TRACKING_ID } from 'lib/gtag'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 //export default Document
 
@@ -31,5 +32,42 @@ export default class MyDocument extends Document {
       ...page,
       styles,
     }
+  }
+
+  render() {
+    return (
+      <Html>
+        <Head>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "5vdcbzocf9");
+              `,
+            }}
+          />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
   }
 }
