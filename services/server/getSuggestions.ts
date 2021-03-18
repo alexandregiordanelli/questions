@@ -10,6 +10,11 @@ export const getSuggestions = async (
       name: true,
       tag: true,
       id: true,
+      rightAlternative: {
+        select: {
+          alternativeId: true,
+        },
+      },
       notebook: {
         select: {
           tag: true,

@@ -46,6 +46,12 @@ export type Suggestions = {
   id: number
   tag: string
   name: string
+  rightAlternative: {
+    alternativeId: number
+  }
+  notebook: {
+    tag: string
+  }
 }[]
 
 export type CustomerWithNotebooks = Customer & { media: Media } & {

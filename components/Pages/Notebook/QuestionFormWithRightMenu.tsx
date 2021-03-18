@@ -60,12 +60,11 @@ export const QuestionFormWithRightMenu: React.FC<{
       <div className="flex-grow">
         <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
           <RightMenu
-            // title={title}
+            title={props.question.subTopic.name}
             notebookTag={props.notebookTag}
             suggestions={props.suggestions}
           />
           <div className="flex-grow p-6 md:p-0">
-            <h2 className="text-lg font-medium mb-2">{props.question.name}</h2>
             <QuestionForm question={props.question} />
           </div>
         </div>

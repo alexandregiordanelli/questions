@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useAuth } from 'lib/auth'
 
 export const RightMenu: React.FC<{
-  // title: JSX.Element,
+  title: string
   suggestions: Suggestions
   notebookTag: string
 }> = (props) => {
@@ -32,7 +32,7 @@ export const RightMenu: React.FC<{
       `}</style>
       <div className="right-menu overflow-auto sticky md:static xl:sticky xl:self-start top-16 md:top-24 bg-gray-100 p-4 border rounded md:mb-12 xl:mb-0 xl:ml-12 xl:w-80 flex-shrink-0 xl:border-0 xl:bg-transparent xl:p-0">
         <label className="flex align-middle justify-between cursor-pointer" htmlFor="rightMenu">
-          <span className="mb-1 font-medium">+ Questões</span>
+          <span className="mb-1 font-medium">Questions of {props.title}</span>
           <span className="xl:hidden">
             <ChevronDownIcon verticalAlign="middle" />
           </span>
@@ -46,18 +46,30 @@ export const RightMenu: React.FC<{
         />
         <ul className="hidden xl:block text-sm text-gray-700">
           {props.suggestions?.map((x, i) => {
-            const solved = auth.stats?.some((y) => y.questionId == x.id)
+            const solved = auth.stats?.find((y) => y.questionId == x.id)?.alternativeId ?? 0
+            const gotItRight = x.rightAlternative?.alternativeId == solved
             const url = `/${props.notebookTag}/${x.tag}`
             const active = router.asPath == url
             return (
               <li key={i}>
                 <Link href={url}>
                   <a
-                    className={`py-1 inline-block ${solved && 'line-through'} ${
-                      active ? 'font-medium text-gray-900' : 'hover:underline'
+                    className={`py-1 inline-block ${
+                      active
+                        ? 'font-medium'
+                        : `hover:underline 
+                      `
                     }`}
                   >
-                    {x.name}
+                    <span
+                      className={`${
+                        solved != 0
+                          ? `line-through ${gotItRight ? 'text-green-400' : 'text-red-400'}`
+                          : ''
+                      }`}
+                    >
+                      <span className="text-gray-900">{x.name}</span>
+                    </span>
                   </a>
                 </Link>
               </li>
