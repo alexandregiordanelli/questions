@@ -76,7 +76,7 @@ export const QuestionForm: React.FC<{
         <input
           type="radio"
           id={letter}
-          name="qmd"
+          name="alternative"
           checked={x.id == alternativeIdChosen}
           value={x.id}
           onChange={(y) => !stats?.alternativeId && setAlternativeIdChosen(Number(y.target.value))}

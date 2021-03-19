@@ -25,7 +25,9 @@ const Page: NextPage<PageProps> = (props) => {
     <>
       <HeadHtml />
       <Header />
-      <MarkdownText md={props.md} customerId={0} />
+      <div className="max-w-screen-lg mx-auto my-12 px-4">
+        <MarkdownText md={props.md} customerId={0} />
+      </div>
     </>
   )
 }
@@ -40,7 +42,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = ['privacy']
+  const slugs = ['privacy', 'terms']
 
   return {
     paths: slugs.map((slug) => {

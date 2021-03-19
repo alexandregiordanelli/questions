@@ -15,30 +15,36 @@ export const MarkdownText: React.FC<{
   customerId: number
 }> = (props) => {
   const isAmp = useAmp()
-  return unified()
-    .use(markdown)
-    .use(math)
-    .use(gfm)
-    .use(remark2rehype)
-    .use(highlight)
-    .use(katex, {
-      output: isAmp ? 'html' : 'htmlAndMathml',
-    })
-    .use(inspectUrls, {
-      inspectEach({ url, node }) {
-        // if (new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*').test(url)) {
-        //   node.properties.src = absolute(filePath, url)
-        // }
-        node.properties.src = `https://assets.questionsof.com/${props.customerId}/${url}`
-      },
-      selectors: ['img[src]'],
-    })
-    .use(rehype2react, {
-      createElement: React.createElement,
-      Fragment: React.Fragment,
-      // components: {
-      //   img: Img,
-      // },
-    })
-    .processSync(props.md).result as ReactElement
+  return (
+    <div className="markdown-body">
+      {
+        unified()
+          .use(markdown)
+          .use(math)
+          .use(gfm)
+          .use(remark2rehype)
+          .use(highlight)
+          .use(katex, {
+            output: isAmp ? 'html' : 'htmlAndMathml',
+          })
+          .use(inspectUrls, {
+            inspectEach({ url, node }) {
+              // if (new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*').test(url)) {
+              //   node.properties.src = absolute(filePath, url)
+              // }
+              node.properties.src = `https://assets.questionsof.com/${props.customerId}/${url}`
+            },
+            selectors: ['img[src]'],
+          })
+          .use(rehype2react, {
+            createElement: React.createElement,
+            Fragment: React.Fragment,
+            // components: {
+            //   img: Img,
+            // },
+          })
+          .processSync(props.md).result as ReactElement
+      }
+    </div>
+  )
 }
