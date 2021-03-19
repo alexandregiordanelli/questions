@@ -14,15 +14,9 @@ export const MenuCore2: React.FC<{
     <>
       <ul className={' bg-gray-50 border-l border-r border-b border-gray-200'}>
         {props.menu.map((x, i) => {
-          const firstSubtopicQuestion = x.subtopics[0]?.questions
           return (
             <li key={`${i}.0`} className={'p-5 border-t border-gray-200'}>
               <MenuItem
-                url={
-                  firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? `/${x.notebook.tag}/${firstSubtopicQuestion[0].tag}`
-                    : null
-                }
                 title={x.name}
                 countGreen={x.subtopics.reduce((a1, b1) => {
                   return (
@@ -62,7 +56,7 @@ export const MenuCore2: React.FC<{
               />
               <ul className="hidden mt-4 bg-white -mx-5 -mb-5 p-5 border-t border-gray-200">
                 {x.subtopics.map((y, j) => {
-                  const anotherSubtopicQuestion = y.questions[0]
+                  const anotherSubtopicQuestion = y.questions[0] //always the first question of this subtopic (start)
                   const url = anotherSubtopicQuestion
                     ? `/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
                     : null

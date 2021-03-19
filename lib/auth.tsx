@@ -46,6 +46,7 @@ const useProvideAuth = (): Auth => {
         mutate('/api/stats', null, false)
         mutate('/api/subscribers', null, false)
       } else {
+        setShowFocusOnLogin(false)
         setUser(user)
         mutate('/api')
         mutate('/api/stats')

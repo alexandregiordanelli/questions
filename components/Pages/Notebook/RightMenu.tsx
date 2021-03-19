@@ -53,19 +53,14 @@ export const RightMenu: React.FC<{
             return (
               <li key={i}>
                 <Link href={url}>
-                  <a
-                    className={`py-1 inline-block ${
-                      active
-                        ? 'font-medium'
-                        : `hover:underline 
-                      `
-                    }`}
-                  >
+                  <a className={`py-1 inline-block ${active && 'font-bold'}`}>
                     <span
                       className={`${
                         solved != 0
-                          ? `line-through ${gotItRight ? 'text-green-400' : 'text-red-400'}`
-                          : ''
+                          ? `line-through hover:no-underline ${
+                              gotItRight ? 'text-green-400' : 'text-red-400'
+                            }`
+                          : 'hover:underline'
                       }`}
                     >
                       <span className="text-gray-900">{x.name}</span>

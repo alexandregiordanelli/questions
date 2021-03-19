@@ -7,6 +7,7 @@ import { ChosenAlternative, Customer, Media } from '@prisma/client'
 import { mutate } from 'swr'
 import { postClientArray } from 'services/client/post'
 import { useAuth } from 'lib/auth'
+import Link from 'next/link'
 
 export const QuestionForm: React.FC<{
   customer: Customer & { media: Media }
@@ -101,11 +102,16 @@ export const QuestionForm: React.FC<{
       </label>,
       <div key={7} className="s my-4">
         <img
-          className="rounded-full mr-4 mb-3 float-left"
+          className="rounded-full mr-4 mb-3 float-left h-20 w-20"
           src={getURLMedia(props.customer.media)}
           alt="avatar"
         />
-        <p className="font-medium mb-2">{props.customer.name} says:</p>
+        <p className="font-medium mb-2">
+          <Link href={`/u/${props.customer.tag}`}>
+            <a className="hover:underline">{props.customer.name}</a>
+          </Link>{' '}
+          says:
+        </p>
         <MarkdownText
           md={props.question.solution}
           customerId={props.question.notebook.customerId}

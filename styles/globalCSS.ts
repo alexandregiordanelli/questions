@@ -60,6 +60,16 @@ export const essentialCSS = css.global`
   }
 `
 
+export const CSS = css.global`
+  .CodeMirror {
+    height: 100%;
+    z-index: 0;
+  }
+  #nprogress .bar {
+    @apply bg-blue-500;
+  }
+`
+
 export const globalCSS = css.global`
   .CodeMirror {
     height: 100%;

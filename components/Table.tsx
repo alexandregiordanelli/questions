@@ -332,7 +332,7 @@ export const TableNotebooks: React.FC<{
                           target="_blank"
                           rel="noreferrer"
                           className="text-indigo-600 hover:text-indigo-900"
-                          href={`/${props.customerTag}/${notebook.tag}`}
+                          href={`/${notebook.tag}`}
                         >
                           <EyeIcon />
                         </a>
