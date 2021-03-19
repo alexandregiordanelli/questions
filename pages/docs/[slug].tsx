@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = ['privacy', 'legal']
+  const slugs = ['privacy']
 
   return {
     paths: slugs.map((slug) => {
