@@ -5,6 +5,7 @@ import { Header } from '../components/Header'
 import { getNotebooks } from 'services/server/getNotebooks'
 import { Notebook, Media, Customer } from '@prisma/client'
 import { NotebookCardNew } from './[...tags]'
+import Head from 'next/head'
 type PageProps = {
   notebooks: (Notebook & {
     media: Media
@@ -19,6 +20,13 @@ const Index: React.FC<PageProps> = (props) => {
     <>
       <HeadHtml />
       <Header />
+      <Head>
+        <title>questionsof - A repository for community questions</title>
+        <meta
+          name="description"
+          content="A repository for community questions. Notebooks of questions of any subject. Questions help you answer your questions"
+        ></meta>
+      </Head>
       <div className="max-w-screen-xl mx-auto px-6">
         <div className="bg-blue-50 mt-6 rounded-lg py-6 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-12 sm:flex items-center relative">
           <div className="sm:w-1/2">

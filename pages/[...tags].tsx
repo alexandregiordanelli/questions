@@ -23,6 +23,7 @@ import { useData } from 'services/client/get'
 import React from 'react'
 import { LandingPage } from 'components/Pages/Notebook/LandingPage'
 import Link from 'next/link'
+import Head from 'next/head'
 
 type NotebookPageProps = {
   customer: Customer & {
@@ -90,6 +91,13 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       </HeadHtml>
       <div className="flex min-h-screen flex-col">
         <Header />
+        <Head>
+          <title>questionsof - Questions of {props.notebook.name} for free</title>
+          <meta
+            name="description"
+            content={`Questions of ${props.notebook.name} for free grouped by topics and solution in each question.`}
+          ></meta>
+        </Head>
         <div className="flex">
           <LandingPage notebook={props.notebook} customer={props.customer} menu={props.menu} />
         </div>
