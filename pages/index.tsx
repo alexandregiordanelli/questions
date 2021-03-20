@@ -4,7 +4,7 @@ import { HeadHtml } from '../components/HeadHtml'
 import { Header } from '../components/Header'
 import { getNotebooks } from 'services/server/getNotebooks'
 import { Notebook, Media, Customer } from '@prisma/client'
-import { NotebookCardNew } from './[...tags]'
+import { NotebookCardNew } from '../components/NotebookCardNew'
 import Head from 'next/head'
 import { Footer } from '../components/Footer'
 type PageProps = {

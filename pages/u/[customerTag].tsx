@@ -6,7 +6,7 @@ import { urlEnv, ampCanonicalUrl, getURLMedia } from 'lib/utils'
 import { Header } from 'components/Header'
 import { useData } from 'services/client/get'
 import React from 'react'
-import { NotebookCardNew } from 'pages/[...tags]'
+import { NotebookCardNew } from 'components/NotebookCardNew'
 import { getCustomerNotebooksByTag } from 'services/server/getCustomer'
 import { GetStaticPaths, GetStaticProps } from 'next'
 

@@ -4,7 +4,7 @@ import { useAuth } from 'lib/auth'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
-import { NotebookCardNew } from './[...tags]'
+import { NotebookCardNew } from '../components/NotebookCardNew'
 
 const Page: NextPage = () => {
   const auth = useAuth()
