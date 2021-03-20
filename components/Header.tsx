@@ -136,10 +136,10 @@ const DropDownMenu: React.FC = () => {
               My Notebooks
             </a>
           </Link>
-          {[18, 18].some((x) => x == customer.id) && (
+          {[18, 19].some((x) => x == customer.id) && (
             <Link href="/admin">
               <a
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="hidden sm:block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
               >
                 Admin
