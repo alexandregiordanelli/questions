@@ -27,6 +27,7 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
       }),
       userId: user.uid,
       name: user.displayName,
+      text: '',
       media: {
         customerId: 0,
         ext: 'jpg',
