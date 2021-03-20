@@ -42,6 +42,7 @@ const useProvideAuth = (): Auth => {
     return firebase.auth().onIdTokenChanged(async (user) => {
       if (!user) {
         setUser(null)
+        setShowNotebookCard(false)
         cookie.remove('token')
         mutate('/api', null, false)
         mutate('/api/stats', null, false)

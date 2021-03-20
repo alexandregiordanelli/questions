@@ -15,10 +15,21 @@ import { QuestionWithAll } from 'lib/types'
 export const Header: React.FC<{
   question?: QuestionWithAll
 }> = (props) => {
-  const { customer, user, showFocusOnLogin, showNotebookCard, setShowNotebookCard } = useAuth()
+  const {
+    customer,
+    subscribers,
+    user,
+    showFocusOnLogin,
+    showNotebookCard,
+    setShowNotebookCard,
+  } = useAuth()
   const router = useRouter()
 
   const offsetPaddingLeft = !!props.question
+
+  const hasThisNotebook = subscribers?.some((x) => x.notebookId == props.question?.notebook.id)
+
+  const showModal = !user && showNotebookCard && !hasThisNotebook
 
   return (
     <>
@@ -55,9 +66,9 @@ export const Header: React.FC<{
           )}
         </div>
         <NoSSR>
-          {showNotebookCard && (
+          {showModal && (
             <Modal showModal={setShowNotebookCard}>
-              <NotebookCard notebook={props.question.notebook} />
+              <NotebookCard notebook={props.question.notebook} hasThisNotebook={false} />
             </Modal>
           )}
           {!user && showFocusOnLogin && <FocusOnLogin />}

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Notebook, Media, Customer } from '@prisma/client'
+import { Media, Customer, Notebook } from '@prisma/client'
 import { MarkdownText } from 'components/MarkdownText'
 import { NotebookCard } from 'components/NotebookCard'
 import { getURLMedia } from 'lib/utils'
 import { MenuWithQuestions } from 'lib/types'
 import { MenuCore2 } from './MenuCore2'
 import Link from 'next/link'
+import { useAuth } from 'lib/auth'
 
 export const LandingPage: React.FC<{
   notebook: Notebook & {
@@ -16,6 +17,8 @@ export const LandingPage: React.FC<{
   }
   menu: MenuWithQuestions
 }> = (props) => {
+  const auth = useAuth()
+  const hasThisNotebook = auth.subscribers?.some((x) => x.notebookId == props.notebook.id)
   return (
     <>
       <div className="flex flex-col flex-grow">
@@ -53,7 +56,12 @@ export const LandingPage: React.FC<{
             <MarkdownText md={props.customer.text} customerId={props.customer.id} />
           </div>
           <div className="static lg:sticky lg:self-start  top-24 transform -translate-y-8 mx-auto -mb-8">
-            <NotebookCard notebook={props.notebook} className="shadow-2xl" />
+            <NotebookCard
+              hasThisNotebook={hasThisNotebook}
+              notebook={props.notebook}
+              className="shadow-2xl"
+              startQuestionTag={props.menu[0].subtopics[0].questions[0].tag}
+            />
           </div>
         </div>
       </div>
