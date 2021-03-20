@@ -13,7 +13,7 @@ import { Customer, Media } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
 import { HeadHtml } from 'components/HeadHtml'
-import { urlEnv, ampCanonicalUrl } from 'lib/utils'
+import { ampCanonicalUrl } from 'lib/utils'
 import { Header } from 'components/Header'
 import { getMenu } from 'services/server/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
@@ -48,7 +48,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
       <HeadHtml>
         <link
           rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
+          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
         />
       </HeadHtml>
       <div className="flex min-h-screen flex-col">
@@ -82,7 +82,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
       <HeadHtml>
         <link
           rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
+          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
         />
       </HeadHtml>
 

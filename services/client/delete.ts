@@ -1,8 +1,7 @@
-import { urlEnv } from 'lib/utils'
 import fetch from 'node-fetch'
 export const deleteClient = async (url: string, token = ''): Promise<number> => {
   try {
-    const response = await fetch(`${urlEnv}${url}`, {
+    const response = await fetch(url, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

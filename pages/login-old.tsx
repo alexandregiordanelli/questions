@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { urlEnv } from 'lib/utils'
 import { postEmail } from 'services/client/post'
 import { Logo } from 'components/Logo'
 import cookie from 'js-cookie'
@@ -70,7 +69,7 @@ const Login: NextPage = () => {
               <form
                 className="flex flex-col items-center sm:w-full sm:max-w-sm"
                 method="POST"
-                action={`${urlEnv}/api/email`}
+                action={`https://questionsof.com/api/email`}
                 onSubmit={async (e) => {
                   e.preventDefault()
                   await postEmail(email)

@@ -2,11 +2,6 @@ import { MediaWithUrl } from './types'
 import slugify from 'slugify'
 import { Media } from '@prisma/client'
 
-export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? process.env.NEXT_PUBLIC_VERCEL_URL != 'questionsof.com'
-    ? 'https://questionsof.vercel.app'
-    : `https://questionsof.com`
-  : 'http://localhost:3000'
 export const letters = 'abcdefgh'.split('')
 export const tokenForTest = process.env.TOKEN ?? ''
 export const ampCanonicalUrl = (isAmp: boolean, url = ''): string =>

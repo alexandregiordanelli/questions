@@ -2,7 +2,7 @@ import { CustomerWithNotebooks } from 'lib/types'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
 import { HeadHtml } from 'components/HeadHtml'
-import { urlEnv, ampCanonicalUrl, getURLMedia } from 'lib/utils'
+import { ampCanonicalUrl, getURLMedia } from 'lib/utils'
 import { Header } from 'components/Header'
 import { useData } from 'services/client/get'
 import React from 'react'
@@ -27,7 +27,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
       <HeadHtml>
         <link
           rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`${urlEnv}${ampCanonicalUrl(isAmp, router.asPath)}`}
+          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
         />
       </HeadHtml>
 

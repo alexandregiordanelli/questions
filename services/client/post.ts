@@ -1,9 +1,8 @@
-import { urlEnv } from 'lib/utils'
 import fetch from 'node-fetch'
 
 export const postClient = async <T>(body: T, url: string, token = ''): Promise<T> => {
   try {
-    const response = await fetch(`${urlEnv}${url}`, {
+    const response = await fetch(`${url}`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -26,7 +25,7 @@ export const postClient = async <T>(body: T, url: string, token = ''): Promise<T
 
 export const postClientArray = async <T>(body: T, url: string, token = ''): Promise<T[]> => {
   try {
-    const response = await fetch(`${urlEnv}${url}`, {
+    const response = await fetch(`${url}`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {

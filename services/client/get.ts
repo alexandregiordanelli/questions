@@ -1,10 +1,9 @@
-import { urlEnv } from 'lib/utils'
 import fetch from 'node-fetch'
 import useSWR from 'swr'
 import { DataBaseHook } from 'lib/types'
 export const getClient = async <T>(url: string): Promise<T> => {
   try {
-    const response = await fetch(`${urlEnv}${url}`, {
+    const response = await fetch(`${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
