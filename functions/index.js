@@ -42,7 +42,7 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
     },
   }
 
-  const response = await fetch(`https://questionsof.vercel.app/api`, options)
+  const response = await fetch(`https://questionsof.com/api`, options)
 
   const res = await response.json()
 
