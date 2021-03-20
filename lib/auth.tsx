@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'lib/firebase-client'
 import cookie from 'js-cookie'
 import { useData } from 'services/client/get'
-import { ChosenAlternative, Customer, Media, Subscriber } from '@prisma/client'
+import { ChosenAlternative, Customer, Media } from '@prisma/client'
 import { mutate } from 'swr'
+import { MyNotebooks } from './types'
 
 type Auth = {
   showNotebookCard: boolean
@@ -12,7 +13,7 @@ type Auth = {
   setShowFocusOnLogin: React.Dispatch<React.SetStateAction<boolean>>
   customer: Customer & { media: Media }
   stats: ChosenAlternative[]
-  subscribers: Subscriber[]
+  subscribers: MyNotebooks
   user: firebase.User
   logout: () => Promise<void>
 }
@@ -33,7 +34,7 @@ const useProvideAuth = (): Auth => {
   const [user, setUser] = useState<firebase.User>(null)
   const { data: customer } = useData<Customer & { media: Media }>(`/api`)
   const { data: stats } = useData<ChosenAlternative[]>(customer ? `/api/stats` : null)
-  const { data: subscribers } = useData<Subscriber[]>(customer ? `/api/subscribers` : null)
+  const { data: subscribers } = useData<MyNotebooks>(customer ? `/api/subscribers` : null)
   const [showFocusOnLogin, setShowFocusOnLogin] = useState(false)
   const [showNotebookCard, setShowNotebookCard] = useState(false)
 

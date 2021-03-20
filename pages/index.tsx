@@ -45,6 +45,8 @@ const Index: React.FC<PageProps> = (props) => {
       </div>
       <div className="max-w-screen-xl flex flex-col flex-grow h-full px-6 py-12 mx-auto">
         <div>
+          <h3 className="text-2xl font-bold text-secondary mb-1">Featured notebooks</h3>
+          <p className="text-gray-600 mb-6">The newest featured notebooks from the community</p>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {props.notebooks.map((x, i) => {
               return <NotebookCardNew key={i} notebook={x} customer={x.customer} />

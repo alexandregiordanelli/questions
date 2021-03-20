@@ -7,6 +7,7 @@ import {
   RightAlternative,
   Customer,
   Media,
+  Subscriber,
 } from '@prisma/client'
 
 export type Menu = {
@@ -19,6 +20,15 @@ export type Menu = {
     }[]
   }[]
 }
+
+export type MyNotebooks = (Subscriber & {
+  notebook: Notebook & {
+    customer: Customer & {
+      media: Media
+    }
+    media: Media
+  }
+})[]
 
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {

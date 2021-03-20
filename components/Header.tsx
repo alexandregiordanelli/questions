@@ -15,7 +15,7 @@ import { QuestionWithAll } from 'lib/types'
 export const Header: React.FC<{
   question?: QuestionWithAll
 }> = (props) => {
-  const { user, showFocusOnLogin, showNotebookCard, setShowNotebookCard } = useAuth()
+  const { customer, user, showFocusOnLogin, showNotebookCard, setShowNotebookCard } = useAuth()
   const router = useRouter()
 
   const offsetPaddingLeft = !!props.question
@@ -64,7 +64,7 @@ export const Header: React.FC<{
           {!user && (
             <Login className={`mr-2 z-30 ${showFocusOnLogin && 'border-red-500 border-2'}`} />
           )}
-          {user && <DropDownMenu />}
+          {customer && <DropDownMenu />}
         </NoSSR>
       </div>
     </>
@@ -117,21 +117,24 @@ const DropDownMenu: React.FC = () => {
 
       <ul className="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
         <li className="py-1">
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          >
-            Edit
-          </a>
-          <Link href="/admin">
+          <Link href="/dashboard">
             <a
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
             >
-              Admin
+              My Notebooks
             </a>
           </Link>
+          {[18, 18].some((x) => x == customer.id) && (
+            <Link href="/admin">
+              <a
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                role="menuitem"
+              >
+                Admin
+              </a>
+            </Link>
+          )}
         </li>
         <li className="py-1 flex">
           <button
