@@ -6,6 +6,7 @@ import { getNotebooks } from 'services/server/getNotebooks'
 import { Notebook, Media, Customer } from '@prisma/client'
 import { NotebookCardNew } from './[...tags]'
 import Head from 'next/head'
+import { Footer } from '../components/Footer'
 type PageProps = {
   notebooks: (Notebook & {
     media: Media
@@ -55,6 +56,7 @@ const Index: React.FC<PageProps> = (props) => {
         </div>
         <div className="py-8 mt-auto"></div>
       </div>
+      <Footer />
     </>
   )
 }

@@ -24,6 +24,7 @@ import React from 'react'
 import { LandingPage } from 'components/Pages/Notebook/LandingPage'
 import Link from 'next/link'
 import Head from 'next/head'
+import { Footer } from 'components/Footer'
 
 type NotebookPageProps = {
   customer: Customer & {
@@ -102,6 +103,7 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
           <LandingPage notebook={props.notebook} customer={props.customer} menu={props.menu} />
         </div>
       </div>
+      <Footer />
     </>
   )
 }

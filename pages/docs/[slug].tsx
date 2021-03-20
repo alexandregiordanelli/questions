@@ -5,6 +5,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
 import fs from 'fs'
 import path from 'path'
+import { Footer } from 'components/Footer'
 
 const docsDirectory = path.join(process.cwd(), 'public/docs')
 
@@ -28,6 +29,7 @@ const Page: NextPage<PageProps> = (props) => {
       <div className="max-w-screen-lg mx-auto my-12 px-4">
         <MarkdownText md={props.md} customerId={0} />
       </div>
+      <Footer />
     </>
   )
 }
