@@ -1,26 +1,6 @@
-import FormEmail from "../components/FormEmail";
-import { globalCSS } from "../styles/globalCSS";
+import { Login } from 'components/Login'
 
-const Login = () => {
-    return (
-        <>  
-            <style jsx global>
-                {globalCSS}
-            </style>
-            <style jsx>{`
-            .container {
-                background: rgb(27,31,35);
-                height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }    
-            `}</style>
-            <div className="container">
-                <FormEmail/>
-            </div>
-        </>
-    )
+const LoginPage: React.FC = () => {
+  return <Login />
 }
-
-export default Login
+export default LoginPage

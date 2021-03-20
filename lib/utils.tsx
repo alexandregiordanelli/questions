@@ -1,146 +1,118 @@
-import { Env, Question2, QuestionParsed, QuestionsOf } from "./types";
-import React from 'react';
-import math from 'remark-math';
-import remark2rehype from 'remark-rehype';
-import katex from 'rehype-katex';
-import unified from 'unified'
-import rehype2react from 'rehype-react';
-import frontmatter from '@github-docs/frontmatter'
-import "katex/dist/contrib/mhchem.js"
-import markdown from 'remark-parse'
-import gfm from 'remark-gfm'
+import { MediaWithUrl } from './types'
+import slugify from 'slugify'
+import { Media } from '@prisma/client'
 
-export const urlEnvDic = {
-    [Env.development]: 'http://localhost:3000',
-    [Env.preview]: `https://questionsof-git-${process.env.VERCEL_GIT_COMMIT_REF}.giordanelli.vercel.app`,
-    [Env.production]: 'https://questionsof.com'
-}
-
-const env = process.env.NEXT_PUBLIC_VERCEL_ENV as Env
-
-export const urlEnv = urlEnvDic[Env[env]]
-
+export const urlEnv = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? process.env.NEXT_PUBLIC_VERCEL_URL != 'questionsof.com'
+    ? 'https://questionsof.vercel.app'
+    : `https://questionsof.com`
+  : 'http://localhost:3000'
 export const letters = 'abcdefgh'.split('')
+export const tokenForTest = process.env.TOKEN ?? ''
+export const ampCanonicalUrl = (isAmp: boolean, url = ''): string =>
+  isAmp ? url.replace('/amp', '') : `/amp${url}`
 
-export const ampUrl = (isAmp: boolean, url = "") => isAmp? `/amp/${url}`: `/${url}`
+export const absolute = (base: string, relative: string): string => {
+  const stack = base.split('/')
+  const parts = relative.split('/')
+  stack.pop()
 
-const parseUnified = (isAmp: boolean, data: string) => {//, filePath: string) => {
-    return unified()
-    .use(markdown)
-    .use(math)
-    .use(gfm)
-    .use(remark2rehype)
-    .use(katex, {
-        output: isAmp? 'html': 'htmlAndMathml'
-    })
-    // .use(inspectUrls, {
-    //     inspectEach({ url, node }) {
-    //         if(new RegExp("^(?!www\.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*").test(url)){
-    //             node.properties.src = absolute(filePath, url)
-    //         }
-    //     },  
-    //     selectors: [
-    //         "img[src]"
-    //     ]
-    // })
-    .use(rehype2react, { 
-        createElement: React.createElement,
-        Fragment: React.Fragment,
-        components: {
-           img: (props: any) => isAmp? <div className="fixed-height-container "><amp-img className="contain" layout="fill" {...props}/></div>: <img {...props}/>
-        } 
-    })
-    .processSync(data).result
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] == '.') continue
+    if (parts[i] == '..') stack.pop()
+    else stack.push(parts[i])
+  }
+  return stack.join('/')
 }
+// export const parseQuestionMd = async (md: string) => {
 
+//     const mdparsed = matter(md)
 
-export const questionParsed2MD = (isAmp: boolean, questionParsed: Question2) => { //, filePath) => {
-    return {
-        question: parseUnified(isAmp, questionParsed.question),
-        solution: parseUnified(isAmp, questionParsed.solution),
-        options: questionParsed.options.map(option => parseUnified(isAmp, option)),
-        answer: questionParsed.answer
-    } as QuestionParsed
-}
+//     const meta = mdparsed.data as QuestionMetaOnRepo
+//     const data = mdparsed.content
 
-export const absolute = (base, relative) => {
-    let stack = base.split("/");
-    let parts = relative.split("/");
-    stack.pop();
+//     const firstData = data.split(/-\s\[[\sx]\]\s.*/gi)
 
-    for (let i = 0; i < parts.length; i++) {
-        if (parts[i] == ".")
-            continue;
-        if (parts[i] == "..")
-            stack.pop();
+//     const question = firstData[0].trim()
+//     const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
 
-        else
-            stack.push(parts[i]);
+//     let answer = -1
+//     const options = []
+//     const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
+
+//     var m
+//     do {
+//         m = regexOptions.exec(data);
+//         if(m && m[0]){
+//             options.push(m[1].trim())
+//             const regexInternal = /-\s\[x\]\s/gi
+//             if(regexInternal.test(m[0]))
+//                 answer = options.length - 1
+//         }
+//     } while (m)
+
+//     const resp: QuestionOnRepo = {
+//         question,
+//         solution,
+//         options,
+//         answer,
+//         ...meta
+//     }
+
+//     return resp
+// }
+
+// export const parseReadMd = async (md: string) => {
+//     const mdparsed = matter(md)
+//     const meta = mdparsed.data as NotebookMetaOnRepo
+//     const data = mdparsed.content
+
+//     const resp: NotebookOnRepo = {
+//         ...meta,
+//         data
+//     }
+
+//     return resp
+// }
+
+export const getMediafromFile = (file: File): Promise<MediaWithUrl> => {
+  return new Promise<MediaWithUrl>((resolve) => {
+    const parts = file.name.split('.')
+    const ext = parts[parts.length - 1]
+    const media: MediaWithUrl = {
+      width: null,
+      height: null,
+      ext,
+      mime: file.type,
+      size: file.size,
+      name: file.name,
+      id: 0,
+      caption: null,
+      createdAt: null,
+      updatedAt: null,
+      customerId: 0,
+      tag: slugify(file.name, {
+        lower: true,
+      }),
+      text: null,
+      url: null,
     }
-    return stack.join("/");
-};
 
-export const questionsofConverter: FirebaseFirestore.FirestoreDataConverter<QuestionsOf> = {
-    toFirestore(questionsof: QuestionsOf): FirebaseFirestore.DocumentData {
-        return questionsof
-    },
-    fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot) {
-        const data = snapshot.data()!
-        return data as QuestionsOf
+    if (file.type.toLowerCase().startsWith('image')) {
+      const img = new Image()
+      img.src = URL.createObjectURL(file)
+      img.onload = () => {
+        resolve({
+          ...media,
+          width: img.width,
+          height: img.height,
+          url: img.src,
+        })
+      }
+    } else {
+      resolve(media)
     }
+  })
 }
-
-export const questionConverter: FirebaseFirestore.FirestoreDataConverter<Question2> = {
-    toFirestore(question: Question2): FirebaseFirestore.DocumentData {
-        return question
-    },
-    fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot) {
-        const data = snapshot.data()!
-        return data as Question2
-    }
-}
-
-export const parseQuestionMd = async md => {
-    const mdparsed = frontmatter(md)
-    
-    const meta = mdparsed.data
-    const data = mdparsed.content
-    
-    const firstData = data.split(/-\s\[[\sx]\]\s.*/gi)
-    
-    const question = firstData[0].trim()
-    const solution = firstData.length > 1? firstData[firstData.length - 1].trim(): ''
-    
-    let answer = -1
-    const options = []
-    const regexOptions = /-\s\[[\sx]\]\s(.*)/gi
-    
-    var m
-    do {
-        m = regexOptions.exec(data);
-        if(m && m[0]){
-            options.push(m[1].trim())
-            const regexInternal = /-\s\[x\]\s/gi
-            if(regexInternal.test(m[0]))
-                answer = options.length - 1
-        }
-    } while (m)
-
-    return {
-        question,
-        solution,
-        options,
-        answer, 
-        ...meta
-    }
-}
-
-export const parseReadMd = async md => {
-    const mdparsed = frontmatter(md)
-    const meta = mdparsed.data
-    const data = mdparsed.content
-    return {
-        ...meta,
-        data
-    }
-}
+export const getURLMedia = (media?: Media): string =>
+  media ? `https://assets.questionsof.com/${media.customerId}/${media.tag}` : ''
