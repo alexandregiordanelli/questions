@@ -1,6 +1,6 @@
 import { VercelApiHandler } from '@vercel/node'
 import { postCustomer } from 'services/server/postCustomer'
-import { Customer } from '@prisma/client'
+import { Customer, Media } from '@prisma/client'
 import {
   getCustomerByTag,
   getCustomerNotebooksByTag,
@@ -63,7 +63,8 @@ const Controller: VercelApiHandler = async (req, res) => {
           res.send(question)
         }
       } else if (tags.length == 0) {
-        const _customer = req.body as Customer
+        const _customer = req.body as Customer & { media: Media }
+        console.log(req.body)
         if (_customer.userId != token.uid && token.uid != 'admin') {
           throw new Error(`user not authorized to use this endpoint`)
         }
@@ -147,7 +148,8 @@ const Controller: VercelApiHandler = async (req, res) => {
       throw new Error('method is not available')
     }
   } catch (e) {
-    res.status(500).send(e.message)
+    console.log(e)
+    res.status(500).send(e)
   }
 }
 export default Controller

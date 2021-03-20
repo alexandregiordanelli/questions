@@ -42,6 +42,8 @@ exports.helloWorld = functions.auth.user().onCreate(async (user) => {
     },
   }
 
+  console.log(options)
+
   const response = await fetch(`https://questionsof.com/api`, options)
 
   const res = await response.json()
