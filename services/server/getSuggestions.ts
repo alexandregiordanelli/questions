@@ -25,9 +25,7 @@ export const getSuggestions = async (
       notebook: {
         tag: notebookTag,
       },
-      subTopic: {
-        id: subTopicId ?? 0,
-      },
+      subTopicId: subTopicId ?? null,
     },
     orderBy: {
       order: 'asc',

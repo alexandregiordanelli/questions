@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useAuth } from 'lib/auth'
 
 export const RightMenu: React.FC<{
-  title: string
+  title?: string
   suggestions: Suggestions
   notebookTag: string
 }> = (props) => {
@@ -32,7 +32,9 @@ export const RightMenu: React.FC<{
       `}</style>
       <div className="right-menu overflow-auto sticky md:static xl:sticky xl:self-start top-16 md:top-24 bg-gray-100 p-4 border rounded md:mb-12 xl:mb-0 xl:ml-12 xl:w-80 flex-shrink-0 xl:border-0 xl:bg-transparent xl:p-0">
         <label className="flex align-middle justify-between cursor-pointer" htmlFor="rightMenu">
-          <span className="mb-1 font-medium">Questions of {props.title}</span>
+          <span className="mb-1 font-medium">
+            Questions{props.title ? ` of ${props.title}` : null}
+          </span>
           <span className="xl:hidden">
             <ChevronDownIcon verticalAlign="middle" />
           </span>
