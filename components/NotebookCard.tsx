@@ -59,6 +59,8 @@ export const NotebookCard: React.FC<{
                   id: 0,
                   customerId: auth.customer.id,
                   notebookId: props.notebook.id,
+                  createdAt: null,
+                  updatedAt: null,
                 })
                 auth.setShowNotebookCard(false)
               } else {

@@ -74,32 +74,8 @@ export type Action =
 const initState: QuestionWithAll = {
   id: 0,
   tag: '',
-  order: 0,
-  subTopic: {
-    id: 0,
-    name: '',
-    topicId: 0,
-    createdAt: null,
-    updatedAt: null,
-    order: 0,
-  },
-  notebook: {
-    name: '',
-    tag: '',
-    id: 0,
-    customerId: 0,
-    text: '',
-    price: 0,
-    createdAt: null,
-    updatedAt: null,
-    mediaId: 0,
-    media: null,
-  },
   text: '',
-  notebookId: 0,
-  solution: '',
   name: '',
-  subTopicId: 0,
   alternatives: [],
   rightAlternative: null,
   createdAt: null,
@@ -108,16 +84,6 @@ const initState: QuestionWithAll = {
 
 const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
   switch (action.type) {
-    case ActionType.UPDATE_NOTEBOOK: {
-      const newState = _.cloneDeep(state)
-      newState.notebook = action.notebook
-      return newState
-    }
-    case ActionType.UPDATE_NOTEBOOK_ID: {
-      const newState = _.cloneDeep(state)
-      newState.notebookId = action.notebookId
-      return newState
-    }
     case ActionType.UPDATE_RIGHT_ALTERNATIVE: {
       const newState = _.cloneDeep(state)
       newState.rightAlternative = action.rightAlternative
@@ -138,27 +104,12 @@ const reducer = (state: QuestionWithAll, action: Action): QuestionWithAll => {
       newState.tag = action.tag
       return newState
     }
-    case ActionType.UPDATE_ORDER: {
-      const newState = _.cloneDeep(state)
-      newState.order = action.order
-      return newState
-    }
     case ActionType.UPDATE_QUESTION: {
       return action.question
-    }
-    case ActionType.UPDATE_SOLUTION: {
-      const newState = _.cloneDeep(state)
-      newState.solution = action.solution
-      return newState
     }
     case ActionType.UPDATE_TITLE: {
       const newState = _.cloneDeep(state)
       newState.name = action.name
-      return newState
-    }
-    case ActionType.UPDATE_SUBTOPIC: {
-      const newState = _.cloneDeep(state)
-      newState.subTopicId = action.subTopicId
       return newState
     }
     default:
@@ -196,11 +147,8 @@ export const EditQuestionPage: React.FC<QuestionPageProps> = (props) => {
   const postQuestion = async (_question: QuestionWithAll): Promise<void> => {
     try {
       NProgress.start()
-      const question = await postClient<QuestionWithAll>(
-        _question,
-        `/api/${customer.tag}/${_question.notebook.tag}`
-      )
-      mutate(`/api/${customer.tag}/${question.notebook.tag}/${question.tag}`, question)
+      const question = await postClient<QuestionWithAll>(_question, `/api/q`)
+      mutate(`/api/q/${question.tag}`, question)
       router.push(`/admin/questions`)
     } catch (e) {
       NProgress.done()

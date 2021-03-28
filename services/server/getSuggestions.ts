@@ -1,10 +1,17 @@
 import { prisma } from '../../prisma/prisma'
-import { Suggestions } from '../../lib/types'
 
 export const getSuggestions = async (
-  notebookTag: string,
   subTopicId: number
-): Promise<Suggestions> => {
+): Promise<
+  {
+    name: string
+    tag: string
+    id: number
+    rightAlternative: {
+      alternativeId: number
+    }
+  }[]
+> => {
   const questionsOfSubTopic = await prisma.question.findMany({
     select: {
       name: true,
@@ -15,20 +22,13 @@ export const getSuggestions = async (
           alternativeId: true,
         },
       },
-      notebook: {
-        select: {
-          tag: true,
-        },
-      },
     },
     where: {
-      notebook: {
-        tag: notebookTag,
+      questionSubTopics: {
+        every: {
+          subTopicId,
+        },
       },
-      subTopicId: subTopicId ?? null,
-    },
-    orderBy: {
-      order: 'asc',
     },
   })
 

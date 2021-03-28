@@ -1,14 +1,9 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import { getCustomerById } from 'services/server/getCustomer'
 import { getNotebookByTag } from 'services/server/getNotebook'
-import { getQuestionByTags } from 'services/server/getQuestion'
+// import { getQuestionByTags } from 'services/server/getQuestion'
 
-import {
-  NotebookWithTopicsAndSubTopics,
-  QuestionWithAll,
-  MenuWithQuestions,
-  Suggestions,
-} from 'lib/types'
+import { NotebookWithTopicsAndSubTopics, QuestionWithAll, MenuWithQuestions } from 'lib/types'
 import { Customer, Media } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useAmp } from 'next/amp'
@@ -18,12 +13,12 @@ import { Header } from 'components/Header'
 import { getMenu } from 'services/server/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
-import { getSuggestions } from 'services/server/getSuggestions'
-import { useData } from 'services/client/get'
+// import { useData } from 'services/client/get'
 import React from 'react'
 import { LandingPage } from 'components/Pages/Notebook/LandingPage'
 import Head from 'next/head'
 import { Footer } from 'components/Footer'
+import { getQuestion } from 'services/server/getQuestion'
 
 type NotebookPageProps = {
   customer: Customer & {
@@ -34,7 +29,6 @@ type NotebookPageProps = {
 }
 
 type QuestionPageProps = {
-  suggestions: Suggestions
   question: QuestionWithAll
 } & NotebookPageProps
 
@@ -72,10 +66,10 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   const router = useRouter()
   const isAmp = useAmp()
-  const { data: question } = useData<QuestionWithAll>(
-    `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
-    props.question
-  )
+  // const { data: question } = useData<QuestionWithAll>(
+  //   `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
+  //   props.question
+  // )
 
   return (
     <>
@@ -87,13 +81,14 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
       </HeadHtml>
 
       <div className="flex min-h-screen flex-col">
-        <Header question={question} />
+        <Header question={props.question} notebook={props.notebook} />
         <div className="flex">
           <LeftMenu menu={props.menu} />
           <QuestionFormWithRightMenu
-            question={question}
-            suggestions={props.suggestions}
+            question={props.question}
             customer={props.customer}
+            menu={props.menu}
+            notebookTag={props.notebook.tag}
           />
         </div>
       </div>
@@ -108,7 +103,6 @@ export const Page: NextPage<PageProps> = (props) => {
         customer={props.customer}
         notebook={props.notebook}
         menu={props.menu}
-        suggestions={props.suggestions}
         question={props.question}
       />
     )
@@ -141,18 +135,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     } else if (tags.length == 2) {
       const notebook = await getNotebookByTag(notebookTag)
       const customer = await getCustomerById(notebook.customerId)
-      const question = await getQuestionByTags(notebookTag, questionTag)
+      const question = await getQuestion(questionTag)
 
       if (customer && notebook && question) {
         const menu = await getMenu(notebookTag)
-        const suggestions = await getSuggestions(notebookTag, question.subTopicId)
 
         return {
           props: {
             customer,
             notebook,
             menu,
-            suggestions,
             question,
           },
           revalidate: 1,

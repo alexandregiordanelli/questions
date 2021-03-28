@@ -66,20 +66,8 @@ describe('API real', () => {
     id: 0,
     tag: 'question-create',
     text: 'question',
-    notebookId: 0,
     createdAt: null,
     updatedAt: null,
-    order: 0,
-    subTopic: {
-      id: 0,
-      name: '',
-      topicId: 0,
-      createdAt: null,
-      updatedAt: null,
-      order: 0,
-    },
-    subTopicId: 0,
-    solution: 'solution',
     name: 'title',
     alternatives: [
       {
@@ -315,19 +303,10 @@ describe('API real', () => {
   })
 
   it('Create question', async () => {
-    _question.notebookId = _notebook.id
-    _question.subTopicId = _notebook.topics[0].subtopics[0].id
-
-    const question = await postClient<QuestionWithAll>(
-      _question,
-      `/api/${_customer.tag}/${_notebook.tag}`,
-      tokenForTest
-    )
+    const question = await postClient<QuestionWithAll>(_question, `/api/q`, tokenForTest)
 
     expect(question.tag).toBe(_question.tag)
-    expect(question.solution).toBe(_question.solution)
     expect(question.name).toBe(_question.name)
-    expect(question.subTopic.id).toBe(_question.subTopicId)
 
     expect(question.alternatives).toEqual(
       expect.arrayContaining([
@@ -361,7 +340,6 @@ describe('API real', () => {
   it('Update question', async () => {
     const _newQuestion = _.clone(_question)
     _newQuestion.tag = 'question-update'
-    _newQuestion.solution = 'new solution'
     _newQuestion.name = 'new name'
     _newQuestion.alternatives = [
       ..._newQuestion.alternatives,
@@ -389,9 +367,7 @@ describe('API real', () => {
     )
 
     expect(question.tag).toBe(_newQuestion.tag)
-    expect(question.solution).toBe(_newQuestion.solution)
     expect(question.name).toBe(_newQuestion.name)
-    expect(question.subTopic.id).toBe(_newQuestion.subTopicId)
 
     expect(question.alternatives).toEqual(
       expect.arrayContaining([

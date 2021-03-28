@@ -8,6 +8,7 @@ import {
   Customer,
   Media,
   Subscriber,
+  QuestionSubTopic,
 } from '@prisma/client'
 
 export type Menu = {
@@ -32,37 +33,30 @@ export type MyNotebooks = (Subscriber & {
 
 export type MenuWithQuestions = (Topic & {
   subtopics: (SubTopic & {
-    questions: {
-      id: number
-      tag: string
-      rightAlternative: {
-        alternativeId: number
+    questionSubTopics: (QuestionSubTopic & {
+      question: {
+        id: number
+        tag: string
+        name: string
+        rightAlternative: {
+          alternativeId: number
+        }
       }
-    }[]
+    })[]
   })[]
   notebook: {
     tag: string
   }
 })[]
+
 export type QuestionWithAll = Question & {
   alternatives: Alternative[]
   rightAlternative: RightAlternative
-  subTopic: SubTopic
-  notebook?: Notebook & {
-    media: Media
-  }
+  // subTopic: SubTopic
+  // notebook?: Notebook & {
+  //   media: Media
+  // }
 }
-export type Suggestions = {
-  id: number
-  tag: string
-  name: string
-  rightAlternative: {
-    alternativeId: number
-  }
-  notebook: {
-    tag: string
-  }
-}[]
 
 export type CustomerWithNotebooks = Customer & { media: Media } & {
   notebooks: (Notebook & {

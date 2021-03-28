@@ -11,39 +11,16 @@ export const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<Que
 
   const data = {
     text: questionOnRepo.text,
-    solution: questionOnRepo.solution,
     tag: questionOnRepo.tag,
     name: questionOnRepo.name,
-    order: questionOnRepo.order,
-    notebook: {
-      connect: {
-        id: questionOnRepo.notebookId,
-      },
-    },
   }
 
   const question = await prisma.question.upsert({
     create: {
       ...data,
-      subTopic: questionOnRepo.subTopicId
-        ? {
-            connect: {
-              id: questionOnRepo.subTopicId,
-            },
-          }
-        : undefined,
     },
     update: {
       ...data,
-      subTopic: questionOnRepo.subTopicId
-        ? {
-            connect: {
-              id: questionOnRepo.subTopicId,
-            },
-          }
-        : {
-            disconnect: true,
-          },
     },
     where: {
       id: questionOnRepo.id,
@@ -148,7 +125,7 @@ export const postQuestion = async (questionOnRepo: QuestionWithAll): Promise<Que
     })
   }
 
-  const questionNew = await getQuestion(question.notebookId, question.tag)
+  const questionNew = await getQuestion(question.tag)
 
   return questionNew
 }

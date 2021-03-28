@@ -65,7 +65,7 @@ export const QuestionForm: React.FC<{
       Right Answer
     </label>,
     <div key={2} className="q mb-4">
-      <MarkdownText md={props.question.text} customerId={props.question.notebook.customerId} />
+      <MarkdownText md={props.question.text} customerId={0} />
     </div>,
   ]
 
@@ -82,7 +82,7 @@ export const QuestionForm: React.FC<{
           onChange={(y) => !stats?.alternativeId && setAlternativeIdChosen(Number(y.target.value))}
         />
         <label htmlFor={letter}>
-          <MarkdownText md={x.text} customerId={props.question.notebook.customerId} />
+          <MarkdownText md={x.text} customerId={0} />
         </label>
       </Fragment>
     )
@@ -112,10 +112,10 @@ export const QuestionForm: React.FC<{
           </Link>{' '}
           says:
         </p>
-        <MarkdownText
+        {/* <MarkdownText
           md={props.question.solution}
           customerId={props.question.notebook.customerId}
-        />
+        /> */}
       </div>,
     ]
   )

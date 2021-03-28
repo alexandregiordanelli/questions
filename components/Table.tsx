@@ -83,12 +83,6 @@ export const Table: React.FC<{
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Order
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
                       Name
                     </th>
                     {/* <th
@@ -97,7 +91,7 @@ export const Table: React.FC<{
                     >
                       Options
                     </th> */}
-                    <th
+                    {/* <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
@@ -108,7 +102,7 @@ export const Table: React.FC<{
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       Notebook
-                    </th>
+                    </th> */}
                     {/* <th
                       scope="col"
                       className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -123,9 +117,6 @@ export const Table: React.FC<{
                 <tbody className="bg-white divide-y divide-gray-200">
                   {questions?.map((question, i) => (
                     <tr key={i}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {question.order}
-                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="ml-4">
@@ -146,12 +137,12 @@ export const Table: React.FC<{
                           <span className="ml-1">right answer</span>
                         </div>
                       </td> */}
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {question.subTopic?.name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {question.notebook.name}
-                      </td>
+                      </td> */}
                       {/* <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                           Active
@@ -162,13 +153,11 @@ export const Table: React.FC<{
                           target="_blank"
                           rel="noreferrer"
                           className="text-indigo-600 hover:text-indigo-900"
-                          href={`/${props.customerTag}/${question.notebook.tag}/${question.tag}`}
+                          href={`/q/${question.tag}`}
                         >
                           <EyeIcon />
                         </a>
-                        <Link
-                          href={`/admin/questions/edit?tags=/${props.customerTag}/${question.notebook.tag}/${question.tag}`}
-                        >
+                        <Link href={`/admin/questions/edit?tags=/q/${question.tag}`}>
                           <a className="text-indigo-600 hover:text-indigo-900 ml-1">
                             <PencilIcon />
                           </a>
@@ -176,9 +165,7 @@ export const Table: React.FC<{
                         <button
                           onClick={() => {
                             setIsOpened(!isOpened)
-                            setTagsSelected(
-                              `${props.customerTag}/${question.notebook.tag}/${question.tag}`
-                            )
+                            setTagsSelected(`/q/${question.tag}`)
                           }}
                           className="text-indigo-600 hover:text-indigo-900 ml-1"
                         >

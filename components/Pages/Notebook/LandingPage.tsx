@@ -60,7 +60,7 @@ export const LandingPage: React.FC<{
               hasThisNotebook={hasThisNotebook}
               notebook={props.notebook}
               className="shadow-2xl"
-              startQuestionTag={props.menu[0]?.subtopics[0]?.questions[0].tag}
+              startQuestionTag={props.menu[0]?.subtopics[0]?.questionSubTopics[0].question.tag}
             />
           </div>
         </div>

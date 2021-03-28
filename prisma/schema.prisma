@@ -9,78 +9,95 @@ datasource db {
 }
 
 model Customer {
-  id                 Int                 @id @default(autoincrement())
-  userId             String              @unique
-  name               String              @default("")
-  tag                String              @unique
-  createdAt          DateTime?           @default(now())
-  updatedAt          DateTime?           @updatedAt
+  id                 Int                  @id @default(autoincrement())
+  userId             String               @unique
+  name               String               @default("")
+  tag                String               @unique
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
   mediaId            Int?
-  text               String              @db.Text
-  media              Media?              @relation(fields: [mediaId], references: [id])
+  text               String               @db.Text
+  media              Media?               @relation(fields: [mediaId], references: [id])
   chosenAlternatives ChosenAlternative[]
-  medias             Media[]             @relation("medias")
+  medias             Media[]              @relation("medias")
   notebooks          Notebook[]
   subscribers        Subscriber[]
+  solutions          Solution[]
 }
 
 model Notebook {
-  id                  Int       @id @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
   customerId         Int
-  tag                String     @unique
+  tag                String               @unique
   mediaId            Int?
-  text               String?    @db.Text
+  text               String?              @db.Text
   price              Float?
   name               String
-  createdAt          DateTime?  @default(now())
-  updatedAt          DateTime?  @updatedAt
-  customer           Customer   @relation(fields: [customerId], references: [id])
-  media              Media?     @relation(fields: [mediaId], references: [id])
-  questions          Question[]
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  customer           Customer             @relation(fields: [customerId], references: [id])
+  media              Media?               @relation(fields: [mediaId], references: [id])
   topics             Topic[]
   subscribers        Subscriber[]
 }
 
 model Topic {
-  id         Int        @id @default(autoincrement())
+  id         Int                          @id @default(autoincrement())
   notebookId Int
   name       String
-  createdAt  DateTime?  @default(now())
-  updatedAt  DateTime?  @updatedAt
+  createdAt  DateTime?                    @default(now())
+  updatedAt  DateTime?                    @updatedAt
   order      Int
-  notebook   Notebook   @relation(fields: [notebookId], references: [id])
+  notebook   Notebook                     @relation(fields: [notebookId], references: [id])
   subtopics  SubTopic[]
 }
 
 model SubTopic {
-  id        Int        @id @default(autoincrement())
-  topicId   Int
-  name      String
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  order     Int
-  topic     Topic      @relation(fields: [topicId], references: [id])
-  questions Question[]
+  id                  Int                 @id @default(autoincrement())
+  topicId             Int
+  name                String
+  createdAt           DateTime?           @default(now())
+  updatedAt           DateTime?           @updatedAt
+  order               Int
+  topic               Topic               @relation(fields: [topicId], references: [id])
+  questionSubTopics   QuestionSubTopic[]
+}
+
+model QuestionSubTopic {
+  id                 Int                  @id @default(autoincrement())
+  questionId         Int
+  subTopicId         Int
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  question           Question             @relation(fields: [questionId], references: [id])
+  subTopic           SubTopic             @relation(fields: [subTopicId], references: [id])
 }
 
 model Question {
-  id                 Int                 @id @default(autoincrement())
-  tag                String
-  text               String              @db.Text
-  notebookId         Int
-  solution           String?             @db.Text
-  name               String?
-  subTopicId         Int?
-  createdAt          DateTime?           @default(now())
-  updatedAt          DateTime?           @updatedAt
-  order              Int
-  notebook           Notebook            @relation(fields: [notebookId], references: [id])
-  subTopic           SubTopic?           @relation(fields: [subTopicId], references: [id])
+  id                 Int                  @id @default(autoincrement())
+  tag                String               @unique
+  text               String               @db.Text
+  name               String
+  createdAt          DateTime?            @default(now())
+  updatedAt          DateTime?            @updatedAt
+  // order              Int
+  questionSubTopics  QuestionSubTopic[]
   alternatives       Alternative[]
   chosenAlternatives ChosenAlternative[]
   rightAlternative   RightAlternative?
+  solution           Solution[]
+}
 
-  @@unique([notebookId, tag])
+model Solution {
+  id                 Int                 @id @default(autoincrement())
+  questionId         Int
+  customerId         Int
+  text               String              @db.Text
+  createdAt          DateTime?           @default(now())
+  updatedAt          DateTime?           @updatedAt
+  customer           Customer            @relation(fields: [customerId], references: [id])
+  question           Question            @relation(fields: [questionId], references: [id])
+  @@unique([questionId, customerId])
 }
 
 model Alternative {
@@ -92,58 +109,58 @@ model Alternative {
   question           Question            @relation(fields: [questionId], references: [id])
   chosenAlternatives ChosenAlternative[]
   rightAlternative   RightAlternative?
-
 }
 
 model RightAlternative {
-  id            Int         @id @default(autoincrement())
-  alternativeId Int         @unique
-  questionId    Int         @unique
-  createdAt     DateTime?   @default(now())
-  updatedAt     DateTime?   @updatedAt
-  alternative   Alternative @relation(fields: [alternativeId], references: [id])
-  question      Question    @relation(fields: [questionId], references: [id])
+  id            Int                      @id @default(autoincrement())
+  alternativeId Int                      @unique
+  questionId    Int                      @unique
+  createdAt     DateTime?                @default(now())
+  updatedAt     DateTime?                @updatedAt
+  alternative   Alternative              @relation(fields: [alternativeId], references: [id])
+  question      Question                 @relation(fields: [questionId], references: [id])
 }
 
 model ChosenAlternative {
-  id            Int         @id @default(autoincrement())
+  id            Int                      @id @default(autoincrement())
   customerId    Int
   alternativeId Int
   questionId    Int
-  createdAt     DateTime?   @default(now())
-  updatedAt     DateTime?   @updatedAt
-  alternative   Alternative @relation(fields: [alternativeId], references: [id])
-  customer      Customer    @relation(fields: [customerId], references: [id])
-  question      Question    @relation(fields: [questionId], references: [id])
+  createdAt     DateTime?                @default(now())
+  updatedAt     DateTime?                @updatedAt
+  alternative   Alternative              @relation(fields: [alternativeId], references: [id])
+  customer      Customer                 @relation(fields: [customerId], references: [id])
+  question      Question                 @relation(fields: [questionId], references: [id])
 
   @@unique([customerId, questionId])
 }
 
 model Subscriber {
-  id            Int         @id @default(autoincrement())
+  id            Int                      @id @default(autoincrement())
   customerId    Int
   notebookId    Int
-  customer      Customer    @relation(fields: [customerId], references: [id])
-  notebook      Notebook    @relation(fields: [notebookId], references: [id])
-
+  customer      Customer                 @relation(fields: [customerId], references: [id])
+  notebook      Notebook                 @relation(fields: [notebookId], references: [id])
+  createdAt     DateTime?                @default(now())
+  updatedAt     DateTime?                @updatedAt
   @@unique([customerId, notebookId])
 }
 
 model Media {
-  id         Int        @id @default(autoincrement())
+  id         Int                        @id @default(autoincrement())
   customerId Int
   tag        String
   name       String
   ext        String
   mime       String
   size       Float
-  createdAt  DateTime?  @default(now())
-  updatedAt  DateTime?  @updatedAt
+  createdAt  DateTime?                  @default(now())
+  updatedAt  DateTime?                  @updatedAt
   text       String?
   caption    String?
   width      Int?
   height     Int?
-  customer   Customer   @relation("medias", fields: [customerId], references: [id])
+  customer   Customer                   @relation("medias", fields: [customerId], references: [id])
   customers  Customer[]
   notebooks  Notebook[]
 

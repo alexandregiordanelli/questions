@@ -3,17 +3,44 @@ import { QuestionForm } from './QuestionForm'
 import { letters } from '../../../lib/utils'
 import Head from 'next/head'
 import { RightMenu } from './RightMenu'
-import { QuestionWithAll, Suggestions } from '../../../lib/types'
+import { MenuWithQuestions, QuestionWithAll } from '../../../lib/types'
 import { Customer, Media } from '@prisma/client'
 
 export const QuestionFormWithRightMenu: React.FC<{
   customer: Customer & { media: Media }
+  notebookTag: string
   question: QuestionWithAll
-  suggestions: Suggestions
+  menu: MenuWithQuestions
 }> = (props) => {
-  //const menuFiltered = props.menu.find(x => x.topics.some(y => y.topic == props.question.topic))
+  let suggestions: {
+    id: number
+    tag: string
+    name: string
+    rightAlternative: {
+      alternativeId: number
+    }
+  }[] = null
 
-  //const title = menuFiltered.topics.length > 1 ? <>{menuFiltered.title}<ChevronRightIcon className="icon-menu-right"/>{menuFiltered.topics.find(x => x.topic == props.question.topic).title}</>: <>{menuFiltered.title}</>
+  let title = ''
+
+  for (const topic of props.menu) {
+    for (const subTopic of topic.subtopics) {
+      for (const questionSubTopic of subTopic.questionSubTopics) {
+        if (questionSubTopic.questionId == props.question.id) {
+          suggestions = subTopic.questionSubTopics.map((x) => ({
+            id: x.question.id,
+            tag: x.question.tag,
+            name: x.question.name,
+            rightAlternative: {
+              alternativeId: x.question.rightAlternative?.alternativeId,
+            },
+          }))
+          title = subTopic.name
+          break
+        }
+      }
+    }
+  }
 
   const relativeAlternativeIndex = props.question.alternatives.findIndex(
     (x) => x.id == props.question.rightAlternative?.alternativeId
@@ -60,11 +87,7 @@ export const QuestionFormWithRightMenu: React.FC<{
 
       <div className="flex-grow">
         <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
-          <RightMenu
-            title={props.question.subTopic?.name}
-            notebookTag={props.question.notebook.tag}
-            suggestions={props.suggestions}
-          />
+          <RightMenu title={title} notebookTag={props.notebookTag} suggestions={suggestions} />
           <div className="flex-grow p-6 md:p-0">
             <QuestionForm question={props.question} customer={props.customer} />
           </div>

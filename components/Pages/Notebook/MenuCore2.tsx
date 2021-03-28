@@ -21,13 +21,13 @@ export const MenuCore2: React.FC<{
                 countGreen={x.subtopics.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questions.reduce((a2, b2) => {
+                    b1.questionSubTopics.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.rightAlternative?.alternativeId == x.alternativeId &&
-                            b2.id == x.questionId
+                            b2.question.rightAlternative?.alternativeId == x.alternativeId &&
+                            b2.question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -38,13 +38,13 @@ export const MenuCore2: React.FC<{
                 countRed={x.subtopics.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questions.reduce((a2, b2) => {
+                    b1.questionSubTopics.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.rightAlternative?.alternativeId != x.alternativeId &&
-                            b2.id == x.questionId
+                            b2.question.rightAlternative?.alternativeId != x.alternativeId &&
+                            b2.question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -52,11 +52,11 @@ export const MenuCore2: React.FC<{
                     }, 0)
                   )
                 }, 0)}
-                countTotal={x.subtopics.reduce((a, b) => a + b.questions.length, 0)}
+                countTotal={x.subtopics.reduce((a, b) => a + b.questionSubTopics.length, 0)}
               />
               <ul className="hidden mt-4 bg-white -mx-5 -mb-5 p-5 border-t border-gray-200">
                 {x.subtopics.map((y, j) => {
-                  const anotherSubtopicQuestion = y.questions[0] //always the first question of this subtopic (start)
+                  const anotherSubtopicQuestion = y.questionSubTopics[0]?.question //always the first question of this subtopic (start)
                   const url = anotherSubtopicQuestion
                     ? `/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
                     : null
@@ -73,7 +73,7 @@ export const MenuCore2: React.FC<{
                         }`}
                         url={url}
                       />
-                      <span className="text-xs font-thin">{y.questions.length}</span>
+                      <span className="text-xs font-thin">{y.questionSubTopics.length}</span>
                     </li>
                   )
                 })}

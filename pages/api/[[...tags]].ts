@@ -10,14 +10,13 @@ import { postNotebook } from 'services/server/postNotebook'
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 import { postQuestion } from 'services/server/postQuestion'
 import { getNotebookByTag } from 'services/server/getNotebook'
-import { getQuestionByTags } from 'services/server/getQuestion'
 import admin from 'lib/firebase-server'
 import { deleteCustomerByTag } from 'services/server/deleteCustomer'
 import { deleteQuestionByTags } from 'services/server/deleteQuestion'
-import { getQuestions } from 'services/server/getQuestions'
 import jwt from 'jsonwebtoken'
 import { getNotebooks } from 'services/server/getNotebooks'
 import { deleteNotebookByTag } from 'services/server/deleteNotebook'
+import { getQuestion } from 'services/server/getQuestion'
 
 const Controller: VercelApiHandler = async (req, res) => {
   try {
@@ -56,9 +55,7 @@ const Controller: VercelApiHandler = async (req, res) => {
           const notebook = await postNotebook(_notebook)
           res.send(notebook)
         } else if (tags.length == 2) {
-          const _notebook = await getNotebookByTag(notebookTag)
           const _question = req.body as QuestionWithAll
-          _question.notebookId = _notebook.id
           const question = await postQuestion(_question)
           res.send(question)
         }
@@ -95,10 +92,6 @@ const Controller: VercelApiHandler = async (req, res) => {
             if (customer) res.send(customer)
             else throw new Error('not found')
           }
-        } else if (req.query.questions) {
-          const questions = await getQuestions(customerTag)
-          if (questions) res.send(questions)
-          else throw new Error('not found')
         } else {
           const customer = await getCustomerByTag(customerTag)
           if (customer) res.send(customer)
@@ -109,7 +102,7 @@ const Controller: VercelApiHandler = async (req, res) => {
         if (notebook) res.send(notebook)
         else throw new Error('not found')
       } else if (tags.length == 3) {
-        const question = await getQuestionByTags(notebookTag, questionTag)
+        const question = await getQuestion(questionTag)
         if (question) res.send(question)
         else throw new Error('not found')
       } else {

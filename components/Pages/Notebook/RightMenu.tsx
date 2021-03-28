@@ -1,13 +1,19 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { ChevronDownIcon } from '@primer/octicons-react'
-import { Suggestions } from '../../../lib/types'
 import Link from 'next/link'
 import { useAuth } from 'lib/auth'
 
 export const RightMenu: React.FC<{
   title?: string
-  suggestions: Suggestions
+  suggestions: {
+    id: number
+    tag: string
+    name: string
+    rightAlternative: {
+      alternativeId: number
+    }
+  }[]
   notebookTag: string
 }> = (props) => {
   const router = useRouter()

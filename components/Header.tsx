@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
 import { useRouter } from 'next/router'
@@ -8,28 +8,29 @@ import { ChevronDownIcon, ChevronRightIcon } from '@primer/octicons-react'
 import NoSSR from 'react-no-ssr'
 import { Login } from './Login'
 import { getURLMedia } from 'lib/utils'
-import { Modal } from './Modal'
-import { NotebookCard } from './NotebookCard'
-import { QuestionWithAll } from 'lib/types'
+// import { Modal } from './Modal'
+// import { NotebookCard } from './NotebookCard'
+import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
 
 export const Header: React.FC<{
   question?: QuestionWithAll
+  notebook?: NotebookWithTopicsAndSubTopics
 }> = (props) => {
   const {
     customer,
-    subscribers,
+    // subscribers,
     user,
     showFocusOnLogin,
-    showNotebookCard,
-    setShowNotebookCard,
+    // showNotebookCard,
+    // setShowNotebookCard,
   } = useAuth()
   const router = useRouter()
 
-  const offsetPaddingLeft = !!props.question
+  const offsetPaddingLeft = !!props.notebook
 
-  const hasThisNotebook = subscribers?.some((x) => x.notebookId == props.question?.notebook.id)
+  // const hasThisNotebook = subscribers?.some((x) => x.notebookId == props.question?.notebook.id)
 
-  const showModal = !user && showNotebookCard && !hasThisNotebook
+  // const showModal = !user && showNotebookCard && !hasThisNotebook
 
   return (
     <>
@@ -47,12 +48,16 @@ export const Header: React.FC<{
           </Link>
           {!router.pathname.startsWith('/admin') && props.question && (
             <>
-              <div className="text-gray-700 block">
-                <ChevronRightIcon />
-              </div>
-              <Link href={`/${props.question.notebook.tag}`}>
-                <a className="text-white px-2 py-2 text-sm lg:text-gray-400">{`${props.question.notebook.name}`}</a>
-              </Link>
+              {props.notebook && (
+                <>
+                  <div className="text-gray-700 block">
+                    <ChevronRightIcon />
+                  </div>
+                  <Link href={`/${props.notebook.tag}`}>
+                    <a className="text-white px-2 py-2 text-sm lg:text-gray-400">{`${props.notebook.name}`}</a>
+                  </Link>
+                </>
+              )}
               <div className="text-gray-700 hidden lg:block">
                 <ChevronRightIcon />
               </div>
@@ -66,12 +71,12 @@ export const Header: React.FC<{
           )}
         </div>
         <NoSSR>
-          {showModal && (
+          {/* {showModal && (
             <Modal showModal={setShowNotebookCard}>
               <NotebookCard notebook={props.question.notebook} hasThisNotebook={false} />
             </Modal>
           )}
-          {!user && showFocusOnLogin && <FocusOnLogin />}
+          {!user && showFocusOnLogin && <FocusOnLogin />} */}
           {!user && (
             <Login className={`mr-2 z-30 ${showFocusOnLogin && 'border-red-500 border-2'}`} />
           )}
@@ -82,28 +87,28 @@ export const Header: React.FC<{
   )
 }
 
-const FocusOnLogin: React.FC = () => {
-  const { setShowFocusOnLogin } = useAuth()
-  useEffect(() => {
-    const close = (e): void => {
-      if (e.keyCode === 27) {
-        setShowFocusOnLogin(false)
-      }
-    }
-    window.addEventListener('keydown', close)
-    return () => window.removeEventListener('keydown', close)
-  }, [setShowFocusOnLogin])
+// const FocusOnLogin: React.FC = () => {
+//   const { setShowFocusOnLogin } = useAuth()
+//   useEffect(() => {
+//     const close = (e): void => {
+//       if (e.keyCode === 27) {
+//         setShowFocusOnLogin(false)
+//       }
+//     }
+//     window.addEventListener('keydown', close)
+//     return () => window.removeEventListener('keydown', close)
+//   }, [setShowFocusOnLogin])
 
-  return (
-    <div
-      tabIndex={0}
-      role="button"
-      className="fixed z-20 inset-0 bg-black opacity-90"
-      onClick={() => setShowFocusOnLogin(false)}
-      onKeyDown={() => setShowFocusOnLogin(false)}
-    />
-  )
-}
+//   return (
+//     <div
+//       tabIndex={0}
+//       role="button"
+//       className="fixed z-20 inset-0 bg-black opacity-90"
+//       onClick={() => setShowFocusOnLogin(false)}
+//       onKeyDown={() => setShowFocusOnLogin(false)}
+//     />
+//   )
+// }
 
 const DropDownMenu: React.FC = () => {
   const { customer } = useAuth()
