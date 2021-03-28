@@ -59,6 +59,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
-// export const config = { amp: true }
+export const config = { amp: true }
 
 export default Page
