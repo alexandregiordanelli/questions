@@ -51,9 +51,9 @@ export const QuestionFormWraper: React.FC<{
 
       <div className="flex-grow">
         <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
-          <div className="flex-grow p-6 md:p-0">
+          <main className="flex-grow p-6 md:p-0">
             <QuestionForm question={props.question} />
-          </div>
+          </main>
         </div>
       </div>
     </>

@@ -51,6 +51,7 @@ export const QuestionFormWithRightMenu: React.FC<{
   const suggestionCurrentIndex = suggestions.findIndex((x) => x.tag == props.question.tag)
   const suggestionNextIndex =
     suggestionCurrentIndex == suggestions.length - 1 ? -1 : suggestionCurrentIndex + 1
+
   const suggestionPreviousIndex = suggestionCurrentIndex == 0 ? -1 : suggestionCurrentIndex - 1
 
   return (
@@ -95,7 +96,7 @@ export const QuestionFormWithRightMenu: React.FC<{
       <div className="flex-grow">
         <div className="flex flex-col xl:flex-row-reverse max-w-screen-xl mx-auto md:p-12">
           <RightMenu title={title} notebookTag={props.notebookTag} suggestions={suggestions} />
-          <div className="flex-grow p-6 md:p-0">
+          <main className="flex-grow p-6 md:p-0">
             <QuestionForm question={props.question} />
             <div className="flex justify-end">
               {suggestionPreviousIndex > -1 ? (
@@ -108,7 +109,7 @@ export const QuestionFormWithRightMenu: React.FC<{
               ) : (
                 <button
                   disabled
-                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-700 bg-blue-600 hover:bg-blue-700 rounded p-2"
+                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border rounded p-2 bg-blue-700 opacity-75 text-opacity-80 cursor-not-allowed"
                 >
                   <ChevronLeftIcon />
                   Previous
@@ -131,7 +132,7 @@ export const QuestionFormWithRightMenu: React.FC<{
                 </button>
               )}
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </>
