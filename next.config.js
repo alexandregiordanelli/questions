@@ -13,5 +13,9 @@
 module.exports = {
   images: {
     domains: ['assets.questionsof.com']
-  }
+  },
+  i18n: {
+    locales: ['pt', 'en'],
+    defaultLocale: 'pt',
+  },
 }

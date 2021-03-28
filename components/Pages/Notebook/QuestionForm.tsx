@@ -7,11 +7,15 @@ import { ChosenAlternative } from '@prisma/client'
 import { mutate } from 'swr'
 import { postClientArray } from 'services/client/post'
 import { useAuth } from 'lib/auth'
-
+import { useRouter } from 'next/router'
+import pt from '../../../lib/locales/pt'
+import en from '../../../lib/locales/en'
 export const QuestionForm: React.FC<{
   // customer: Customer & { media: Media }
   question: QuestionWithAll
 }> = (props) => {
+  const { locale } = useRouter()
+  const t = locale == 'pt' ? pt : en
   const auth = useAuth()
   const stats = auth.stats?.find((x) => x.questionId == props.question.id)
   const [alternativeIdChosen, setAlternativeIdChosen] = useState(stats?.alternativeId ?? 0)
@@ -42,6 +46,7 @@ export const QuestionForm: React.FC<{
     <input
       key={0}
       type="checkbox"
+      role="button"
       id="right-answer"
       checked={!!stats}
       disabled={!!stats}
@@ -61,7 +66,7 @@ export const QuestionForm: React.FC<{
       }}
     />,
     <label key={1} htmlFor="right-answer">
-      Right Answer
+      {t.rightanswer}
     </label>,
     <div key={2} className="q mb-4">
       <MarkdownText md={props.question.text} customerId={0} />
