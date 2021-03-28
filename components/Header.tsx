@@ -41,7 +41,7 @@ export const Header: React.FC<{
       >
         <div className="items-center flex">
           <Link href="/">
-            <a className="items-center flex">
+            <a className="items-center flex" aria-label="questionsof">
               <Logo size={32} color="#fff" className="mr-2" />
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
