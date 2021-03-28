@@ -100,7 +100,7 @@ export const QuestionFormWithRightMenu: React.FC<{
             <div className="flex justify-end">
               {suggestionPreviousIndex > -1 ? (
                 <Link href={`/${props.notebookTag}/${suggestions[suggestionPreviousIndex].tag}`}>
-                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2">
+                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-700 bg-blue-600 hover:bg-blue-700 rounded p-2">
                     <ChevronLeftIcon />
                     Previous
                   </a>
@@ -108,7 +108,7 @@ export const QuestionFormWithRightMenu: React.FC<{
               ) : (
                 <button
                   disabled
-                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2"
+                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-700 bg-blue-600 hover:bg-blue-700 rounded p-2"
                 >
                   <ChevronLeftIcon />
                   Previous
@@ -116,7 +116,7 @@ export const QuestionFormWithRightMenu: React.FC<{
               )}
               {suggestionNextIndex > -1 ? (
                 <Link href={`/${props.notebookTag}/${suggestions[suggestionNextIndex].tag}`}>
-                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2">
+                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-700 bg-blue-600 hover:bg-blue-700 rounded p-2">
                     Next
                     <ChevronRightIcon />
                   </a>
@@ -124,7 +124,7 @@ export const QuestionFormWithRightMenu: React.FC<{
               ) : (
                 <button
                   disabled
-                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border rounded p-2 bg-blue-600 opacity-75 text-opacity-80 cursor-not-allowed"
+                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border rounded p-2 bg-blue-700 opacity-75 text-opacity-80 cursor-not-allowed"
                 >
                   Next
                   <ChevronRightIcon />

@@ -17,10 +17,10 @@ export const essentialCSS = css.global`
     @apply hidden;
   }
   #main-form #right-answer + label {
-    @apply text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-green-600 bg-green-500 hover:bg-green-600 rounded order-1 cursor-pointer;
+    @apply text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-green-700 bg-green-600 hover:bg-green-700 rounded order-1 cursor-pointer;
   }
   #main-form #right-answer:checked + label {
-    @apply bg-green-600 opacity-75 text-opacity-80 cursor-not-allowed;
+    @apply bg-green-700 opacity-75 text-opacity-80 cursor-not-allowed;
   }
   #main-form #right-answer:checked ~ input[type='radio'] {
     @apply text-red-500;
