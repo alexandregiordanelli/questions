@@ -68,4 +68,7 @@ export const CSS = css.global`
   #nprogress .bar {
     @apply bg-blue-500;
   }
+  body {
+    @apply bg-white;
+  }
 `
