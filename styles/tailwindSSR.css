@@ -2149,6 +2149,10 @@ select {
     position: absolute;
   }
 
+  .sm\:sticky {
+    position: sticky;
+  }
+
   .sm\:text-left {
     text-align: left;
   }
