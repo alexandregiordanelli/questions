@@ -35,7 +35,7 @@ export const Header: React.FC<{
   return (
     <>
       <div
-        className={`bg-gray-800 shadow-lg top-0 sticky h-16 items-center justify-between flex p-1 z-10 ${
+        className={`bg-gray-800 shadow-lg top-0 sm:sticky h-16 items-center justify-between flex p-1 z-10 ${
           offsetPaddingLeft ? 'pl-12 lg:px-4' : 'px-4'
         }`}
       >
