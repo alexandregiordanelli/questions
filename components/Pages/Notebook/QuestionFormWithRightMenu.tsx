@@ -5,6 +5,8 @@ import Head from 'next/head'
 import { RightMenu } from './RightMenu'
 import { MenuWithQuestions, QuestionWithAll } from '../../../lib/types'
 import { Customer, Media } from '@prisma/client'
+import Link from 'next/link'
+import { ChevronLeftIcon, ChevronRightIcon } from '@primer/octicons-react'
 
 export const QuestionFormWithRightMenu: React.FC<{
   customer: Customer & { media: Media }
@@ -45,6 +47,11 @@ export const QuestionFormWithRightMenu: React.FC<{
   const relativeAlternativeIndex = props.question.alternatives.findIndex(
     (x) => x.id == props.question.rightAlternative?.alternativeId
   )
+
+  const suggestionCurrentIndex = suggestions.findIndex((x) => x.tag == props.question.tag)
+  const suggestionNextIndex =
+    suggestionCurrentIndex == suggestions.length - 1 ? -1 : suggestionCurrentIndex + 1
+  const suggestionPreviousIndex = suggestionCurrentIndex == 0 ? -1 : suggestionCurrentIndex - 1
 
   return (
     <>
@@ -90,6 +97,40 @@ export const QuestionFormWithRightMenu: React.FC<{
           <RightMenu title={title} notebookTag={props.notebookTag} suggestions={suggestions} />
           <div className="flex-grow p-6 md:p-0">
             <QuestionForm question={props.question} />
+            <div className="flex justify-end">
+              {suggestionPreviousIndex > -1 ? (
+                <Link href={`/${props.notebookTag}/${suggestions[suggestionPreviousIndex].tag}`}>
+                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2">
+                    <ChevronLeftIcon />
+                    Previous
+                  </a>
+                </Link>
+              ) : (
+                <button
+                  disabled
+                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2"
+                >
+                  <ChevronLeftIcon />
+                  Previous
+                </button>
+              )}
+              {suggestionNextIndex > -1 ? (
+                <Link href={`/${props.notebookTag}/${suggestions[suggestionNextIndex].tag}`}>
+                  <a className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border border-blue-600 bg-blue-500 hover:bg-blue-600 rounded p-2">
+                    Next
+                    <ChevronRightIcon />
+                  </a>
+                </Link>
+              ) : (
+                <button
+                  disabled
+                  className="text-white text-sm my-4 mr-2 inline-block font-semibold flex-none border rounded p-2 bg-blue-600 opacity-75 text-opacity-80 cursor-not-allowed"
+                >
+                  Next
+                  <ChevronRightIcon />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
