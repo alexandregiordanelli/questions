@@ -3,6 +3,7 @@ import { HeadHtml } from 'components/HeadHtml'
 import { QuestionFormWraper } from 'components/QuestionFormWraper'
 import { QuestionWithAll } from 'lib/types'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { getQuestion } from 'services/server/getQuestion'
 
@@ -11,9 +12,12 @@ type QuestionPageProps = {
 }
 
 const Page: NextPage<QuestionPageProps> = (props) => {
+  const router = useRouter()
   return (
     <>
-      <HeadHtml />
+      <HeadHtml>
+        <link rel={'canonical'} href={`https://questionsof.com${router.asPath}`} />
+      </HeadHtml>
 
       <div className="flex min-h-screen flex-col">
         <Header question={props.question} />
