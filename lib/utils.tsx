@@ -4,8 +4,6 @@ import { Media } from '@prisma/client'
 
 export const letters = 'abcdefgh'.split('')
 export const tokenForTest = process.env.TOKEN ?? ''
-export const ampCanonicalUrl = (isAmp: boolean, url = ''): string =>
-  isAmp ? url.replace('/amp', '') : `/amp${url}`
 
 export const absolute = (base: string, relative: string): string => {
   const stack = base.split('/')

@@ -1,8 +1,6 @@
 import { CustomerWithNotebooks } from 'lib/types'
-import { useRouter } from 'next/router'
-import { useAmp } from 'next/amp'
 import { HeadHtml } from 'components/HeadHtml'
-import { ampCanonicalUrl, getURLMedia } from 'lib/utils'
+import { getURLMedia } from 'lib/utils'
 import { Header } from 'components/Header'
 import { useData } from 'services/client/get'
 import React from 'react'
@@ -15,8 +13,6 @@ type CustomerPageProps = {
 }
 
 const CustomerPage: React.FC<CustomerPageProps> = (props) => {
-  const router = useRouter()
-  const isAmp = useAmp()
   const { data: customer } = useData<CustomerWithNotebooks>(
     `/api/${props.customer.tag}?notebooks=true`,
     props.customer
@@ -24,12 +20,7 @@ const CustomerPage: React.FC<CustomerPageProps> = (props) => {
 
   return (
     <>
-      <HeadHtml>
-        <link
-          rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
-        />
-      </HeadHtml>
+      <HeadHtml />
 
       <div
         className="flex min-h-screen flex-col"

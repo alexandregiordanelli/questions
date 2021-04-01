@@ -5,10 +5,7 @@ import { getNotebookByTag } from 'services/server/getNotebook'
 
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll, MenuWithQuestions } from 'lib/types'
 import { Customer, Media } from '@prisma/client'
-import { useRouter } from 'next/router'
-import { useAmp } from 'next/amp'
 import { HeadHtml } from 'components/HeadHtml'
-import { ampCanonicalUrl } from 'lib/utils'
 import { Header } from 'components/Header'
 import { getMenu } from 'services/server/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
@@ -35,16 +32,9 @@ type QuestionPageProps = {
 type PageProps = NotebookPageProps | QuestionPageProps
 
 const NotebookPage: React.FC<NotebookPageProps> = (props) => {
-  const router = useRouter()
-  const isAmp = useAmp()
   return (
     <>
-      <HeadHtml>
-        <link
-          rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
-        />
-      </HeadHtml>
+      <HeadHtml />
       <div className="flex min-h-screen flex-col">
         <Header />
         <Head>
@@ -64,8 +54,6 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 }
 
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
-  const router = useRouter()
-  const isAmp = useAmp()
   // const { data: question } = useData<QuestionWithAll>(
   //   `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
   //   props.question
@@ -74,10 +62,7 @@ const QuestionPage: React.FC<QuestionPageProps> = (props) => {
   return (
     <>
       <HeadHtml>
-        <link
-          rel={isAmp ? 'canonical' : 'amphtml'}
-          href={`https://questionsof.com${ampCanonicalUrl(isAmp, router.asPath)}`}
-        />
+        <link rel={'canonical'} href={`https://questionsof.com/q/${props.question.tag}`} />
       </HeadHtml>
 
       <div className="flex min-h-screen flex-col">
