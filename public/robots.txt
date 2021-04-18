@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /amp/
+Disallow: /login
+
+# Host
+Host: https://questionsof.com
+

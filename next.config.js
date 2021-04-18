@@ -18,4 +18,13 @@ module.exports = {
     locales: ['pt', 'en'],
     defaultLocale: 'pt',
   },
+  async redirects() {
+    return [
+      {
+        source: '/amp/enem/:tag',
+        destination: '/enem/:tag',
+        permanent: true,
+      },
+    ]
+  },
 }

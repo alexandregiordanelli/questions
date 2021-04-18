@@ -38,7 +38,7 @@ yarn-error.log*
 .vscode
 
 # next-sitemap
-robots.txt
+# robots.txt
 sitemap.xml
 
 /public/**/*.js
