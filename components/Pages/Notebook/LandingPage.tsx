@@ -1,5 +1,5 @@
 import React from 'react'
-import { Media, Customer, Notebook } from '@prisma/client'
+import { Media, Customer, Notebook } from 'lib/types'
 import { MarkdownText } from 'components/MarkdownText'
 import { NotebookCard } from 'components/NotebookCard'
 import { getURLMedia } from 'lib/utils'

@@ -4,7 +4,7 @@ import { getNotebookByTag } from 'services/server/getNotebook'
 // import { getQuestionByTags } from 'services/server/getQuestion'
 
 import { NotebookWithTopicsAndSubTopics, QuestionWithAll, MenuWithQuestions } from 'lib/types'
-import { Customer, Media } from '@prisma/client'
+import { Customer, Media } from 'lib/types'
 import { HeadHtml } from 'components/HeadHtml'
 import { Header } from 'components/Header'
 import { getMenu } from 'services/server/getMenu'

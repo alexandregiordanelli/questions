@@ -1,6 +1,6 @@
 import React from 'react'
 import { Img } from './Img'
-import { Notebook, Media, Subscriber } from '@prisma/client'
+import { Notebook, Media, Subscriber } from '../lib/types'
 import { getURLMedia } from 'lib/utils'
 import { useAuth } from 'lib/auth'
 import NProgress from 'nprogress'

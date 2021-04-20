@@ -2,16 +2,16 @@ import { GetStaticProps } from 'next'
 import React from 'react'
 import { HeadHtml } from '../components/HeadHtml'
 import { Header } from '../components/Header'
-import { getNotebooks } from 'services/server/getNotebooks'
-import { Notebook, Media, Customer } from '@prisma/client'
+import { Notebook, Media, Customer } from 'lib/types'
 import { NotebookCardNew } from '../components/NotebookCardNew'
 import Head from 'next/head'
 import { Footer } from '../components/Footer'
+import { supabase } from 'lib/supabase-client'
 type PageProps = {
   notebooks: (Notebook & {
-    media: Media
+    Media: Media
     customer: Customer & {
-      media: Media
+      Media: Media
     }
   })[]
 }
@@ -62,11 +62,47 @@ const Index: React.FC<PageProps> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const notebooks = await getNotebooks()
+  const { data: notebooks } = await supabase
+    .from<
+      Notebook & {
+        Media: Media
+      }
+    >('Notebook')
+    .select('*, Media (*)')
+
+  const { data: customer } = await supabase
+    .from<Customer>('Customer')
+    .select('*')
+    .in(
+      'id',
+      notebooks.map((x) => x.customerId)
+    )
+
+  const { data: media } = await supabase
+    .from<Media>('Media')
+    .select('*')
+    .in(
+      'id',
+      customer.map((x) => x.mediaId)
+    )
+
+  const customerMedia: (Customer & {
+    Media: Media
+  })[] = customer.map((x) => {
+    return {
+      ...x,
+      Media: media.find((y) => y.id == x.mediaId),
+    }
+  })
 
   return {
     props: {
-      notebooks,
+      notebooks: notebooks.map((x) => {
+        return {
+          ...x,
+          customer: customerMedia.find((y) => y.id == x.customerId),
+        }
+      }),
     },
     revalidate: 1,
   }

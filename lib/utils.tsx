@@ -1,6 +1,6 @@
 import { MediaWithUrl } from './types'
 import slugify from 'slugify'
-import { Media } from '@prisma/client'
+import { Media } from 'lib/types'
 
 export const letters = 'abcdefgh'.split('')
 export const tokenForTest = process.env.TOKEN ?? ''

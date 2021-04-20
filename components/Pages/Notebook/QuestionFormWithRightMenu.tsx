@@ -4,7 +4,7 @@ import { letters } from '../../../lib/utils'
 import Head from 'next/head'
 import { RightMenu } from './RightMenu'
 import { MenuWithQuestions, QuestionWithAll } from '../../../lib/types'
-import { Customer, Media } from '@prisma/client'
+import { Customer, Media } from 'lib/types'
 import Link from 'next/link'
 import { ChevronLeftIcon, ChevronRightIcon } from '@primer/octicons-react'
 

@@ -1,15 +1,19 @@
-import {
-  Notebook,
-  Topic,
-  SubTopic,
-  Alternative,
-  Question,
-  RightAlternative,
-  Customer,
-  Media,
-  Subscriber,
-  QuestionSubTopic,
-} from '@prisma/client'
+import { definitions } from './types2'
+
+export type Alternative = definitions['Alternative']
+export type Notebook = definitions['Notebook']
+export type Topic = definitions['Topic']
+export type SubTopic = definitions['SubTopic']
+
+export type Question = definitions['Question']
+export type RightAlternative = definitions['RightAlternative']
+
+export type Customer = definitions['Customer']
+export type Media = definitions['Media']
+export type Subscriber = definitions['Subscriber']
+export type QuestionSubTopic = definitions['QuestionSubTopic']
+
+export type ChosenAlternative = definitions['ChosenAlternative']
 
 export type Menu = {
   items: {
@@ -58,9 +62,9 @@ export type QuestionWithAll = Question & {
   // }
 }
 
-export type CustomerWithNotebooks = Customer & { media: Media } & {
+export type CustomerWithNotebooks = Customer & { Media: Media } & {
   notebooks: (Notebook & {
-    media: Media
+    Media: Media
   })[]
 }
 
