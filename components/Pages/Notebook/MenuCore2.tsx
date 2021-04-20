@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from 'lib/auth'
 
 export const MenuCore2: React.FC<{
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }> = (props) => {
   const auth = useAuth()
   const router = useRouter()
@@ -18,16 +18,16 @@ export const MenuCore2: React.FC<{
             <li key={`${i}.0`} className={'p-5 border-t border-gray-200'}>
               <MenuItem
                 title={x.name}
-                countGreen={x.subtopics.reduce((a1, b1) => {
+                countGreen={x.SubTopic.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questionSubTopics.reduce((a2, b2) => {
+                    b1.QuestionSubTopic.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.question.rightAlternative?.alternativeId == x.alternativeId &&
-                            b2.question.id == x.questionId
+                            b2.Question.RightAlternative[0]?.alternativeId == x.alternativeId &&
+                            b2.Question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -35,16 +35,16 @@ export const MenuCore2: React.FC<{
                     }, 0)
                   )
                 }, 0)}
-                countRed={x.subtopics.reduce((a1, b1) => {
+                countRed={x.SubTopic.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questionSubTopics.reduce((a2, b2) => {
+                    b1.QuestionSubTopic.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.question.rightAlternative?.alternativeId != x.alternativeId &&
-                            b2.question.id == x.questionId
+                            b2.Question.RightAlternative[0]?.alternativeId != x.alternativeId &&
+                            b2.Question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -52,13 +52,13 @@ export const MenuCore2: React.FC<{
                     }, 0)
                   )
                 }, 0)}
-                countTotal={x.subtopics.reduce((a, b) => a + b.questionSubTopics.length, 0)}
+                countTotal={x.SubTopic.reduce((a, b) => a + b.QuestionSubTopic.length, 0)}
               />
               <ul className="hidden mt-4 bg-white -mx-5 -mb-5 p-5 border-t border-gray-200">
-                {x.subtopics.map((y, j) => {
-                  const anotherSubtopicQuestion = y.questionSubTopics[0]?.question //always the first question of this subtopic (start)
+                {x.SubTopic.map((y, j) => {
+                  const anotherSubtopicQuestion = y.QuestionSubTopic[0]?.Question //always the first question of this subtopic (start)
                   const url = anotherSubtopicQuestion
-                    ? `/${x.notebook.tag}/${anotherSubtopicQuestion.tag}`
+                    ? `/${x.Notebook.tag}/${anotherSubtopicQuestion.tag}`
                     : null
                   const active = router.asPath == url
                   return (
@@ -73,7 +73,7 @@ export const MenuCore2: React.FC<{
                         }`}
                         url={url}
                       />
-                      <span className="text-xs font-thin">{y.questionSubTopics.length}</span>
+                      <span className="text-xs font-thin">{y.QuestionSubTopic.length}</span>
                     </li>
                   )
                 })}

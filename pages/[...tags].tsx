@@ -1,13 +1,15 @@
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
-import { getCustomerById } from 'services/server/getCustomer'
-import { getNotebookByTag } from 'services/server/getNotebook'
-// import { getQuestionByTags } from 'services/server/getQuestion'
-
-import { NotebookWithTopicsAndSubTopics, QuestionWithAll, MenuWithQuestions } from 'lib/types'
+import {
+  NotebookWithTopicsAndSubTopics,
+  QuestionWithAll,
+  MenuWithQuestions,
+  Alternative,
+  Question,
+  RightAlternative,
+} from 'lib/types'
 import { Customer, Media } from 'lib/types'
 import { HeadHtml } from 'components/HeadHtml'
 import { Header } from 'components/Header'
-import { getMenu } from 'services/server/getMenu'
 import { LeftMenu } from 'components/Pages/Notebook/LeftMenu'
 import { QuestionFormWithRightMenu } from 'components/Pages/Notebook/QuestionFormWithRightMenu'
 // import { useData } from 'services/client/get'
@@ -15,14 +17,14 @@ import React from 'react'
 import { LandingPage } from 'components/Pages/Notebook/LandingPage'
 import Head from 'next/head'
 import { Footer } from 'components/Footer'
-import { getQuestion } from 'services/server/getQuestion'
+import { supabase } from 'lib/supabase-client'
 
 type NotebookPageProps = {
   customer: Customer & {
-    media: Media
+    Media: Media
   }
   notebook: NotebookWithTopicsAndSubTopics
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }
 
 type QuestionPageProps = {
@@ -54,11 +56,6 @@ const NotebookPage: React.FC<NotebookPageProps> = (props) => {
 }
 
 const QuestionPage: React.FC<QuestionPageProps> = (props) => {
-  // const { data: question } = useData<QuestionWithAll>(
-  //   `/api/${props.customer.tag}/${props.notebook.tag}/${props.question.tag}`,
-  //   props.question
-  // )
-
   return (
     <>
       <HeadHtml>
@@ -102,15 +99,43 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 
     const [notebookTag, questionTag] = tags
 
-    if (tags.length == 1) {
-      const notebook = await getNotebookByTag(notebookTag)
-      const customer = await getCustomerById(notebook.customerId)
-      const menu = await getMenu(notebookTag)
+    const { data: notebook } = await supabase
+      .from<NotebookWithTopicsAndSubTopics>('Notebook')
+      .select('*, Media(*), Topic(*, SubTopic(*))')
+      .eq('tag', notebookTag)
+      .single()
 
+    const { data: menu } = await supabase
+      .from<MenuWithQuestions>('Topic')
+      .select(
+        '*, SubTopic(*, QuestionSubTopic(*, Question(*, RightAlternative(*)))), Notebook(tag)'
+      )
+      .eq('notebookId', notebook.id)
+
+    const { data: customer } = await supabase
+      .from<Customer>('Customer')
+      .select('*')
+      .eq('id', notebook.customerId)
+      .single()
+
+    const { data: media } = await supabase
+      .from<Media>('Media')
+      .select('*')
+      .eq('customerId', customer.id)
+      .single()
+
+    const customerMedia: Customer & {
+      Media: Media
+    } = {
+      ...customer,
+      Media: media,
+    }
+
+    if (tags.length == 1) {
       if (customer && notebook) {
         return {
           props: {
-            customer,
+            customer: customerMedia,
             notebook,
             menu,
           },
@@ -118,19 +143,35 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         }
       }
     } else if (tags.length == 2) {
-      const notebook = await getNotebookByTag(notebookTag)
-      const customer = await getCustomerById(notebook.customerId)
-      const question = await getQuestion(questionTag)
+      const { data: question } = await supabase
+        .from<Question>('Question')
+        .select('*')
+        .eq('tag', questionTag)
+        .single()
 
+      const { data: alternatives } = await supabase
+        .from<Alternative>('Alternative')
+        .select('*')
+        .eq('questionId', question.id)
+
+      const { data: rightAlternative } = await supabase
+        .from<RightAlternative>('RightAlternative')
+        .select('*')
+        .eq('questionId', question.id)
+        .single()
+
+      const questionWithAll: QuestionWithAll = {
+        ...question,
+        alternatives,
+        rightAlternative,
+      }
       if (customer && notebook && question) {
-        const menu = await getMenu(notebookTag)
-
         return {
           props: {
-            customer,
+            customer: customerMedia,
             notebook,
             menu,
-            question,
+            question: questionWithAll,
           },
           revalidate: 1,
         }

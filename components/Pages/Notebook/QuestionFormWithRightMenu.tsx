@@ -9,10 +9,10 @@ import Link from 'next/link'
 import { ChevronLeftIcon, ChevronRightIcon } from '@primer/octicons-react'
 
 export const QuestionFormWithRightMenu: React.FC<{
-  customer: Customer & { media: Media }
+  customer: Customer & { Media: Media }
   notebookTag: string
   question: QuestionWithAll
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }> = (props) => {
   let suggestions: {
     id: number
@@ -26,15 +26,15 @@ export const QuestionFormWithRightMenu: React.FC<{
   let title = ''
 
   for (const topic of props.menu) {
-    for (const subTopic of topic.subtopics) {
-      for (const questionSubTopic of subTopic.questionSubTopics) {
+    for (const subTopic of topic.SubTopic) {
+      for (const questionSubTopic of subTopic.QuestionSubTopic) {
         if (questionSubTopic.questionId == props.question.id) {
-          suggestions = subTopic.questionSubTopics.map((x) => ({
-            id: x.question.id,
-            tag: x.question.tag,
-            name: x.question.name,
+          suggestions = subTopic.QuestionSubTopic.map((x) => ({
+            id: x.Question.id,
+            tag: x.Question.tag,
+            name: x.Question.name,
             rightAlternative: {
-              alternativeId: x.question.rightAlternative?.alternativeId,
+              alternativeId: x.Question.RightAlternative[0]?.alternativeId,
             },
           }))
           title = subTopic.name

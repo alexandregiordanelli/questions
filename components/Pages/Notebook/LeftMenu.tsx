@@ -5,7 +5,7 @@ import { MenuWithQuestions } from '../../../lib/types'
 import { MenuCore } from './MenuCore'
 
 export const LeftMenu: React.FC<{
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }> = (props) => {
   const router = useRouter()
   const [toggleMenu, setToggleMenu] = useState(false)

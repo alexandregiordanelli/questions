@@ -2,7 +2,7 @@ import { Header } from 'components/Header'
 import { HeadHtml } from 'components/HeadHtml'
 import { QuestionFormWraper } from 'components/QuestionFormWraper'
 import { supabase } from 'lib/supabase-client'
-import { Alternative, Question, QuestionWithAll, RightAlternative } from 'lib/types'
+import { Alternative, QuestionWithAll, RightAlternative } from 'lib/types'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps<QuestionPageProps> = async (context)
 
     if (questionTag) {
       const { data: question } = await supabase
-        .from<Question>('Question')
+        .from<QuestionWithAll>('Question')
         .select('*')
         .eq('tag', questionTag)
         .single()

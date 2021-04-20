@@ -10,12 +10,12 @@ import { useAuth } from 'lib/auth'
 
 export const LandingPage: React.FC<{
   notebook: Notebook & {
-    media: Media
+    Media: Media
   }
   customer: Customer & {
-    media: Media
+    Media: Media
   }
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }> = (props) => {
   const auth = useAuth()
   const hasThisNotebook = auth.subscribers?.some((x) => x.notebookId == props.notebook.id)
@@ -46,10 +46,10 @@ export const LandingPage: React.FC<{
                 <h2 className="font-medium text-black">{props.customer.name}</h2>
               </a>
             </Link>
-            {props.customer.media && (
+            {props.customer.Media && (
               <img
                 className="rounded-full w-24 h-24 my-5"
-                src={getURLMedia(props.customer.media)}
+                src={getURLMedia(props.customer.Media)}
                 alt={props.customer.name}
               />
             )}
@@ -60,7 +60,7 @@ export const LandingPage: React.FC<{
               hasThisNotebook={hasThisNotebook}
               notebook={props.notebook}
               className="shadow-2xl"
-              startQuestionTag={props.menu[0]?.subtopics[0]?.questionSubTopics[0].question.tag}
+              startQuestionTag={props.menu[0]?.SubTopic[0]?.QuestionSubTopic[0].Question.tag}
             />
           </div>
         </div>

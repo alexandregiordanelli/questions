@@ -4,12 +4,11 @@ import { QuestionWithAll } from '../../../lib/types'
 import { letters } from '../../../lib/utils'
 import { MarkdownText } from '../../MarkdownText'
 import { ChosenAlternative } from 'lib/types'
-import { mutate } from 'swr'
-import { postClientArray } from 'services/client/post'
 import { useAuth } from 'lib/auth'
 import { useRouter } from 'next/router'
 import pt from '../../../lib/locales/pt'
 import en from '../../../lib/locales/en'
+import { supabase } from 'lib/supabase-client'
 export const QuestionForm: React.FC<{
   // customer: Customer & { media: Media }
   question: QuestionWithAll
@@ -20,19 +19,6 @@ export const QuestionForm: React.FC<{
   const stats = auth.stats?.find((x) => x.questionId == props.question.id)
   const [alternativeIdChosen, setAlternativeIdChosen] = useState(stats?.alternativeId ?? 0)
   const [, setShowSolution] = useState(false)
-
-  const postChosenAlternative = async (_chosenAlternative: ChosenAlternative): Promise<void> => {
-    try {
-      const chosenAlternatives = await postClientArray<ChosenAlternative>(
-        _chosenAlternative,
-        `/api/stats`
-      )
-      mutate(`/api/stats`, chosenAlternatives, false)
-      setShowSolution(true)
-    } catch (e) {
-      console.log(e)
-    }
-  }
 
   useEffect(() => {
     setAlternativeIdChosen(stats?.alternativeId ?? 0)
@@ -50,18 +36,16 @@ export const QuestionForm: React.FC<{
       id="right-answer"
       checked={!!stats}
       disabled={!!stats}
-      onChange={() => {
+      onChange={async () => {
         if (auth.customer) {
-          postChosenAlternative({
-            alternativeId: alternativeIdChosen,
-            questionId: props.question.id,
-            customerId: auth.customer.id,
-            id: stats?.id ?? 0,
-            createdAt: null,
-            updatedAt: null,
-          })
-        } else {
-          auth.setShowNotebookCard(true)
+          await supabase.from<ChosenAlternative>('ChosenAlternative').insert([
+            {
+              alternativeId: alternativeIdChosen,
+              questionId: props.question.id,
+              customerId: auth.customer.id,
+              id: stats?.id ?? 0,
+            },
+          ])
         }
       }}
     />,

@@ -29,29 +29,29 @@ export type Menu = {
 export type MyNotebooks = (Subscriber & {
   notebook: Notebook & {
     customer: Customer & {
-      media: Media
+      Media: Media
     }
-    media: Media
+    Media: Media
   }
 })[]
 
-export type MenuWithQuestions = (Topic & {
-  subtopics: (SubTopic & {
-    questionSubTopics: (QuestionSubTopic & {
-      question: {
+export type MenuWithQuestions = Topic & {
+  SubTopic: (SubTopic & {
+    QuestionSubTopic: (QuestionSubTopic & {
+      Question: {
         id: number
         tag: string
         name: string
-        rightAlternative: {
+        RightAlternative: {
           alternativeId: number
-        }
+        }[]
       }
     })[]
   })[]
-  notebook: {
+  Notebook: {
     tag: string
   }
-})[]
+}
 
 export type QuestionWithAll = Question & {
   alternatives: Alternative[]
@@ -69,9 +69,9 @@ export type CustomerWithNotebooks = Customer & { Media: Media } & {
 }
 
 export type NotebookWithTopicsAndSubTopics = Notebook & {
-  media: Media
-  topics: (Topic & {
-    subtopics: SubTopic[]
+  Media: Media
+  Topics: (Topic & {
+    SubTopics: SubTopic[]
   })[]
 }
 

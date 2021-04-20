@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from 'lib/auth'
 
 export const MenuCore: React.FC<{
-  menu: MenuWithQuestions
+  menu: MenuWithQuestions[]
 }> = (props) => {
   const router = useRouter()
   const auth = useAuth()
@@ -18,26 +18,26 @@ export const MenuCore: React.FC<{
         }
       >
         {props.menu.map((x, i) => {
-          const firstSubtopicQuestion = x.subtopics[0]?.questionSubTopics
+          const firstSubtopicQuestion = x.SubTopic[0]?.QuestionSubTopic
           return (
             <li key={`${i}.0`} className={'p-5 border-t border-gray-200'}>
               <MenuItem
                 url={
                   firstSubtopicQuestion && firstSubtopicQuestion.length
-                    ? `/${x.notebook.tag}/${firstSubtopicQuestion[0].question.tag}`
+                    ? `/${x.Notebook.tag}/${firstSubtopicQuestion[0].Question.tag}`
                     : null
                 }
                 title={x.name}
-                countGreen={x.subtopics.reduce((a1, b1) => {
+                countGreen={x.SubTopic.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questionSubTopics.reduce((a2, b2) => {
+                    b1.QuestionSubTopic.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.question.rightAlternative?.alternativeId == x.alternativeId &&
-                            b2.question.id == x.questionId
+                            b2.Question.RightAlternative[0]?.alternativeId == x.alternativeId &&
+                            b2.Question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -45,16 +45,16 @@ export const MenuCore: React.FC<{
                     }, 0)
                   )
                 }, 0)}
-                countRed={x.subtopics.reduce((a1, b1) => {
+                countRed={x.SubTopic.reduce((a1, b1) => {
                   return (
                     a1 +
-                    b1.questionSubTopics.reduce((a2, b2) => {
+                    b1.QuestionSubTopic.reduce((a2, b2) => {
                       return (
                         a2 +
                         (auth.stats?.some(
                           (x) =>
-                            b2.question.rightAlternative?.alternativeId != x.alternativeId &&
-                            b2.question.id == x.questionId
+                            b2.Question.RightAlternative[0]?.alternativeId != x.alternativeId &&
+                            b2.Question.id == x.questionId
                         )
                           ? 1
                           : 0)
@@ -62,13 +62,13 @@ export const MenuCore: React.FC<{
                     }, 0)
                   )
                 }, 0)}
-                countTotal={x.subtopics.reduce((a, b) => a + b.questionSubTopics.length, 0)}
+                countTotal={x.SubTopic.reduce((a, b) => a + b.QuestionSubTopic.length, 0)}
               />
               <ul className="hidden mt-4">
-                {x.subtopics.map((y, j) => {
-                  const anotherSubtopicQuestion = y.questionSubTopics[0]
+                {x.SubTopic.map((y, j) => {
+                  const anotherSubtopicQuestion = y.QuestionSubTopic[0]
                   const url = anotherSubtopicQuestion
-                    ? `/${x.notebook.tag}/${anotherSubtopicQuestion.question.tag}`
+                    ? `/${x.Notebook.tag}/${anotherSubtopicQuestion.Question.tag}`
                     : null
                   const active = router.asPath == url
                   return (
@@ -83,7 +83,7 @@ export const MenuCore: React.FC<{
                         }`}
                         url={url}
                       />
-                      <span className="text-xs font-thin">{y.questionSubTopics.length}</span>
+                      <span className="text-xs font-thin">{y.QuestionSubTopic.length}</span>
                     </li>
                   )
                 })}
