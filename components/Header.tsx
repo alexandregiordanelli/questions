@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { Logo, LogoTextual } from './Logo'
 import { useRouter } from 'next/router'
-import { ChevronRightIcon } from '@primer/octicons-react'
+import { ChevronRightIcon, SearchIcon } from '@primer/octicons-react'
 import { Login } from './Login'
 // import { Modal } from './Modal'
 // import { NotebookCard } from './NotebookCard'
-import { NotebookWithTopicsAndSubTopics, QuestionWithAll } from 'lib/types'
+import { NotebookWithTopicsAndSubTopics, Question, QuestionWithAll } from 'lib/types'
 import { supabase } from 'lib/supabase-client'
 import { useAuth } from 'lib/auth'
 import { DropDownMenu } from './DropDownMenu'
@@ -20,6 +20,20 @@ export const Header: React.FC<{
 
   const offsetPaddingLeft = !!props.notebook
 
+  const [search, setSearch] = useState('')
+
+  const getSearch: React.FormEventHandler<HTMLFormElement> = async (e): Promise<void> => {
+    e.preventDefault()
+
+    const { data } = await supabase
+      .from<Question>('Question')
+      .select('*')
+      .textSearch('text', search, {
+        type: 'websearch',
+      })
+
+    if (data.length > 0) router.push(`/q/${data[0].tag}`)
+  }
   // const hasThisNotebook = subscribers?.some((x) => x.notebookId == props.question?.notebook.id)
 
   // const showModal = !user && showNotebookCard && !hasThisNotebook
@@ -38,6 +52,17 @@ export const Header: React.FC<{
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
+          <div className="bg-gray-700 rounded">
+            <form onSubmit={(e) => getSearch(e)} className="flex items-center">
+              <SearchIcon size={18} className="text-white ml-2" />
+              <input
+                className="bg-gray-700 border-0 text-white focus:ring-0 rounded mr-2"
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
+          </div>
           {!router.pathname.startsWith('/admin') && props.question && (
             <>
               {props.notebook && (

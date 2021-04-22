@@ -15,17 +15,6 @@ export type QuestionSubTopic = definitions['QuestionSubTopic']
 
 export type ChosenAlternative = definitions['ChosenAlternative']
 
-export type Menu = {
-  items: {
-    name: string
-    url?: string
-    subItems?: {
-      name: string
-      url: string
-    }[]
-  }[]
-}
-
 export type MyNotebooks = (Subscriber & {
   notebook: Notebook & {
     customer: Customer & {
@@ -81,11 +70,6 @@ export type Path = {
   }
 }
 
-export type DataBaseHook<T> = {
-  data: T
-  isLoading: boolean
-  isError: Record<string, unknown>
-}
 export type MediaWithUrl = {
   url: string
 } & Media

@@ -75,6 +75,9 @@ const useProvideAuth = (): Auth => {
 
         setStats(stats)
       })()
+    } else {
+      setCustomer(null)
+      setStats(null)
     }
   }, [user])
 
@@ -86,7 +89,7 @@ const useProvideAuth = (): Auth => {
     subscribers,
     setSubscribers,
     user,
-    logout: supabase.auth.signOut,
+    logout: () => supabase.auth.signOut(),
   }
 }
 

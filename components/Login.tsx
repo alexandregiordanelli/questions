@@ -1,4 +1,5 @@
 import { supabase } from 'lib/supabase-client'
+import { GoogleIcon } from './GoogleIcon'
 
 export const Login: React.FC = () => {
   const login = async (): Promise<void> => {
@@ -9,5 +10,12 @@ export const Login: React.FC = () => {
     console.log(error)
   }
 
-  return <button onClick={login}>Google</button>
+  return (
+    <button onClick={login} className="text-white text-sm flex items-center">
+      <div className="w-4 mr-2">
+        <GoogleIcon />
+      </div>
+      Sign In
+    </button>
+  )
 }
