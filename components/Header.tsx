@@ -10,6 +10,7 @@ import { NotebookWithTopicsAndSubTopics, Question, QuestionWithAll } from 'lib/t
 import { supabase } from 'lib/supabase-client'
 import { useAuth } from 'lib/auth'
 import { DropDownMenu } from './DropDownMenu'
+import NoSSR from 'react-no-ssr'
 
 export const Header: React.FC<{
   question?: QuestionWithAll
@@ -52,17 +53,18 @@ export const Header: React.FC<{
               <LogoTextual size={32} color="#fff" className="hidden sm:block" />
             </a>
           </Link>
-          <div className="bg-gray-700 rounded">
-            <form onSubmit={(e) => getSearch(e)} className="flex items-center">
-              <SearchIcon size={18} className="text-white ml-2" />
-              <input
-                className="bg-gray-700 border-0 text-white focus:ring-0 rounded mr-2"
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </form>
-          </div>
+          <form
+            onSubmit={(e) => getSearch(e)}
+            className="flex items-center px-2 mr-2 bg-gray-700 rounded"
+          >
+            <SearchIcon size={18} className="text-white" />
+            <input
+              className="bg-gray-700 w-28 border-0 text-white focus:ring-0 rounded"
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </form>
           {!router.pathname.startsWith('/admin') && props.question && (
             <>
               {props.notebook && (
@@ -87,16 +89,16 @@ export const Header: React.FC<{
             </Link>
           )}
         </div>
-        {/* <NoSSR> */}
-        {/* {showModal && (
+        <NoSSR>
+          {/* {showModal && (
             <Modal showModal={setShowNotebookCard}>
               <NotebookCard notebook={props.question.notebook} hasThisNotebook={false} />
             </Modal>
           )}
           {!user && showFocusOnLogin && <FocusOnLogin />} */}
-        {!supabase.auth.user() && <Login />}
-        {customer && <DropDownMenu />}
-        {/* </NoSSR> */}
+          {!supabase.auth.user() && <Login />}
+          {customer && <DropDownMenu />}
+        </NoSSR>
       </header>
     </>
   )
